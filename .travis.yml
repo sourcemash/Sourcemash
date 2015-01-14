@@ -1,8 +1,11 @@
 language: python
 python:
-  - "2.7"
-# command to install dependencies
+- '2.7'
 install:
-  - "pip install -r requirements.txt"
-# command to run tests
+- pip install -r requirements.txt
 script: nosetests
+deploy:
+  provider: heroku
+  api_key:
+    secure: OeO43wvD0lvzZu2JL+/nqfSOvYjAfNrSK/qFi2BWWBe0kGKNRiFHmvHgJ7bypTzI+0+25tGS4uanhIf8ZR5gToxSLi5FymOwD9LzRHqyoxxPbpnnclUpIRT5ia6x/VHhnnKzdb4hiE7GUHrIKcbWO3mdIvJljhni4ipNy7D/N1w=
+  app: peaceful-falls-6831
