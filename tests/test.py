@@ -1,20 +1,14 @@
-import unittest
+from nose.tools import assert_true, assert_false
 
 # Here's our "unit".
 def IsOdd(n):
     return n % 2 == 1
 
 # Here's our "unit tests".
-class IsOddTests(unittest.TestCase):
+class TestIsOdd():
 
-    def testOne(self):
-        self.failUnless(IsOdd(1))
+    def test_odd_number_is_odd(self):
+        assert_true(IsOdd(1))
 
-    def testTwo(self):
-        self.failIf(IsOdd(2))
-
-def main():
-    unittest.main()
-
-if __name__ == '__main__':
-    main()
+    def test_even_number_is_not_odd(self):
+        assert_false(IsOdd(2))
