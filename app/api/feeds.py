@@ -4,6 +4,8 @@ from flask.ext.restful import Api, Resource, reqparse, fields, marshal
 
 from datetime import datetime, date
 
+import feedparser
+
 api = Api(app)
 
 feeds = [
@@ -32,8 +34,6 @@ class FeedListAPI(Resource):
 
 	def __init__(self):
 		self.reqparse = reqparse.RequestParser()
-		self.reqparse.add_argument('title', type=str, required=True,
-									help='No feed title provided')
 		self.reqparse.add_argument('url', type=str, required=True,
 									help='No feed url provided')
 		super(FeedListAPI, self).__init__()
@@ -43,9 +43,12 @@ class FeedListAPI(Resource):
 
 	def post(self):
 		args = self.reqparse.parse_args()
+
+		rss_feed = feedparser.parse(args['url'])
+
 		feed = {
 			'id': feeds[-1]['id'] + 1,
-			'title': args['title'],
+			'title': rss_feed['feed']['title'],
 			'url': args['url'],
 			'last_updated': datetime.min
 		}
