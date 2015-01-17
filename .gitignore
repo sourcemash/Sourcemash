@@ -55,3 +55,6 @@ target/
 
 # Virutal env
 flask/
+
+# Sublime Text Files
+*.sublime-*
