@@ -58,16 +58,20 @@ class FeedListAPI(Resource):
 class FeedAPI(Resource):
 
 	def get(self, id):
-		feed = filter(lambda feed: feed['id'] == id, feeds)
-		if not feed:
+		try:
+			feed = next((feed for feed in feeds if feed['id'] == id))
+		except StopIteration:
 			abort(404)
-		return {'feed': marshal(feed[0], feed_fields)}
+
+		return {'feed': marshal(feed, feed_fields)}
 
 	def delete(self, id):
-		feed = filter(lambda feed: feed['id'] == id, feeds)
-		if not feed:
+		try:
+			feed = next((feed for feed in feeds if feed['id'] == id))
+		except StopIteration:
 			abort(404)
-		feeds.remove(feed[0])
+
+		feeds.remove(feed)
 		return {'result': True}
 
 api.add_resource(FeedListAPI, '/api/feeds', endpoint='feeds')
