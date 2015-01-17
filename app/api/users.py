@@ -7,7 +7,7 @@ api = Api(app)
 user_list = [
 	{
 		'id': 5743, 
-		'email': "lhpglad@hp.org", 
+		'email': "happy@rock.com", 
 	},
 	{
 		'id': 5744, 
@@ -47,18 +47,27 @@ class UserAPI(Resource):
 
 	def get(self, id):
 		''' Show User @id '''
-		return { 'user': [marshal(user, user_fields) for user in user_list if user['id']==id][0] }
+		user = filter(lambda user: user['id']==id, user_list)
+		if not user:
+			abort(404)
+		return { 'user': marshal(user[0], user_fields) }
 
 	def put(self, id):
 		''' Edit User @id '''
 		args = self.reqparse.parse_args()
-		user = [ user for user in user_list if user['id']==id ][0] 
+		user = filter(lambda user: user['id']==id, user_list)
+		if not user:
+			abort(404)
 		user['email'] = args.email
 		return { 'user': user }
 
 	def delete(self, id):
 		''' Destroy User @id '''
-		pass
+		user = filter(lambda user: user['id'] == id, user_list)
+		if not user:
+			abort(404)
+		user_list.remove(user[0])
+		return {'result': True}
 
 api.add_resource(UserListAPI, '/api/users', endpoint = 'users')
 api.add_resource(UserAPI, '/api/users/<int:id>', endpoint = 'user')
