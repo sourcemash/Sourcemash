@@ -91,13 +91,7 @@ class TestUserAPI():
 		get = self.app.get(self.user_uri)
 		eq_(get.status_code, 404)
 
-		# Add dummy user back
-		user_data = dict(email="notme@nobody.com")
-		post = self.app.post('/api/users', data=user_data)
-
 	def tearDown(self):
 		# Remove dummy user
 		delete = self.app.delete(self.user_uri)
 		check_valid_header_type(delete.headers)
-		data = json.loads(delete.data)
-		eq_(data['result'], True)
