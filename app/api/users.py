@@ -34,9 +34,10 @@ class UserListAPI(Resource):
 	def post(self):
 		''' Create new User ''' 
 		args = self.reqparse.parse_args()
-		user = {}
-		user['email'] = args.email
-		user['id'] = user_list[-1]['id'] + 1
+		user = {
+			'email': args.email,
+			'id': user_list[-1]['id'] + 1
+		}
 		user_list.append(user)
 		return { 'user': marshal(user, user_fields)}, 201
 
@@ -48,28 +49,30 @@ class UserAPI(Resource):
 
 	def get(self, id):
 		''' Show User @id '''
-		user = filter(lambda user: user['id']==id, user_list)
-		if not user:
+		try:
+			user = next((user for user in user_list if user['id'] == id))
+		except StopIteration:
 			abort(404)
-		return { 'user': marshal(user[0], user_fields) }
+		return { 'user': marshal(user, user_fields) }
 
 	def put(self, id):
 		''' Edit User @id '''
 		args = self.reqparse.parse_args()
-		user = filter(lambda user: user['id']==id, user_list)
-		print "--", user
-		if not user:
+		try:
+			user = next((user for user in user_list if user['id'] == id))
+		except StopIteration:
 			abort(404)
-		user = user[0]
 		user['email'] = args.email
-		return { 'user': user }
+		return { 'user': marshal(user, user_fields) }
 
 	def delete(self, id):
 		''' Destroy User @id '''
-		user = filter(lambda user: user['id'] == id, user_list)
-		if not user:
+		try:
+			user = next((user for user in user_list if user['id'] == id))
+		except StopIteration:
 			abort(404)
-		user_list.remove(user[0])
+
+		user_list.remove(user)
 		return {'result': True}
 
 api.add_resource(UserListAPI, '/api/users', endpoint = 'users')
