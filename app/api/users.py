@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import abort
 from flask.ext.restful import Api, Resource, fields, marshal, reqparse
 from app import app
 
@@ -6,11 +6,11 @@ api = Api(app)
 
 user_list = [
 	{
-		'id': 5743, 
+		'id': 1, 
 		'email': "happy@rock.com", 
 	},
 	{
-		'id': 5744, 
+		'id': 2, 
 		'email': "alex@shnoodles.com",  
 
 	}
@@ -37,7 +37,8 @@ class UserListAPI(Resource):
 		user = {}
 		user['email'] = args.email
 		user['id'] = user_list[-1]['id'] + 1
-		return { 'user': user}, 201
+		user_list.append(user)
+		return { 'user': marshal(user, user_fields)}, 201
 
 class UserAPI(Resource):
 	def __init__(self):
@@ -56,8 +57,10 @@ class UserAPI(Resource):
 		''' Edit User @id '''
 		args = self.reqparse.parse_args()
 		user = filter(lambda user: user['id']==id, user_list)
+		print "--", user
 		if not user:
 			abort(404)
+		user = user[0]
 		user['email'] = args.email
 		return { 'user': user }
 
