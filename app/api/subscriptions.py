@@ -29,8 +29,11 @@ subscription_fields = {
     'uri': fields.Url('subscription')
 }
 
-def get_user_subscriptions():
+def user_subscriptions():
 	return (subscription for subscription in subscriptions if subscription['user_id'] == logged_in_user_id)
+
+def subscriptions_by_feed_id(feed_id):
+	return (subscription for subscription in user_subscriptions() if subscription['feed_id'] == feed_id)
 
 class SubscriptionListAPI(Resource):
 
@@ -41,7 +44,7 @@ class SubscriptionListAPI(Resource):
 		super(SubscriptionListAPI, self).__init__()
 
 	def get(self):
-		return {'subscriptions': [marshal(subscription, subscription_fields) for subscription in get_user_subscriptions()]}
+		return {'subscriptions': [marshal(subscription, subscription_fields) for subscription in user_subscriptions()]}
 
 	def post(self):
 		args = self.reqparse.parse_args()
@@ -64,7 +67,7 @@ class SubscriptionAPI(Resource):
 
 	def get(self, feed_id):
 		try:
-			subscription = next((subscription for subscription in get_user_subscriptions() if subscription['feed_id'] == feed_id))
+			subscription = next(subscriptions_by_feed_id(feed_id))
 		except StopIteration:
 			abort(404)
 
@@ -74,7 +77,7 @@ class SubscriptionAPI(Resource):
 		args = self.reqparse.parse_args()
 
 		try:
-			subscription = next((subscription for subscription in get_user_subscriptions() if subscription['feed_id'] == feed_id))
+			subscription = next(subscriptions_by_feed_id(feed_id))
 		except StopIteration:
 			abort(404)
 
@@ -83,7 +86,7 @@ class SubscriptionAPI(Resource):
 
 	def delete(self, feed_id):
 		try:
-			subscription = next((subscription for subscription in get_user_subscriptions() if subscription['feed_id'] == feed_id))
+			subscription = next(subscriptions_by_feed_id(feed_id))
 		except StopIteration:
 			abort(404)
 
