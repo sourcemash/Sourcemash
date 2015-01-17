@@ -7,7 +7,6 @@ app = Flask(__name__)
 from app.frontend import dashboards
 from app.api import feeds, users
 
-
 # Logging
 if os.environ.get('HEROKU') is not None:
     import logging
