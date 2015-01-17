@@ -2,84 +2,93 @@ from app import app
 from flask import abort
 from flask.ext.restful import Api, Resource, reqparse, fields, marshal
 
-from datetime import datetime, date
-
-import feedparser
-
 api = Api(app)
+
+logged_in_user_id = 1
 
 subscriptions = [
 	{
 		'user_id': 1,
 		'feed_id': 3,
-		'merged': True
+		'mergeable': True
 	},
 	{
 		'user_id': 2,
 		'feed_id': 4,
-		'merged': True
+		'mergeable': True
 	},
 	{
 		'user_id': 2,
 		'feed_id': 2,
-		'merged': True
+		'mergeable': True
 	}
 ]
 
 subscription_fields = {
-    'merged': fields.Boolean,
+    'mergeable': fields.Boolean,
     'uri': fields.Url('subscription')
 }
+
+def get_user_subscriptions():
+	return (subscription for subscription in subscriptions if subscription['user_id'] == logged_in_user_id)
 
 class SubscriptionListAPI(Resource):
 
 	def __init__(self):
 		self.reqparse = reqparse.RequestParser()
-		self.reqparse.add_argument('url', type=str, required=True,
-									help='No feed url provided')
-		super(FeedListAPI, self).__init__()
+		self.reqparse.add_argument('feed_id', type=int, required=True,
+									help='No feed ID provided')
+		super(SubscriptionListAPI, self).__init__()
 
 	def get(self):
-		return {'feeds': [marshal(feed, feed_fields) for feed in feeds]}
+		return {'subscriptions': [marshal(subscription, subscription_fields) for subscription in get_user_subscriptions()]}
 
 	def post(self):
 		args = self.reqparse.parse_args()
 
-		rss_feed = feedparser.parse(args['url'])
-
-		feed = {
-			'id': feeds[-1]['id'] + 1,
-			'title': rss_feed['feed']['title'],
-			'url': args['url'],
-			'last_updated': datetime.min
+		subscription = {
+			'user_id': logged_in_user_id,
+			'feed_id': args['feed_id'],
+			'mergeable': True
 		}
-		feeds.append(feed)
-		return {'feed': marshal(feed, feed_fields)}, 201
+		subscriptions.append(subscription)
+		return {'subscription': marshal(subscription, subscription_fields)}, 201
 
 class SubscriptionAPI(Resource):
 
 	def __init__(self):
 		self.reqparse = reqparse.RequestParser()
-		self.reqparse.add_argument('url', type=str, required=True,
-									help='No feed url provided')
-		super(FeedListAPI, self).__init__()
+		self.reqparse.add_argument('mergeable', type=bool, required=True,
+									help='No mergeable provided')
+		super(SubscriptionAPI, self).__init__()
 
-	def get(self, id):
+	def get(self, feed_id):
 		try:
-			feed = next((feed for feed in feeds if feed['id'] == id))
+			subscription = next((subscription for subscription in get_user_subscriptions() if subscription['feed_id'] == feed_id))
 		except StopIteration:
 			abort(404)
 
-		return {'feed': marshal(feed, feed_fields)}
+		return {'subscription': marshal(subscription, subscription_fields)}
 
-	def delete(self, id):
+	def put(self, feed_id):
+		args = self.reqparse.parse_args()
+
 		try:
-			feed = next((feed for feed in feeds if feed['id'] == id))
+			subscription = next((subscription for subscription in get_user_subscriptions() if subscription['feed_id'] == feed_id))
 		except StopIteration:
 			abort(404)
 
-		feeds.remove(feed)
+		subscription['mergeable'] = args.mergeable
+		return {'subscription': marshal(subscription, subscription_fields)}
+
+	def delete(self, feed_id):
+		try:
+			subscription = next((subscription for subscription in get_user_subscriptions() if subscription['feed_id'] == feed_id))
+		except StopIteration:
+			abort(404)
+
+		subscriptions.remove(subscription)
 		return {'result': True}
 
-api.add_resource(FeedListAPI, '/api/subscriptions', endpoint='subscriptions')
-api.add_resource(FeedAPI, '/api/subscriptions/<int:id>', endpoint='subscription')
+api.add_resource(SubscriptionListAPI, '/api/subscriptions', endpoint='subscriptions')
+api.add_resource(SubscriptionAPI, '/api/subscriptions/<int:feed_id>', endpoint='subscription')
