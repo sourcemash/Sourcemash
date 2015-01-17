@@ -21,6 +21,9 @@ user_fields = {
 	'uri': fields.Url('user')
 }
 
+def get_users_by_id(id):
+	return (user for user in user_list if user['id'] == id)
+
 class UserListAPI(Resource):
 	def __init__(self):
 		self.reqparse = reqparse.RequestParser()
@@ -50,7 +53,7 @@ class UserAPI(Resource):
 	def get(self, id):
 		''' Show User @id '''
 		try:
-			user = next((user for user in user_list if user['id'] == id))
+			user = next(get_users_by_id(id))
 		except StopIteration:
 			abort(404)
 		return { 'user': marshal(user, user_fields) }
@@ -59,7 +62,7 @@ class UserAPI(Resource):
 		''' Edit User @id '''
 		args = self.reqparse.parse_args()
 		try:
-			user = next((user for user in user_list if user['id'] == id))
+			user = next(get_users_by_id(id))
 		except StopIteration:
 			abort(404)
 		user['email'] = args.email
@@ -68,7 +71,7 @@ class UserAPI(Resource):
 	def delete(self, id):
 		''' Destroy User @id '''
 		try:
-			user = next((user for user in user_list if user['id'] == id))
+			user = next(get_users_by_id(id))
 		except StopIteration:
 			abort(404)
 
