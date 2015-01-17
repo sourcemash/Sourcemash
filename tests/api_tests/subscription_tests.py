@@ -11,6 +11,12 @@ class TestSubscriptionAPI():
 	def setUp(self):
 		self.app = app.test_client()
 
+		# Add dummy subscription
+		subscription_data = dict(feed_id=4)
+		post = self.app.post('/api/subscriptions', data=subscription_data)
+		data = json.loads(post.data)
+		subscription_uri = data['subscription']['uri']
+
 	def test_get_feed_present(self):
 		r = self.app.get('/api/subscriptions/3')
 		check_valid_header_type(r.headers)
@@ -25,24 +31,19 @@ class TestSubscriptionAPI():
 		eq_(r.status_code, 404)
 
 	def test_delete_subscription_present(self):
-		# Add dummy subscription
-		subscription_data = dict(feed_id=4)
-		post = self.app.post('/api/subscriptions', data=subscription_data)
-		data = json.loads(post.data)
-		subscription_uri = data['subscription']['uri']
-
 		# Remove Dummy Feed
-		delete = self.app.delete(subscription_uri)
+		delete = self.app.delete('/api/subscriptions/4')
 		check_valid_header_type(delete.headers)
 		data = json.loads(delete.data)
 		eq_(data['result'], True)
 
 		# Dummy feed should no longer be reachable
-		get = self.app.get(subscription_uri)
+		get = self.app.get('/api/subscriptions/4')
 		eq_(get.status_code, 404)
 
 	def tearDown(self):
-		pass
+		# Remove Dummy Feed
+		delete = self.app.delete('/api/subscriptions/4')
 
 class TestSubscriptionListAPI():
 
