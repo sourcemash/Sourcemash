@@ -1,8 +1,12 @@
-from flask import Flask
 import os
 
+from flask import Flask
+
 app = Flask(__name__)
-from app import views
+
+from app.frontend import dashboards
+from app.api import feeds, users
+
 
 # Logging
 if os.environ.get('HEROKU') is not None:
