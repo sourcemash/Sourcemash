@@ -22,6 +22,7 @@ class TestFeedAPI():
 		feed = FeedFactory()
 
 		self.feed_uri = '/api/feeds/%d' % feed.id
+		self.title = feed.title
 
 	def test_get_feed_present(self):
 		r = self.app.get(self.feed_uri)
@@ -29,7 +30,7 @@ class TestFeedAPI():
 		eq_(r.status_code, 200)
 
 		data = json.loads(r.data)
-		eq_(data['feed']['title'], u"TechCrunch")
+		eq_(data['feed']['title'], self.title)
 
 	def test_get_feed_missing(self):
 		r = self.app.get('/api/feeds/0')
@@ -37,7 +38,6 @@ class TestFeedAPI():
 		eq_(r.status_code, 404)
 
 	def test_delete_feed_present(self):
-		# Remove Dummy Feed
 		delete = self.app.delete(self.feed_uri)
 		check_valid_header_type(delete.headers)
 		data = json.loads(delete.data)
