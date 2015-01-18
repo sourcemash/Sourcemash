@@ -1,7 +1,11 @@
 from nose.tools import assert_true, assert_false, eq_
 import json
+import os
+from config import basedir
 
-from app import app
+from app import app, db
+from app.models import User
+from factories import UserFactory
 
 def check_valid_header_type(headers):
 	eq_(headers['Content-Type'], 'application/json')
@@ -11,7 +15,13 @@ class TestUserListAPI():
 	def setUp(self):
 		self.app = app.test_client()
 
+		app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
+			os.path.join(basedir, 'test.db')
+		db.create_all()
+		UserFactory()
+
 	def test_get_all_users(self):
+		UserFactory()
 		rv = self.app.get('/api/users')
 		check_valid_header_type(rv.headers)
 		eq_(rv.status_code, 200)
@@ -20,14 +30,18 @@ class TestUserListAPI():
 		eq_(len(data['users']),2)
 
 	def test_post_new_user_valid(self):
-		user_data = dict(email="happy@rock.com")
+		# Create user
+		user_data = dict(email='user1@test.com')
 		rv = self.app.post('/api/users', data=user_data)
 		
 		check_valid_header_type(rv.headers)
 		eq_(rv.status_code,201)
 
 		data = json.loads(rv.data)
-		eq_(data['user']['email'], u"happy@rock.com")
+		eq_(data['user']['email'], 'user1@test.com')
+
+		# Clean up: delete user
+		rv = self.app.delete(data['user']['uri'])
 
 	def test_post_new_user_missing_email(self):
 		user_data = dict()
@@ -37,26 +51,29 @@ class TestUserListAPI():
 		eq_(rv.status_code,400)
 
 	def tearDown(self):
-		pass
+		db.session.remove()
+		db.drop_all()
 
 class TestUserAPI():
 
 	def setUp(self):
 		self.app = app.test_client()
 
-		# Add dummy user
-		user_data = dict(email="notme@nobody.com")
-		post = self.app.post('/api/users', data=user_data)
-		data = json.loads(post.data)
-		self.user_uri = data['user']['uri']
+		app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
+			os.path.join(basedir, 'test.db')
+		db.create_all()
+		UserFactory()
+
+		self.user_uri = '/api/users/' + str(User.query.first().id)
+		self.user_email = str(User.query.first().email)
 
 	def test_get_user_present(self):
-		rv = self.app.get('/api/users/1')
+		rv = self.app.get(self.user_uri)
 		check_valid_header_type(rv.headers)
 		eq_(rv.status_code, 200)
 
 		data = json.loads(rv.data)
-		eq_(data['user']['email'],u"happy@rock.com")
+		eq_(data['user']['email'], self.user_email)
 
 	def test_get_user_missing(self):
 		rv = self.app.get('/api/users/0')
@@ -65,11 +82,11 @@ class TestUserAPI():
 
 	def test_put_user_valid(self):
 		# Edit dummy user
-		user_data_new = dict(email="admin@admin.com")
+		user_data_new = dict(email=u"admin@admin.com")
 		put = self.app.put(self.user_uri, data=user_data_new)
 		check_valid_header_type(put.headers)
 		data = json.loads(put.data)
-		eq_(data['user']['email'], "admin@admin.com")
+		eq_(data['user']['email'], u"admin@admin.com")
 		eq_(put.status_code, 200)
 
 	def test_put_user_missing_email(self):
@@ -92,6 +109,5 @@ class TestUserAPI():
 		eq_(get.status_code, 404)
 
 	def tearDown(self):
-		# Remove dummy user
-		delete = self.app.delete(self.user_uri)
-		check_valid_header_type(delete.headers)
+		db.session.remove()
+		db.drop_all()
