@@ -1,4 +1,4 @@
-from app import app
+from app import app, db
 from flask import abort
 from flask.ext.restful import Api, Resource, reqparse, fields, marshal
 
@@ -6,22 +6,9 @@ from datetime import datetime, date
 
 import feedparser
 
-api = Api(app)
+from app.models import Feed
 
-feeds = [
-	{
-		'id': 1,
-		'title': u'NYTimes',
-		'url': u'http://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml',
-		'last_updated': datetime.utcnow()
-	},
-	{
-		'id': 2,
-		'title': u'CNN',
-		'url': u'http://rss.cnn.com/rss/cnn_topstories.rss',
-		'last_updated': datetime.utcnow()
-	}
-]
+api = Api(app)
 
 feed_fields = {
     'title': fields.String,
@@ -39,6 +26,8 @@ class FeedListAPI(Resource):
 		super(FeedListAPI, self).__init__()
 
 	def get(self):
+		feeds = Feed.query.all()
+
 		return {'feeds': [marshal(feed, feed_fields) for feed in feeds]}
 
 	def post(self):
@@ -46,32 +35,34 @@ class FeedListAPI(Resource):
 
 		rss_feed = feedparser.parse(args['url'])
 
-		feed = {
-			'id': feeds[-1]['id'] + 1,
-			'title': rss_feed['feed']['title'],
-			'url': args['url'],
-			'last_updated': datetime.min
-		}
-		feeds.append(feed)
+		feed = Feed(title=rss_feed['feed']['title'],
+					url=args['url'],
+					last_updated=datetime.min)
+		
+		db.session.add(feed)
+		db.session.commit()
+
 		return {'feed': marshal(feed, feed_fields)}, 201
 
 class FeedAPI(Resource):
 
 	def get(self, id):
-		try:
-			feed = next((feed for feed in feeds if feed['id'] == id))
-		except StopIteration:
+		feed = Feed.query.get(id)
+		
+		if not feed:
 			abort(404)
 
 		return {'feed': marshal(feed, feed_fields)}
 
 	def delete(self, id):
-		try:
-			feed = next((feed for feed in feeds if feed['id'] == id))
-		except StopIteration:
+		feed = Feed.query.get(id)
+		
+		if not feed:
 			abort(404)
 
-		feeds.remove(feed)
+		db.session.delete(feed)
+		db.session.commit()
+
 		return {'result': True}
 
 api.add_resource(FeedListAPI, '/api/feeds', endpoint='feeds')
