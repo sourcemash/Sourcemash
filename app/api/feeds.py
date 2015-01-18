@@ -1,5 +1,5 @@
 from app import app
-from flask import jsonify, abort
+from flask import abort
 from flask.ext.restful import Api, Resource, reqparse, fields, marshal
 
 from datetime import datetime, date

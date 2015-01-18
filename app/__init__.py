@@ -5,7 +5,7 @@ from flask import Flask
 app = Flask(__name__)
 
 from app.frontend import dashboards
-from app.api import feeds, users
+from app.api import feeds, users, subscriptions
 
 # Logging
 if os.environ.get('HEROKU') is not None:
