@@ -49,7 +49,10 @@ class SubscriptionListAPI(Resource):
 	def post(self):
 		args = self.reqparse.parse_args()
 
-		feed_id = int(args['feed_uri'].strip('/').split('/')[-1])
+		try:
+			feed_id = int(args['feed_uri'].strip('/').split('/')[-1])
+		except:
+			abort(400)
 
 		subscription = {
 			'user_id': logged_in_user_id,

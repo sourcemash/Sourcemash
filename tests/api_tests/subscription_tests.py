@@ -75,7 +75,14 @@ class TestSubscriptionListAPI():
 		check_valid_header_type(r.headers)
 		eq_(r.status_code, 400)
 
-	def test_post_subscription_invalid(self):
+	def test_post_subscription_invalid_feed_uri(self):
+		subscription_data = dict(feed_uri='/api/feeds10/')
+		r = self.app.post('/api/subscriptions', data=subscription_data)
+
+		check_valid_header_type(r.headers)
+		eq_(r.status_code, 400)
+
+	def test_post_subscription_extra_backslash(self):
 		subscription_data = dict(feed_uri='/api/feeds/10/')
 		r = self.app.post('/api/subscriptions', data=subscription_data)
 
