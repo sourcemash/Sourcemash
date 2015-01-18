@@ -39,7 +39,7 @@ class SubscriptionListAPI(Resource):
 
 	def __init__(self):
 		self.reqparse = reqparse.RequestParser()
-		self.reqparse.add_argument('feed_id', type=int, required=True,
+		self.reqparse.add_argument('feed_uri', type=str, required=True,
 									help='No feed ID provided')
 		super(SubscriptionListAPI, self).__init__()
 
@@ -49,9 +49,11 @@ class SubscriptionListAPI(Resource):
 	def post(self):
 		args = self.reqparse.parse_args()
 
+		feed_id = int(args['feed_uri'].strip('/').split('/')[-1])
+
 		subscription = {
 			'user_id': logged_in_user_id,
-			'feed_id': args['feed_id'],
+			'feed_id': feed_id,
 			'mergeable': True
 		}
 		subscriptions.append(subscription)
@@ -61,8 +63,7 @@ class SubscriptionAPI(Resource):
 
 	def __init__(self):
 		self.reqparse = reqparse.RequestParser()
-		self.reqparse.add_argument('mergeable', type=bool, required=True,
-									help='No mergeable provided')
+		self.reqparse.add_argument('mergeable', type=bool)
 		super(SubscriptionAPI, self).__init__()
 
 	def get(self, feed_id):
@@ -81,7 +82,8 @@ class SubscriptionAPI(Resource):
 		except StopIteration:
 			abort(404)
 
-		subscription['mergeable'] = args.mergeable
+		if args.mergeable:
+			subscription['mergeable'] = args.mergeable
 		return {'subscription': marshal(subscription, subscription_fields)}
 
 	def delete(self, feed_id):

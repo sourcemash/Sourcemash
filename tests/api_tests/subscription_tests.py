@@ -12,7 +12,7 @@ class TestSubscriptionAPI():
 		self.app = app.test_client()
 
 		# Add dummy subscription
-		subscription_data = dict(feed_id=4)
+		subscription_data = dict(feed_uri='/api/feeds/4')
 		post = self.app.post('/api/subscriptions', data=subscription_data)
 		data = json.loads(post.data)
 		subscription_uri = data['subscription']['uri']
@@ -59,7 +59,7 @@ class TestSubscriptionListAPI():
 		eq_(len(data['subscriptions']), 1)
 
 	def test_post_subscription_valid(self):
-		subscription_data = dict(feed_id=5)
+		subscription_data = dict(feed_uri='/api/feeds/5')
 		r = self.app.post('/api/subscriptions', data=subscription_data)
 
 		check_valid_header_type(r.headers)
@@ -68,12 +68,22 @@ class TestSubscriptionListAPI():
 		data = json.loads(r.data)
 		eq_(data['subscription']['uri'], '/api/subscriptions/5')
 
-	def test_post_subscription_missing_feed_id(self):
+	def test_post_subscription_missing_feed_uri(self):
 		subscription_data = dict()
 		r = self.app.post('/api/subscriptions', data=subscription_data)
 
 		check_valid_header_type(r.headers)
 		eq_(r.status_code, 400)
+
+	def test_post_subscription_invalid(self):
+		subscription_data = dict(feed_uri='/api/feeds/10/')
+		r = self.app.post('/api/subscriptions', data=subscription_data)
+
+		check_valid_header_type(r.headers)
+		eq_(r.status_code, 201)
+
+		data = json.loads(r.data)
+		eq_(data['subscription']['uri'], '/api/subscriptions/10')
 
 	def tearDown(self):
 		pass
