@@ -1,28 +1,14 @@
 from flask import abort
 from flask.ext.restful import Api, Resource, fields, marshal, reqparse
-from app import app
+from app import app, db
+from app.models import User
 
 api = Api(app)
-
-user_list = [
-	{
-		'id': 1, 
-		'email': "happy@rock.com", 
-	},
-	{
-		'id': 2, 
-		'email': "alex@shnoodles.com",  
-
-	}
-]
 
 user_fields = {
 	'email': fields.String,
 	'uri': fields.Url('user')
 }
-
-def get_users_by_id(id):
-	return (user for user in user_list if user['id'] == id)
 
 class UserListAPI(Resource):
 	def __init__(self):
@@ -32,16 +18,14 @@ class UserListAPI(Resource):
 
 	def get(self):
 		''' Show all Users '''
-		return { 'users': [marshal(user, user_fields) for user in user_list] }
+		return { 'users': [marshal(user, user_fields) for user in User.query.all()] }
 
 	def post(self):
 		''' Create new User ''' 
 		args = self.reqparse.parse_args()
-		user = {
-			'email': args.email,
-			'id': user_list[-1]['id'] + 1
-		}
-		user_list.append(user)
+		user = User(email=args.email)
+		db.session.add(user)
+		db.session.commit()
 		return { 'user': marshal(user, user_fields)}, 201
 
 class UserAPI(Resource):
@@ -52,30 +36,28 @@ class UserAPI(Resource):
 
 	def get(self, id):
 		''' Show User @id '''
-		try:
-			user = next(get_users_by_id(id))
-		except StopIteration:
+		user = User.query.get(id)
+		if not user:
 			abort(404)
 		return { 'user': marshal(user, user_fields) }
 
 	def put(self, id):
 		''' Edit User @id '''
 		args = self.reqparse.parse_args()
-		try:
-			user = next(get_users_by_id(id))
-		except StopIteration:
+		user = User.query.get(id)
+		if not user:
 			abort(404)
-		user['email'] = args.email
+		user.email = args.email
+		db.session.commit()
 		return { 'user': marshal(user, user_fields) }
 
 	def delete(self, id):
 		''' Destroy User @id '''
-		try:
-			user = next(get_users_by_id(id))
-		except StopIteration:
+		user = User.query.get(id)
+		if not user:
 			abort(404)
-
-		user_list.remove(user)
+		db.session.delete(user)
+		db.session.commit()
 		return {'result': True}
 
 api.add_resource(UserListAPI, '/api/users', endpoint = 'users')

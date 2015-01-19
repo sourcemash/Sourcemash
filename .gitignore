@@ -58,3 +58,6 @@ flask/
 
 # Sublime Text Files
 *.sublime-*
+
+# Database
+*.db
