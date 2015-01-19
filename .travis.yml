@@ -10,5 +10,5 @@ deploy:
     secure: OeO43wvD0lvzZu2JL+/nqfSOvYjAfNrSK/qFi2BWWBe0kGKNRiFHmvHgJ7bypTzI+0+25tGS4uanhIf8ZR5gToxSLi5FymOwD9LzRHqyoxxPbpnnclUpIRT5ia6x/VHhnnKzdb4hiE7GUHrIKcbWO3mdIvJljhni4ipNy7D/N1w=
   app: peaceful-falls-6831
   run:
-    - "./db_migrate.py"
-    - "./db_upgrade.py"
+    - "python db_migrate.py"
+    - "python db_upgrade.py"
