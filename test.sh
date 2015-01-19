@@ -1,2 +1,2 @@
-APP_CONFIG_FILE=testing.py
+export APP_CONFIG_FILE=../config/testing.py
 nosetests

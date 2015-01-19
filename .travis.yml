@@ -4,7 +4,7 @@ python:
 install:
 - pip install -r requirements.txt
 env:
-  - APP_CONFIG_FILE=testing.py
+  - APP_CONFIG_FILE=../config/testing.py
 script: nosetests
 deploy:
   provider: heroku

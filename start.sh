@@ -1,2 +1,2 @@
-APP_CONFIG_FILE=development.py
+export APP_CONFIG_FILE=../config/development.py
 python run.py
