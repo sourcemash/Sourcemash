@@ -48,7 +48,6 @@ class UserAPI(Resource):
 		if not user:
 			abort(404)
 		user.email = args.email
-		db.session.add(user)
 		db.session.commit()
 		return { 'user': marshal(user, user_fields) }
 
