@@ -26,9 +26,7 @@ class FeedListAPI(Resource):
 		super(FeedListAPI, self).__init__()
 
 	def get(self):
-		feeds = Feed.query.all()
-
-		return {'feeds': [marshal(feed, feed_fields) for feed in feeds]}
+		return {'feeds': [marshal(feed, feed_fields) for feed in Feed.query.all()]}
 
 	def post(self):
 		args = self.reqparse.parse_args()
