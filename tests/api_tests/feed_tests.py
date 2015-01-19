@@ -1,7 +1,5 @@
 from nose.tools import assert_true, assert_false, eq_
 import json
-import os
-from config import basedir
 
 from app import app, db
 from app.models import Feed
@@ -14,10 +12,6 @@ class TestFeedAPI(object):
 
 	def setUp(self):
 		self.app = app.test_client()
-
-		app.config['TESTING'] = True
-		app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
-			os.path.join(basedir, 'test.db')
 		db.create_all()
 		feed = FeedFactory()
 
@@ -55,10 +49,6 @@ class TestFeedListAPI():
 
 	def setUp(self):
 		self.app = app.test_client()
-
-		app.config['TESTING'] = True
-		app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
-			os.path.join(basedir, 'test.db')
 		db.create_all()
 		FeedFactory()
 

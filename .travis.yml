@@ -3,6 +3,8 @@ python:
 - '2.7'
 install:
 - pip install -r requirements.txt
+env:
+  - APP_CONFIG_FILE=testing
 script: nosetests
 deploy:
   provider: heroku

@@ -1,0 +1,2 @@
+APP_CONFIG_FILE=testing.py
+nosetests
