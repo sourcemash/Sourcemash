@@ -15,6 +15,7 @@ class TestUserListAPI():
 	def setUp(self):
 		self.app = app.test_client()
 
+		app.config['TESTING'] = True
 		app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
 			os.path.join(basedir, 'test.db')
 		db.create_all()
@@ -59,13 +60,14 @@ class TestUserAPI():
 	def setUp(self):
 		self.app = app.test_client()
 
+		app.config['TESTING'] = True
 		app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
 			os.path.join(basedir, 'test.db')
 		db.create_all()
-		UserFactory()
+		user = UserFactory()
 
-		self.user_uri = '/api/users/' + str(User.query.first().id)
-		self.user_email = str(User.query.first().email)
+		self.user_uri = '/api/users/%d' % user.id
+		self.user_email = user.email
 
 	def test_get_user_present(self):
 		rv = self.app.get(self.user_uri)
