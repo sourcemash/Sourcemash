@@ -19,6 +19,6 @@ class FeedFactory(SQLAlchemyModelFactory):
 		sqlalchemy_session = db.session   # the SQLAlchemy session object
 
 	id = factory.Sequence(lambda n: n)
-	title = "TechCrunch"
-	url = "http://feeds.feedburner.com/TechCrunch/"
+	title = factory.Sequence(lambda n: u'Feed %d' % n)
+	url = factory.Sequence(lambda n: u"feed%d.com/rss" % n)
 	last_updated = datetime.utcnow()

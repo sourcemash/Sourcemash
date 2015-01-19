@@ -14,7 +14,11 @@ class TestUserListAPI():
 
 	def setUp(self):
 		self.app = app.test_client()
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> Fix feed api tests.
 		app.config['TESTING'] = True
 		app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
 			os.path.join(basedir, 'test.db')

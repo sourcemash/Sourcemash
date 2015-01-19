@@ -10,7 +10,7 @@ from factories import FeedFactory
 def check_valid_header_type(headers):
 	eq_(headers['Content-Type'], 'application/json')
 
-class TestFeedAPI():
+class TestFeedAPI(object):
 
 	def setUp(self):
 		self.app = app.test_client()
@@ -49,7 +49,7 @@ class TestFeedAPI():
 
 	def tearDown(self):
 		db.session.remove()
-        db.drop_all()
+		db.drop_all()
 
 class TestFeedListAPI():
 
@@ -89,4 +89,4 @@ class TestFeedListAPI():
 
 	def tearDown(self):
 		db.session.remove()
-        db.drop_all()
+		db.drop_all()
