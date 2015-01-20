@@ -4,7 +4,7 @@ import os
 from config import basedir
 
 from app import app, db
-from app.models import User
+from app.models import User, Role
 from factories import UserFactory, RoleFactory
 
 def check_valid_header_type(headers):
@@ -42,6 +42,8 @@ class TestUserListAPI():
 
 		data = json.loads(rv.data)
 		eq_(data['user']['email'], 'user1@test.com')
+
+		eq_(len(Role.query.filter(Role.users.any(email='user1@test.com')).all()), 1)
 
 		# Clean up: delete user
 		rv = self.app.delete(data['user']['uri'])
