@@ -1,4 +1,5 @@
 import os
+import sys
 import logging
 
 SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
