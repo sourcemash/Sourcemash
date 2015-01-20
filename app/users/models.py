@@ -27,6 +27,7 @@ class User(db.Model, UserMixin):
 							secondary=role_users,
 							backref=db.backref('users', lazy='dynamic'),
 							lazy='dynamic')
+	
 	def __repr__(self):
 		return "<User %r (%d)>" % (self.email, self.id)
 

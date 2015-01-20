@@ -5,7 +5,7 @@ from config import basedir
 
 from app import app, db
 from app.models import User
-from factories import UserFactory
+from factories import UserFactory, RoleFactory
 
 def check_valid_header_type(headers):
 	eq_(headers['Content-Type'], 'application/json')
@@ -19,10 +19,12 @@ class TestUserListAPI():
 		app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
 			os.path.join(basedir, 'test.db')
 		db.create_all()
-		UserFactory()
+		self.user_role = RoleFactory()
+		user = UserFactory.create(role=self.user_role)
 
 	def test_get_all_users(self):
-		UserFactory()
+		user = UserFactory.create(role=self.user_role)
+
 		rv = self.app.get('/api/users')
 		check_valid_header_type(rv.headers)
 		eq_(rv.status_code, 200)
@@ -64,7 +66,9 @@ class TestUserAPI():
 		app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
 			os.path.join(basedir, 'test.db')
 		db.create_all()
-		user = UserFactory()
+
+		user_role = RoleFactory()
+		user = UserFactory.create(role=user_role)
 
 		self.user_uri = '/api/users/%d' % user.id
 		self.user_email = user.email

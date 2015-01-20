@@ -24,8 +24,7 @@ class UserListAPI(Resource):
 		''' Create new User ''' 
 		args = self.reqparse.parse_args()
 		user = user_datastore.create_user(email=args.email, password='password')
-		role = user_datastore.create_role(name='user')
-		user_datastore.add_role_to_user(user, role)
+		user_datastore.add_role_to_user(user, 'user')
 		db.session.commit()
 		return { 'user': marshal(user, user_fields)}, 201
 
