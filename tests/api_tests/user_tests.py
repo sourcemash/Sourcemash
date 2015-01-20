@@ -45,9 +45,6 @@ class TestUserListAPI():
 
 		eq_(len(Role.query.filter(Role.users.any(email='user1@test.com')).all()), 1)
 
-		# Clean up: delete user
-		rv = self.app.delete(data['user']['uri'])
-
 	def test_post_new_user_missing_email(self):
 		user_data = dict()
 		rv = self.app.post('/api/users', data=user_data)
