@@ -1,7 +1,7 @@
 import os
 import logging
 
-basedir = os.path.abspath(os.path.dirname(__file__))
+basedir = os.path.abspath(os.path.dirname('run.py'))
 
 CSRF_ENABLED = True
 CSRF_SESSION_KEY = 'you-will-never-guess'
