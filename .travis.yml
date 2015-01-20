@@ -4,7 +4,7 @@ python:
 install:
 - pip install -r requirements.txt
 env:
-  - APP_CONFIG_FILE=testing
+  - APP_CONFIG_FILE=travis
 script: nosetests
 deploy:
   provider: heroku
