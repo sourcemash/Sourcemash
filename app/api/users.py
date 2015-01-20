@@ -1,7 +1,7 @@
 from flask import abort
 from flask.ext.restful import Api, Resource, fields, marshal, reqparse
 from app import app, db
-from app.models import User
+from app.models import User, user_datastore
 
 api = Api(app)
 
@@ -23,8 +23,8 @@ class UserListAPI(Resource):
 	def post(self):
 		''' Create new User ''' 
 		args = self.reqparse.parse_args()
-		user = User(email=args.email)
-		db.session.add(user)
+		user = user_datastore.create_user(email=args.email, password='password')
+		user_datastore.add_role_to_user(user, 'user')
 		db.session.commit()
 		return { 'user': marshal(user, user_fields)}, 201
 
@@ -36,7 +36,7 @@ class UserAPI(Resource):
 
 	def get(self, id):
 		''' Show User @id '''
-		user = User.query.get(id)
+		user = user_datastore.get_user(id)
 		if not user:
 			abort(404)
 		return { 'user': marshal(user, user_fields) }
@@ -44,7 +44,7 @@ class UserAPI(Resource):
 	def put(self, id):
 		''' Edit User @id '''
 		args = self.reqparse.parse_args()
-		user = User.query.get(id)
+		user = user_datastore.get_user(id)
 		if not user:
 			abort(404)
 		user.email = args.email
@@ -53,7 +53,8 @@ class UserAPI(Resource):
 
 	def delete(self, id):
 		''' Destroy User @id '''
-		user = User.query.get(id)
+		user = user_datastore.get_user(id)
+		user_datastore.delete_user(user)
 		if not user:
 			abort(404)
 		db.session.delete(user)
