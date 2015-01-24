@@ -18,7 +18,7 @@ class TestUser():
 
 	def test_ingest_feeds(self):
 		for feed in Feed.query.all():
-			store_items.run(feed.id, feed.last_updated, feed.url)
+			store_items.run(feed)
 		assert_true(len(Item.query.all()) > 0)
 
 	def tearDown(self):
