@@ -61,14 +61,14 @@ class TestFeedListAPI():
 		eq_(len(data['feeds']), 1)
 
 	def test_post_feed_valid(self):
-		feed_data = dict(url="http://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml")
+		feed_data = dict(url="http://techcrunch.com/feed/")
 		r = self.app.post('/api/feeds', data=feed_data)
 
 		check_valid_header_type(r.headers)
 		eq_(r.status_code, 201)
 
 		data = json.loads(r.data)
-		eq_(data['feed']['title'], u"NYT > Home Page")
+		eq_(data['feed']['title'], u"TechCrunch")
 
 	def test_post_feed_missing_url(self):
 		feed_data = dict()

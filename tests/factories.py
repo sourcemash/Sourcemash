@@ -27,9 +27,9 @@ class FeedFactory(SQLAlchemyModelFactory):
 		sqlalchemy_session = db.session
 
 	id = factory.Sequence(lambda n: n)
-	title = factory.Sequence(lambda n: u'Feed %d' % n)
-	url = factory.Sequence(lambda n: u"feed%d.com/rss" % n)
-	last_updated = datetime.utcnow()
+	title = "NYTimes"
+	url = "http://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml"
+	last_updated = datetime.min
 
 class ItemFactory(SQLAlchemyModelFactory):
 	class Meta:
@@ -38,11 +38,10 @@ class ItemFactory(SQLAlchemyModelFactory):
 
 	id = factory.Sequence(lambda n: n)
 	title = factory.Sequence(lambda n: u'Item %d Title' % n)
-	url = factory.Sequence(lambda n: u"ImportantItem.com/%d" % n)
-	publication_date = datetime.utcnow()
+	link = factory.Sequence(lambda n: u"ImportantItem.com/%d" % n)
+	last_updated = datetime.utcnow()
 	author = 'Scott Gladstone'
-	category = 'news'
-	description = 'Description of the feed item.'
+	summary = 'Summary of the feed item.'
 	feed_id = factory.Sequence(lambda n: n)
 
 class RoleFactory(SQLAlchemyModelFactory):

@@ -46,7 +46,6 @@ class TestItemListAPI():
 
 	def test_get_items(self):
 		r = self.app.get(self.item_uri)
-		print self.item_uri
 
 		check_valid_header_type(r.headers)
 		eq_(r.status_code, 200)

@@ -64,3 +64,6 @@ flask/
 
 # Secret
 instance/config.py
+
+# Redis Dump
+*.rdb
