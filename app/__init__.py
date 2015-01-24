@@ -19,6 +19,6 @@ if 'APP_CONFIG_FILE' in os.environ:
 db = SQLAlchemy(app)
 
 from app.frontend import dashboards
-from app.api import feeds, users, subscriptions
+from app.api import feeds, users, subscriptions, items
 
 from app import models
