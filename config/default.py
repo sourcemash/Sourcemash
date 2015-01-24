@@ -24,6 +24,12 @@ CELERYBEAT_SCHEDULE = {
     }
 }
 
+# Flask security config variables- https://pythonhosted.org/Flask-Security/configuration.html
+SECURITY_FLASH_MESSAGES = True
+SECURITY_PASSWORD_HASH = "pbkdf2_sha512"
+SECURITY_PASSWORD_SALT = "abcde1234509876zyxwvu22"
+SECURITY_POST_LOGOUT_VIEW = "/login"
+
 logging.basicConfig(level=logging.DEBUG)
 
 logging.info("Default settings loaded.")
