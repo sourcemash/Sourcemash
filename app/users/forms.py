@@ -1,7 +1,7 @@
 from flask.ext.wtf import Form
-from wtforms import TextField, PasswordField
-from wtforms.validators import Required, Email, Length, Regexp, EqualTo
-from app.models import user_datastore
+from wtforms import TextField, PasswordField, BooleanField
+from wtforms.validators import Required, Email, Length, Regexp, EqualTo, ValidationError
+from app import user_datastore
 
 class UniqueUser(object):
     def __init__(self, message="User exists"):
@@ -31,3 +31,7 @@ class RegisterForm(Form):
     email = TextField('Email', validators['email'])
     password = PasswordField('Password', validators['password'], )
     confirm = PasswordField('Confirm Password')
+
+class LoginForm(Form):
+    email = TextField('Email', validators['email'])
+    password = PasswordField('Password', validators['password'], )

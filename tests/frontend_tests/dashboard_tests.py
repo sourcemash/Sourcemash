@@ -17,3 +17,17 @@ class TestHomePage():
 
     def tearDown(self):
         pass
+
+class TestLoginLogout():
+
+    def setUp(self):
+        self.app = app.test_client()
+
+    def test_login(self):
+        rv = self.app.get('/login')
+
+    def test_logout(self):
+        pass
+
+    def tearDown(self):
+        pass

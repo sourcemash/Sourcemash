@@ -1,8 +1,8 @@
 from flask import abort
 from flask.ext.restful import Api, Resource, fields, marshal, reqparse
 from flask.ext.security import login_user
-from app import app, db
-from app.models import User, user_datastore
+from app import app, db, user_datastore
+from app.models import User
 
 api = Api(app)
 

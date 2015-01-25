@@ -30,6 +30,7 @@ SECURITY_PASSWORD_HASH = "bcrypt"
 SECURITY_PASSWORD_SALT = "abcde1234509876zyxwvu22"
 SECURITY_POST_LOGIN_VIEW = "/profile"
 SECURITY_POST_LOGOUT_VIEW = "/login"
+SECURITY_REGISTERABLE = True
 
 logging.basicConfig(level=logging.DEBUG)
 

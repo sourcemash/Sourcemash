@@ -1,0 +1,19 @@
+{% block layout %}
+<div class="page-header">
+  <h1>Register</h1>
+</div>
+<div class="row content">
+  <div class="span4 offset1">
+    <form class="well" action="{{ url_for_security('register') }}" method="POST">
+        {{ register_user_form.hidden_tag() }}
+        <label for="email">Email</label>:
+        {{ register_user_form.email }}
+        <label for="password">Password</label>:
+        {{ register_user_form.password }}
+        <label for="confirm">Confirm</label>:
+        {{ register_user_form.confirm }}
+        <button type="submit" class="btn btn-primary btn-large">Submit</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
