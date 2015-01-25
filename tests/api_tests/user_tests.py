@@ -14,10 +14,10 @@ class TestUserListAPI():
         self.app = app.test_client()
         db.create_all()
         self.user_role = RoleFactory()
-        user = UserFactory.create(role=self.user_role)
+        user = UserFactory(roles=[self.user_role])
 
     def test_get_all_users(self):
-        user = UserFactory.create(role=self.user_role)
+        user = UserFactory(roles=[self.user_role])
 
         rv = self.app.get('/api/users')
         check_valid_header_type(rv.headers)
@@ -57,7 +57,7 @@ class TestUserAPI():
         db.create_all()
 
         user_role = RoleFactory()
-        user = UserFactory.create(role=user_role)
+        user = UserFactory(roles=[user_role])
 
         self.user_uri = '/api/users/%d' % user.id
         self.user_email = user.email

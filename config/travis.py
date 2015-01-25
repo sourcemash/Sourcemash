@@ -2,10 +2,11 @@ import logging
 import os
 
 TESTING = True
+LOGIN_DISABLED = False
 SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
-CSRF_ENABLED = False
+WTF_CSRF_ENABLED = False
 
 SECRET_KEY = os.environ['SECRET_KEY']
-CSRF_SESSION_KEY = os.environ['CSRF_SESSION_KEY']
+WTF_CSRF_SECRET_KEY = os.environ['WTF_CSRF_SECRET_KEY']
 
 logging.info("Travis settings loaded.")

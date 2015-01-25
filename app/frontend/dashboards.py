@@ -1,8 +1,7 @@
-from app import app, user_datastore
+from app import app
 
-from flask import abort, render_template, redirect, request, flash, url_for
-from flask.ext.security import current_user, login_user, logout_user
-from flask.ext.security.utils import encrypt_password
+from flask import abort, render_template, redirect
+from flask.ext.security import current_user
 
 from app.models import User
 

@@ -5,8 +5,10 @@ from celery.schedules import crontab
 
 basedir = os.path.abspath(os.path.dirname('run.py'))
 
-CSRF_ENABLED = True
-CSRF_SESSION_KEY = 'you-will-never-guess'
+SECRET_KEY = 'thisisnearlyimpossible'
+
+WTF_CSRF_ENABLED = True
+WTF_CSRF_SECRET_KEY = 'you-will-never-guess'
 
 SQLALCHEMY_DATABASE_URI = ('sqlite:///' + os.path.join(basedir, 'app.db'))
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
