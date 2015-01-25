@@ -26,7 +26,10 @@ class UserListAPI(Resource):
 		''' Create new User ''' 
 		args = self.reqparse.parse_args()
 		user = user_datastore.create_user(email=args.email, password=args.password)
-		user_datastore.add_role_to_user(user, 'user')
+		role = user_datastore.find_or_create_role('user')
+		if not user:
+			abort(400)
+		user_datastore.add_role_to_user(user, role)
 		db.session.commit()
 		login_user(user)
 		db.session.commit()
