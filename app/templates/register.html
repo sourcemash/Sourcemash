@@ -2,12 +2,9 @@
 <div class="page-header">
   <h1>Register</h1>
 </div>
-{% if login_failed %}
-<h3>Register with your {{ provider.name }} account: {{ connection_values['display_name'] }}</h3>
-{% endif %}
 <div class="row content">
   <div class="span4 offset1">
-    <form class="well" action="{{ url_for('register', provider_id=provider.id if provider else None) }}" method="POST">
+    <form class="well" action="{{ url_for('register') }}" method="POST">
       {{ form.hidden_tag() }}
       {{ form.email }}
       {{ form.password }}

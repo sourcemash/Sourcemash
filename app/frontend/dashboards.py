@@ -13,18 +13,16 @@ def index():
     return "Hello, World!"
 
 @app.route('/register', methods=['GET', 'POST'])
-@app.route('/register/<provider_id>', methods=['GET', 'POST'])
-def register(provider_id=None):
+def register():
     if current_user.is_authenticated():
-        return redirect(request.referrer or '/')
+        return redirect('/')
 
     form = RegisterForm()
 
     if form.validate_on_submit():
         user = user_datastore.create_user(email=form.email.data, password=encrypt_password(form.password.data))
         role = user_datastore.find_or_create_role('user')
-        if not user:
-            abort(400)
+
         user_datastore.add_role_to_user(user, role)
         user_datastore.commit()
 

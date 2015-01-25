@@ -20,7 +20,7 @@ validators = {
     ],
     'password': [
         Required(),
-        Length(min=6, max=50),
+        Length(min=6),
         EqualTo('confirm', message='Passwords must match'),
         Regexp(r'[A-Za-z0-9@#$%^&+=]',
                message='Password contains invalid characters')
