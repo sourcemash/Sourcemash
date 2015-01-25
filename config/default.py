@@ -5,6 +5,8 @@ from celery.schedules import crontab
 
 basedir = os.path.abspath(os.path.dirname('run.py'))
 
+SECRET_KEY = 'thisisnearlyimpossible'
+
 WTF_CSRF_ENABLED = True
 WTF_CSRF_SECRET_KEY = 'you-will-never-guess'
 
