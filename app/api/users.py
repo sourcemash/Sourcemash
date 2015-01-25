@@ -12,28 +12,28 @@ user_fields = {
 }
 
 class UserListAPI(Resource):
-	def __init__(self):
-		self.reqparse = reqparse.RequestParser()
-		self.reqparse.add_argument('email', type = str, required = True)
-		self.reqparse.add_argument('password', type = str, required = True)
-		super(UserListAPI, self).__init__()
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('email', type = str, required = True)
+        self.reqparse.add_argument('password', type = str, required = True)
+        super(UserListAPI, self).__init__()
 
     def get(self):
         ''' Show all Users '''
         return { 'users': [marshal(user, user_fields) for user in User.query.all()] }
 
-	def post(self):
-		''' Create new User ''' 
-		args = self.reqparse.parse_args()
-		user = user_datastore.create_user(email=args.email, password=args.password)
-		role = user_datastore.find_or_create_role('user')
-		if not user:
-			abort(400)
-		user_datastore.add_role_to_user(user, role)
-		db.session.commit()
-		login_user(user)
-		db.session.commit()
-		return { 'user': marshal(user, user_fields)}, 201
+    def post(self):
+        ''' Create new User ''' 
+        args = self.reqparse.parse_args()
+        user = user_datastore.create_user(email=args.email, password=args.password)
+        role = user_datastore.find_or_create_role('user')
+        if not user:
+            abort(400)
+        user_datastore.add_role_to_user(user, role)
+        db.session.commit()
+        login_user(user)
+        db.session.commit()
+        return { 'user': marshal(user, user_fields)}, 201
 
 class UserAPI(Resource):
     def __init__(self):

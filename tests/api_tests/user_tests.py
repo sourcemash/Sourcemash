@@ -26,13 +26,13 @@ class TestUserListAPI():
         data = json.loads(rv.data)
         eq_(len(data['users']),2)
 
-	def test_post_new_user_valid(self):
-		# Create user
-		user_data = dict(email='user1@test.com', password='password')
-		rv = self.app.post('/api/users', data=user_data)
-		
-		check_valid_header_type(rv.headers)
-		eq_(rv.status_code,201)
+    def test_post_new_user_valid(self):
+        # Create user
+        user_data = dict(email='user1@test.com', password='password')
+        rv = self.app.post('/api/users', data=user_data)
+        
+        check_valid_header_type(rv.headers)
+        eq_(rv.status_code,201)
 
         data = json.loads(rv.data)
         eq_(data['user']['email'], 'user1@test.com')

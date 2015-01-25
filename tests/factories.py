@@ -10,9 +10,9 @@ class UserFactory(SQLAlchemyModelFactory):
         model = User
         sqlalchemy_session = db.session
 
-	id = factory.Sequence(lambda n: n)
-	email = factory.Sequence(lambda n: u'user%d@test.com' % n)
-	password = 'password'
+    id = factory.Sequence(lambda n: n)
+    email = factory.Sequence(lambda n: u'user%d@test.com' % n)
+    password = 'password'
 
     @factory.post_generation
     def role(self, create, extracted, **kwargs):
