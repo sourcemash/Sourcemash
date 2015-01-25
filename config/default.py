@@ -17,11 +17,11 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 CELERY_IMPORTS = ("worker_tasks.feed_scraper")
 
 CELERYBEAT_SCHEDULE = {
-	'feed-scraper': {
-		'task': 'worker_tasks.feed_scraper.ingest_feeds',
-		'schedule': crontab(minute="*/1"),
-		'args': ()
-	}
+    'feed-scraper': {
+        'task': 'worker_tasks.feed_scraper.ingest_feeds',
+        'schedule': crontab(minute="*/1"),
+        'args': ()
+    }
 }
 
 logging.basicConfig(level=logging.DEBUG)

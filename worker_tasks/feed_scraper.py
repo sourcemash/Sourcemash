@@ -10,29 +10,29 @@ import logging
 
 @celery.task
 def store_items(feed):
-	logging.info("Starting to parse: %s" % feed.title)
+    logging.info("Starting to parse: %s" % feed.title)
 
-	fp = feedparser.parse(feed.url)
-	for item in fp.entries:
-		update_dt = datetime(*item.updated_parsed[:6])
+    fp = feedparser.parse(feed.url)
+    for item in fp.entries:
+        update_dt = datetime(*item.updated_parsed[:6])
 
-		# Stop when older items hit
-		if update_dt < feed.last_updated:
-			break
+        # Stop when older items hit
+        if update_dt < feed.last_updated:
+            break
 
-		new_entry = Item(title=item.title, link=item.link, 
-							last_updated=update_dt, author=item.author,
-							summary=item.summary, feed_id=feed.id)
+        new_entry = Item(title=item.title, link=item.link, 
+                            last_updated=update_dt, author=item.author,
+                            summary=item.summary, feed_id=feed.id)
 
-		db.session.add(new_entry)
-		db.session.commit()
+        db.session.add(new_entry)
+        db.session.commit()
 
-	feed.last_updated = datetime.utcnow()
-	db.session.commit()
+    feed.last_updated = datetime.utcnow()
+    db.session.commit()
 
-	logging.info("Finished parsing: %s" % feed.title)
+    logging.info("Finished parsing: %s" % feed.title)
 
 @celery.task
 def ingest_feeds():
-	for feed in Feed.query.all():
-		store_items.delay(feed)
+    for feed in Feed.query.all():
+        store_items.delay(feed)
