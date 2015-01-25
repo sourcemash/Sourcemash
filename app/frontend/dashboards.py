@@ -32,11 +32,8 @@ def register():
         return render_template('profile.html',
                                 email=current_user.email)
 
-    login_failed = int(request.args.get('login_failed', 0))
-
     return render_template('register.html',
-                           form=form,
-                           login_failed=login_failed)
+                           form=form)
 
 @app.route('/profile')
 def profile():
