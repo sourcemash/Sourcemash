@@ -30,7 +30,7 @@ class SubscriptionListAPI(Resource):
 
         try:
             feed = Feed.query.get(int(args['feed_uri'].split('/')[-1]))
-        except:
+        except ValueError:
             abort(400)
 
         if not feed:
