@@ -1,7 +1,8 @@
 from flask import abort
 from flask.ext.restful import Api, Resource, fields, marshal, reqparse
-from app import app, db
-from app.models import User, user_datastore
+from flask.ext.security import login_user
+from app import app, db, user_datastore
+from app.models import User
 
 api = Api(app)
 
@@ -14,6 +15,7 @@ class UserListAPI(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('email', type = str, required = True)
+        self.reqparse.add_argument('password', type = str, required = True)
         super(UserListAPI, self).__init__()
 
     def get(self):
@@ -23,8 +25,13 @@ class UserListAPI(Resource):
     def post(self):
         ''' Create new User ''' 
         args = self.reqparse.parse_args()
-        user = user_datastore.create_user(email=args.email, password='password')
-        user_datastore.add_role_to_user(user, 'user')
+        user = user_datastore.create_user(email=args.email, password=args.password)
+        role = user_datastore.find_or_create_role('user')
+        if not user:
+            abort(400)
+        user_datastore.add_role_to_user(user, role)
+        db.session.commit()
+        login_user(user)
         db.session.commit()
         return { 'user': marshal(user, user_fields)}, 201
 

@@ -1,7 +1,6 @@
 from app import db
 from app import app
-from flask.ext.security import Security, SQLAlchemyUserDatastore, \
-                UserMixin, RoleMixin
+from flask.ext.security import UserMixin, RoleMixin
 
 subscriptions = db.Table('subscriptions',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
@@ -37,7 +36,3 @@ class Role(db.Model, RoleMixin):
 
     def __repr__(self):
         return "<Role %r (%d)>" % (self.name, self.id)
-
-# Setup Flask-Security
-user_datastore = SQLAlchemyUserDatastore(db, User, Role)
-security = Security(app, user_datastore)

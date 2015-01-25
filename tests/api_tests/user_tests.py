@@ -28,7 +28,7 @@ class TestUserListAPI():
 
     def test_post_new_user_valid(self):
         # Create user
-        user_data = dict(email='user1@test.com')
+        user_data = dict(email='user1@test.com', password='password')
         rv = self.app.post('/api/users', data=user_data)
         
         check_valid_header_type(rv.headers)
