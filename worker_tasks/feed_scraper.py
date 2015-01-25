@@ -14,14 +14,14 @@ def store_items(feed):
 
     fp = feedparser.parse(feed.url)
     for item in fp.entries:
-        update_dt = datetime(*item.updated_parsed[:6])
+        item_last_updated = datetime(*item.updated_parsed[:6])
 
         # Stop when older items hit
-        if update_dt < feed.last_updated:
+        if item_last_updated < feed.last_updated:
             break
 
         new_entry = Item(title=item.title, link=item.link, 
-                            last_updated=update_dt, author=item.author,
+                            last_updated=item_last_updated, author=item.author,
                             summary=item.summary, feed_id=feed.id)
 
         db.session.add(new_entry)
