@@ -28,8 +28,7 @@ from app import models
 from flask.ext.security import Security, SQLAlchemyUserDatastore
 user_datastore = SQLAlchemyUserDatastore(db, models.User, models.Role)
 
-from app.users.forms import RegisterForm, LoginForm
-security = Security(app, user_datastore, register_form=RegisterForm, login_form=LoginForm)
+security = Security(app, user_datastore)
 
 from app.frontend import dashboards
 from app.api import feeds, users, subscriptions, items
