@@ -13,7 +13,7 @@ class TestUser():
         self.app = app.test_client()
         db.create_all()
         user_role = RoleFactory()
-        user = UserFactory.create(role=user_role)
+        user = UserFactory.create(roles=[user_role])
 
         self.user_uri = '/api/users/%d' % user.id
         self.user_email = user.email
