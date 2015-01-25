@@ -19,7 +19,7 @@ CELERY_IMPORTS = ("worker_tasks.feed_scraper")
 CELERYBEAT_SCHEDULE = {
     'feed-scraper': {
         'task': 'worker_tasks.feed_scraper.ingest_feeds',
-        'schedule': crontab(minute="*/1"),
+        'schedule': crontab(minute="0,20,40"),
         'args': ()
     }
 }
