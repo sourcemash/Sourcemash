@@ -31,16 +31,6 @@ class TestFeedAPI(object):
         check_valid_header_type(r.headers)
         eq_(r.status_code, 404)
 
-    def test_delete_feed_present(self):
-        delete = self.app.delete(self.feed_uri)
-        check_valid_header_type(delete.headers)
-        data = json.loads(delete.data)
-        eq_(data['result'], True)
-
-        # Dummy feed should no longer be reachable
-        get = self.app.get(self.feed_uri)
-        eq_(get.status_code, 404)
-
     def tearDown(self):
         db.session.remove()
         db.drop_all()
