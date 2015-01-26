@@ -5,6 +5,26 @@
     {% endassets %}
   </head>
 
+  <header>
+    <nav class="top-nav">
+      <div class="container">
+        <div class="nav-wrapper">
+          <a href="#" class="brand-logo">RSS-aggregator</a>
+          <ul id="nav-mobile" class="right side-nav">
+            {% if current_user.is_authenticated() %}
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/logout">Logout</a></li>
+            {% else %}
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+            {% endif %}
+          </ul>
+          <a class="button-collapse" href="#" data-activates="nav-mobile"><i class        ="mdi-navigation-menu"></i></a>      
+        </div>
+      </div>
+    </nav>
+  </header>
+
   <body>
 
     <div class="container">
@@ -14,6 +34,9 @@
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     {% assets "js_vendor" %}
+      <script src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+    {% assets "js_default" %}
       <script src="{{ ASSET_URL }}"></script>
     {% endassets %}
 
