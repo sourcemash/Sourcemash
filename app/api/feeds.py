@@ -52,16 +52,5 @@ class FeedAPI(Resource):
 
         return {'feed': marshal(feed, feed_fields)}
 
-    def delete(self, id):
-        feed = Feed.query.get(id)
-        
-        if not feed:
-            abort(404)
-
-        db.session.delete(feed)
-        db.session.commit()
-
-        return {'result': True}
-
 api.add_resource(FeedListAPI, '/api/feeds', endpoint='feeds')
 api.add_resource(FeedAPI, '/api/feeds/<int:id>', endpoint='feed')
