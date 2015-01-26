@@ -62,6 +62,9 @@ flask/
 # Database
 *.db
 
+# Static File Cache
+.webassets-cache/
+
 # Secret
 instance/config.py
 
