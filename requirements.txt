@@ -1,4 +1,5 @@
 Flask==0.10.1
+Flask-Assets==0.10
 Flask-Login==0.2.11
 Flask-Mail==0.9.1
 Flask-Principal==0.4.0
@@ -34,4 +35,5 @@ redis==2.10.3
 six==1.9.0
 sqlalchemy-migrate==0.9.4
 sqlparse==0.1.14
+webassets==0.10.1
 wsgiref==0.1.2
