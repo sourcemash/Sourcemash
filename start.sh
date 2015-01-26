@@ -1,4 +1,6 @@
 export APP_CONFIG_FILE=development
-redis-server --daemonize yes
-python run.py &
-celery -A worker_tasks.feed_scraper worker --loglevel=info --beat
+echo "Server Running."
+echo "To run Celery:"
+echo "	redis-server --daemonize yes"
+echo "	celery -A worker_tasks.feed_scraper worker --loglevel=debug --beat"
+python run.py
