@@ -5,7 +5,13 @@
   {% else %}
     {% set class_ = kwargs.pop('class_', '') %}
     {% set class_ = class_ + ' validate' %}
+    {% if field.errors %}
+      {% set class_ = class_ + ' invalid' %}
+    {% endif %}
     {{ field(class_=class_, **kwargs) }}
     {{field.label}}
+    {% if field.errors %}
+      {{ field.errors|join(', ') }}
+    {% endif %}
   {% endif %}
 {%- endmacro %}
