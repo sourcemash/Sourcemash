@@ -1,0 +1,21 @@
+<html>
+  <head>
+    {% assets "css_vendor" %}
+      <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}">
+    {% endassets %}
+  </head>
+
+  <body>
+
+    <div class="container">
+      {% block layout %}{% endblock %}
+    </div>
+
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    {% assets "js_vendor" %}
+      <script src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+  </body>
+</html>
