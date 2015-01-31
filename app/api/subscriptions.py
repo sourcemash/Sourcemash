@@ -1,15 +1,15 @@
-from app import app, db
+from . import api
+from app.database import db
+
 from flask import abort
-from flask.ext.restful import Api, Resource, reqparse, fields, marshal
+from flask.ext.restful import Resource, reqparse, fields, marshal
 from flask.ext.security import current_user, login_required
 
 from app.models import Feed
 
-api = Api(app)
-
 subscription_fields = {
     'mergeable': fields.Boolean,
-    'uri': fields.Url('subscription')
+    'uri': fields.Url('api.subscription')
 }
 
 class SubscriptionListAPI(Resource):
@@ -87,5 +87,5 @@ class SubscriptionAPI(Resource):
 
         return {'result': True}
 
-api.add_resource(SubscriptionListAPI, '/api/subscriptions', endpoint='subscriptions')
-api.add_resource(SubscriptionAPI, '/api/subscriptions/<int:id>', endpoint='subscription')
+api.add_resource(SubscriptionListAPI, '/subscriptions', endpoint='subscriptions')
+api.add_resource(SubscriptionAPI, '/subscriptions/<int:id>', endpoint='subscription')

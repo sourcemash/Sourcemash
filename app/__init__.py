@@ -1,40 +1,38 @@
 import os
-
 from flask import Flask
-from celery import Celery
-from flask.ext.sqlalchemy import SQLAlchemy
 
-app = Flask(__name__, instance_relative_config=True,
-			template_folder='frontend/templates',
-			static_folder='frontend/static')
+def create_app(database_url=None):
+	app = Flask(__name__, instance_relative_config=True,
+				template_folder='frontend/templates',
+				static_folder='frontend/static')
 
-# Load the default configuration
-app.config.from_object('config.default')
+	# Load the default configuration
+	app.config.from_object('config.default')
 
-# Load the configuration from the instance folder
-app.config.from_pyfile('config.py', silent=True)
+	# Load the configuration from the instance folder
+	app.config.from_pyfile('config.py', silent=True)
 
-# Load the file specified by the APP_CONFIG_FILE environment variable
-# Variables defined here will override those in the default configuration
-if 'APP_CONFIG_FILE' in os.environ:
-    app.config.from_object('config.%s' % os.environ.get('APP_CONFIG_FILE'))
+	# Load the file specified by the APP_CONFIG_FILE environment variable
+	# Variables defined here will override those in the default configuration
+	if 'APP_CONFIG_FILE' in os.environ:
+	    app.config.from_object('config.%s' % os.environ.get('APP_CONFIG_FILE'))
 
-# SQLAlchemy Database
-db = SQLAlchemy(app)
+	if database_url:
+		app.config['SQLALCHEMY_DATABASE_URL'] = database_url
 
-# Celery Task Queue
-celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
-celery.conf.update(app.config)
+	from app.api import bp as api_bp
+	app.register_blueprint(api_bp)
 
-from app import models
+	# SQLAlchemy Database
+	from app.database import db, user_datastore, security
+	db.init_app(app)
+	db.app = app
 
-# Setup Flask-Security
-from flask.ext.security import Security, SQLAlchemyUserDatastore
-user_datastore = SQLAlchemyUserDatastore(db, models.User, models.Role)
-security = Security(app, user_datastore)
+	security.init_app(app, user_datastore)
 
-# Frontend Components (Flask-Assets)
-from app.frontend import dashboards, assets
-assets.init_app(app)
+	# Frontend Components (Flask-Assets)
+	from app.frontend import frontend, assets
+	app.register_blueprint(frontend.bp)
+	assets.init_app(app)
 
-from app.api import feeds, users, subscriptions, items
+	return app

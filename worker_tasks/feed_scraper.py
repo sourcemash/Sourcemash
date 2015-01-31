@@ -1,4 +1,7 @@
-from app import db, celery
+
+from celery import Celery
+from app import create_app
+from app.database import db
 
 from app.models import Item, Feed
 from datetime import datetime
@@ -8,9 +11,17 @@ import feedparser
 
 import logging
 
+app = create_app()
+
+# Celery Task Queue
+celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
+celery.conf.update(app.config)
+
 @celery.task
 def store_items(feed):
     logging.info("Starting to parse: %s" % feed.title)
+
+    print feed.url
 
     fp = feedparser.parse(feed.url)
     for item in fp.entries:

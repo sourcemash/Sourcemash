@@ -1,10 +1,9 @@
-from app import app, db
+from . import api
+from app.database import db
 from flask import abort
-from flask.ext.restful import Api, Resource, reqparse, fields, marshal
+from flask.ext.restful import Resource, reqparse, fields, marshal
 
 from app.models import Item
-
-api = Api(app)
 
 item_fields = {
     'title': fields.String,
@@ -13,7 +12,7 @@ item_fields = {
     'author': fields.String,
     'category': fields.String,
     'description': fields.String,
-    'uri': fields.Url('item')
+    'uri': fields.Url('api.item')
 }
 
 class ItemListAPI(Resource):
@@ -31,5 +30,5 @@ class ItemAPI(Resource):
 
         return {'item': marshal(item, item_fields)}
 
-api.add_resource(ItemListAPI, '/api/feeds/<int:feed_id>/items', endpoint='items')
-api.add_resource(ItemAPI, '/api/feeds/<int:feed_id>/items/<int:id>', endpoint='item')
+api.add_resource(ItemListAPI, '/feeds/<int:feed_id>/items', endpoint='items')
+api.add_resource(ItemAPI, '/feeds/<int:feed_id>/items/<int:id>', endpoint='item')

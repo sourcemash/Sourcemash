@@ -1,16 +1,14 @@
-from app import app
-
-from flask import abort, render_template, redirect
+from flask import Blueprint, abort, render_template, redirect, url_for
 from flask.ext.security import current_user, login_required
 
-from app.models import User
+bp = Blueprint('frontend', __name__)
 
-@app.route('/')
-@app.route('/index')
+@bp.route('/')
+@bp.route('/index')
 def index():
     return "Hello, World!"
 
-@app.route('/profile')
+@bp.route('/profile')
 @login_required
 def profile():
     return render_template('profile.html',

@@ -1,6 +1,7 @@
-from app import app, db
+from . import api
+from app.database import db
 from flask import abort
-from flask.ext.restful import Api, Resource, reqparse, fields, marshal
+from flask.ext.restful import Resource, reqparse, fields, marshal
 
 from datetime import datetime, date
 
@@ -8,13 +9,11 @@ import feedparser
 
 from app.models import Feed
 
-api = Api(app)
-
 feed_fields = {
     'title': fields.String,
     'url': fields.String,
     'last_updated': fields.DateTime,
-    'uri': fields.Url('feed')
+    'uri': fields.Url('api.feed')
 }
 
 class FeedListAPI(Resource):
@@ -52,5 +51,5 @@ class FeedAPI(Resource):
 
         return {'feed': marshal(feed, feed_fields)}
 
-api.add_resource(FeedListAPI, '/api/feeds', endpoint='feeds')
-api.add_resource(FeedAPI, '/api/feeds/<int:id>', endpoint='feed')
+api.add_resource(FeedListAPI, '/feeds', endpoint='feeds')
+api.add_resource(FeedAPI, '/feeds/<int:id>', endpoint='feed')
