@@ -1,4 +1,6 @@
-. flask/bin/activate
 export APP_CONFIG_FILE=testing
-nosetests --nocapture
-deactivate
+
+echo "Run tests...\n"
+py.test --boxed tests/
+
+rm test.db

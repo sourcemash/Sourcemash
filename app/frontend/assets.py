@@ -18,4 +18,3 @@ def init_app(app):
     webassets.manifest = 'cache' if not app.debug else False
     webassets.cache = not app.debug
     webassets.debug = app.debug
-    print "DEBUGGING????", app.debug

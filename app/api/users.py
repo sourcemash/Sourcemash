@@ -1,14 +1,16 @@
-from flask import abort
-from flask.ext.restful import Api, Resource, fields, marshal, reqparse
-from flask.ext.security import login_user
-from app import app, db, user_datastore
-from app.models import User
+from . import api
+from app.database import db
 
-api = Api(app)
+from flask import abort
+from flask.ext.restful import Resource, fields, marshal, reqparse
+from flask.ext.security import login_user
+
+from app.database import user_datastore
+from app.models import User
 
 user_fields = {
     'email': fields.String,
-    'uri': fields.Url('user')
+    'uri': fields.Url('api.user')
 }
 
 class UserListAPI(Resource):
@@ -68,5 +70,5 @@ class UserAPI(Resource):
         db.session.commit()
         return {'result': True}
 
-api.add_resource(UserListAPI, '/api/users', endpoint = 'users')
-api.add_resource(UserAPI, '/api/users/<int:id>', endpoint = 'user')
+api.add_resource(UserListAPI, '/users', endpoint = 'users')
+api.add_resource(UserAPI, '/users/<int:id>', endpoint = 'user')
