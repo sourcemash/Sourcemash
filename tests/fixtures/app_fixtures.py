@@ -8,7 +8,6 @@ from app.database import db as _db
 from tests.factories import feed_factories, item_factories, role_factories, user_factories
 
 from selenium import webdriver
-from sauceclient import SauceClient
 
 browsers = [{"platform": "Mac OS X 10.9",
              "browserName": "chrome",
@@ -76,8 +75,6 @@ def test_client(app, request):
 @pytest.yield_fixture(params=browsers)
 def driver(app, request):
 
-    sauce = SauceClient(app.config["SAUCE_USERNAME"], app.config["SAUCE_ACCESS_KEY"])
-
     desired_capabilities = request.param
     desired_capabilities['name'] = "%s.%s_%d" % (request.cls.__name__, request.function.__name__, browsers.index(request.param)+1)
     desired_capabilities['username'] = app.config["SAUCE_USERNAME"]
@@ -91,18 +88,18 @@ def driver(app, request):
 
     driver = webdriver.Remote(
         desired_capabilities=desired_capabilities,
-        command_executor='http://localhost:4445/wd/hub'
+        command_executor='http://%s:%s@ondemand.saucelabs.com/wd/hub' % (app.config["SAUCE_USERNAME"], app.config["SAUCE_ACCESS_KEY"])
     )
     driver.implicitly_wait(30)
 
     yield driver
 
-    try:
-        if sys.exc_info() == (None, None, None):
-            sauce.jobs.update_job(
-                driver.session_id, passed=True, public=True)
-        else:
-            sauce.jobs.update_job(
-                driver.session_id, passed=False, public=True)
-    finally:
-        driver.quit()
+    # try:
+    #     if sys.exc_info() == (None, None, None):
+    #         sauce.jobs.update_job(
+    #             driver.session_id, passed=True, public=True)
+    #     else:
+    #         sauce.jobs.update_job(
+    #             driver.session_id, passed=False, public=True)
+    # finally:
+    driver.quit()
