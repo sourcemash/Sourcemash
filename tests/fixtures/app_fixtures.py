@@ -7,15 +7,6 @@ from app import create_app
 from app.database import db as _db
 from tests.factories import feed_factories, item_factories, role_factories, user_factories
 
-from selenium import webdriver
-from sauceclient import SauceClient
-
-browsers = [{"platform": "Mac OS X 10.9",
-             "browserName": "chrome",
-             "version": "31"},
-            {"platform": "Windows 8.1",
-             "browserName": "internet explorer",
-             "version": "11"}]
 
 @pytest.yield_fixture(scope='session')
 def app(request):
@@ -35,12 +26,11 @@ def app(request):
 def db(app, request):
     """Session-wide test database"""
 
+    _db.drop_all()
     _db.create_all()
     _db.app = app
 
     yield _db
-
-    _db.drop_all()
 
 @pytest.yield_fixture(autouse=True)
 def session(db, request):
@@ -72,37 +62,3 @@ def session(db, request):
 def test_client(app, request):
     with app.test_client() as client:
         yield client
-
-@pytest.yield_fixture(params=browsers)
-def driver(app, request):
-
-    sauce = SauceClient(app.config["SAUCE_USERNAME"], app.config["SAUCE_ACCESS_KEY"])
-
-    desired_capabilities = request.param
-    desired_capabilities['name'] = "%s.%s_%d" % (request.cls.__name__, request.function.__name__, browsers.index(request.param)+1)
-    desired_capabilities['username'] = app.config["SAUCE_USERNAME"]
-    desired_capabilities['access-key'] = app.config["SAUCE_ACCESS_KEY"]
-
-    if os.environ.get('TRAVIS_BUILD_NUMBER'):
-        desired_capabilities[
-            'build'] = os.environ.get('TRAVIS_BUILD_NUMBER')
-        desired_capabilities[
-            'tunnel-identifier'] = os.environ.get('TRAVIS_JOB_NUMBER')
-
-    driver = webdriver.Remote(
-        desired_capabilities=desired_capabilities,
-        command_executor='http://%s:%s@ondemand.saucelabs.com/wd/hub' % (app.config["SAUCE_USERNAME"], app.config["SAUCE_ACCESS_KEY"])
-    )
-    driver.implicitly_wait(30)
-
-    yield driver
-
-    try:
-        if sys.exc_info() == (None, None, None):
-            sauce.jobs.update_job(
-                driver.session_id, passed=True, public=True)
-        else:
-            sauce.jobs.update_job(
-                driver.session_id, passed=False, public=True)
-    finally:
-        driver.quit()
