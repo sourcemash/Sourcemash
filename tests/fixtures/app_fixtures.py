@@ -8,10 +8,14 @@ from app.database import db as _db
 from tests.factories import feed_factories, item_factories, role_factories, user_factories
 
 from selenium import webdriver
+from sauceclient import SauceClient
 
-browsers = {
-    'firefox': webdriver.Firefox,
-}
+browsers = [{"platform": "Mac OS X 10.9",
+             "browserName": "chrome",
+             "version": "31"},
+            {"platform": "Windows 8.1",
+             "browserName": "internet explorer",
+             "version": "11"}]
 
 @pytest.yield_fixture(scope='session')
 def app(request):
@@ -69,33 +73,36 @@ def test_client(app, request):
     with app.test_client() as client:
         yield client
 
-@pytest.yield_fixture(scope='session',
-                      params=browsers.keys())
-def driver(request):
-    if 'DISPLAY' not in os.environ:
-        pytest.skip('Test requires display server (export DISPLAY)')
+@pytest.yield_fixture(params=browsers)
+def driver(app, request):
 
-    b = browsers[request.param]()
-    b.implicitly_wait(5)
+    sauce = SauceClient(app.config["SAUCE_USERNAME"], app.config["SAUCE_ACCESS_KEY"])
 
-    yield b
+    desired_capabilities = request.param
+    desired_capabilities['name'] = "%s.%s_%d" % (request.cls.__name__, request.function.__name__, browsers.index(request.param))
+    desired_capabilities['username'] = app.config["SAUCE_USERNAME"]
+    desired_capabilities['access-key'] = app.config["SAUCE_ACCESS_KEY"]
 
-    b.quit()
+    if os.environ.get('TRAVIS_BUILD_NUMBER'):
+        desired_capabilities[
+            'build'] = os.environ.get('TRAVIS_BUILD_NUMBER')
+        desired_capabilities[
+            'tunnel-identifier'] = os.environ.get('TRAVIS_JOB_NUMBER')
 
-@pytest.fixture()
-def browser(driver, url):
-    browser = driver
-    browser.set_window_size(1200, 800)
-    browser.get(url)
+    driver = webdriver.Remote(
+        desired_capabilities=desired_capabilities,
+        command_executor='http://localhost:4445/wd/hub'
+    )
+    driver.implicitly_wait(30)
 
-    return browser
+    yield driver
 
-
-def pytest_addoption(parser):
-    parser.addoption('--url', action='store',
-                     default='http://localhost:5000')
-
-
-@pytest.fixture(scope='session')
-def url(request):
-    return request.config.option.url
+    try:
+        if sys.exc_info() == (None, None, None):
+            sauce.jobs.update_job(
+                driver.session_id, passed=True, public=True)
+        else:
+            sauce.jobs.update_job(
+                driver.session_id, passed=False, public=True)
+    finally:
+        driver.quit()

@@ -8,24 +8,24 @@ def user(request):
     return user_factories.UserFactory(subscribed=[feed])
 
 @pytest.fixture()
-def logged_in_user(db, browser):
+def logged_in_user(db, driver):
     user = User(email="test@gmail.com", password="pass", active=True)
     db.session.add(user)
     db.session.commit()
 
-    browser.get("http://localhost:5000/login")
-    assert "rss-aggregator" in browser.title
+    driver.get("http://localhost:5000/login")
+    assert "rss-aggregator" in driver.title
 
     # enter email
-    email = browser.find_element_by_css_selector('input[name="email"]')
+    email = driver.find_element_by_css_selector('input[name="email"]')
     email.send_keys(user.email)
 
     # enter password
-    password = browser.find_element_by_css_selector('input[name="password"]')
+    password = driver.find_element_by_css_selector('input[name="password"]')
     password.send_keys(user.password)
 
     # click submit
-    button = browser.find_element_by_css_selector('button[type="submit"]')
+    button = driver.find_element_by_css_selector('button[type="submit"]')
     button.click()
 
     return user
