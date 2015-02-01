@@ -14,9 +14,9 @@ def profile():
     return render_template('profile.html',
                             email=current_user.email)
 
-@bp.route('/show_feeds')
+@bp.route('/feeds')
 @login_required
-def show_feeds():
+def feeds():
     users_subscriptions = current_user.subscribed
 
     return render_template('feeds.html',
