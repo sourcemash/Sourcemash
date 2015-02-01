@@ -10,4 +10,4 @@ class Item(db.Model):
     feed_id = db.Column(db.Integer, db.ForeignKey('feed.id'))
 
     def __repr__(self):
-        return "<Item %r (%r)>" % (self.title, self.url)
+        return "<Item %r (%r)>" % (self.title, self.link)

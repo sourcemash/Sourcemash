@@ -1,0 +1,34 @@
+{% from "security/_macros.html" import form_field %}
+
+{% extends "base.html" %}
+
+{% block layout %}
+<h1>{{ feed_title }}</h1>
+
+<div class="feed">
+	{% for item in items %}
+		<div class="row">
+	        <div class="col s12">
+	          <div class="card-panel blue lighten-4">
+	            <div class="card-content black-text">
+	              <span class="card-title"><h4><a href="{{ item.link }}">{{ item.title }}</a></h4></span>
+	              	<p>{{ item.author }}</p>
+					<p>{{ item.summary }}</p>
+	            </div>
+	            <div class="card-action">
+	              <a href="{{ item.link }}">Read More</a>
+	            </div>
+	          </div>
+	        </div>
+      	</div>
+
+		<!-- <h5><a href="{{ item.link }}">{{ item.title }}</a></h5> -->
+		<!-- <p>{{ item.author }}</p> -->
+		<!-- <p>{{ item.summary }}</p> -->
+	{% endfor %}
+
+</div>
+
+  
+
+{% endblock %}
