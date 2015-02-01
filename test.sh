@@ -1,4 +1,6 @@
-export APP_CONFIG_FILE=testing
+if [ -z $APP_CONFIG_FILE ]; then
+    export APP_CONFIG_FILE=testing
+fi
 
 echo "Start Flask app on port 5000..."
 python run.py &> flask.log &
