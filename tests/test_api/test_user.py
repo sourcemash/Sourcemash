@@ -13,7 +13,6 @@ class TestUserListAPI:
 
         data = json.loads(rv.data)
 
-        print data
         assert len(data['users']) == 1
 
     def test_post_new_user_valid(self, test_client):
