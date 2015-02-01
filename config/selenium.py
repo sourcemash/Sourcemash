@@ -11,4 +11,4 @@ WTF_CSRF_ENABLED = False
 CELERY_BROKER_URL = 'memory://'
 CELERY_RESULT_BACKEND = None
 
-logging.info("Testing settings loaded.")
+logging.info("Functional testing settings loaded.")
