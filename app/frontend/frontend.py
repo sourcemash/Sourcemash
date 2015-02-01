@@ -6,7 +6,7 @@ bp = Blueprint('frontend', __name__)
 @bp.route('/')
 @bp.route('/index')
 def index():
-    return "Hello, World!"
+    return render_template('index.html')
 
 @bp.route('/profile')
 @login_required
