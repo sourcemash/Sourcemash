@@ -79,7 +79,7 @@ def driver(app, request):
     sauce = SauceClient(app.config["SAUCE_USERNAME"], app.config["SAUCE_ACCESS_KEY"])
 
     desired_capabilities = request.param
-    desired_capabilities['name'] = "%s.%s_%d" % (request.cls.__name__, request.function.__name__, browsers.index(request.param))
+    desired_capabilities['name'] = "%s.%s_%d" % (request.cls.__name__, request.function.__name__, browsers.index(request.param)+1)
     desired_capabilities['username'] = app.config["SAUCE_USERNAME"]
     desired_capabilities['access-key'] = app.config["SAUCE_ACCESS_KEY"]
 
