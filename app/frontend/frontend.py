@@ -6,10 +6,18 @@ bp = Blueprint('frontend', __name__)
 @bp.route('/')
 @bp.route('/index')
 def index():
-    return "Hello, World!"
+    return render_template('index.html')
 
 @bp.route('/profile')
 @login_required
 def profile():
     return render_template('profile.html',
                             email=current_user.email)
+
+@bp.route('/feeds')
+@login_required
+def feeds():
+    users_subscriptions = current_user.subscribed
+
+    return render_template('feeds.html',
+                            subscriptions=users_subscriptions)

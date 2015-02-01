@@ -5,7 +5,9 @@ install:
 - pip install -r requirements.txt
 env:
   - APP_CONFIG_FILE=travis
-script: py.test --boxed tests/
+script: ./test.sh
+addons:
+  sauce_connect: true
 deploy:
   provider: heroku
   api_key:
