@@ -10,7 +10,7 @@ from app.models import Feed
 subscription_fields = {
     'id': fields.Integer,
     'title': fields.String,
-    'uri': fields.Url('subscription')
+    'uri': fields.Url('api.subscription')
 }
 
 class SubscriptionListAPI(Resource):

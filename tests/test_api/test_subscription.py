@@ -63,6 +63,8 @@ class TestSubscriptionListAPI:
     def test_get_users_subscriptions(self, test_client, user):
         self.login(test_client, user.email, user.password)
 
+        user_feed = user.subscribed.first()
+
         r = test_client.get('/api/subscriptions')
         check_valid_header_type(r.headers)
         assert r.status_code == 200
@@ -70,7 +72,7 @@ class TestSubscriptionListAPI:
         data = json.loads(r.data)
         assert len(data['subscriptions']) == 1
 
-        assert data['subscriptions'][0]['title'] == "NYTimes"
+        assert data['subscriptions'][0]['title'] == user_feed.title
 
     def test_post_subscription_valid(self, test_client, user, feed):
         self.login(test_client, user.email, user.password)

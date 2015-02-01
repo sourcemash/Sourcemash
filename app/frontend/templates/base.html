@@ -12,8 +12,8 @@
           <a href="#" class="brand-logo">RSS-aggregator</a>
           <ul id="nav-mobile" class="right side-nav">
             {% if current_user.is_authenticated() %}
-            <li><a href="{{ url_for('profile') }}">Profile</a></li>
-            <li><a href="{{ url_for('show_feeds') }}">Feeds</a></li>
+            <li><a href="{{ url_for('.profile') }}">Profile</a></li>
+            <li><a href="{{ url_for('.show_feeds') }}">Feeds</a></li>
             <li><a href="{{ url_for_security('logout') }}">Logout</a></li>
             {% else %}
             <li><a href="{{ url_for_security('login') }}">Login</a></li>
