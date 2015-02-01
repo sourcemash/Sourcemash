@@ -8,8 +8,9 @@ from flask.ext.security import current_user, login_required
 from app.models import Feed
 
 subscription_fields = {
-    'mergeable': fields.Boolean,
-    'uri': fields.Url('api.subscription')
+    'id': fields.Integer,
+    'title': fields.String,
+    'uri': fields.Url('subscription')
 }
 
 class SubscriptionListAPI(Resource):

@@ -13,3 +13,11 @@ def index():
 def profile():
     return render_template('profile.html',
                             email=current_user.email)
+
+@bp.route('/show_feeds')
+@login_required
+def show_feeds():
+    users_subscriptions = current_user.subscribed
+
+    return render_template('feeds.html',
+                            subscriptions=users_subscriptions)
