@@ -70,18 +70,17 @@ class TestSubscriptionListAPI:
         data = json.loads(r.data)
         assert len(data['subscriptions']) == 1
 
-    def test_post_subscription_valid(self, test_client, user):
+    def test_post_subscription_valid(self, test_client, user, feed):
         self.login(test_client, user.email, user.password)
 
-        new_feed = feed_factories.FeedFactory(url='http://techcrunch.com/feed/', title="TechCrunch")
-        subscription_data = dict(feed_uri='api/feeds/%d' % new_feed.id)
+        subscription_data = dict(feed_uri='api/feeds/%d' % feed.id)
         r = test_client.post('/api/subscriptions', data=subscription_data)
 
         check_valid_header_type(r.headers)
         assert r.status_code == 201
 
         data = json.loads(r.data)
-        assert data['subscription']['uri'] == '/api/subscriptions/%d' % new_feed.id
+        assert data['subscription']['uri'] == '/api/subscriptions/%d' % feed.id
 
     def test_post_subscription_missing_feed_uri(self, test_client, user):
         self.login(test_client, user.email, user.password)
