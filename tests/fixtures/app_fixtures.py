@@ -7,6 +7,11 @@ from app import create_app
 from app.database import db as _db
 from tests.factories import feed_factories, item_factories, role_factories, user_factories
 
+from selenium import webdriver
+
+browsers = {
+    'firefox': webdriver.Firefox,
+}
 
 @pytest.yield_fixture(scope='session')
 def app(request):
@@ -33,7 +38,7 @@ def db(app, request):
 
     _db.drop_all()
 
-@pytest.yield_fixture(scope='function', autouse=True)
+@pytest.yield_fixture(autouse=True)
 def session(db, request):
     """Creates a new database session for a test."""
     # connect to the database
@@ -59,7 +64,38 @@ def session(db, request):
     session.remove()
 
 
-@pytest.yield_fixture(scope='function')
+@pytest.yield_fixture()
 def test_client(app, request):
     with app.test_client() as client:
         yield client
+
+@pytest.yield_fixture(scope='session',
+                      params=browsers.keys())
+def driver(request):
+    if 'DISPLAY' not in os.environ:
+        pytest.skip('Test requires display server (export DISPLAY)')
+
+    b = browsers[request.param]()
+    b.implicitly_wait(5)
+
+    yield b
+
+    b.quit()
+
+@pytest.fixture()
+def browser(driver, url):
+    browser = driver
+    browser.set_window_size(1200, 800)
+    browser.get(url)
+
+    return browser
+
+
+def pytest_addoption(parser):
+    parser.addoption('--url', action='store',
+                     default='http://localhost:5000')
+
+
+@pytest.fixture(scope='session')
+def url(request):
+    return request.config.option.url

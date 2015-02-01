@@ -1,10 +1,10 @@
 import pytest
 from tests.factories import feed_factories
 
-@pytest.yield_fixture(scope='function')
+@pytest.fixture()
 def feed(request):
-    yield feed_factories.FeedFactory()
+    return feed_factories.FeedFactory()
 
-@pytest.yield_fixture(scope='function')
+@pytest.fixture()
 def real_feed(request):
-    yield feed_factories.NYTFeedFactory()
+    return feed_factories.NYTFeedFactory()

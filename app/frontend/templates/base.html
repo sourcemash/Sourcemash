@@ -3,13 +3,15 @@
     {% assets "css_vendor" %}
       <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}">
     {% endassets %}
+
+    <title>rss-aggregator</title>
   </head>
 
   <header>
     <nav class="top-nav">
       <div class="container">
         <div class="nav-wrapper">
-          <a href="{{ url_for('.index') }}" class="brand-logo">RSS-aggregator</a>
+          <a href="/" class="brand-logo">RSS-aggregator</a>
           <ul id="nav-mobile" class="right side-nav">
             {% if current_user.is_authenticated() %}
             <li><a href="{{ url_for('.profile') }}">Profile</a></li>
