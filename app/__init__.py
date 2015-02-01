@@ -1,7 +1,7 @@
 import os
 from flask import Flask
 
-def create_app(database_url=None):
+def create_app():
 	app = Flask(__name__, instance_relative_config=True,
 				template_folder='frontend/templates',
 				static_folder='frontend/static')
@@ -16,9 +16,6 @@ def create_app(database_url=None):
 	# Variables defined here will override those in the default configuration
 	if 'APP_CONFIG_FILE' in os.environ:
 	    app.config.from_object('config.%s' % os.environ.get('APP_CONFIG_FILE'))
-
-	if database_url:
-		app.config['SQLALCHEMY_DATABASE_URL'] = database_url
 
 	from app.api import bp as api_bp
 	app.register_blueprint(api_bp)
