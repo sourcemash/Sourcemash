@@ -7,7 +7,7 @@ python run.py &> flask.log &
 FLASK_PID=$!
 
 echo "Run tests...\n"
-py.test --boxed tests/test_functional
+py.test --boxed tests/
 
 echo "Kill Flask app..."
 kill $FLASK_PID

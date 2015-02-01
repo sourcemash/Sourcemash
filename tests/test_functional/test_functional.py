@@ -2,7 +2,6 @@ import pytest
 
 class TestLogin:
 
-
     def test_login(self, driver, logged_in_user):
         welcome = driver.find_element_by_css_selector('.welcome').text
         assert logged_in_user.email in welcome
@@ -33,3 +32,14 @@ class TestLogin:
 
         welcome = driver.find_element_by_css_selector('.welcome').text
         assert "GenericEmail@gmail.com" in welcome
+
+class TestFeeds:
+
+    def test_feeds_list(self, db, driver, logged_in_user, feed):
+        logged_in_user.subscribed.append(feed)
+        db.session.commit()
+
+        driver.find_element_by_link_text('Feeds').click();
+
+        feeds_list = driver.find_element_by_css_selector('.feeds').text
+        assert feed.title in feeds_list

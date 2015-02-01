@@ -5,9 +5,9 @@
 {% block layout %}
 <h1>Feeds</h1>
 
-<div class=feeds>
+<div class="feeds">
 	{% for feed in subscriptions %}
-		<a href="{{ url_for('subscription', id=feed.id) }}">{{ feed.title }}</a>
+		<a href="{{ url_for('api.subscription', id=feed.id) }}">{{ feed.title }}</a>
 	{% endfor %}
 
 </div>
