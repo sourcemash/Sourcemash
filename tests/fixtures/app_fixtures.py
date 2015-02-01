@@ -42,8 +42,8 @@ def session(db, request):
     # begin a non-ORM transaction
     transaction = connection.begin()
 
-    options = dict(bind=connection, binds={})
-    session = db.create_scoped_session(options=options)
+    options = dict(bind=connection)
+    session = db.create_scoped_session(options)
     db.session = session
 
     feed_factories.FeedFactory._meta.sqlalchemy_session = session
