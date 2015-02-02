@@ -7,9 +7,22 @@
 	<h1>Feeds</h1>
 </div>
 
+<div class="row">
+  <form class="col s12" action="{{ url_for('api.subscriptions') }}" method="POST" name="add_feed_form">
+    <div class="row">
+      <div class="input-field col s12 m9 l10">
+        {{ form_field(add_feed_form.feed_url, name_="Feed URL") }}
+      </div>
+      <div class="input-field col s12 m3 l2">
+        {{ form_field(add_feed_form.submit, name_="Add") }}
+      </div>
+    </div>
+  </form>
+</div>
+
 <div class="feeds">
 	{% for feed in subscriptions %}
-		<a href="{{ url_for('.feed', id=feed.id) }}">{{ feed.title }}</a>
+		<p><a href="{{ url_for('.feed', id=feed.id) }}">{{ feed.title }}</a></p>
 	{% endfor %}
 
 </div>

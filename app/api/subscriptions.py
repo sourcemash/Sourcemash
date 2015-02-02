@@ -6,6 +6,8 @@ from flask.ext.restful import Resource, reqparse, fields, marshal
 from flask.ext.security import current_user, login_required
 
 from app.models import Feed
+import feedparser
+from datetime import datetime
 
 subscription_fields = {
     'id': fields.Integer,
@@ -17,8 +19,8 @@ class SubscriptionListAPI(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('feed_uri', type=str, required=True,
-                                    help='No feed ID provided')
+        self.reqparse.add_argument('feed_url', type=str, required=True,
+                                    help='No feed url provided')
         super(SubscriptionListAPI, self).__init__()
 
     @login_required
@@ -30,18 +32,25 @@ class SubscriptionListAPI(Resource):
         args = self.reqparse.parse_args()
 
         try:
-            feed = Feed.query.get(int(args['feed_uri'].split('/')[-1]))
-        except ValueError:
-            abort(400)
+            feed = Feed.query.filter(Feed.url==args.feed_url).one()
+            print "FFEEDD:", feed.id
+        except:
+            rss_feed = feedparser.parse(args.feed_url)
+            
+            if rss_feed['bozo']: # invalid feed
+                abort(400)
 
-        if not feed:
-            abort(400)
+            feed = Feed(title=rss_feed['feed']['title'],
+                        url=rss_feed['url'],
+                        last_updated=datetime.min)
+
+            db.session.add(feed)
+            db.session.commit()
 
         current_user.subscribed.append(feed)
         db.session.commit()
 
         subscription = current_user.subscribed.filter(Feed.id==feed.id).first()
-
         return {'subscription': marshal(subscription, subscription_fields)}, 201
 
 class SubscriptionAPI(Resource):
