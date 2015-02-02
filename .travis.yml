@@ -11,7 +11,7 @@ addons:
 deploy:
   provider: heroku
   api_key:
-    secure: OeO43wvD0lvzZu2JL+/nqfSOvYjAfNrSK/qFi2BWWBe0kGKNRiFHmvHgJ7bypTzI+0+25tGS4uanhIf8ZR5gToxSLi5FymOwD9LzRHqyoxxPbpnnclUpIRT5ia6x/VHhnnKzdb4hiE7GUHrIKcbWO3mdIvJljhni4ipNy7D/N1w=
+    secure: fJILYiNWa31jfeIEo/v05AyEaLKh9ziJ3UZRGFDmyeqtp3ko82lAAkod6WlBxAHqtJpzAnTafZjjZ6cS3Wwq1FkQDhe5iqH/0Qo8B7U6yx3TDb9j5tVH7oYxE81qkGCDDGLSgzET18gRB3+Adw+X84sqEGmt1xxHStA+Edsk5gU=
   app: peaceful-falls-6831
   run:
     - "python db_upgrade.py"
