@@ -29,9 +29,6 @@ def feed(id):
 	''' Get articles & pass through to render_template '''
 	feed = Feed.query.get(id)
 	feed_items = Item.query.filter(Item.feed_id==id).all()
-
-	print "\n\n"
-	print feed_items
 	
 	return render_template('feed.html',
 							feed_title=feed.title,
