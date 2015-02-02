@@ -1,37 +1,26 @@
 import pytest
+from tests.pages.login import LoginPage
+from tests.pages.feeds import FeedsPage
 
 class TestLogin:
 
-    def test_login(self, driver, logged_in_user):
-        welcome = driver.find_element_by_css_selector('.welcome').text
-        assert logged_in_user.email in welcome
-
     def test_logout(self, driver, logged_in_user):
-        driver.find_element_by_link_text('Logout').click();
+        page = LoginPage(driver)
+        page.click_logout_button();
 
-        assert "login" in driver.current_url
+        assert "Login" in page.get_header_text()
 
     def test_register(self, driver):
-        driver.get("http://localhost:5000/register")
+        page = LoginPage(driver)
+        page.navigate()
 
-        # enter email
-        email = driver.find_element_by_css_selector('input[name="email"]')
-        email.send_keys("GenericEmail@gmail.com")
+        page.click_register_button()
+        page.type_into_email_field("GenericEmail@gmail.com")
+        page.type_into_password_field("password")
+        page.type_into_confirm_password_field("password")
+        page.click_submit_button()
 
-        # enter password
-        password = driver.find_element_by_css_selector('input[name="password"]')
-        password.send_keys("password")
-
-        # enter password_confirm
-        password_confirm = driver.find_element_by_css_selector('input[name="password_confirm"]')
-        password_confirm.send_keys("password")
-
-        # click submit
-        button = driver.find_element_by_css_selector('button[type="submit"]')
-        button.click()
-
-        welcome = driver.find_element_by_css_selector('.welcome').text
-        assert "GenericEmail@gmail.com" in welcome
+        assert "GenericEmail@gmail.com" in page.get_success_message()
 
 class TestFeeds:
 
@@ -39,7 +28,6 @@ class TestFeeds:
         logged_in_user.subscribed.append(feed)
         db.session.commit()
 
-        driver.find_element_by_link_text('Feeds').click();
-
-        feeds_list = driver.find_element_by_css_selector('.feeds').text
-        assert feed.title in feeds_list
+        page = FeedsPage(driver)
+        page.navigate()
+        assert feed.title in page.get_feeds_list_text()

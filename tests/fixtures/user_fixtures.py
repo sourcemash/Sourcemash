@@ -1,5 +1,6 @@
 import pytest
 from tests.factories import user_factories, role_factories, feed_factories
+from tests.pages.login import LoginPage
 from app.models import User
 
 @pytest.fixture()
@@ -13,19 +14,17 @@ def logged_in_user(db, driver):
     db.session.add(user)
     db.session.commit()
 
-    driver.get("http://localhost:5000/login")
-    assert "rss-aggregator" in driver.title
+    page = LoginPage(driver)
+    page.navigate()
 
-    # enter email
-    email = driver.find_element_by_css_selector('input[name="email"]')
-    email.send_keys(user.email)
+    page.click_login_button()
 
-    # enter password
-    password = driver.find_element_by_css_selector('input[name="password"]')
-    password.send_keys(user.password)
+    assert "Login" in page.get_header_text()
 
-    # click submit
-    button = driver.find_element_by_css_selector('button[type="submit"]')
-    button.click()
+    page.type_into_email_field(user.email)
+    page.type_into_password_field(user.password)
+    page.click_submit_button()
+
+    assert "Hello" in page.get_welcome_user_message()
 
     return user
