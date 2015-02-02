@@ -7,7 +7,7 @@
 
 <div class="feeds">
 	{% for feed in subscriptions %}
-		<a href="{{ url_for('api.subscription', id=feed.id) }}">{{ feed.title }}</a>
+		<a href="{{ url_for('.feed', id=feed.id) }}">{{ feed.title }}</a>
 	{% endfor %}
 
 </div>
