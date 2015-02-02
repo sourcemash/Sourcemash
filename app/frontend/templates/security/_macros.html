@@ -9,8 +9,10 @@
     {% endif %}
     {{ field(class_=class_, **kwargs) }}
     {{field.label}}
+    <div class="errors">
     {% if field.errors %}
       {{ field.errors|join(', ') }}
     {% endif %}
+    </div>
   {% endif %}
 {%- endmacro %}

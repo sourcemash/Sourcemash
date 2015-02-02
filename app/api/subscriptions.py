@@ -38,7 +38,7 @@ class SubscriptionListAPI(Resource):
             rss_feed = feedparser.parse(args.feed_url)
             
             if rss_feed['bozo']: # invalid feed
-                abort(400)
+                return {'errors': {"feed_url": "URL is not a valid feed."}}, 400
 
             feed = Feed(title=rss_feed['feed']['title'],
                         url=rss_feed['url'],
@@ -47,8 +47,12 @@ class SubscriptionListAPI(Resource):
             db.session.add(feed)
             db.session.commit()
 
-        current_user.subscribed.append(feed)
-        db.session.commit()
+        try:
+            subscription = current_user.subscribed.filter(Feed.id==feed.id).one()
+            return {'errors': {"feed_url": "Already subscribed."}}, 409
+        except:
+            current_user.subscribed.append(feed)
+            db.session.commit()
 
         subscription = current_user.subscribed.filter(Feed.id==feed.id).first()
         return {'subscription': marshal(subscription, subscription_fields)}, 201
