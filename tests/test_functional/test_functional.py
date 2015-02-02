@@ -20,7 +20,7 @@ class TestLogin:
         page.type_into_confirm_password_field("password")
         page.click_submit_button()
 
-        assert "Generic@gmail.com" in page.get_success_message()
+        assert "GenericEmail@gmail.com" in page.get_success_message()
 
 class TestFeeds:
 
