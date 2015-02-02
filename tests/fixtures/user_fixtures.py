@@ -5,6 +5,10 @@ from app.models import User
 
 @pytest.fixture()
 def user(request):
+    return user_factories.UserFactory(subscribed=[])
+
+@pytest.fixture()
+def userWithFeed(request):
     feed = feed_factories.FeedFactory()
     return user_factories.UserFactory(subscribed=[feed])
 

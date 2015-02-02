@@ -1,5 +1,6 @@
 from flask import Blueprint, abort, render_template, redirect, url_for
 from flask.ext.security import current_user, login_required
+from app.feeds.forms import AddFeedForm
 
 bp = Blueprint('frontend', __name__)
 
@@ -22,7 +23,8 @@ def feeds():
     users_subscriptions = current_user.subscribed
 
     return render_template('feeds.html',
-                            subscriptions=users_subscriptions)
+                            subscriptions=users_subscriptions,
+                            add_feed_form=AddFeedForm())
 
 @bp.route('/feeds/<int:id>')
 def feed(id):
