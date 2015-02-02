@@ -1,7 +1,6 @@
 import imp
 from migrate.versioning import api
 from app import create_app
-from app.database import db
 
 app = create_app()
 

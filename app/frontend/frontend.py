@@ -3,7 +3,6 @@ from flask.ext.security import current_user, login_required
 
 bp = Blueprint('frontend', __name__)
 
-from app.database import db
 from app.models import Feed, Item
 
 @bp.route('/')
@@ -26,7 +25,6 @@ def feeds():
                             subscriptions=users_subscriptions)
 
 @bp.route('/feeds/<int:id>')
-@login_required
 def feed(id):
 	''' Get articles & pass through to render_template '''
 	feed = Feed.query.get(id)
