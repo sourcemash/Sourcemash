@@ -1,2 +1,2 @@
 gunicorn app:create_app --daemon
-celery -A worker_tasks.feed_scraper worker --loglevel=info --beat
+celery -A worker_tasks.feed_scraper.celery worker --loglevel=info --beat
