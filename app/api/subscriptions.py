@@ -12,6 +12,7 @@ from datetime import datetime
 subscription_fields = {
     'id': fields.Integer,
     'title': fields.String,
+    'url': fields.String,
     'uri': fields.Url('api.subscription')
 }
 
@@ -33,7 +34,6 @@ class SubscriptionListAPI(Resource):
 
         try:
             feed = Feed.query.filter(Feed.url==args.feed_url).one()
-            print "FFEEDD:", feed.id
         except:
             rss_feed = feedparser.parse(args.feed_url)
             

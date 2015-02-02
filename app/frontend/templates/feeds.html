@@ -8,13 +8,13 @@
 </div>
 
 <div class="row">
-  <form class="col s12" action="{{ url_for('api.subscriptions') }}" method="POST" name="add_feed_form">
+  <form class="new-feed col s12" id="add_feed_form" onsubmit="return add_feed()">
     <div class="row">
       <div class="input-field col s12 m9 l10">
         {{ form_field(add_feed_form.feed_url, name_="Feed URL") }}
       </div>
       <div class="input-field col s12 m3 l2">
-        {{ form_field(add_feed_form.submit, name_="Add") }}
+         <button type="submit" class="btn waves-effect waves-light">Add</button>
       </div>
     </div>
   </form>
