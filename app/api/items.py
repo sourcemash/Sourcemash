@@ -7,11 +7,11 @@ from app.models import Item
 
 item_fields = {
     'title': fields.String,
-    'url': fields.String,
-    'publication_date': fields.DateTime,
+    'link': fields.String,
+    'last_updated': fields.DateTime,
     'author': fields.String,
     'category': fields.String,
-    'description': fields.String,
+    'summary': fields.String,
     'uri': fields.Url('api.item')
 }
 
