@@ -25,6 +25,7 @@ def create_app(env=None):
 	# SQLAlchemy Database
 	from app.database import db, user_datastore, security, migrate
 	db.init_app(app)
+	db.app = app
 	migrate.init_app(app, db)
 
 	security.init_app(app, user_datastore)
