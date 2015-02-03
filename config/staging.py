@@ -3,6 +3,7 @@ import sys
 import logging
 
 DEBUG = True
+SQLALCHEMY_ECHO = True
 
 SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
 
