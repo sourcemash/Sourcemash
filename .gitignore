@@ -64,6 +64,7 @@ flask/
 
 # Static File Cache
 app/frontend/static/.webassets-cache/
+*.min.js
 
 # Secret
 instance/config.py
