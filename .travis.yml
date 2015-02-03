@@ -5,7 +5,7 @@ install:
 - pip install -r requirements.txt
 env:
   - APP_CONFIG_FILE=travis
-script: py.test --boxed -n10 -k "not functional" tests/
+script: python manage.py test
 addons:
   sauce_connect: true
 deploy:
@@ -14,4 +14,5 @@ deploy:
     secure: fJILYiNWa31jfeIEo/v05AyEaLKh9ziJ3UZRGFDmyeqtp3ko82lAAkod6WlBxAHqtJpzAnTafZjjZ6cS3Wwq1FkQDhe5iqH/0Qo8B7U6yx3TDb9j5tVH7oYxE81qkGCDDGLSgzET18gRB3+Adw+X84sqEGmt1xxHStA+Edsk5gU=
   app: peaceful-falls-6831
   run:
-    - "python db_upgrade.py"
+    - "python manage.py assets"
+    - "python manage.py db upgrade"

@@ -11,7 +11,7 @@ from tests.factories import feed_factories, item_factories, role_factories, user
 @pytest.yield_fixture(scope='session')
 def app(request):
     """Session-wide test `Flask` application"""
-    app = create_app()
+    app = create_app("testing")
 
     # Establish an application context before running the tests.
     ctx = app.test_request_context()

@@ -1,7 +1,7 @@
 import os
 from flask import Flask
 
-def create_app():
+def create_app(env=None):
 	app = Flask(__name__, instance_relative_config=True,
 				template_folder='frontend/templates',
 				static_folder='frontend/static')
@@ -14,16 +14,18 @@ def create_app():
 
 	# Load the file specified by the APP_CONFIG_FILE environment variable
 	# Variables defined here will override those in the default configuration
-	if 'APP_CONFIG_FILE' in os.environ:
-	    app.config.from_object('config.%s' % os.environ.get('APP_CONFIG_FILE'))
+	env_config_file = os.environ.get('APP_CONFIG_FILE') or env
+
+	if env_config_file:
+	    app.config.from_object('config.%s' % env_config_file)
 
 	from app.api import bp as api_bp
 	app.register_blueprint(api_bp)
 
 	# SQLAlchemy Database
-	from app.database import db, user_datastore, security
+	from app.database import db, user_datastore, security, migrate
 	db.init_app(app)
-	db.app = app
+	migrate.init_app(app, db)
 
 	security.init_app(app, user_datastore)
 
