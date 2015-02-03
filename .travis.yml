@@ -14,5 +14,5 @@ deploy:
     secure: fJILYiNWa31jfeIEo/v05AyEaLKh9ziJ3UZRGFDmyeqtp3ko82lAAkod6WlBxAHqtJpzAnTafZjjZ6cS3Wwq1FkQDhe5iqH/0Qo8B7U6yx3TDb9j5tVH7oYxE81qkGCDDGLSgzET18gRB3+Adw+X84sqEGmt1xxHStA+Edsk5gU=
   app: peaceful-falls-6831
   run:
-    - "python manage.py assets"
+    - "python manage.py assets rebuild"
     - "python manage.py db upgrade"
