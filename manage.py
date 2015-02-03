@@ -41,5 +41,5 @@ manager.add_command("assets", ManageAssets)
 if __name__ == '__main__':
     print "To run Celery:"
     print "  redis-server --daemonize yes"
-    print "  celery -A worker_tasks.feed_scraper worker --loglevel=debug --beat"
+    print "  celery -A worker_tasks.feed_scraper.celery worker --loglevel=debug --beat"
     manager.run()
