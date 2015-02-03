@@ -424,7 +424,6 @@ input[type=checkbox][disabled]:first-child ~ .lever:active:after {
     position: absolute;
     right: 0;
     font-size: 23px;
-    @extend [class^="mdi-"];
     @extend .mdi-navigation-arrow-drop-down:before;
   }
 }

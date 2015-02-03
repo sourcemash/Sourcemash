@@ -7948,38 +7948,38 @@ textarea {
                                                                                 right: 0;
                                                                                 font-size: 23px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003454}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003453}}
 select {
   display: none; }
 
-  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003455}}
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003454}}
   select.browser-default {
     display: block; }
 
-    @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003459}}
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003458}}
     select:disabled {
       color: rgba(0, 0, 0, 0.3); }
 
-      @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003462}}
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003461}}
       .select-wrapper span.select-dropdown.disabled {
         color: rgba(0, 0, 0, 0.3); }
 
-        @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003465}}
+        @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003464}}
         .select-dropdown li.disabled {
           color: rgba(0, 0, 0, 0.3); }
-          @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003467}}
+          @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003466}}
           .select-dropdown li.disabled:hover {
             background-color: transparent; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003474}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003473}}
 .range-field {
   position: relative; }
 
-  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003478}}
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003477}}
   input[type=range], input[type=range] + .thumb {
     cursor: pointer; }
 
-    @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003483}}
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003482}}
     input[type=range] {
       position: relative;
       background-color: transparent;
@@ -7989,7 +7989,7 @@ select {
       margin: 15px 0px;
       padding: 0; }
 
-      @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003492}}
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003491}}
       input[type=range] + .thumb {
         position: absolute;
         border: none;
@@ -8009,7 +8009,7 @@ select {
         -ms-transform: rotate(-45deg);
         -o-transform: rotate(-45deg);
         transform: rotate(-45deg); }
-        @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003504}}
+        @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003503}}
         input[type=range] + .thumb .value {
           display: block;
           width: 30px;
@@ -8021,31 +8021,31 @@ select {
           -ms-transform: rotate(45deg);
           -o-transform: rotate(45deg);
           transform: rotate(45deg); }
-          @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003513}}
+          @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003512}}
           input[type=range] + .thumb.active {
             border-radius: 50% 50% 50% 0; }
-            @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003515}}
+            @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003514}}
             input[type=range] + .thumb.active .value {
               color: #fff;
               margin-left: -1px;
               margin-top: 8px;
               font-size: 10px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003527}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003526}}
 input[type=range]:focus {
   outline: none; }
 
-  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003534}}
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003533}}
   input[type=range] {
     -webkit-appearance: none; }
 
-    @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003538}}
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003537}}
     input[type=range]::-webkit-slider-runnable-track {
       height: 3px;
       background: #c2c0c2;
       border: none; }
 
-      @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003544}}
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003543}}
       input[type=range]::-webkit-slider-thumb {
         -webkit-appearance: none;
         border: none;
@@ -8061,21 +8061,21 @@ input[type=range]:focus {
         -ms-transition: 0.3s;
         transition: 0.3s; }
 
-        @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003556}}
+        @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003555}}
         input[type=range]:focus::-webkit-slider-runnable-track {
           background: #ccc; }
 
-          @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003561}}
+          @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003560}}
           input[type=range] {
             border: 1px solid white; }
 
-            @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003568}}
+            @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003567}}
             input[type=range]::-moz-range-track {
               height: 3px;
               background: #ddd;
               border: none; }
 
-              @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003574}}
+              @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003573}}
               input[type=range]::-moz-range-thumb {
                 border: none;
                 height: 14px;
@@ -8084,16 +8084,16 @@ input[type=range]:focus {
                 background: #0f9d58;
                 margin-top: -5px; }
 
-                @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003584}}
+                @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003583}}
                 input[type=range]:-moz-focusring {
                   outline: 1px solid white;
                   outline-offset: -1px; }
 
-                  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003589}}
+                  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003588}}
                   input[type=range]:focus::-moz-range-track {
                     background: #ccc; }
 
-                    @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003594}}
+                    @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003593}}
                     input[type=range]::-ms-track {
                       height: 3px;
                       background: transparent;
@@ -8101,15 +8101,15 @@ input[type=range]:focus {
                       border-width: 6px 0;
                       color: transparent; }
 
-                      @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003607}}
+                      @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003606}}
                       input[type=range]::-ms-fill-lower {
                         background: #777; }
 
-                        @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003610}}
+                        @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003609}}
                         input[type=range]::-ms-fill-upper {
                           background: #ddd; }
 
-                          @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003613}}
+                          @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003612}}
                           input[type=range]::-ms-thumb {
                             border: none;
                             height: 14px;
@@ -8117,15 +8117,15 @@ input[type=range]:focus {
                             border-radius: 50%;
                             background: #0f9d58; }
 
-                            @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003620}}
+                            @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003619}}
                             input[type=range]:focus::-ms-fill-lower {
                               background: #888; }
 
-                              @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003623}}
+                              @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003622}}
                               input[type=range]:focus::-ms-fill-upper {
                                 background: #ccc; }
 
-                                @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003629}}
+                                @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/app\/frontend\/static\/scss\/vendor\/materialize\/components\/_form\.scss}line{font-family:\00003628}}
                                 select {
                                   background-color: #fffafa;
                                   width: 100%;
