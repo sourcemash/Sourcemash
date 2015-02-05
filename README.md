@@ -1,6 +1,7 @@
-[![Build Status](https://travis-ci.org/alexgerstein/rss-aggregator.svg?branch=master)](https://travis-ci.org/alexgerstein/rss-aggregator)
-
 Read Your News Faster.
+
+## Statuses
+[![Build Status](https://travis-ci.org/alexgerstein/rss-aggregator.svg?branch=master)](https://travis-ci.org/alexgerstein/rss-aggregator)
 
 ## Description
 Web-based RSS feed aggregator designed to shorten the time it takes to read articles by combining related articles into digestible chunks. It is similar to cir.ca, but it allows users to input their own sources and summarization is handled algorithmically.
