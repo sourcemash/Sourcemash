@@ -1,4 +1,4 @@
-from app.database import db
+from sourcemash.database import db
 from flask.ext.security import UserMixin, RoleMixin
 
 subscriptions = db.Table('subscriptions',

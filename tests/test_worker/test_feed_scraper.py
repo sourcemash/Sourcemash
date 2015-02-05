@@ -1,6 +1,6 @@
 import pytest
 from tests.factories import feed_factories
-from app.models import Item, Feed
+from sourcemash.models import Item, Feed
 
 from worker_tasks.feed_scraper import store_items
 

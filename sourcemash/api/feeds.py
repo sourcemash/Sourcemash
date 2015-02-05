@@ -1,5 +1,5 @@
 from . import api
-from app.database import db
+from sourcemash.database import db
 from flask import abort
 from flask.ext.restful import Resource, reqparse, fields, marshal
 
@@ -7,7 +7,7 @@ from datetime import datetime, date
 
 import feedparser
 
-from app.models import Feed
+from sourcemash.models import Feed
 
 feed_fields = {
     'title': fields.String,

@@ -1,9 +1,9 @@
 
 from celery import Celery
-from app import create_app
-from app.database import db
+from sourcemash import create_app
+from sourcemash.database import db
 
-from app.models import Item, Feed
+from sourcemash.models import Item, Feed
 from datetime import datetime
 from time import mktime
 

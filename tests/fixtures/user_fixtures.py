@@ -1,7 +1,7 @@
 import pytest
 from tests.factories import user_factories, role_factories, feed_factories
 from tests.pages.login import LoginPage
-from app.models import User
+from sourcemash.models import User
 
 @pytest.fixture()
 def user(request):
