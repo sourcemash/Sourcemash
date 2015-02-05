@@ -3,9 +3,9 @@ from . import bp
 from flask import abort, render_template, redirect, url_for
 from flask.ext.security import current_user, login_required
 
-from app.feeds.forms import AddFeedForm
+from sourcemash.feeds.forms import AddFeedForm
 
-from app.models import Feed, Item
+from sourcemash.models import Feed, Item
 
 @bp.route('/')
 @bp.route('/index')

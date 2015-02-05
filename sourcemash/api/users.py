@@ -1,12 +1,12 @@
 from . import api
-from app.database import db
+from sourcemash.database import db
 
 from flask import abort
 from flask.ext.restful import Resource, fields, marshal, reqparse
 from flask.ext.security import login_user
 
-from app.database import user_datastore
-from app.models import User
+from sourcemash.database import user_datastore
+from sourcemash.models import User
 
 user_fields = {
     'email': fields.String,

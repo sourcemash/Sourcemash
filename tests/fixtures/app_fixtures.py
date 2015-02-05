@@ -3,8 +3,8 @@ import sys
 import pytest
 
 from sqlalchemy.orm import Session, scoped_session, sessionmaker
-from app import create_app
-from app.database import db as _db
+from sourcemash import create_app
+from sourcemash.database import db as _db
 from tests.factories import feed_factories, item_factories, role_factories, user_factories
 
 

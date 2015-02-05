@@ -7,9 +7,9 @@ from flask.ext.script import Manager, Shell, Server
 from flask.ext.migrate import MigrateCommand
 from flask.ext.assets import ManageAssets
 
-from app import create_app
-from app.database import db
-from app.users.models import User
+from sourcemash import create_app
+from sourcemash.database import db
+from sourcemash.users.models import User
 
 app = create_app(os.environ.get("APP_CONFIG_FILE") or "development")
 manager = Manager(app)

@@ -1,6 +1,6 @@
 from tests.factories import *
 
-from app.models import Feed
+from sourcemash.models import Feed
 
 class FeedFactory(SQLAlchemyModelFactory):
     FACTORY_FOR = Feed

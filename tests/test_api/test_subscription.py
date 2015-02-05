@@ -2,7 +2,7 @@ import pytest
 import json
 
 from tests.factories import feed_factories
-from app.models import Feed
+from sourcemash.models import Feed
 
 def check_valid_header_type(headers):
     assert headers['Content-Type'] == 'application/json'

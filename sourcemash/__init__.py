@@ -19,11 +19,11 @@ def create_app(env=None):
 	if env_config_file:
 	    app.config.from_object('config.%s' % env_config_file)
 
-	from app.api import bp as api_bp
+	from sourcemash.api import bp as api_bp
 	app.register_blueprint(api_bp)
 
 	# SQLAlchemy Database
-	from app.database import db, user_datastore, security, migrate
+	from sourcemash.database import db, user_datastore, security, migrate
 	db.init_app(app)
 	db.app = app
 	migrate.init_app(app, db)
@@ -31,7 +31,7 @@ def create_app(env=None):
 	security.init_app(app, user_datastore)
 
 	# Frontend Components (Flask-Assets)
-	from app.frontend import frontend, assets
+	from sourcemash.frontend import frontend, assets
 	app.register_blueprint(frontend.bp)
 	assets.init_app(app)
 

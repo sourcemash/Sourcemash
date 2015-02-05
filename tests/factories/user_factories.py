@@ -1,6 +1,6 @@
 from tests.factories import *
 
-from app.models import User
+from sourcemash.models import User
 from role_factories import RoleFactory
 from feed_factories import FeedFactory
 

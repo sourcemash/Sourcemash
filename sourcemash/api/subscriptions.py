@@ -1,11 +1,11 @@
 from . import api
-from app.database import db
+from sourcemash.database import db
 
 from flask import abort
 from flask.ext.restful import Resource, reqparse, fields, marshal
 from flask.ext.security import current_user, login_required
 
-from app.models import Feed
+from sourcemash.models import Feed
 import feedparser
 from datetime import datetime
 

@@ -1,6 +1,6 @@
 from tests.factories import *
 
-from app.models import Role
+from sourcemash.models import Role
 
 class RoleFactory(SQLAlchemyModelFactory):
     FACTORY_FOR = Role

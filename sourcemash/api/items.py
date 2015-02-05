@@ -1,9 +1,9 @@
 from . import api
-from app.database import db
+from sourcemash.database import db
 from flask import abort
 from flask.ext.restful import Resource, reqparse, fields, marshal
 
-from app.models import Item
+from sourcemash.models import Item
 
 item_fields = {
     'title': fields.String,

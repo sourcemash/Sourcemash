@@ -63,7 +63,7 @@ flask/
 *.db
 
 # Static File Cache
-app/frontend/static/.webassets-cache/
+sourcemash/frontend/static/.webassets-cache/
 
 # Secret
 instance/config.py
