@@ -31,20 +31,3 @@ class TestFeedListAPI:
 
         data = json.loads(r.data)
         assert len(data['feeds']) == 1
-
-    def test_post_feed_valid(self, test_client):
-        feed_data = dict(url="http://techcrunch.com/feed/")
-        r = test_client.post('/api/feeds', data=feed_data)
-
-        check_valid_header_type(r.headers)
-        assert r.status_code == 201
-
-        data = json.loads(r.data)
-        assert data['feed']['title'] == u"TechCrunch"
-
-    def test_post_feed_missing_url(self, test_client):
-        feed_data = dict()
-        r = test_client.post('/api/feeds', data=feed_data)
-
-        check_valid_header_type(r.headers)
-        assert r.status_code == 400
