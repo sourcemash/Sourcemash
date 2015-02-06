@@ -2,6 +2,7 @@ Read Your News Faster.
 
 ## Statuses
 [![Build Status](https://travis-ci.org/alexgerstein/rss-aggregator.svg?branch=master)](https://travis-ci.org/alexgerstein/rss-aggregator)
+[![Codacy Badge](https://www.codacy.com/project/badge/7e1866c374c94c0783a940d0284b6d88)](https://www.codacy.com/public/gersteinalex/Sourcemash)
 
 ## Description
 Web-based RSS feed aggregator designed to shorten the time it takes to read articles by combining related articles into digestible chunks. It is similar to cir.ca, but it allows users to input their own sources and summarization is handled algorithmically.
