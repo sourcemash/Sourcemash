@@ -1,7 +1,8 @@
 Read Your News Faster.
 
 ## Statuses
-[![Build Status](https://travis-ci.org/alexgerstein/rss-aggregator.svg?branch=master)](https://travis-ci.org/alexgerstein/rss-aggregator)
+[![Build Status](https://travis-ci.org/alexgerstein/Sourcemash.svg?branch=master)](https://travis-ci.org/alexgerstein/Sourcemash)
+[![Coverage Status](https://coveralls.io/repos/alexgerstein/Sourcemash/badge.svg)](https://coveralls.io/r/alexgerstein/Sourcemash)
 [![Codacy Badge](https://www.codacy.com/project/badge/7e1866c374c94c0783a940d0284b6d88)](https://www.codacy.com/public/gersteinalex/Sourcemash)
 
 ## Description
