@@ -18,9 +18,6 @@ feed_fields = {
 
 class FeedListAPI(Resource):
 
-    def __init__(self):
-        super(FeedListAPI, self).__init__()
-
     def get(self):
         return {'feeds': [marshal(feed, feed_fields) for feed in Feed.query.all()]}
 
