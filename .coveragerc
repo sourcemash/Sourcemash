@@ -2,9 +2,6 @@
 [run]
 branch = True
 
-[paths]
-source = sourcemash/
-
 [report]
 # Regexes for lines to exclude from consideration
 omit = sourcemash/frontend/*
