@@ -16,6 +16,7 @@ SQLALCHEMY_DATABASE_URI = ('sqlite:///' + os.path.join(basedir, 'app.db'))
 
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_REDIS_MAX_CONNECTIONS = 10
 BROKER_POOL_LIMIT = None
 
 CELERY_IMPORTS = ("worker_tasks.feed_scraper")
