@@ -7,6 +7,7 @@ class Item(db.Model):
     last_updated = db.Column(db.DateTime)
     author = db.Column(db.String(120))
     summary = db.Column(db.String(500))
+    text = db.Column(db.Text)
     feed_id = db.Column(db.Integer, db.ForeignKey('feed.id'))
 
     def __repr__(self):

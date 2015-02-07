@@ -7,6 +7,8 @@ from sourcemash.models import Item, Feed
 from datetime import datetime
 from time import mktime
 
+from readability.readability import Document
+import requests
 import feedparser
 
 import logging
@@ -17,11 +19,15 @@ app = create_app()
 celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
 celery.conf.update(app.config)
 
+
+def get_full_text(url):
+    html = requests.get(url).content
+    return Document(html).summary()
+
+
 @celery.task
 def store_items(feed):
     logging.info("Starting to parse: %s" % feed.title)
-
-    print feed.url
 
     fp = feedparser.parse(feed.url)
     for item in fp.entries:
@@ -31,7 +37,9 @@ def store_items(feed):
         if item_last_updated < feed.last_updated:
             break
 
-        new_entry = Item(title=item.title, link=item.link, 
+        text = get_full_text(item.link)
+
+        new_entry = Item(title=item.title, text=text, link=item.link, 
                             last_updated=item_last_updated, author=item.author,
                             summary=item.summary, feed_id=feed.id)
 
