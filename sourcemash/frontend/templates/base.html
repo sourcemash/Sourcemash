@@ -4,14 +4,14 @@
       <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}">
     {% endassets %}
 
-    <title>rss-aggregator</title>
+    <title>Sourcemash</title>
   </head>
 
   <header>
     <nav class="top-nav">
       <div class="container">
         <div class="nav-wrapper">
-          <a href="/" class="brand-logo">RSS-aggregator</a>
+          <a href="/" class="brand-logo">Sourcemash</a>
           <ul id="nav-mobile" class="right side-nav">
             {% if current_user.is_authenticated() %}
             <li><a href="{{ url_for('.profile') }}">Profile</a></li>
