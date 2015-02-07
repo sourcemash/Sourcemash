@@ -7,6 +7,7 @@ from sourcemash.models import Item
 
 item_fields = {
     'title': fields.String,
+    'text': fields.String,
     'link': fields.String,
     'last_updated': fields.DateTime,
     'author': fields.String,
