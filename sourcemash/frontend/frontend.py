@@ -31,7 +31,7 @@ def feeds():
 def feed(id):
 	''' Get articles & pass through to render_template '''
 	feed = Feed.query.get(id)
-	feed_items = Item.query.filter(Item.feed_id==id).all()
+	feed_items = Item.query.filter_by(feed_id=id).all()
 	
 	return render_template('feed.html',
 							feed_title=feed.title,
