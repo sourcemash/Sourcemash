@@ -12,7 +12,7 @@ from datetime import datetime
 subscription_fields = {
     'id': fields.Integer,
     'title': fields.String,
-    'url': fields.Url('.feed'),
+    'url': fields.Url('frontend.feed'),
     'uri': fields.Url('api.subscription')
 }
 
