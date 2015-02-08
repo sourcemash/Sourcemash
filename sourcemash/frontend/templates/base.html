@@ -30,10 +30,6 @@
 
   <body>
 
-    <div class="container">
-      {% block layout %}{% endblock %}
-    </div>
-
     <!--Import jQuery before materialize.js-->
     {% assets "js_vendor" %}
       <script src="{{ ASSET_URL }}"></script>
@@ -41,6 +37,10 @@
     {% assets "js_default" %}
       <script src="{{ ASSET_URL }}"></script>
     {% endassets %}
+    
+    <div class="container">
+      {% block layout %}{% endblock %}
+    </div>
 
   </body>
 </html>
