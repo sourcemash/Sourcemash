@@ -7,18 +7,18 @@
 	<h1>Feeds</h1>
 </div>
 
-<div class="row">
-  <form class="new-feed" id="add_feed_form">
-      <div class="input-field new-feed col s12 m9">
-        {{ form_field(add_feed_form.feed_url) }}
-      </div>
-      <div class="input-field submit-feed col s12 m3">
-        {{ form_field(add_feed_form.submit)}}
-      </div>
-  </form>
-</div>
-
 <div class="feeds">
+  <div class="row">
+    <form class="new-feed" id="add_feed_form">
+        <div class="input-field col s12 m9">
+          {{ form_field(add_feed_form.feed_url) }}
+        </div>
+        <div class="input-field col s12 m3">
+          {{ form_field(add_feed_form.submit)}}
+        </div>
+    </form>
+  </div>
+
   <ul id="feed-list"></ul>
 </div>
 
