@@ -26,7 +26,7 @@ class TestSubscriptionAPI:
         assert r.status_code == 200
 
         data = json.loads(r.data)
-        assert data['subscription']['uri'] == '/api/subscriptions/%d' % feed.id
+        assert data['uri'] == '/api/subscriptions/%d' % feed.id
 
     def test_get_subscription_missing(self, test_client, user):
         feed = user.subscribed.first()
@@ -78,7 +78,7 @@ class TestSubscriptionListAPI:
     def test_post_subscription_validURL_new_feed(self, test_client, user):
         self.login(test_client, user.email, user.password)
 
-        subscription_data = dict(feed_url='http://online.wsj.com/xml/rss/3_7085.xml')
+        subscription_data = dict(url='http://online.wsj.com/xml/rss/3_7085.xml')
         r = test_client.post('/api/subscriptions', data=subscription_data)
 
         check_valid_header_type(r.headers)
@@ -91,7 +91,7 @@ class TestSubscriptionListAPI:
         self.login(test_client, user.email, user.password)
 
         existent_feed = Feed.query.first()
-        subscription_data = dict(feed_url=existent_feed.url)
+        subscription_data = dict(url=existent_feed.url)
         r = test_client.post('/api/subscriptions', data=subscription_data)
 
         check_valid_header_type(r.headers)
@@ -100,9 +100,9 @@ class TestSubscriptionListAPI:
     def test_post_subscription_invalid_feed_url(self, test_client, user):
         self.login(test_client, user.email, user.password)
 
-        subscription_data = dict(feed_url='http://nonexistentURL')
+        subscription_data = dict(url='http://nonexistentURL')
         r = test_client.post('/api/subscriptions', data=subscription_data)
 
         check_valid_header_type(r.headers)
-        assert r.status_code == 400
+        assert r.status_code == 422
 

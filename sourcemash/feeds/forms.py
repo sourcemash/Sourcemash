@@ -12,5 +12,5 @@ class FeedForm(Form):
     def validate_url(form, field):
         rss_feed = feedparser.parse(field.data)
                 
-        if rss_feed['bozo']: # invalid feed
+        if rss_feed['bozo'] == 1: # invalid feed
             raise ValidationError('URL is not a valid feed')

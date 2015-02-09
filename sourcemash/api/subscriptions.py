@@ -22,7 +22,7 @@ class SubscriptionListAPI(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('url', type=str, required=True,
-                                    help='No feed url provided')
+                                    help='No url provided')
         super(SubscriptionListAPI, self).__init__()
 
     @login_required
@@ -31,17 +31,17 @@ class SubscriptionListAPI(Resource):
 
     @login_required
     def post(self):
-        form = FeedForm()
+        args = self.reqparse.parse_args()
+        form = FeedForm(obj=args)
 
         if not form.validate_on_submit():
             return form.errors, 422
 
-        url = form.url.data
+        rss_feed = feedparser.parse(form.url.data)
 
         try:
-            feed = Feed.query.filter_by(url=url).one()
+            feed = Feed.query.filter(Feed.url==rss_feed['url']).one()
         except:
-            rss_feed = feedparser.parse(url)
 
             feed = Feed(title=rss_feed['feed']['title'],
                         url=rss_feed['url'],

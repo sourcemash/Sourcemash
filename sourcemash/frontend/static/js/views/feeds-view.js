@@ -43,7 +43,7 @@ var feeds = feeds || {}; // feeds namespace
 	    return false;
 	  },
 	  clear_input: function() {
-	  	this.input.val('');
+	  	$('#url').val('');
 	  },
 	  addOne: function(feed){
 	    var view = new feeds.FeedView({model: feed});
