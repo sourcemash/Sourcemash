@@ -29,6 +29,16 @@
   </header>
 
   <body>
+    
+    <div class="container">
+      {% block layout %}{% endblock %}
+    </div>
+
+    
+    <!-- Templates -->
+    <script type="text/template" id="feed-template">
+      <p><a href=<%- url %>><%- title %></a></p>
+    </script> 
 
     <!--Import jQuery before materialize.js-->
     {% assets "js_vendor" %}
@@ -37,10 +47,9 @@
     {% assets "js_default" %}
       <script src="{{ ASSET_URL }}"></script>
     {% endassets %}
-    
-    <div class="container">
-      {% block layout %}{% endblock %}
-    </div>
+    {% assets "js_feeds" %}
+      <script src="{{ ASSET_URL }}"></script>
+    {% endassets %}
 
   </body>
 </html>

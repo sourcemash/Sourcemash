@@ -59,11 +59,6 @@ var feeds = feeds || {}; // feeds namespace
 	  }
 	});
 
-	Backbone.View.prototype.close = function() {
-		this.remove();
-		this.unbind();
-	};
-
 //--------------
 // Initializers
 //--------------   

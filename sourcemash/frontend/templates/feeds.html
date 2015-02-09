@@ -23,13 +23,4 @@
   <ul id="feed-list"></ul>
 </div>
 
-<!-- Templates -->
-<script type="text/template" id="feed-template">
-  <p><a href=<%- url %>><%- title %></a></p>
-</script> 
-
-{% assets "js_feeds" %}
-  <script src="{{ ASSET_URL }}"></script>
-{% endassets %}
-
 {% endblock %}
