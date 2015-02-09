@@ -1,0 +1,65 @@
+var feeds = feeds || {}; // feeds namespace
+
+//---------------------
+// Feed, FeedList Views
+//---------------------
+(function($) {
+	'use strict';
+
+	// renders individual todo items list (li)
+	feeds.FeedView = Backbone.View.extend({
+	  tagName: 'li',
+	  template: _.template($('#feed-template').html()),
+	  render: function(){
+	    this.$el.html(this.template(this.model.toJSON()));
+	    return this; // enable chained calls
+	  }
+	});
+
+	// renders the full list of todo items calling TodoView for each one.
+	feeds.FeedsView = Backbone.View.extend({
+	  el: '.feeds',
+	  initialize: function () {
+	    this.input = $('#feed_url');
+	    feeds.feedList.on('sync', this.addAll, this);
+	    feeds.feedList.fetch(); 
+	  },
+	  events: {
+	    'keypress #feed_url': 'createFeedOnEnter',
+	    'click button[type="submit"]': 'createFeedOnClick'
+	  },
+	  createFeedOnClick: function(e){
+	    feeds.feedList.create(this.newAttributes(), {wait: true});
+	    this.input.val(''); // clean input box
+	    feeds.feedList.fetch(); // forced refresh
+	  },
+	  createFeedOnEnter: function(e){
+	  	if ( e.which !== 13 || !this.input.val().trim() ) { // ENTER_KEY = 13
+	      return;
+	    }
+	    feeds.feedList.create(this.newAttributes(), {wait: true});
+	    this.input.val(''); // clean input box
+	    feeds.feedList.fetch(); // forced refresh
+	  },
+	  addOne: function(feed){
+	    var view = new feeds.FeedView({model: feed});
+	    $('#feed-list').append(view.render().el);
+	  },
+	  addAll: function(){
+	    $('#feed-list').html(''); // clean the todo list
+	    feeds.feedList.each(this.addOne, this);
+	  },
+	  newAttributes: function(){
+	    return {
+	      feed_url: this.input.val()
+	    }
+	  }
+	});
+
+//--------------
+// Initializers
+//--------------   
+
+feeds.FeedsView = new feeds.FeedsView(); 
+	
+})(jQuery);
