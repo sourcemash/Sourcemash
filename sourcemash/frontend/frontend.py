@@ -3,7 +3,7 @@ from . import bp
 from flask import abort, render_template, redirect, url_for
 from flask.ext.security import current_user, login_required
 
-from sourcemash.feeds.forms import AddFeedForm
+from sourcemash.feeds.forms import FeedForm
 
 from sourcemash.models import Feed, Item
 
@@ -25,7 +25,7 @@ def feeds():
 
     return render_template('feeds.html',
                             subscriptions=users_subscriptions,
-                            add_feed_form=AddFeedForm())
+                            feed_form=FeedForm())
 
 @bp.route('/feeds/<int:id>')
 def feed(id):

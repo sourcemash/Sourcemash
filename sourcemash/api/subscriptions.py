@@ -1,11 +1,12 @@
 from . import api
 from sourcemash.database import db
 
-from flask import abort
+from flask import abort, request
 from flask.ext.restful import Resource, reqparse, fields, marshal
 from flask.ext.security import current_user, login_required
 
 from sourcemash.models import Feed
+from sourcemash.forms import FeedForm
 import feedparser
 from datetime import datetime
 
@@ -20,7 +21,7 @@ class SubscriptionListAPI(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('feed_url', type=str, required=True,
+        self.reqparse.add_argument('url', type=str, required=True,
                                     help='No feed url provided')
         super(SubscriptionListAPI, self).__init__()
 
@@ -30,15 +31,17 @@ class SubscriptionListAPI(Resource):
 
     @login_required
     def post(self):
-        args = self.reqparse.parse_args()
+        form = FeedForm()
+
+        if not form.validate_on_submit():
+            return form.errors, 422
+
+        url = form.url.data
 
         try:
-            feed = Feed.query.filter(Feed.url==args.feed_url).one()
+            feed = Feed.query.filter_by(url=url).one()
         except:
-            rss_feed = feedparser.parse(args.feed_url)
-            
-            if rss_feed['bozo']: # invalid feed
-                return {'errors': {"feed_url": "URL is not a valid feed."}}, 400
+            rss_feed = feedparser.parse(url)
 
             feed = Feed(title=rss_feed['feed']['title'],
                         url=rss_feed['url'],
@@ -49,13 +52,13 @@ class SubscriptionListAPI(Resource):
 
         try:
             subscription = current_user.subscribed.filter(Feed.id==feed.id).one()
-            return {'errors': {"feed_url": "Already subscribed."}}, 409
+            return {"url": "Already subscribed"}, 409
         except:
             current_user.subscribed.append(feed)
             db.session.commit()
 
         subscription = current_user.subscribed.filter(Feed.id==feed.id).first()
-        return {'subscription': marshal(subscription, subscription_fields)}, 201
+        return marshal(subscription, subscription_fields), 201
 
 class SubscriptionAPI(Resource):
 
@@ -71,7 +74,7 @@ class SubscriptionAPI(Resource):
         if not subscription:
             abort(404)
 
-        return {'subscription': marshal(subscription, subscription_fields)}
+        return marshal(subscription, subscription_fields)
 
     @login_required
     def put(self, id):
@@ -87,7 +90,7 @@ class SubscriptionAPI(Resource):
 
         db.session.commit()
 
-        return {'subscription': marshal(subscription, subscription_fields)}
+        return marshal(subscription, subscription_fields)
 
     @login_required
     def delete(self, id):

@@ -6,11 +6,6 @@ var feeds = feeds || {}; // feeds namespace
 (function() {
 	'use strict';
 
-	feeds.Feed = Backbone.Model.extend({
-	  defaults: {
-	    url: '',
-	    title: ''
-	  }
-	});
+	feeds.Feed = Backbone.Model.extend({});
 	
 })();
