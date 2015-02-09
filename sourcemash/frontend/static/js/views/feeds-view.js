@@ -25,24 +25,21 @@ var feeds = feeds || {}; // feeds namespace
 	    feeds.feedList.fetch(); 
 	  },
 	  events: {
-	    'keypress #feed_url': 'keyPressEventHandler',
-	    'click button[type="submit"]': 'createFeedOnEnter'
+	    'keypress #feed_url': 'createFeedOnEnter',
+	    'click button[type="submit"]': 'createFeedOnClick'
 	  },
-	  createFeedOnEnter: function(e){
-	    e.stopPropagation();
+	  createFeedOnClick: function(e){
 	    feeds.feedList.create(this.newAttributes(), {wait: true});
 	    this.input.val(''); // clean input box
 	    feeds.feedList.fetch(); // forced refresh
-	    return false;
 	  },
-	  keyPressEventHandler: function(e){
+	  createFeedOnEnter: function(e){
 	  	if ( e.which !== 13 || !this.input.val().trim() ) { // ENTER_KEY = 13
 	      return;
 	    }
 	    feeds.feedList.create(this.newAttributes(), {wait: true});
 	    this.input.val(''); // clean input box
 	    feeds.feedList.fetch(); // forced refresh
-	    return false;
 	  },
 	  addOne: function(feed){
 	    var view = new feeds.FeedView({model: feed});
