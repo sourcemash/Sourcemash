@@ -30,7 +30,7 @@ var feeds = feeds || {}; // feeds namespace
 	    'click button[type="submit"]': 'createFeedOnClick'
 	  },
 	  createFeedOnClick: function(e){
-	    feeds.feedList.create(this.newAttributes(), {wait: true, success: this.clear_input});
+	    feeds.feedList.create(this.newAttributes(), {wait: true, success: this.clearInput});
 	    feeds.feedList.fetch(); // forced refresh
 	    return false;
 	  },
@@ -38,11 +38,11 @@ var feeds = feeds || {}; // feeds namespace
 	  	if ( e.which !== 13 || !this.input.val().trim() ) { // ENTER_KEY = 13
 	      return;
 	    }
-	    feeds.feedList.create(this.newAttributes(), {wait: true, success: this.clear_input});
+	    feeds.feedList.create(this.newAttributes(), {wait: true, success: this.clearInput});
 	    feeds.feedList.fetch(); // forced refresh
 	    return false;
 	  },
-	  clear_input: function() {
+	  clearInput: function() {
 	  	$('#url').val('');
 	  },
 	  addOne: function(feed){

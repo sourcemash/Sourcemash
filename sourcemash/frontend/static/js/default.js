@@ -4,13 +4,13 @@ $( document ).ready(function(){
 
 $(document).ajaxError(function (e, xhr, options) {
   var errors = xhr.responseJSON;
-  for (error_field in errors) {
-    if (errors.hasOwnProperty(error_field)) {
-        input_field = $("#"+ error_field);
-        input_field.removeClass("valid");
-        input_field.addClass("invalid");
-        field_errors = input_field.siblings(".errors");
-        field_errors.text(errors[error_field]);
+  for (errorField in errors) {
+    if (errors.hasOwnProperty(errorField)) {
+        var inputField = $("#"+ errorField);
+        inputField.removeClass("valid");
+        inputField.addClass("invalid");
+        var fieldErrors = inputField.siblings(".errors");
+        fieldErrors.text(errors[errorField]);
     }
   }
 });
