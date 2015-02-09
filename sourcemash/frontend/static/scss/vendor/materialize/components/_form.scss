@@ -99,6 +99,11 @@ label {
 
 }
 
+// Input Errors
+.errors {
+  color: color("red", "base");
+}
+
 // Default textarea
 textarea {
    width: 100%;

@@ -11,12 +11,13 @@
 <div class="feeds">
   <div class="row">
     <form class="new-feed" id="add_feed_form">
-        <div class="input-field col s12 m9">
-          {{ form_field(add_feed_form.feed_url) }}
-        </div>
-        <div class="input-field col s12 m3">
-          {{ form_field(add_feed_form.submit)}}
-        </div>
+      {{feed_form.hidden_tag()}}
+      <div class="input-field col s12 m9">
+        {{ form_field(feed_form.url) }}
+      </div>
+      <div class="input-field col s12 m3">
+        {{ form_field(feed_form.submit) }}
+      </div>
     </form>
   </div>
 

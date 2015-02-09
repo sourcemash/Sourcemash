@@ -20,26 +20,30 @@ var feeds = feeds || {}; // feeds namespace
 	feeds.FeedsView = Backbone.View.extend({
 	  el: '.feeds',
 	  initialize: function () {
-	    this.input = $('#feed_url');
+	    this.input = $('#url');
+	    this.csrf = $("#csrf_token")
 	    feeds.feedList.on('sync', this.addAll, this);
 	    feeds.feedList.fetch(); 
 	  },
 	  events: {
-	    'keypress #feed_url': 'createFeedOnEnter',
+	    'keypress #url': 'createFeedOnEnter',
 	    'click button[type="submit"]': 'createFeedOnClick'
 	  },
 	  createFeedOnClick: function(e){
-	    feeds.feedList.create(this.newAttributes(), {wait: true});
-	    this.input.val(''); // clean input box
+	    feeds.feedList.create(this.newAttributes(), {wait: true, success: this.clearInput});
 	    feeds.feedList.fetch(); // forced refresh
+	    return false;
 	  },
 	  createFeedOnEnter: function(e){
 	  	if ( e.which !== 13 || !this.input.val().trim() ) { // ENTER_KEY = 13
 	      return;
 	    }
-	    feeds.feedList.create(this.newAttributes(), {wait: true});
-	    this.input.val(''); // clean input box
+	    feeds.feedList.create(this.newAttributes(), {wait: true, success: this.clearInput});
 	    feeds.feedList.fetch(); // forced refresh
+	    return false;
+	  },
+	  clearInput: function() {
+	  	$('#url').val('');
 	  },
 	  addOne: function(feed){
 	    var view = new feeds.FeedView({model: feed});
@@ -51,7 +55,8 @@ var feeds = feeds || {}; // feeds namespace
 	  },
 	  newAttributes: function(){
 	    return {
-	      feed_url: this.input.val()
+	      url: this.input.val(),
+	      csrf_token: this.csrf.val()
 	    }
 	  }
 	});
