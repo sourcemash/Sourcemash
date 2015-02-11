@@ -19,8 +19,10 @@ manager = Manager(app)
 TEST_CMD = "py.test --boxed -n10 -k 'not functional' tests/"
 FUNCTIONAL_TEST_CMD = "./functional_test.sh"
 
-TWENTY_MINUTES = 1200           # seconds
-CATEGORY_DICT_LIFETIME = 200    # iterations
+CATEGORY_DICT_LIFETIME = 2      # days
+SCRAPE_INTERVAL = 1200          # seconds
+SECONDS_PER_DAY = 86400
+ITERATIONS_BEFORE_RESET = CATEGORY_DICT_LIFETIME * SECONDS_PER_DAY / SCRAPE_INTERVAL
 
 def _make_context():
     """Return context dict for a shell session so you can access
@@ -46,13 +48,13 @@ def scrape():
     iterations = 0
 
     while True:
-        if (iterations % CATEGORY_DICT_LIFETIME) == 0:
-            scraper.reset_title_categories
+        if (iterations % ITERATIONS_BEFORE_RESET) == 0:
+            scraper.reset_title_categories()
 
         scraper.scrape_articles()
 
         iterations += 1
-        time.sleep(TWENTY_MINUTES)
+        time.sleep(SCRAPE_INTERVAL)
 
 
 manager.add_command('server', Server())
