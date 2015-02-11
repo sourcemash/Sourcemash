@@ -28,7 +28,7 @@ class Scraper:
 
     def parse_title_categories(self, titles):
         for title in titles:
-            self.title_categories.update(title.lower().split())
+            self.title_categories.update(title.split())
 
 
     def get_full_text(self, url):

@@ -19,15 +19,15 @@ class TestScraper:
         scraper = Scraper()
         scraper.parse_title_categories([item.title])
 
-        assert scraper.title_categories['item'] == 1
+        assert scraper.title_categories['Item'] == 1
 
     def test_reset_title_categories(self, item):
         scraper = Scraper()
         scraper.parse_title_categories([item.title])
 
-        assert scraper.title_categories['item'] == 1
+        assert scraper.title_categories['Item'] == 1
 
         scraper.reset_title_categories()
 
         # Counts should have been set back to zero
-        assert scraper.title_categories['item'] == 1
+        assert scraper.title_categories['Item'] == 1
