@@ -4,6 +4,7 @@ from sourcemash.database import db
 from sourcemash.models import Item, Feed
 from datetime import datetime
 from time import mktime
+from string import punctuation
 from collections import Counter
 
 from readability.readability import Document
@@ -28,7 +29,7 @@ class Scraper:
 
     def parse_title_categories(self, titles):
         for title in titles:
-            self.title_categories.update(title.split())
+            self.title_categories.update([word.strip(punctuation) for word in title.split()])
 
 
     def get_full_text(self, url):
