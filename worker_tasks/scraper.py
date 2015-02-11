@@ -2,7 +2,7 @@
 from sourcemash.database import db
 
 from sourcemash.models import Item, Feed
-from datetime import datetime
+from datetime import datetime, timedelta
 from time import mktime
 from string import punctuation
 from collections import Counter
@@ -23,7 +23,8 @@ class Scraper:
     def reset_title_categories(self):
         self.title_categories.clear()
 
-        titles = [item.title for item in Item.query.filter_by(category_1=None).all()]
+        one_day_ago = datetime.now() - timedelta(hours=24)
+        titles = [item.title for item in Item.query.filter(Item.category_1==None, Item.last_updated>=one_day_ago).all()]
         self.parse_title_categories(titles)
 
 
