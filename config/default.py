@@ -1,8 +1,6 @@
 import os
 import logging
 
-from celery.schedules import crontab
-
 basedir = os.path.abspath(os.path.dirname('run.py'))
 
 DEBUG = False
@@ -13,20 +11,6 @@ WTF_CSRF_ENABLED = True
 WTF_CSRF_SECRET_KEY = 'you-will-never-guess'
 
 SQLALCHEMY_DATABASE_URI = ('sqlite:///' + os.path.join(basedir, 'app.db'))
-
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-CELERY_REDIS_MAX_CONNECTIONS = 1
-
-CELERY_IMPORTS = ("worker_tasks.feed_scraper")
-
-CELERYBEAT_SCHEDULE = {
-    'feed-scraper': {
-        'task': 'worker_tasks.feed_scraper.ingest_feeds',
-        'schedule': crontab(minute="0,20,40"),
-        'args': ()
-    }
-}
 
 # Flask security config variables- https://pythonhosted.org/Flask-Security/configuration.html
 SECURITY_FLASH_MESSAGES = True

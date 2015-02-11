@@ -2,19 +2,32 @@ import pytest
 from tests.factories import feed_factories
 from sourcemash.models import Item, Feed
 
-from worker_tasks.feed_scraper import get_full_text, store_items
+from worker_tasks.scraper import Scraper
 
 from datetime import datetime
 
-class TestIngestFeeds:
-
-    def test_ingest_feeds(self, real_feed):
-        for feed in Feed.query.all():
-            store_items.run(feed)
-            assert feed.last_updated > datetime.min
-        assert len(Item.query.all()) > 0
-
+class TestScraper:
 
     def test_get_full_text(self):
-        text = get_full_text("http://techcrunch.com/?p=1116410")
+        scraper = Scraper()
+
+        text = scraper.get_full_text("http://techcrunch.com/?p=1116410")
         assert "Co-founder Bora Celik told me at the SF Music Tech Conference" in text
+
+
+    def test_parse_title_categories(self, item):
+        scraper = Scraper()
+        scraper.parse_title_categories([item.title])
+
+        assert scraper.title_categories['item'] == 1
+
+    def test_reset_title_categories(self, item):
+        scraper = Scraper()
+        scraper.parse_title_categories([item.title])
+
+        assert scraper.title_categories['item'] == 1
+
+        scraper.reset_title_categories()
+
+        # Counts should have been set back to zero
+        assert scraper.title_categories['item'] == 1

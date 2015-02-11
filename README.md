@@ -25,10 +25,7 @@ The site was built for the CS98 course at Dartmouth College.
 
 ## Run Locally
 1. Start up a local server: ```python manage.py server```
-2. Start up celery worker to parse items:
-	1. Start redis-server: ```redis-server --daemonize yes```
-	2. Start celery beat: ```celery -A worker_tasks.feed_scraper.celery worker --loglevel=debug --beat```
-
+2. Start up the scraper: ```python manage.py scrape```
 
 ## Tests
 * To run the basic unittests, run ```python manage.py tests```.

@@ -9,6 +9,9 @@ class Item(db.Model):
     summary = db.Column(db.String(500))
     text = db.Column(db.Text)
     feed_id = db.Column(db.Integer, db.ForeignKey('feed.id'))
+    category_1 = db.Column(db.String(100))
+    category_2 = db.Column(db.String(100))
+
 
     def __repr__(self):
         return "<Item %r (%r)>" % (self.title, self.link)
