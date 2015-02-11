@@ -5,10 +5,10 @@ def categorizeItem(title, text, category_dict):
 	categories = Counter()
 
 	# Only consider words present in category dictonary
-	title = title.split().filter(lambda word: word in category_dict)
-	text = text.split().filter(lambda word: word in category_dict)
-	title = map(strip(punctuation), title)
-	text = map(strip(punctuation), text)
+	title = filter(lambda word: word in category_dict, title.split())
+	text = filter(lambda word: word in category_dict, text.split())
+	title = [word.strip(punctuation) for word in title]
+	text = [word.strip(punctuation) for word in text]
 
 	# Get word counts from title, text of article
 	categories.update(title + text)
