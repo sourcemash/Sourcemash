@@ -12,11 +12,13 @@ def categorizeItem(title, text, category_dict):
 	# Get word counts from title, text of article
 	for source in [title, text]:
 		for word in source:
+			word = word.strip()
 			if word in category_dict:
 				categories.update([word])
 
 	# Give weights to categories found in title
 	for word in title:
+		word = word.strip()
 		if word in category_dict:
 			categories[word] *= 2
 
@@ -24,19 +26,3 @@ def categorizeItem(title, text, category_dict):
 	most_frequent = categories.most_common(2)
 
 	return (most_frequent[0][0], most_frequent[1][0])
-
-if __name__=='__main__':
-	txt_file = "sample_txt.txt"
-	item_file = open(txt_file)
-	
-	category_dict = Counter()
-
-	title = item_file.readline()
-	category_dict.update(title.split())
-
-	text = item_file.read()
-	
-	(cat1, cat2) = categorizeItem(title, text, category_dict)
-
-	print "\nTitle:", title,
-	print "Catgories:", cat1, "&", cat2
