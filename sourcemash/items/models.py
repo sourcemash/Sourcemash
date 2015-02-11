@@ -6,7 +6,7 @@ class Item(db.Model):
     link = db.Column(db.String(120), index=True)
     last_updated = db.Column(db.DateTime)
     author = db.Column(db.String(120))
-    summary = db.Column(db.String(500))
+    summary = db.Column(db.Text)
     text = db.Column(db.Text)
     feed_id = db.Column(db.Integer, db.ForeignKey('feed.id'))
     category_1 = db.Column(db.String(100))
