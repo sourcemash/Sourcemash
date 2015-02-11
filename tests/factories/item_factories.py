@@ -1,7 +1,7 @@
 from tests.factories import *
 
 from sourcemash.models import Item
-from feed_factories import FeedFactory, NYTFeedFactory
+from feed_factories import FeedFactory
 
 class ItemFactory(SQLAlchemyModelFactory):
     FACTORY_FOR = Item
