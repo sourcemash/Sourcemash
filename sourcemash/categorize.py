@@ -2,6 +2,8 @@ from collections import Counter
 from string import punctuation
 
 def categorizeItem(title, text, category_dict):
+	cat1 = ""
+	cat2 = ""
 	categories = Counter()
 
 	# Only consider words present in category dictonary
@@ -20,4 +22,9 @@ def categorizeItem(title, text, category_dict):
 	# Return top 2 words in categories
 	most_frequent = categories.most_common(2)
 
-	return (most_frequent[0][0], most_frequent[1][0])
+	if len(most_frequent) > 0:
+		cat1 = most_frequent[0][0]
+		if len(most_frequent) > 1:
+			cat2 = most_frequent[1][0]
+
+	return cat1, cat2

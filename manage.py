@@ -13,6 +13,8 @@ from sourcemash.database import db
 from sourcemash.users.models import User
 from worker_tasks.scraper import Scraper
 
+import logging
+
 app = create_app(os.environ.get("APP_CONFIG_FILE") or "development")
 manager = Manager(app)
 
@@ -48,12 +50,14 @@ def scrape():
     iterations = 0
 
     while True:
+        logging.info("Starting scrape...")
         if (iterations % ITERATIONS_BEFORE_RESET) == 0:
             scraper.reset_title_categories()
 
         scraper.scrape_articles()
 
         iterations += 1
+        logging.info("Finished scrape. Zzz...")
         time.sleep(SCRAPE_INTERVAL)
 
 
