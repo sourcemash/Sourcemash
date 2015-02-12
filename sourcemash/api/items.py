@@ -15,6 +15,8 @@ item_fields = {
     'category_1': fields.String,
     'category_2': fields.String,
     'summary': fields.String,
+    'category_1': fields.String,
+    'category_2': fields.String,
     'uri': fields.Url('api.item')
 }
 
