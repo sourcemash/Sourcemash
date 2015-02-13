@@ -1,7 +1,7 @@
 from collections import Counter
 from string import punctuation
 
-def categorizeItem(title, text, category_dict):
+def categorize_item(title, text, category_dict):
 	cat1 = ""
 	cat2 = ""
 	categories = Counter()

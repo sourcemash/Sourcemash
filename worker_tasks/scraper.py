@@ -2,7 +2,7 @@
 from sourcemash.database import db
 
 from sourcemash.models import Item, Feed
-from sourcemash.categorize import categorizeItem
+from sourcemash.categorize import categorize_item
 from datetime import datetime, timedelta
 from time import mktime
 from string import punctuation
@@ -79,8 +79,8 @@ class Scraper:
 
         # Assign categories to articles after all feeds are processed
         for item in Item.query.filter_by(category_1=None).all():
-            (cat1, cat2) = categorizeItem(item.title, item.text, self.title_categories)
+            (cat1, cat2) = categorize_item(item.title, item.text, self.title_categories)
             item.category_1 = cat1
             item.category_2 = cat2
             db.session.commit()
-            logging.info("Categorized item %s: %s, %s" % (item.title, item.category_1, item.category_2))
+            logging.info("CATEGORIZED [%s]: (%s, %s)" % (item.title, item.category_1, item.category_2))

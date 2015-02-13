@@ -8,6 +8,6 @@ class TestCategorize:
 		category_dict = Counter()
 		category_dict.update(ebolaItem.title.split())
 		
-		(cat1, cat2) = categorizeItem(ebolaItem.title, ebolaItem.text, category_dict)
+		(cat1, cat2) = categorize_item(ebolaItem.title, ebolaItem.text, category_dict)
 
 		assert (cat1, cat2) == ("Ebola", "West")
