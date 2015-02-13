@@ -49,8 +49,6 @@ def session(db, request):
     feed_factories.NYTFeedFactory._meta.sqlalchemy_session = session
     user_factories.UserFactory._meta.sqlalchemy_session = session
     item_factories.ItemFactory._meta.sqlalchemy_session = session
-    item_factories.EbolaItemFactory._meta.sqlalchemy_session = session
-    item_factories.OfTheItemFactory._meta.sqlalchemy_session = session
     role_factories.RoleFactory._meta.sqlalchemy_session = session
 
     yield db.session
