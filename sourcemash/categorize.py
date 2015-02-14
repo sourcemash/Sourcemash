@@ -41,7 +41,7 @@ STOP_WORDS = [ "a", "about", "above", "above", "across", "after", "afterwards", 
     "whereas", "whereby", "wherein", "whereupon", "wherever", "whether", "which", \
     "while", "whither", "who", "whoever", "whole", "whom", "whose", "why", "will", \
     "with", "within", "without", "would", "yet", "you", "your", "yours", "yourself", \
-    "yourselves", "the" ]
+    "yourselves", "the" ] # Source: http://xpo6.com/list-of-english-stop-words/
 
 class Categorizer:
 
