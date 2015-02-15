@@ -10,9 +10,11 @@ from flask.ext.assets import ManageAssets
 
 from sourcemash import create_app
 from sourcemash.database import db
-from sourcemash.users.models import User
+from sourcemash.models import User, Feed
 from sourcemash.categorize import Categorizer
 from worker_tasks.scraper import scrape_articles
+
+from datetime import datetime
 
 import logging
 
@@ -61,6 +63,28 @@ def scrape():
         logging.info("Finished scrape. Zzz...")
         time.sleep(SCRAPE_INTERVAL)
 
+@manager.command
+def seed():
+    """Add seed data to the database"""
+    """Required: Need to delete database & run db upgrade first"""
+    # One user
+    user = User(email="user1@sourcemash.com", password="password")
+    db.session.add(user)
+    db.session.commit()
+
+    # One feed
+    feed = Feed(id=1, title='TechCrunch > Startups', 
+                url="http://feeds.feedburner.com/techcrunch/startups?format=xml",
+                last_updated = datetime.min)
+    db.session.add(feed)
+    db.session.commit()
+
+    # Subscribe user to feed
+    user.subscribed.append(feed)
+    db.session.commit()
+
+    # Scrape articles for feed
+    scrape_articles(Categorizer())
 
 manager.add_command('server', Server())
 manager.add_command('shell', Shell(make_context=_make_context))
