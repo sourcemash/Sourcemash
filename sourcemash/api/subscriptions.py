@@ -70,7 +70,6 @@ class SubscriptionAPI(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('mergeable', type=bool)
         super(SubscriptionAPI, self).__init__()
 
     @login_required
@@ -94,9 +93,6 @@ class SubscriptionAPI(Resource):
             abort(404)
 
         subscription.feed = Feed.query.get(id)
-
-        if args.mergeable:
-            subscription['mergeable'] = args.mergeable
 
         db.session.commit()
 

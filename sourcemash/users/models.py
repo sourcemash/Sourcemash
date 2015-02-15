@@ -3,8 +3,7 @@ from flask.ext.security import UserMixin, RoleMixin
 
 subscriptions = db.Table('subscriptions',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-    db.Column('feed_id', db.Integer, db.ForeignKey('feed.id')),
-    db.Column('mergeable', db.Boolean)
+    db.Column('feed_id', db.Integer, db.ForeignKey('feed.id'))
 )
 
 role_users = db.Table('roles_users',
