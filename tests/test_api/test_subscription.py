@@ -26,8 +26,6 @@ class TestSubscriptionAPI:
         assert r.status_code == 200
 
         data = json.loads(r.data)
-
-        print data
         assert data['subscription']['id'] == feed.id
         assert data['subscription']['feed']['id'] == feed.id
 
