@@ -4,6 +4,8 @@ from datetime import datetime, timedelta
 
 from sourcemash.models import Item
 
+TITLE_WORD_WEIGHT = 2
+
 STOP_WORDS = [ "a", "about", "above", "above", "across", "after", "afterwards", \
     "again", "against", "all", "almost", "alone", "along", "already", \
     "also","although","always","am","among", "amongst", "amoungst", \
@@ -64,7 +66,7 @@ class Categorizer:
 
         # Give weights to categories found in title
         for word in title:
-            categories[word] *= 2
+            categories[word] *= TITLE_WORD_WEIGHT
 
         # Return top 2 words in categories
         most_frequent = categories.most_common(2)

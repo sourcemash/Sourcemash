@@ -11,7 +11,8 @@ from flask.ext.assets import ManageAssets
 from sourcemash import create_app
 from sourcemash.database import db
 from sourcemash.users.models import User
-from worker_tasks.scraper import scrape_articles, reset_title_categories
+from sourcemash.categorize import Categorizer
+from worker_tasks.scraper import scrape_articles
 
 import logging
 
@@ -45,15 +46,16 @@ def test(all=False):
 
 @manager.command
 def scrape():
-    """Start an infinte loop to scrape articles."""
+    """Start an infinte loop to scrape & categorize articles."""
     iterations = 0
+    categorizer = Categorizer()
 
     while True:
         logging.info("Starting scrape...")
         if (iterations % ITERATIONS_BEFORE_RESET) == 0:
-            reset_title_categories()
+            categorizer.reset_title_categories()
 
-        scrape_articles()
+        scrape_articles(categorizer)
 
         iterations += 1
         logging.info("Finished scrape. Zzz...")

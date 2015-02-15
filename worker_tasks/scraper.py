@@ -12,12 +12,10 @@ import feedparser
 
 import logging
 
-categorizer = Categorizer()
-
-def scrape_articles():
+def scrape_articles(categorizer):
     # Pull down all articles from RSS feeds
     for feed in Feed.query.all():
-        _store_items_and_category_counts(feed)
+        _store_items_and_category_counts(feed, categorizer)
 
     # Assign categories to articles after all feeds are processed
     for item in Item.query.filter_by(category_1=None).all():
@@ -28,16 +26,12 @@ def scrape_articles():
         logging.info("CATEGORIZED [%s]: (%s, %s)" % (item.title, item.category_1, item.category_2))
 
 
-def reset_title_categories():
-    categorizer.reset_title_categories()
-
-
 def _get_full_text(url):
     html = requests.get(url).content
     return Document(html).summary()
 
 
-def _store_items_and_category_counts(feed):
+def _store_items_and_category_counts(feed, categorizer):
     logging.info("Starting to parse: %s" % feed.title)
 
     fp = feedparser.parse(feed.url)
