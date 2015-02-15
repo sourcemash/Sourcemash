@@ -40,7 +40,7 @@ class SubscriptionListAPI(Resource):
         form = FeedForm(obj=args)
 
         if not form.validate_on_submit():
-            return form.errors, 422
+            return {"errors": form.errors}, 422
 
         rss_feed = feedparser.parse(form.url.data)
 
@@ -57,7 +57,7 @@ class SubscriptionListAPI(Resource):
 
         try:
             subscription = current_user.subscribed.filter(Feed.id==feed.id).one()
-            return {"url": "Already subscribed"}, 409
+            return {"errors": {"url": ["Already subscribed"]}}, 409
         except:
             current_user.subscribed.append(feed)
             db.session.commit()

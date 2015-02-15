@@ -31,3 +31,22 @@ class TestFeeds:
         page = DashboardPage(driver)
         page.navigate()
         assert feed.title in page.get_feeds_list_text()
+
+    def test_add_valid_url(self, db, driver, logged_in_user, real_feed):
+        page = DashboardPage(driver)
+        page.navigate()
+
+        page.type_into_url_field(real_feed.url)
+        page.click_submit_button()
+
+        assert real_feed.title in page.get_feeds_list_text(interval=10)
+
+    def test_add_invalid_url(self, db, driver, logged_in_user, feed):
+        page = DashboardPage(driver)
+        page.navigate()
+
+        page.type_into_url_field(feed.url)
+        page.click_submit_button()
+
+        assert feed.title not in page.get_feeds_list_text(interval=10)
+        assert "not a valid feed" in page.get_url_input_errors_text()

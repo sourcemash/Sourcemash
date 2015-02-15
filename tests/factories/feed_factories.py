@@ -12,5 +12,5 @@ class FeedFactory(SQLAlchemyModelFactory):
     last_updated = datetime.min
 
 class NYTFeedFactory(FeedFactory):
-    title = "NYTimes"
+    title = "NYT > Home Page"
     url = "http://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml"

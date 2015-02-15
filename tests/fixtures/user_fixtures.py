@@ -13,6 +13,12 @@ def userWithFeed(request):
     return user_factories.UserFactory(subscribed=[feed])
 
 @pytest.fixture()
+def userWithRealFeed(request):
+    feed = feed_factories.NYTFeedFactory()
+    return user_factories.UserFactory(subscribed=[feed])
+
+
+@pytest.fixture()
 def logged_in_user(db, driver):
     user = User(email="test@gmail.com", password="pass", active=True)
     db.session.add(user)
