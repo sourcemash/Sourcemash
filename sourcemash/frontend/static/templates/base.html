@@ -15,7 +15,7 @@
           <ul id="nav-mobile" class="right side-nav">
             {% if current_user.is_authenticated() %}
             <li><a href="{{ url_for('.profile') }}">Profile</a></li>
-            <li><a href="{{ url_for('.feeds') }}">Feeds</a></li>
+            <li><a href="{{ url_for('.dashboard') }}">Dashboard</a></li>
             <li><a href="{{ url_for_security('logout') }}">Logout</a></li>
             {% else %}
             <li><a href="{{ url_for_security('login') }}">Login</a></li>
@@ -34,12 +34,6 @@
       {% block layout %}{% endblock %}
     </div>
 
-    
-    <!-- Templates -->
-    <script type="text/template" id="feed-template">
-      <p><a href=<%- url %>><%- title %></a></p>
-    </script> 
-
     <!--Import jQuery before materialize.js-->
     {% assets "js_vendor" %}
       <script src="{{ ASSET_URL }}"></script>
@@ -47,9 +41,11 @@
     {% assets "js_default" %}
       <script src="{{ ASSET_URL }}"></script>
     {% endassets %}
-    {% assets "js_feeds" %}
+    {% assets "js_templates" %}
       <script src="{{ ASSET_URL }}"></script>
     {% endassets %}
-
+    {% assets "js_backbone" %}
+      <script src="{{ ASSET_URL }}"></script>
+    {% endassets %}
   </body>
 </html>

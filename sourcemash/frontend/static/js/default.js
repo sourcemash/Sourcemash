@@ -14,8 +14,3 @@ $(document).ajaxError(function (e, xhr, options) {
     }
   }
 });
-
-Backbone.View.prototype.close = function() {
-	this.remove();
-	this.unbind();
-};

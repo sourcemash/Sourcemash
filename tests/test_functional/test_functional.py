@@ -1,6 +1,6 @@
 import pytest
 from tests.pages.login import LoginPage
-from tests.pages.feeds import FeedsPage
+from tests.pages.dashboard import DashboardPage
 
 class TestLogin:
 
@@ -28,6 +28,6 @@ class TestFeeds:
         logged_in_user.subscribed.append(feed)
         db.session.commit()
 
-        page = FeedsPage(driver)
+        page = DashboardPage(driver)
         page.navigate()
         assert feed.title in page.get_feeds_list_text()

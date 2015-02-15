@@ -6,6 +6,7 @@ from flask.ext.restful import Resource, reqparse, fields, marshal
 from sourcemash.models import Item
 
 item_fields = {
+    'id': fields.Integer,
     'title': fields.String,
     'text': fields.String,
     'link': fields.String,
@@ -13,7 +14,6 @@ item_fields = {
     'author': fields.String,
     'category': fields.String,
     'summary': fields.String,
-    'uri': fields.Url('api.item')
 }
 
 class ItemListAPI(Resource):

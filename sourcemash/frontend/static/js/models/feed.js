@@ -1,11 +1,10 @@
-var feeds = feeds || {}; // feeds namespace
+Sourcemash.Models.Feed = Backbone.Model.extend({
+    urlRoot: '/api/feeds',
 
-//--------------
-// Feed Model
-//--------------
-(function() {
-	'use strict';
-
-	feeds.Feed = Backbone.Model.extend({});
-	
-})();
+    initialize: function() {
+        this.items = new Sourcemash.Collections.Items([], {feed: this});
+    },
+    parse: function(response) {
+        return response.feed;
+    }
+});

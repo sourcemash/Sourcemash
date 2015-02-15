@@ -26,7 +26,10 @@ class TestSubscriptionAPI:
         assert r.status_code == 200
 
         data = json.loads(r.data)
-        assert data['uri'] == '/api/subscriptions/%d' % feed.id
+
+        print data
+        assert data['subscription']['id'] == feed.id
+        assert data['subscription']['feed']['id'] == feed.id
 
     def test_get_subscription_missing(self, test_client, user):
         feed = user.subscribed.first()
@@ -73,7 +76,7 @@ class TestSubscriptionListAPI:
         data = json.loads(r.data)
         assert len(data['subscriptions']) == 1
 
-        assert data['subscriptions'][0]['title'] == user_feed.title
+        assert data['subscriptions'][0]['feed']['title'] == user_feed.title
 
     def test_post_subscription_validURL_new_feed(self, test_client, user):
         self.login(test_client, user.email, user.password)
