@@ -68,7 +68,7 @@ def seed():
     """Add seed data to the database"""
     """Required: Need to delete database & run db upgrade first"""
     # One user
-    user = User(email="user1@sourcemash.com", password="password")
+    user = User(email="admin@sourcemash.com", password="password")
     db.session.add(user)
     db.session.commit()
 
