@@ -3,7 +3,7 @@ from sourcemash.database import db
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(250))
-    link = db.Column(db.String(120), index=True)
+    link = db.Column(db.String(400), index=True)
     last_updated = db.Column(db.DateTime)
     author = db.Column(db.String(120))
     summary = db.Column(db.Text)
