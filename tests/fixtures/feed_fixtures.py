@@ -7,4 +7,4 @@ def feed(request):
 
 @pytest.fixture()
 def real_feed(request):
-    return feed_factories.NYTFeedFactory()
+    return feed_factories.TechCrunchFeedFactory()

@@ -10,8 +10,13 @@ from flask.ext.assets import ManageAssets
 
 from sourcemash import create_app
 from sourcemash.database import db
-from sourcemash.users.models import User
-from worker_tasks.scraper import Scraper
+from sourcemash.models import User, Feed
+from sourcemash.categorize import Categorizer
+from worker_tasks.scraper import scrape_articles
+
+from datetime import datetime
+
+import logging
 
 app = create_app(os.environ.get("APP_CONFIG_FILE") or "development")
 manager = Manager(app)
@@ -43,19 +48,43 @@ def test(all=False):
 
 @manager.command
 def scrape():
-    """Start an infinte loop to scrape articles."""
-    scraper = Scraper()
+    """Start an infinte loop to scrape & categorize articles."""
     iterations = 0
+    categorizer = Categorizer()
 
     while True:
+        logging.info("Starting scrape...")
         if (iterations % ITERATIONS_BEFORE_RESET) == 0:
-            scraper.reset_title_categories()
+            categorizer.reset_title_categories()
 
-        scraper.scrape_articles()
+        scrape_articles(categorizer)
 
         iterations += 1
+        logging.info("Finished scrape. Zzz...")
         time.sleep(SCRAPE_INTERVAL)
 
+@manager.command
+def seed():
+    """Add seed data to the database"""
+    """Required: Need to delete database & run db upgrade first"""
+    # One user
+    user = User(email="admin@sourcemash.com", password="password")
+    db.session.add(user)
+    db.session.commit()
+
+    # One feed
+    feed = Feed(id=1, title='TechCrunch > Startups', 
+                url="http://feeds.feedburner.com/techcrunch/startups?format=xml",
+                last_updated = datetime.min)
+    db.session.add(feed)
+    db.session.commit()
+
+    # Subscribe user to feed
+    user.subscribed.append(feed)
+    db.session.commit()
+
+    # Scrape articles for feed
+    scrape_articles(Categorizer())
 
 manager.add_command('server', Server())
 manager.add_command('shell', Shell(make_context=_make_context))

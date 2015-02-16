@@ -11,6 +11,6 @@ class FeedFactory(SQLAlchemyModelFactory):
     url = factory.Sequence(lambda n: u'superfeed%d.com/rss' % n)
     last_updated = datetime.min
 
-class NYTFeedFactory(FeedFactory):
-    title = "NYT > Home Page"
-    url = "http://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml"
+class TechCrunchFeedFactory(FeedFactory):
+    title = "TechCrunch > Startups"
+    url = "http://feeds.feedburner.com/techcrunch/startups?format=xml"
