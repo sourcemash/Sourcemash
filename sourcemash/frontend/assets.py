@@ -13,7 +13,7 @@ js_default = Bundle("js/default.js",
 					filters="jsmin", output="js/default.min.js")
 
 
-js_templates = Bundle("templates/*.tpl", 
+js_templates = Bundle("../templates/*.tpl", 
                         filters="jst",
                         output="js/tpl.js")
 

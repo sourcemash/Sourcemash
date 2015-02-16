@@ -97,5 +97,5 @@ class Categorizer:
 
     def is_valid_word(self, word):
         ''' Ignore words when creating categories '''
-        return word not in STOP_WORDS
+        return word.lower() not in STOP_WORDS
 
