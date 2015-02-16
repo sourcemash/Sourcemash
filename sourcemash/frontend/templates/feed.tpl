@@ -6,9 +6,13 @@
   <% feed.items.each(function(item) { %>
     <div class="card-panel blue lighten-4">
       <div class="card-content black-text">
-        <span class="card-title"><h4><a href="<%= '#/entries/' + item.get('id') %>"><%= item.get('title') %></a></h4></span>
-          <p><%= item.get('author') %></p>
-          <p><%= item.get('text') %></p>
+        <span class="card-title">
+          <h4><a href="<%= '#/items/' + item.get('id') %>"><%= item.get('title') %></a></h4>
+          <span class="badge"><%=item.get('category_1')%></span>
+          <span class="badge"><%=item.get('category_2')%></span>
+        </span>
+        <p><%= item.get('author') %></p>
+        <p><%= item.get('text') %></p>
       </div>
     </div>
   <% }); %>

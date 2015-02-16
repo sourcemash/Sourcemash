@@ -12,7 +12,8 @@ item_fields = {
     'link': fields.String,
     'last_updated': fields.DateTime,
     'author': fields.String,
-    'category': fields.String,
+    'category_1': fields.String,
+    'category_2': fields.String,
     'summary': fields.String,
 }
 
