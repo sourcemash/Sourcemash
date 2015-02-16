@@ -10,11 +10,11 @@ from sourcemash.forms import FeedForm
 import feedparser
 from datetime import datetime
 
+from feeds import feed_fields
+
 subscription_fields = {
     'id': fields.Integer,
-    'title': fields.String,
-    'url': fields.Url('frontend.feed'),
-    'uri': fields.Url('api.subscription')
+    'feed': fields.Nested(feed_fields)
 }
 
 class SubscriptionListAPI(Resource):
@@ -27,7 +27,12 @@ class SubscriptionListAPI(Resource):
 
     @login_required
     def get(self):
-        return {'subscriptions': [marshal(subscription, subscription_fields) for subscription in current_user.subscribed]}
+        subscriptions = []
+        for subscription in current_user.subscribed:
+            subscription.feed = Feed.query.get(subscription.id)
+            subscriptions.append(subscription)
+
+        return {'subscriptions': [marshal(subscription, subscription_fields) for subscription in subscriptions]}
 
     @login_required
     def post(self):
@@ -35,7 +40,7 @@ class SubscriptionListAPI(Resource):
         form = FeedForm(obj=args)
 
         if not form.validate_on_submit():
-            return form.errors, 422
+            return {"errors": form.errors}, 422
 
         rss_feed = feedparser.parse(form.url.data)
 
@@ -52,19 +57,19 @@ class SubscriptionListAPI(Resource):
 
         try:
             subscription = current_user.subscribed.filter(Feed.id==feed.id).one()
-            return {"url": "Already subscribed"}, 409
+            return {"errors": {"url": ["Already subscribed"]}}, 409
         except:
             current_user.subscribed.append(feed)
             db.session.commit()
 
         subscription = current_user.subscribed.filter(Feed.id==feed.id).first()
+        subscription.feed = feed
         return marshal(subscription, subscription_fields), 201
 
 class SubscriptionAPI(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('mergeable', type=bool)
         super(SubscriptionAPI, self).__init__()
 
     @login_required
@@ -74,7 +79,9 @@ class SubscriptionAPI(Resource):
         if not subscription:
             abort(404)
 
-        return marshal(subscription, subscription_fields)
+        subscription.feed = Feed.query.get(id)
+
+        return {"subscription": marshal(subscription, subscription_fields)}
 
     @login_required
     def put(self, id):
@@ -85,12 +92,11 @@ class SubscriptionAPI(Resource):
         if not subscription:
             abort(404)
 
-        if args.mergeable:
-            subscription['mergeable'] = args.mergeable
+        subscription.feed = Feed.query.get(id)
 
         db.session.commit()
 
-        return marshal(subscription, subscription_fields)
+        return {"subscription": marshal(subscription, subscription_fields)}
 
     @login_required
     def delete(self, id):

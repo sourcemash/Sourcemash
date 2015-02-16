@@ -10,10 +10,10 @@ import feedparser
 from sourcemash.models import Feed
 
 feed_fields = {
+    'id': fields.Integer,
     'title': fields.String,
     'url': fields.String,
     'last_updated': fields.DateTime,
-    'uri': fields.Url('api.feed')
 }
 
 class FeedListAPI(Resource):

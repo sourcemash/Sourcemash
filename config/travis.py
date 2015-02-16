@@ -6,7 +6,6 @@ basedir = os.path.abspath(os.path.dirname('run.py'))
 TESTING = True
 LOGIN_DISABLED = False
 SQLALCHEMY_DATABASE_URI = ('sqlite:///:memory:')
-WTF_CSRF_ENABLED = False
 
 BASE_URL = "http://peaceful-falls-6831.herokuapp.com"
 

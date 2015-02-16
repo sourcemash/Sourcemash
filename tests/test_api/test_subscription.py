@@ -26,7 +26,8 @@ class TestSubscriptionAPI:
         assert r.status_code == 200
 
         data = json.loads(r.data)
-        assert data['uri'] == '/api/subscriptions/%d' % feed.id
+        assert data['subscription']['id'] == feed.id
+        assert data['subscription']['feed']['id'] == feed.id
 
     def test_get_subscription_missing(self, test_client, user):
         feed = user.subscribed.first()
@@ -73,7 +74,7 @@ class TestSubscriptionListAPI:
         data = json.loads(r.data)
         assert len(data['subscriptions']) == 1
 
-        assert data['subscriptions'][0]['title'] == user_feed.title
+        assert data['subscriptions'][0]['feed']['title'] == user_feed.title
 
     def test_post_subscription_validURL_new_feed(self, test_client, user):
         self.login(test_client, user.email, user.password)
@@ -83,8 +84,6 @@ class TestSubscriptionListAPI:
 
         check_valid_header_type(r.headers)
         assert r.status_code == 201
-
-        data = json.loads(r.data)
         assert Feed.query.first().url == 'http://online.wsj.com/xml/rss/3_7085.xml'
 
     def test_post_subscription_validURL_old_feed(self, test_client, user, real_feed):
@@ -105,4 +104,25 @@ class TestSubscriptionListAPI:
 
         check_valid_header_type(r.headers)
         assert r.status_code == 422
+
+        data = json.loads(r.data)
+        assert len(data['errors']['url']) == 1
+        assert 'not a valid feed' in data['errors']['url'][0]
+
+    def test_post_subscription_already_subscribed_feed(self, test_client, userWithRealFeed):
+        self.login(test_client, userWithRealFeed.email, userWithRealFeed.password)
+
+        feed = userWithRealFeed.subscribed.first()
+
+        subscription_data = dict(url=feed.url)
+        r = test_client.post('/api/subscriptions', data=subscription_data)
+
+        check_valid_header_type(r.headers)
+        assert r.status_code == 409
+
+        data = json.loads(r.data)
+        assert len(data['errors']['url']) == 1
+        assert 'Already subscribed' in data['errors']['url'][0]
+
+
 

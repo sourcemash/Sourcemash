@@ -8,7 +8,6 @@ SQLALCHEMY_ECHO = True
 SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
 
 SECRET_KEY = os.environ['SECRET_KEY']
-WTF_CSRF_SECRET_KEY = os.environ['WTF_CSRF_SECRET_KEY']
 
 logging.basicConfig(level=logging.DEBUG, streak=sys.stdout)
 

@@ -7,8 +7,7 @@ DEBUG = False
 
 SECRET_KEY = 'thisisnearlyimpossible'
 
-WTF_CSRF_ENABLED = True
-WTF_CSRF_SECRET_KEY = 'you-will-never-guess'
+WTF_CSRF_ENABLED = False
 
 SQLALCHEMY_DATABASE_URI = ('sqlite:///' + os.path.join(basedir, 'app.db'))
 
