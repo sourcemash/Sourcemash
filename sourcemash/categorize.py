@@ -91,11 +91,11 @@ class Categorizer:
         for title in titles:
             for word in title.split():
                 word = word.strip(punctuation)
-                if not self.ignore_word(word):
+                if self.is_valid_word(word):
                     self.title_categories.update([word])
 
 
-    def ignore_word(self, word):
+    def is_valid_word(self, word):
         ''' Ignore words when creating categories '''
-        return word in STOP_WORDS
+        return word not in STOP_WORDS
 

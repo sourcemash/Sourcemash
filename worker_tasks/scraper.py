@@ -1,7 +1,6 @@
 from sourcemash.database import db
 
 from sourcemash.models import Item, Feed
-from sourcemash.categorize import Categorizer
 from datetime import datetime
 from string import punctuation
 from collections import Counter

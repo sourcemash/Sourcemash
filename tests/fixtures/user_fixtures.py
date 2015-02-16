@@ -14,7 +14,7 @@ def userWithFeed(request):
 
 @pytest.fixture()
 def userWithRealFeed(request):
-    feed = feed_factories.NYTFeedFactory()
+    feed = feed_factories.TechCrunchFeedFactory()
     return user_factories.UserFactory(subscribed=[feed])
 
 
