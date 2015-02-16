@@ -1,9 +1,7 @@
 Sourcemash.Routers.AppRouter = Backbone.Router.extend({
     routes: {
         "": "index",
-        "feeds/new": "addFeed",
         "feeds/:id": "show",
-        "items/:id": "showItem"
     },
 
     index: function() {
