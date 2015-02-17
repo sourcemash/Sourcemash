@@ -30,7 +30,7 @@ class UserListAPI(Resource):
         user = user_datastore.create_user(email=args.email, password=args.password)
         role = user_datastore.find_or_create_role('user')
         if not user:
-            abort(400)
+            abort(404)
         user_datastore.add_role_to_user(user, role)
         db.session.commit()
         login_user(user)

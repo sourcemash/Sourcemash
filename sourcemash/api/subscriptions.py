@@ -68,10 +68,6 @@ class SubscriptionListAPI(Resource):
 
 class SubscriptionAPI(Resource):
 
-    def __init__(self):
-        self.reqparse = reqparse.RequestParser()
-        super(SubscriptionAPI, self).__init__()
-
     @login_required
     def get(self, id):
         subscription = current_user.subscribed.filter(Feed.id==id).first()
@@ -80,21 +76,6 @@ class SubscriptionAPI(Resource):
             abort(404)
 
         subscription.feed = Feed.query.get(id)
-
-        return {"subscription": marshal(subscription, subscription_fields)}
-
-    @login_required
-    def put(self, id):
-        args = self.reqparse.parse_args()
-
-        subscription = current_user.subscribed.filter(Feed.id==id).first()
-        
-        if not subscription:
-            abort(404)
-
-        subscription.feed = Feed.query.get(id)
-
-        db.session.commit()
 
         return {"subscription": marshal(subscription, subscription_fields)}
 

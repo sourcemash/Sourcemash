@@ -21,7 +21,8 @@ import logging
 app = create_app(os.environ.get("APP_CONFIG_FILE") or "development")
 manager = Manager(app)
 
-TEST_CMD = "py.test --boxed -n10 -k 'not functional' tests/"
+TEST_CMD = "py.test --cov-config .coveragerc --cov sourcemash \
+                    --boxed -n10 -k 'not functional' tests/"
 FUNCTIONAL_TEST_CMD = "./functional_test.sh"
 
 CATEGORY_DICT_LIFETIME = 2      # days
