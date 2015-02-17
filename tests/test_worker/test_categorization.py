@@ -1,5 +1,5 @@
 import pytest
-from sourcemash.categorize import Categorizer
+from worker_tasks.categorize import Categorizer
 from collections import Counter
 
 class TestCategorize:
@@ -11,7 +11,7 @@ class TestCategorize:
         
         (cat1, cat2) = categorizer.categorize_item(ebolaItem.title, ebolaItem.text)
 
-        assert (cat1, cat2) == ("Ebola", "West")
+        assert (cat1, cat2) == ("Ebola", "new cases")
 
     
     def test_empty_categories(self):
