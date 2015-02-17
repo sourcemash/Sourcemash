@@ -16,7 +16,8 @@ class TestUserListAPI:
         assert len(data['users']) == 1
 
     def test_post_new_user_valid(self, test_client):
-        user_data = dict(email='asgman@test.com', password='password')
+        user_data = dict(email='asgman@test.com', password='password',
+                         password_confirm='password')
         rv = test_client.post('/api/users', data=user_data)
         
         check_valid_header_type(rv.headers)
@@ -24,6 +25,13 @@ class TestUserListAPI:
 
         data = json.loads(rv.data)
         assert data['user']['email'] == 'asgman@test.com'
+    
+    def test_post_new_user_no_confirm(self, test_client):
+        user_data = dict(email='asgman@test.com', password='password')
+        rv = test_client.post('/api/users', data=user_data)
+        
+        check_valid_header_type(rv.headers)
+        assert rv.status_code == 422
 
     def test_post_new_user_missing_email(self, test_client):
         user_data = dict()
@@ -65,6 +73,14 @@ class TestUserAPI:
         data = json.loads(put.data)
         assert put.status_code == 400
 
+    def test_put_user_invalid_id(self, test_client, user):
+        # Edit dummy user
+        user_data_new = dict(email="new_email@sourcemash.com")
+        put = test_client.put('/api/users/%d' % (int(user.id)+1), data=user_data_new)
+        check_valid_header_type(put.headers)
+        print put.data
+        assert put.status_code == 404
+
     def test_delete_user_present(self, test_client, user):
         # Remove dummy user
         delete = test_client.delete('/api/users/%d' % user.id)
@@ -75,3 +91,9 @@ class TestUserAPI:
         # Dummy user should no longer be reachable
         get = test_client.get('/api/users/%d' % user.id)
         assert get.status_code == 404
+
+    def test_delete_user_invalid_id(self, test_client, user):
+        # Remove dummy user
+        delete = test_client.delete('/api/users/%d' % (int(user.id)+1))
+        check_valid_header_type(delete.headers)
+        assert delete.status_code == 404

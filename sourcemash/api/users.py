@@ -3,7 +3,7 @@ from sourcemash.database import db
 
 from flask import abort
 from flask.ext.restful import Resource, fields, marshal, reqparse
-from flask.ext.security import login_user
+from flask.ext.security import login_user, RegisterForm
 
 from sourcemash.database import user_datastore
 from sourcemash.models import User
@@ -27,10 +27,13 @@ class UserListAPI(Resource):
     def post(self):
         ''' Create new User ''' 
         args = self.reqparse.parse_args()
+        form = RegisterForm(obj=args)
+
+        if not form.validate_on_submit():
+            return {"errors": form.errors}, 422
+
         user = user_datastore.create_user(email=args.email, password=args.password)
         role = user_datastore.find_or_create_role('user')
-        if not user:
-            abort(404)
         user_datastore.add_role_to_user(user, role)
         db.session.commit()
         login_user(user)
@@ -63,9 +66,9 @@ class UserAPI(Resource):
     def delete(self, id):
         ''' Destroy User @id '''
         user = user_datastore.get_user(id)
-        user_datastore.delete_user(user)
         if not user:
             abort(404)
+        user_datastore.delete_user(user)
         db.session.delete(user)
         db.session.commit()
         return {'result': True}
