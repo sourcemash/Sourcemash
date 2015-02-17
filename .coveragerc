@@ -1,5 +1,4 @@
 # .coveragerc to control coverage.py
-[run]
 
 [report]
 # Regexes for lines to exclude from consideration
