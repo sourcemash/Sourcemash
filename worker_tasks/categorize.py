@@ -55,8 +55,8 @@ class Categorizer:
         categories = Counter()
 
         # Extract words present in category dictonary
-        title = filter(self.is_valid_word, self.polished_string(title))
-        text = filter(self.is_valid_word, self.polished_string(text))
+        title = filter(self.is_valid_category, self.polished_string(title))
+        text = filter(self.is_valid_category, self.polished_string(text))
 
         # Get word counts from title, text of article
         categories.update(title + text)
@@ -101,40 +101,40 @@ class Categorizer:
 
     def parse_title_categories(self, titles):
         for title in titles:
-            for word in self.polished_string(title):
-                if self.is_valid_word(word):
-                    self.title_categories.update([word])
+            for category in self.polished_string(title):
+                if self.is_valid_category(category):
+                    self.title_categories.update([category])
 
 
     def polished_string(self, string):
-        words = string.replace("'s", '').split()
+        words = [word.strip(punctuation) for word in string.replace("'s", '').split()]
         
         # Unigrams
-        for word in words:
-            yield word.strip(punctuation)
+        for category in words:
+            yield category
 
         # Bigrams
-        for word in zip(*[words[i:] for i in range(2)]):
-            yield word
+        for category in zip(*[words[i:] for i in range(2)]):
+            yield category
 
 
-    def is_valid_word(self, word):
+    def is_valid_category(self, category):
 
         # If bigram, check that both words are valid
-        if isinstance(word, tuple):
-            return self.is_valid_word(word[0]) and self.is_valid_word(word[1])
+        if isinstance(category, tuple):
+            return self.is_valid_category(category[0]) and self.is_valid_category(category[1])
 
         # Ignore single characters
-        if len(word) < 2:
+        if len(category) < 2:
             return False
 
         # Ignore stop words
-        if word.lower() in STOP_WORDS:
+        if category.lower() in STOP_WORDS:
             return False
 
         # Ignore numbers
         try:
-            float(word)
+            float(category)
             return False
         except ValueError:
             pass
