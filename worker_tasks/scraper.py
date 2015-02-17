@@ -7,6 +7,8 @@ from collections import Counter
 
 from readability.readability import Document
 import requests
+from urlparse import urlparse
+from bs4 import BeautifulSoup
 import feedparser
 
 import logging
@@ -18,14 +20,16 @@ def scrape_articles(categorizer):
 
     # Assign categories to articles after all feeds are processed
     for item in Item.query.filter_by(category_1=None).all():
-        item.category_1, item.category_2 = categorizer.categorize_item(item.title, item.text)
+        text_only = BeautifulSoup(item.text).get_text()
+        item.category_1, item.category_2 = categorizer.categorize_item(item.title, text_only)
         db.session.commit()
         logging.info("CATEGORIZED [%s]: (%s, %s)" % (item.title, item.category_1, item.category_2))
 
 
 def _get_full_text(url):
     html = requests.get(url).content
-    return Document(html).summary()
+    base_url = '{uri.scheme}://{uri.netloc}/'.format(uri=urlparse(url))
+    return Document(html, url=base_url).summary(html_partial=True)
 
 
 def _store_items_and_category_counts(feed, categorizer):

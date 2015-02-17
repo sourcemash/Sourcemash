@@ -108,5 +108,7 @@ class Categorizer:
         try:
             float(word)
             return False
-
+        except ValueError:
+            pass
+            
         return True
