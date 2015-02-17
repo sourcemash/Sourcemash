@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from sourcemash.models import Item
 
 TITLE_WORD_WEIGHT = 2
+BIGRAM_WEIGHT = 2
 
 STOP_WORDS = [ "a", "about", "above", "above", "across", "after", "afterwards", \
     "again", "against", "all", "almost", "alone", "along", "already", \
@@ -64,11 +65,28 @@ class Categorizer:
         for word in title:
             categories[word] *= TITLE_WORD_WEIGHT
 
-        # Return top 2 words in categories
-        most_frequent = categories.most_common(2)
+        # Give additional weights to bigrams
+        for category in categories:
+            if isinstance(category, tuple):
+                categories[category] *= BIGRAM_WEIGHT
 
-        cat1 = most_frequent[0][0] if most_frequent else ""
-        cat2 = most_frequent[1][0] if most_frequent > 1 else ""
+        cat1 = ""
+        cat2 = ""
+
+        # Pick top 2 words until categories don't overlap
+        for category, count in categories.most_common():
+            if str(cat1) in str(cat2):
+                cat1 = category
+            elif str(cat2) in str(cat1):
+                cat2 = category
+            else:
+                break
+
+        if isinstance(cat1, tuple):
+            cat1 = ' '.join(cat1)
+
+        if isinstance(cat2, tuple):
+            cat2 = ' '.join(cat2)
 
         return cat1, cat2
 
@@ -90,11 +108,21 @@ class Categorizer:
 
     def polished_string(self, string):
         words = string.replace("'s", '').split()
+        
+        # Unigrams
         for word in words:
             yield word.strip(punctuation)
 
+        # Bigrams
+        for word in zip(*[words[i:] for i in range(2)]):
+            yield word
+
 
     def is_valid_word(self, word):
+
+        # If bigram, check that both words are valid
+        if isinstance(word, tuple):
+            return self.is_valid_word(word[0]) and self.is_valid_word(word[1])
 
         # Ignore single characters
         if len(word) < 2:
@@ -110,5 +138,5 @@ class Categorizer:
             return False
         except ValueError:
             pass
-            
+
         return True
