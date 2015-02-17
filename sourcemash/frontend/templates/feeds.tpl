@@ -11,6 +11,8 @@
     </form>
 </div>
 
+<a class="waves-effect waves-light btn green darken-1" href="#/categories">Categories</a>
+
 <ul class="list-group feeds">
   <% feeds.forEach(function(feed) { %>
     <p><a href="#/feeds/<%= feed.get('id') %>"><%= feed.get('title') %></a></p>
