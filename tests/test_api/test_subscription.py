@@ -54,6 +54,16 @@ class TestSubscriptionAPI:
         get = test_client.get('api/subscriptions/%d' % feed.id)
         assert get.status_code == 404
 
+    def test_delete_subscription_invalid_feed_id(self, test_client, userWithFeed):
+        feed = userWithFeed.subscribed.first()
+
+        self.login(test_client, userWithFeed.email, userWithFeed.password)
+
+        # Failed remove Dummy Feed
+        delete = test_client.delete('api/subscriptions/%d' % (int(feed.id)+1))
+        check_valid_header_type(delete.headers)
+        assert delete.status_code == 404       
+
 class TestSubscriptionListAPI:
 
     def login(self, test_client, email, password):
