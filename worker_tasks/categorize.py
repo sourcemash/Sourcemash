@@ -51,15 +51,11 @@ class Categorizer:
         self.title_categories = Counter()
 
     def categorize_item(self, title, text):
-        cat1 = ""
-        cat2 = ""
         categories = Counter()
 
-        # Only consider words present in category dictonary
-        title = filter(lambda word: word in self.title_categories, title.split())
-        text = filter(lambda word: word in self.title_categories, text.split())
-        title = [word.strip(punctuation) for word in title]
-        text = [word.strip(punctuation) for word in text]
+        # Extract words present in category dictonary
+        title = filter(self.is_valid_word, self.polished_string(title))
+        text = filter(self.is_valid_word, self.polished_string(text))
 
         # Get word counts from title, text of article
         categories.update(title + text)
@@ -71,10 +67,8 @@ class Categorizer:
         # Return top 2 words in categories
         most_frequent = categories.most_common(2)
 
-        if len(most_frequent) > 0:
-            cat1 = most_frequent[0][0]
-            if len(most_frequent) > 1:
-                cat2 = most_frequent[1][0]
+        cat1 = most_frequent[0][0] if most_frequent else ""
+        cat2 = most_frequent[1][0] if most_frequent > 1 else ""
 
         return cat1, cat2
 
@@ -89,13 +83,30 @@ class Categorizer:
 
     def parse_title_categories(self, titles):
         for title in titles:
-            for word in title.split():
-                word = word.strip(punctuation)
+            for word in self.polished_string(title):
                 if self.is_valid_word(word):
                     self.title_categories.update([word])
 
 
-    def is_valid_word(self, word):
-        ''' Ignore words when creating categories '''
-        return word.lower() not in STOP_WORDS
+    def polished_string(self, string):
+        words = string.replace("'s", '').split()
+        for word in words:
+            yield word.strip(punctuation)
 
+
+    def is_valid_word(self, word):
+
+        # Ignore single characters
+        if len(word) < 2:
+            return False
+
+        # Ignore stop words
+        if word.lower() in STOP_WORDS:
+            return False
+
+        # Ignore numbers
+        try:
+            float(word)
+            return False
+
+        return True

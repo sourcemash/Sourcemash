@@ -18,9 +18,7 @@ def scrape_articles(categorizer):
 
     # Assign categories to articles after all feeds are processed
     for item in Item.query.filter_by(category_1=None).all():
-        (cat1, cat2) = categorizer.categorize_item(item.title, item.text)
-        item.category_1 = cat1
-        item.category_2 = cat2
+        item.category_1, item.category_2 = categorizer.categorize_item(item.title, item.text)
         db.session.commit()
         logging.info("CATEGORIZED [%s]: (%s, %s)" % (item.title, item.category_1, item.category_2))
 

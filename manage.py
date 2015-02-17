@@ -11,7 +11,8 @@ from flask.ext.assets import ManageAssets
 from sourcemash import create_app
 from sourcemash.database import db
 from sourcemash.models import User, Feed
-from sourcemash.categorize import Categorizer
+
+from worker_tasks.categorize import Categorizer
 from worker_tasks.scraper import scrape_articles
 
 from datetime import datetime
