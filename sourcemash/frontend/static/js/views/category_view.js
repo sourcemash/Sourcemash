@@ -10,9 +10,5 @@ Sourcemash.Views.CategoryView = Backbone.View.extend({
         var content = this.template({ category: this.model });
         this.$el.html(content);
         return this;
-    },
-
-    refresh: function(event) {
-        this.model.entries.fetch();
     }
 });

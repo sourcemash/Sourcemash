@@ -38,7 +38,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         var categoryView = new Sourcemash.Views.CategoryView({ model: category });
 
         category.fetch();
-        category.items.fetch();
+        category.items.fetch({url: '/api/categories/' + keyword });
         this._swapView(categoryView);
     },
 
