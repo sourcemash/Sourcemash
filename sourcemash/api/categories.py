@@ -1,4 +1,5 @@
 from . import api
+from flask import abort
 from flask.ext.restful import Resource, fields, marshal
 
 from sourcemash.models import Item
@@ -7,11 +8,6 @@ from items import item_fields
 category_fields = {
     'category': fields.String
 }
-
-# category_item_fields = {
-#     'category': fields.String,
-#     'item': fields.Nested(item_fields)
-# }
 
 class CategoryListAPI(Resource):
 
@@ -32,17 +28,15 @@ class CategoryListAPI(Resource):
 class CategoryItemListAPI(Resource):
 
     def get(self, category):
+        """ RETURNS EMPTY LIST IF NO ARTICLES PRESENT """ 
         cat1_items = Item.query.filter_by(category_1=category).all()
         cat2_items = Item.query.filter_by(category_2=category).all()
         items = list(set(cat1_items + cat2_items))
 
-        # category_items = []
-        # for item in items:
-        #     cat_item = {'category': item.category_1, 'item': item}
-        #     category_items.append(cat_item)
+        if not items:
+            abort(404)
 
         return {'items': [marshal(item, item_fields) for item in items]}
-        # return {'items': [marshal(item, category_item_fields) for item in category_items]}
 
 api.add_resource(CategoryListAPI, '/categories', endpoint='categories')
 api.add_resource(CategoryItemListAPI, '/categories/<string:category>', endpoint='category')

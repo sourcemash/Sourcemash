@@ -12,5 +12,5 @@ class FeedFactory(SQLAlchemyModelFactory):
     last_updated = datetime.min
 
 class TechCrunchFeedFactory(FeedFactory):
-    title = "TechCrunch > Startups"
+    title = "TechCrunch"
     url = "http://feeds.feedburner.com/techcrunch/startups?format=xml"

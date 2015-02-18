@@ -84,6 +84,9 @@ def seed():
     user.subscribed.append(feed)
     db.session.commit()
 
+    # Add known article to generate known categories
+    
+
     # Scrape articles for feed
     scrape_articles(Categorizer())
 

@@ -1,7 +1,7 @@
 # Run all functional tests
 export APP_CONFIG_FILE=selenium
 
-python db_create.py
+python manage.py db upgrade
 
 echo "Start Flask app on port 5000..."
 python manage.py server &> flask.log &
