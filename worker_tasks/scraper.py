@@ -52,7 +52,7 @@ def _store_items_and_category_counts(feed, categorizer):
 
         new_entry = Item(title=item.title, text=text, link=item.link, 
                             last_updated=item_last_updated, author=getattr(item, 'author', None),
-                            summary=getattr(item, 'summary', None), feed_id=feed.id)
+                            summary=getattr(item, 'summary', None), feed_id=feed.id, totalVotes=0)
 
         db.session.add(new_entry)
         db.session.commit()

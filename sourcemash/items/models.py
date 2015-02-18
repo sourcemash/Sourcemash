@@ -11,7 +11,7 @@ class Item(db.Model):
     feed_id = db.Column(db.Integer, db.ForeignKey('feed.id'))
     category_1 = db.Column(db.String(100))
     category_2 = db.Column(db.String(100))
-
+    totalVotes = db.Column(db.Integer)
 
     def __repr__(self):
         return "<Item %r (%r)>" % (self.title, self.link)

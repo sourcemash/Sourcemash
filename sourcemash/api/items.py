@@ -18,16 +18,29 @@ item_fields = {
     'category_2': fields.String,
     'summary': fields.String,
     'feed': fields.Nested(feed_fields),
+    'totalVotes': fields.Integer,
     'uri': fields.Url('api.item')
 }
 
 
 class ItemAPI(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('vote', type = int, required = True)
+        super(ItemAPI, self).__init__()
 
     def get(self, id):
         item = Item.query.get_or_404(id)
         return {'item': marshal(item, item_fields)}
 
+    @login_required
+    def put(self, id):
+        ''' Update item vote count '''
+        args = self.reqparse.parse_args()
+        item = Item.query.get_or_404(id)
+        item.totalVotes += args.vote
+        db.session.commit()
+        return {'item': marshal(item, item_fields)}
 
 class FeedItemListAPI(Resource):
 
@@ -68,4 +81,3 @@ api.add_resource(ItemAPI, '/items/<int:id>', endpoint='item')
 api.add_resource(FeedItemListAPI, '/feeds/<int:feed_id>/items', endpoint='feed_items')
 api.add_resource(CategoryItemListAPI, '/categories/<string:category>/items', endpoint='category_items')
 api.add_resource(CategoryItemListAllAPI, '/categories/<string:category>/items/all', endpoint='category_items_all')
-

@@ -8,7 +8,14 @@ subscriptions = db.Table('subscriptions',
 
 role_users = db.Table('roles_users',
         db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-        db.Column('role_id', db.Integer, db.ForeignKey('role.id')))
+        db.Column('role_id', db.Integer, db.ForeignKey('role.id'))
+)
+
+items_users = db.Table('items_users',
+        db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+        db.Column('item_id', db.Integer, db.ForeignKey('item.id')),
+        db.Column('vote', db.Integer)
+)
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -22,6 +29,10 @@ class User(db.Model, UserMixin):
                                 lazy='dynamic')
     roles = db.relationship('Role',
                             secondary=role_users,
+                            backref=db.backref('users', lazy='dynamic'),
+                            lazy='dynamic')
+    items = db.relationship('Item',
+                            secondary=items_users,
                             backref=db.backref('users', lazy='dynamic'),
                             lazy='dynamic')
     
