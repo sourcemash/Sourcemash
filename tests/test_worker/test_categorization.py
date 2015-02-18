@@ -43,17 +43,17 @@ class TestCategorize:
 
     def test_polished_string_apostrophe_s(self):
         categorizer = Categorizer()
-        assert list(categorizer.polished_string("Harry's")) == ["Harry"]
+        assert categorizer.get_valid_ngrams("Harry's") == ["Harry"]
 
 
-    def test_polished_string_punctuation(self):
+    def test_get_valid_ngrams_punctuation(self):
         categorizer = Categorizer()
-        assert list(categorizer.polished_string('Google.')) == ["Google"]
+        assert categorizer.get_valid_ngrams('Google.') == ["Google"]
 
 
-    def test_polished_string_bigram(self):
+    def test_get_valid_ngrams_bigram(self):
         categorizer = Categorizer()
-        assert set(categorizer.polished_string("Google Maps")) == set(["Google", "Maps", ("Google", "Maps")])
+        assert categorizer.get_valid_ngrams("Google Maps") == ["Google", "Maps", "Google Maps"]
 
 
     def test_is_valid_category_single_char(self):
@@ -73,9 +73,9 @@ class TestCategorize:
 
     def test_is_valid_category_tuple_both_valid(self):
         categorizer = Categorizer()
-        assert categorizer.is_valid_category(('elemental', 'alligator')) == True
+        assert categorizer.is_valid_category(('elemental alligator')) == True
 
 
     def test_is_valid_category_tuple_one_invalid(self):
         categorizer = Categorizer()
-        assert categorizer.is_valid_category(('and', 'alligator')) == False
+        assert categorizer.is_valid_category(('and alligator')) == False

@@ -4,8 +4,8 @@ from datetime import datetime, timedelta
 
 from sourcemash.models import Item
 
-TITLE_WORD_WEIGHT = 2
-BIGRAM_WEIGHT = 2
+BIGRAM_WEIGHT = 1.75
+CAPITALIZED_WORD_WEIGHT = 1.5
 
 STOP_WORDS = [ "a", "about", "above", "above", "across", "after", "afterwards", \
     "again", "against", "all", "almost", "alone", "along", "already", \
@@ -55,40 +55,21 @@ class Categorizer:
         categories = Counter()
 
         # Extract words present in category dictonary
-        title = filter(self.is_valid_category, self.polished_string(title))
-        text = filter(self.is_valid_category, self.polished_string(text))
+        title = filter(self.is_from_titles, self.get_valid_ngrams(title))
+        text = filter(self.is_from_titles, self.get_valid_ngrams(text))
 
         # Get word counts from title, text of article
         categories.update(title + text)
 
-        # Give weights to categories found in title
-        for word in title:
-            categories[word] *= TITLE_WORD_WEIGHT
-
-        # Give additional weights to bigrams
+        # Add weight to bigrams and capitalized words
         for category in categories:
-            if isinstance(category, tuple):
+            if self.is_bigram(category):
                 categories[category] *= BIGRAM_WEIGHT
 
-        cat1 = ""
-        cat2 = ""
+            if category.istitle():
+                categories[category] *= CAPITALIZED_WORD_WEIGHT
 
-        # Pick top 2 words until categories don't overlap
-        for category, count in categories.most_common():
-            if str(cat1) in str(cat2):
-                cat1 = category
-            elif str(cat2) in str(cat1):
-                cat2 = category
-            else:
-                break
-
-        if isinstance(cat1, tuple):
-            cat1 = ' '.join(cat1)
-
-        if isinstance(cat2, tuple):
-            cat2 = ' '.join(cat2)
-
-        return cat1, cat2
+        return self.get_best_categories(categories)
 
 
     def reset_title_categories(self):
@@ -101,27 +82,54 @@ class Categorizer:
 
     def parse_title_categories(self, titles):
         for title in titles:
-            for category in self.polished_string(title):
-                if self.is_valid_category(category):
-                    self.title_categories.update([category])
+            self.title_categories.update(self.get_valid_ngrams(title))
 
 
-    def polished_string(self, string):
-        words = [word.strip(punctuation) for word in string.replace("'s", '').split()]
+    def get_valid_ngrams(self, string):
+        # Intialize word array with unigrams
+        # Remove any apostrophe s's
+        ngrams = [word.strip(punctuation) for word in string.replace("'s", '').split()]
+        ngrams = filter(None, ngrams)   # Remove empty strings
         
-        # Unigrams
-        for category in words:
-            yield category
+        bigrams = zip(*[ngrams[i:] for i in range(2)])
+        bigrams = [' '.join(word) for word in bigrams]
+        
+        return filter(self.is_valid_category, ngrams + bigrams)
 
-        # Bigrams
-        for category in zip(*[words[i:] for i in range(2)]):
-            yield category
+
+    def get_best_categories(self, categories):
+        """
+        Choose the two highest-weighted categories that don't share
+        a common word. For example, "Just" and "Just Works" should
+        not be selected as the two best.
+        """
+        cat1, cat2 = "", ""
+        for category, count in categories.most_common():
+            if cat1 in cat2:
+                cat1 = category
+            elif cat2 in cat1:
+                cat2 = category
+            else:
+                break
+
+        return cat1.title(), cat2.title()
+
+
+    def is_from_titles(self, word):
+        # Case-Insensitive Comparison
+        # since titles are uppercase and body text lowercase
+        return word.title() in self.title_categories
+
+
+    def is_bigram(self, word):
+        return " " in word
 
 
     def is_valid_category(self, category):
 
         # If bigram, check that both words are valid
-        if isinstance(category, tuple):
+        if self.is_bigram(category):
+            category = category.split()
             return self.is_valid_category(category[0]) and self.is_valid_category(category[1])
 
         # Ignore single characters
