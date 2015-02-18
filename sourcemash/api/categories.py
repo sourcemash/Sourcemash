@@ -12,18 +12,11 @@ category_fields = {
 class CategoryListAPI(Resource):
 
     def get(self):
-        cat1_items = Item.query.group_by(Item.category_1).all()
-        cat2_items = Item.query.group_by(Item.category_2).all()
+        categories = [item.category_1 for item in Item.query.group_by(Item.category_1).all()]
+        categories += [item.category_2 for item in Item.query.group_by(Item.category_2).all()]
+        categories = set(categories)
 
-        categories = {'categories': []}
-        for item in cat1_items:
-            category = {'category': item.category_1}
-            categories['categories'].append(marshal(category, category_fields))
-        for item in cat2_items:
-            category = {'category': item.category_2}
-            categories['categories'].append(marshal(category, category_fields))
-
-        return categories
+        return {'categories': [{'category': category} for category in categories]}
 
 class CategoryItemListAPI(Resource):
 
@@ -31,7 +24,7 @@ class CategoryItemListAPI(Resource):
         """ RETURNS EMPTY LIST IF NO ARTICLES PRESENT """ 
         cat1_items = Item.query.filter_by(category_1=category).all()
         cat2_items = Item.query.filter_by(category_2=category).all()
-        items = list(set(cat1_items + cat2_items))
+        items = set(cat1_items + cat2_items)
 
         if not items:
             abort(404)

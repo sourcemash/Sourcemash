@@ -13,9 +13,11 @@ class TestCategoryListAPI:
         assert r.status_code == 200
 
         data = json.loads(r.data)
-        assert data['categories'][0]['category'] == itemWithCategory.category_1
-        assert data['categories'][1]['category'] == itemWithCategory.category_2
-
+        print data
+        assert data['categories'][0]['category'] == itemWithCategory.category_1 or \
+                data['categories'][0]['category'] == itemWithCategory.category_2
+        assert data['categories'][1]['category'] == itemWithCategory.category_1 or \
+                data['categories'][1]['category'] == itemWithCategory.category_2
 
 class TestCategoryItemListAPI:
 
