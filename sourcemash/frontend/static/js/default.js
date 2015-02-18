@@ -3,7 +3,7 @@ $( document ).ready(function(){
 });
 
 $(document).ajaxError(function (e, xhr, options) {
-  var data = xhr.responseJSON || {}
+  var data = xhr.responseJSON || {};
   var errors = data.errors || [];
   for (errorField in errors) {
     if (errors.hasOwnProperty(errorField)) {
