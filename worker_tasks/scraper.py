@@ -20,7 +20,7 @@ def scrape_articles(categorizer):
 
     # Assign categories to articles after all feeds are processed
     for item in Item.query.filter_by(category_1=None).all():
-        text_only = BeautifulSoup(item.text).get_text()
+        text_only = BeautifulSoup(item.text).get_text() # Remove HTML tags from item text
         item.category_1, item.category_2 = categorizer.categorize_item(item.title, text_only)
         db.session.commit()
         logging.info("CATEGORIZED [%s]: (%s, %s)" % (item.title, item.category_1, item.category_2))
