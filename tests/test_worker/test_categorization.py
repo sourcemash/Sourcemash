@@ -11,7 +11,7 @@ class TestCategorize:
         
         (cat1, cat2) = categorizer.categorize_item(ebolaItem.title, ebolaItem.text)
 
-        assert (cat1, cat2) == ("West Africa", "Ebola")
+        assert set([cat1, cat2]) == set(["Ebola", "West Africa"])
 
     
     def test_empty_categories(self):
@@ -41,6 +41,26 @@ class TestCategorize:
         assert categorizer.title_categories['Item'] == 1
 
 
+    def test_get_best_categories(self, item):
+        categorizer = Categorizer()
+        categorizer.parse_title_categories(["Google and Facebook settle on big deal"])
+        weighted_categories = categorizer.get_weighted_categories(categorizer.title_categories)
+
+        assert set(categorizer.get_best_categories(weighted_categories)) == set(["Google", "Facebook"])
+
+
+    def test_get_best_categories_with_overlapped_tags(self, item):
+        """
+        Google should not be a category since Google Maps is one. 
+        Facebook should be one instead.
+        """
+        categorizer = Categorizer()
+        categorizer.parse_title_categories(["Google Maps gives Google leg up on Facebook despite Google's best efforts."])
+        weighted_categories = categorizer.get_weighted_categories(categorizer.title_categories)
+
+        assert set(categorizer.get_best_categories(weighted_categories)) == set(["Google Maps", "Facebook"])
+
+
     def test_polished_string_apostrophe_s(self):
         categorizer = Categorizer()
         assert categorizer.get_valid_ngrams("Harry's") == ["Harry"]
@@ -53,7 +73,7 @@ class TestCategorize:
 
     def test_get_valid_ngrams_bigram(self):
         categorizer = Categorizer()
-        assert categorizer.get_valid_ngrams("Google Maps") == ["Google", "Maps", "Google Maps"]
+        assert set(categorizer.get_valid_ngrams("Google Maps")) == set(["Google", "Maps", "Google Maps"])
 
 
     def test_is_valid_category_single_char(self):

@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 from sourcemash.models import Item
 
-BIGRAM_WEIGHT = 1.75
+BIGRAM_WEIGHT = 1.25
 CAPITALIZED_WORD_WEIGHT = 1.5
 
 STOP_WORDS = [ "a", "about", "above", "across", "after", "afterwards", \
@@ -61,13 +61,7 @@ class Categorizer:
         # Get word counts from title, text of article
         categories.update(title + text)
 
-        # Add weight to bigrams and capitalized words
-        for category in categories:
-            if self.is_bigram(category):
-                categories[category] *= BIGRAM_WEIGHT
-
-            if category.istitle():
-                categories[category] *= CAPITALIZED_WORD_WEIGHT
+        categories = self.get_weighted_categories(categories)
 
         return self.get_best_categories(categories)
 
@@ -95,6 +89,17 @@ class Categorizer:
         return filter(self.is_valid_category, unigrams + bigrams)
 
 
+    def get_weighted_categories(self, categories):
+        for category in categories:
+            if self.is_bigram(category):
+                categories[category] *= BIGRAM_WEIGHT
+
+            if category.istitle():
+                categories[category] *= CAPITALIZED_WORD_WEIGHT
+
+        return categories
+
+
     def get_best_categories(self, categories):
         """
         Choose the two highest-weighted categories that don't share
@@ -103,6 +108,7 @@ class Categorizer:
         """
         cat1, cat2 = "", ""
         for category, weights in categories.most_common():
+            category = category.title()
             if cat1 in cat2:
                 cat1 = category
             elif cat2 in cat1:
@@ -110,7 +116,7 @@ class Categorizer:
             else:
                 break
 
-        return cat1.title(), cat2.title()
+        return cat1, cat2
 
 
     def is_from_titles(self, word):
