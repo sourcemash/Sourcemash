@@ -8,3 +8,7 @@ def feed(request):
 @pytest.fixture()
 def real_feed(request):
     return feed_factories.TechCrunchFeedFactory()
+
+@pytest.fixture()
+def feedWithItems(request):
+    return feed_factories.FeedFactory(items=[feed_factories.FeedFactory()])

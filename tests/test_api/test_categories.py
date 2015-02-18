@@ -1,6 +1,8 @@
 import pytest
 import json
 
+from . import TestBase
+
 from sourcemash.models import Feed
 
 def check_valid_header_type(headers):
@@ -13,10 +15,57 @@ class TestCategoryListAPI:
         assert r.status_code == 200
 
         data = json.loads(r.data)
-        assert data['categories'][0]['category'] == itemWithCategory.category_1 or \
-                data['categories'][0]['category'] == itemWithCategory.category_2
-        assert data['categories'][1]['category'] == itemWithCategory.category_1 or \
-                data['categories'][1]['category'] == itemWithCategory.category_2
+        assert set([data['categories'][0]['category'], data['categories'][1]['category']]) == \
+                set([itemWithCategory.category_1, itemWithCategory.category_2])
+
+
+class TestUserCategoryListAPI(TestBase):
+    def test_get_user_categories_unsubscribed(self, test_client, user):
+        self.login(test_client, user.email, user.password)
+
+        r = test_client.get('/api/users/%d/categories' % user.id)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert data['categories'] == []
+
+
+    def test_get_user_categories_not_current_user(self, test_client, user, userWithPopulatedFeed):
+        self.login(test_client, user.email, user.password)
+
+        r = test_client.get('/api/users/%d/categories' % userWithPopulatedFeed.id)
+        assert r.status_code == 401
+
+
+    def test_get_user_categories_missing_items(self, test_client, userWithFeed, itemWithCategory):
+        self.login(test_client, userWithFeed.email, userWithFeed.password)
+
+        r = test_client.get('/api/users/%d/categories' % userWithFeed.id)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert data['categories'] == []
+
+
+    def test_get_user_categories_present(self, test_client, userWithPopulatedFeed):
+        self.login(test_client, userWithPopulatedFeed.email, userWithPopulatedFeed.password)
+
+        feed = userWithPopulatedFeed.subscribed.first()
+        item = feed.items.first()
+
+        r = test_client.get('/api/users/%d/categories' % userWithPopulatedFeed.id)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+
+        assert set([data['categories'][0]['category'], data['categories'][1]['category']]) == \
+                set([item.category_1, item.category_2])
+
+        assert data['categories'][0]['count'] == 5
+
 
 class TestCategoryItemListAPI:
 

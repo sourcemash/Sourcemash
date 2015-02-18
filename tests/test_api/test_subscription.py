@@ -1,20 +1,15 @@
 import pytest
 import json
 
+from . import TestBase
+
 from tests.factories import feed_factories
 from sourcemash.models import Feed
 
 def check_valid_header_type(headers):
     assert headers['Content-Type'] == 'application/json'
 
-class TestSubscriptionAPI:
-
-    def login(self, test_client, email, password):
-        r = test_client.post('/login', data=dict(
-            email=email,
-            password=password
-        ), follow_redirects=True)
-        return r
+class TestSubscriptionAPI(TestBase):
 
     def test_get_subscription_present(self, test_client, userWithFeed):
         feed = userWithFeed.subscribed.first()
@@ -30,8 +25,6 @@ class TestSubscriptionAPI:
         assert data['subscription']['feed']['id'] == feed.id
 
     def test_get_subscription_missing(self, test_client, user):
-        feed = user.subscribed.first()
-
         self.login(test_client, user.email, user.password)
 
         r = test_client.get('/api/subscriptions/0')
@@ -64,7 +57,7 @@ class TestSubscriptionAPI:
         check_valid_header_type(delete.headers)
         assert delete.status_code == 404       
 
-class TestSubscriptionListAPI:
+class TestSubscriptionListAPI(TestBase):
 
     def login(self, test_client, email, password):
         return test_client.post('/login', data=dict(

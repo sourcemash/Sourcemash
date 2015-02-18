@@ -1,5 +1,5 @@
 import pytest
-from tests.factories import user_factories, role_factories, feed_factories
+from tests.factories import user_factories, role_factories, feed_factories, item_factories
 from tests.pages.login import LoginPage
 from sourcemash.models import User
 
@@ -10,6 +10,11 @@ def user(request):
 @pytest.fixture()
 def userWithFeed(request):
     feed = feed_factories.FeedFactory()
+    return user_factories.UserFactory(subscribed=[feed])
+
+@pytest.fixture()
+def userWithPopulatedFeed(request):
+    feed = feed_factories.FeedFactory(items=[item_factories.ItemWithCategory() for i in range(5)])
     return user_factories.UserFactory(subscribed=[feed])
 
 @pytest.fixture()
