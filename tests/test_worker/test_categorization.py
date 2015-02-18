@@ -11,7 +11,7 @@ class TestCategorize:
         
         (cat1, cat2) = categorizer.categorize_item(ebolaItem.title, ebolaItem.text)
 
-        assert (cat1, cat2) == ("West Africa", "Ebola")
+        assert (cat1, cat2) == ("Ebola", "West Africa")
 
     
     def test_empty_categories(self):
@@ -39,6 +39,22 @@ class TestCategorize:
 
         # Counts should have been set back to zero
         assert categorizer.title_categories['Item'] == 1
+
+
+    def test_get_best_categories(self, item):
+        categorizer = Categorizer()
+        categorizer.parse_title_categories(["Google and Facebook settle on big deal"])
+        weighted_categories = categorizer.get_weighted_categories(categorizer.title_categories)
+
+        assert set(categorizer.get_best_categories(weighted_categories)) == set(["Google", "Facebook"])
+
+
+    def test_get_best_categories_with_overlapped_tags(self, item):
+        categorizer = Categorizer()
+        categorizer.parse_title_categories(["Google Maps gives Google leg up on Facebook despite Google's best efforts."])
+        weighted_categories = categorizer.get_weighted_categories(categorizer.title_categories)
+
+        assert set(categorizer.get_best_categories(weighted_categories)) == set(["Google Maps", "Facebook"])
 
 
     def test_polished_string_apostrophe_s(self):
