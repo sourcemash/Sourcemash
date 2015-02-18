@@ -3,7 +3,8 @@ $( document ).ready(function(){
 });
 
 $(document).ajaxError(function (e, xhr, options) {
-  var errors = xhr.responseJSON.errors;
+  var data = xhr.responseJSON || {};
+  var errors = data.errors || [];
   for (errorField in errors) {
     if (errors.hasOwnProperty(errorField)) {
         var inputField = $("#" + errorField);
