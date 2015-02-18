@@ -12,3 +12,7 @@ def ebolaItem(request):
 @pytest.fixture()
 def itemWithCategory(request):
 	return item_factories.ItemWithCategory()
+
+@pytest.fixture()
+def itemsWithCategory(request):
+	return [item_factories.ItemWithCategory() for i in range(5)]
