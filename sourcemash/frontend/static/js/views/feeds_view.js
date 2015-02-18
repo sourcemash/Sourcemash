@@ -13,6 +13,7 @@ Sourcemash.Views.FeedsView = Backbone.View.extend({
   updateCollection: function(newFeed) {
   	this.$('#url').val('');
   	newFeed.collection.fetch();
+    toast('Feed added!', 3000) // 3000 is the duration of the toast
   },
   render: function() {
   	var content = this.template({feeds: this.collection.models})

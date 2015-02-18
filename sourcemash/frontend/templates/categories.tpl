@@ -2,8 +2,8 @@
     <h2>Categories</h2>
 </div>
 
-<ul class="list-group categories">
+<ul class="collection categories">
   <% categories.forEach(function(category) { %>
-    <p><a href="#/categories/<%= category.get('category') %>"><%= category.get('category') %></a></p>
+    <a href="#/categories/<%= category.get('category') %>" class="collection-item"><%= category.get('category') %></a>
   <% }); %>
 </ul>
