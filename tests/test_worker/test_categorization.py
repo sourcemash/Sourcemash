@@ -11,7 +11,7 @@ class TestCategorize:
         
         (cat1, cat2) = categorizer.categorize_item(ebolaItem.title, ebolaItem.text)
 
-        assert (cat1, cat2) == ("Ebola", "West Africa")
+        assert set([cat1, cat2]) == set(["Ebola", "West Africa"])
 
     
     def test_empty_categories(self):
@@ -69,7 +69,7 @@ class TestCategorize:
 
     def test_get_valid_ngrams_bigram(self):
         categorizer = Categorizer()
-        assert categorizer.get_valid_ngrams("Google Maps") == ["Google", "Maps", "Google Maps"]
+        assert set(categorizer.get_valid_ngrams("Google Maps")) == set(["Google", "Maps", "Google Maps"])
 
 
     def test_is_valid_category_single_char(self):
