@@ -8,3 +8,11 @@ def item(request):
 @pytest.fixture()
 def ebolaItem(request):
 	return item_factories.EbolaItemFactory()
+
+@pytest.fixture()
+def itemWithCategory(request):
+	return item_factories.ItemWithCategory()
+
+@pytest.fixture()
+def itemsWithCategory(request):
+	return [item_factories.ItemWithCategory() for i in range(5)]

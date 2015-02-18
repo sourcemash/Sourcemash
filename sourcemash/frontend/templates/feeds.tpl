@@ -11,8 +11,10 @@
     </form>
 </div>
 
-<ul class="list-group feeds">
+<a class="waves-effect waves-light btn green darken-1" href="#/categories">Categories</a>
+
+<ul class="collection feeds">
   <% feeds.forEach(function(feed) { %>
-    <p><a href="#/feeds/<%= feed.get('id') %>"><%= feed.get('title') %></a></p>
+    <p><a href="#/feeds/<%= feed.get('id') %>" class="collection-item"><%= feed.get('title') %></a></p>
   <% }); %>
 </ul>

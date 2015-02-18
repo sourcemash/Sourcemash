@@ -1,10 +1,10 @@
 <h2>
-  <%= feed.get('title') %>
+  <%= category.get('category') %>
 </h2>
 
 <ul class="list-group">
-  <% feed.items.each(function(item) { %>
-    <div class="card-panel blue lighten-4">
+  <% category.items.each(function(item) { %>
+    <div class="card-panel green lighten-4">
       <div class="card-content black-text">
         <span class="card-title">
           <span class="badge"><a href="#/categories/<%=item.get('category_1')%>"><%=item.get('category_1')%></a></span>

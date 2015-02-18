@@ -35,6 +35,6 @@ def logged_in_user(db, driver):
     page.type_into_password_field(user.password)
     page.click_submit_button()
 
-    assert "Hello" in page.get_welcome_user_message()
+    assert "dashboard" in page.browser.get_current_url
 
     return user

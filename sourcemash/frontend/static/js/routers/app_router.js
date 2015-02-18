@@ -1,7 +1,9 @@
 Sourcemash.Routers.AppRouter = Backbone.Router.extend({
     routes: {
         "": "index",
-        "feeds/:id": "show",
+        "feeds/:id": "showFeed",
+        "categories": "showCategories",
+        "categories/:category": "showCategory"
     },
 
     index: function() {
@@ -13,13 +15,31 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         this._swapView(feedsView);
     },
 
-    show: function(id) {
+    showFeed: function(id) {
         var feed = new Sourcemash.Models.Feed({ id: id });
         var feedView = new Sourcemash.Views.FeedView({ model: feed });
 
         feed.fetch();
         feed.items.fetch();
         this._swapView(feedView);
+    },
+
+    showCategories: function() {
+        var categoriesView = new Sourcemash.Views.CategoriesView({
+            collection: new Sourcemash.Collections.Categories()
+        });
+
+        categoriesView.collection.fetch();
+        this._swapView(categoriesView);
+    },
+
+    showCategory: function(keyword) {
+        var category = new Sourcemash.Models.Category({ category: keyword });
+        var categoryView = new Sourcemash.Views.CategoryView({ model: category });
+
+        category.fetch();
+        category.items.fetch({url: '/api/categories/' + keyword });
+        this._swapView(categoryView);
     },
 
     _swapView: function(view) {
