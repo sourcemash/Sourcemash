@@ -102,7 +102,7 @@ class Categorizer:
         not be selected as the two best.
         """
         cat1, cat2 = "", ""
-        for category, count in categories.most_common():
+        for category, weights in categories.most_common():
             if cat1 in cat2:
                 cat1 = category
             elif cat2 in cat1:
