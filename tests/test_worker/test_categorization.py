@@ -50,6 +50,10 @@ class TestCategorize:
 
 
     def test_get_best_categories_with_overlapped_tags(self, item):
+        """
+        Google should not be a category since Google Maps is one. 
+        Facebook should be one instead.
+        """
         categorizer = Categorizer()
         categorizer.parse_title_categories(["Google Maps gives Google leg up on Facebook despite Google's best efforts."])
         weighted_categories = categorizer.get_weighted_categories(categorizer.title_categories)
