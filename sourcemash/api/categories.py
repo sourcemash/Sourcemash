@@ -16,7 +16,7 @@ category_fields = {
 class CategoryListAPI(Resource):
 
     def get(self):
-        categories = Counter(dict(Item.query.with_entities(category_1, func.count()).group_by(Item.category_1).all()))
+        categories = Counter(dict(Item.query.with_entities(Item.category_1, func.count()).group_by(Item.category_1).all()))
         categories.update(dict(Item.query.with_entities(Item.category_2, func.count()).group_by(Item.category_2).all()))
 
         return {'categories': [{'category': category, 'count': categories[category]} for category in categories]}
