@@ -11,7 +11,8 @@ from flask.ext.assets import ManageAssets
 from sourcemash import create_app
 from sourcemash.database import db
 from sourcemash.models import User, Feed
-from sourcemash.categorize import Categorizer
+
+from worker_tasks.categorize import Categorizer
 from worker_tasks.scraper import scrape_articles
 
 from datetime import datetime
@@ -73,16 +74,36 @@ def seed():
     db.session.add(user)
     db.session.commit()
 
-    # One feed
-    feed = Feed(id=1, title='TechCrunch > Startups', 
+    techcrunch = Feed(title='TechCrunch > Startups', 
                 url="http://feeds.feedburner.com/techcrunch/startups?format=xml",
                 last_updated = datetime.min)
-    db.session.add(feed)
+    db.session.add(techcrunch)
     db.session.commit()
 
-    # Subscribe user to feed
-    user.subscribed.append(feed)
+    engadget = Feed(title='Engadget', 
+            url="http://podcasts.engadget.com/rss.xml",
+            last_updated = datetime.min)
+    db.session.add(engadget)
     db.session.commit()
+
+    gizmodo = Feed(title='Gizmodo', 
+            url="http://feeds.gawker.com/gizmodo/full",
+            last_updated = datetime.min)
+    db.session.add(gizmodo)
+    db.session.commit()
+
+    tnw = Feed(title='The Next Web', 
+            url="http://thenextweb.com/feed/",
+            last_updated = datetime.min)
+    db.session.add(tnw)
+    db.session.commit()
+
+    feeds = [techcrunch, engadget, gizmodo, tnw]
+
+    # Subscribe user to feed
+    for feed in feeds:
+        user.subscribed.append(feed)
+        db.session.commit()
 
     # Scrape articles for feed
     scrape_articles(Categorizer())
