@@ -4,6 +4,9 @@
 
 <ul class="collection categories">
   <% categories.forEach(function(category) { %>
-    <a href="#/categories/<%= category.get('category') %>" class="collection-item"><%= category.get('category') %></a>
+    <a href="#/categories/<%= category.get('category') %>" class="collection-item">
+        <%= category.get('category') %>
+        <span class="badge"><%=category.get('count')%></span>
+    </a>
   <% }); %>
 </ul>

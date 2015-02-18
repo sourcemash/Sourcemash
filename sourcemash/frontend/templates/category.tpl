@@ -3,6 +3,14 @@
 </h2>
 
 <ul class="list-group">
+
+
+  <% if (category.items.length == 0) { %>
+    <div class="collection-item">
+        No articles found.
+    </div>
+  <% }; %>
+
   <% category.items.each(function(item) { %>
     <div class="card-panel green lighten-4">
       <div class="card-content black-text">

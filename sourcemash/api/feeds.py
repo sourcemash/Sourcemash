@@ -24,11 +24,7 @@ class FeedListAPI(Resource):
 class FeedAPI(Resource):
 
     def get(self, id):
-        feed = Feed.query.get(id)
-        
-        if not feed:
-            abort(404)
-
+        feed = Feed.query.get_or_404(id)
         return {'feed': marshal(feed, feed_fields)}
 
 api.add_resource(FeedListAPI, '/feeds', endpoint='feeds')
