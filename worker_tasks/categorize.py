@@ -86,15 +86,13 @@ class Categorizer:
 
 
     def get_valid_ngrams(self, string):
-        # Intialize word array with unigrams
-        # Remove any apostrophe s's
-        ngrams = [word.strip(punctuation) for word in string.replace("'s", '').split()]
-        ngrams = filter(None, ngrams)   # Remove empty strings
+        unigrams = [word.strip(punctuation) for word in string.replace("'s", '').split()]
+        unigrams = filter(None, unigrams)   # Remove empty strings
         
-        bigrams = zip(*[ngrams[i:] for i in range(2)])
-        bigrams = [' '.join(word) for word in bigrams]
+        bigrams = zip(*[unigrams[i:] for i in range(2)])  # tuples
+        bigrams = [' '.join(word) for word in bigrams]  # strings
         
-        return filter(self.is_valid_category, ngrams + bigrams)
+        return filter(self.is_valid_category, unigrams + bigrams)
 
 
     def get_best_categories(self, categories):
