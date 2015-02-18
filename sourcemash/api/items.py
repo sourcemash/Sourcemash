@@ -28,11 +28,7 @@ class ItemListAPI(Resource):
 class ItemAPI(Resource):
 
     def get(self, feed_id, id):
-        item = Item.query.get(id)
-        
-        if not item:
-            abort(404)
-
+        item = Item.query.get_or_404(id)
         return {'item': marshal(item, item_fields)}
 
 api.add_resource(ItemListAPI, '/feeds/<int:feed_id>/items', endpoint='items')

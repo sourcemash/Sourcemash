@@ -13,7 +13,6 @@ class TestCategoryListAPI:
         assert r.status_code == 200
 
         data = json.loads(r.data)
-        print data
         assert data['categories'][0]['category'] == itemWithCategory.category_1 or \
                 data['categories'][0]['category'] == itemWithCategory.category_2
         assert data['categories'][1]['category'] == itemWithCategory.category_1 or \
@@ -32,7 +31,10 @@ class TestCategoryItemListAPI:
     def test_get_category_items_missing_category(self, test_client):
         r = test_client.get('/api/categories/nonexistent_category')
         check_valid_header_type(r.headers)
-        assert r.status_code == 404
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert len(data['items']) == 0
 
     def test_multiple_items_in_one_category(self, test_client, itemsWithCategory):
         r = test_client.get('/api/categories/' + itemsWithCategory[0].category_1)

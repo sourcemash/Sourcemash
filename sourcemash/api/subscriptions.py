@@ -70,20 +70,20 @@ class SubscriptionAPI(Resource):
 
     @login_required
     def get(self, id):
-        subscription = current_user.subscribed.filter(Feed.id==id).first()
-        
-        if not subscription:
+        try:
+            subscription = current_user.subscribed.filter(Feed.id==id).one()
+        except:
             abort(404)
 
-        subscription.feed = Feed.query.get(id)
+        subscription.feed = Feed.query.get_or_404(id)
 
         return {"subscription": marshal(subscription, subscription_fields)}
 
     @login_required
     def delete(self, id):
-        subscription = current_user.subscribed.filter(Feed.id==id).first()
-        
-        if not subscription:
+        try:
+            subscription = current_user.subscribed.filter(Feed.id==id).one()
+        except:
             abort(404)
 
         current_user.subscribed.remove(subscription)
