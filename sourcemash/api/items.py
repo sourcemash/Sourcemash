@@ -38,6 +38,8 @@ class ItemAPI(Resource):
         ''' Update item vote count '''
         args = self.reqparse.parse_args()
         item = Item.query.get_or_404(id)
+
+        print "\n\n\n", item.totalVotes, "\n\n\n"
         item.totalVotes += args.vote
         db.session.commit()
         return {'item': marshal(item, item_fields)}

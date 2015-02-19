@@ -8,7 +8,7 @@ from tests.factories import item_factories
 def check_valid_header_type(headers):
     assert headers['Content-Type'] == 'application/json'
 
-class TestItemAPI:
+class TestItemAPI(TestBase):
 
     def test_get_item_present(self, test_client, item):
         r = test_client.get('/api/items/%d' % item.id)
@@ -22,6 +22,36 @@ class TestItemAPI:
         r = test_client.get('/api/items/%d' % 10)
         check_valid_header_type(r.headers)
         assert r.status_code == 404
+
+    def test_put_item_upvote(self, test_client, user, item):
+        self.login(test_client, user.email, user.password)
+
+        upvote = dict(vote=1)
+        r = test_client.put('/api/items/%d' % item.id, data=upvote)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert data['item']['totalVotes'] == 1
+
+    def test_put_item_downvote(self, test_client, user, item):
+        self.login(test_client, user.email, user.password)
+
+        downvote = dict(vote=-1)
+        r = test_client.put('/api/items/%d' % item.id, data=downvote)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert data['item']['totalVotes'] == -1
+
+    def test_put_item_vote_missing(self, test_client, user, item):
+        self.login(test_client, user.email, user.password)
+
+        no_vote = dict()
+        r = test_client.put('/api/items/%d' % item.id, data=no_vote)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 400
 
 class TestFeedItemListAPI:
 
