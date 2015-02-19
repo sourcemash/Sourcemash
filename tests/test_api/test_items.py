@@ -57,7 +57,7 @@ class TestCategoryItemListAllAPI:
 
 class TestCategoryItemListAPI(TestBase):
 
-    def test_get_users_items_present(self, test_client, userWithPopulatedFeed):
+    def test_get_items_present(self, test_client, userWithPopulatedFeed):
         self.login(test_client, userWithPopulatedFeed.email, userWithPopulatedFeed.password)
 
         feed = userWithPopulatedFeed.subscribed.first()
@@ -71,7 +71,7 @@ class TestCategoryItemListAPI(TestBase):
         assert len(data['items']) == 5
 
 
-    def test_get_users_items_case_insensitive_categories(self, test_client, userWithPopulatedFeed):
+    def test_get_items_case_insensitive_categories(self, test_client, userWithPopulatedFeed):
         self.login(test_client, userWithPopulatedFeed.email, userWithPopulatedFeed.password)
 
         feed = userWithPopulatedFeed.subscribed.first()
@@ -85,7 +85,7 @@ class TestCategoryItemListAPI(TestBase):
         assert len(data['items']) == 5
 
 
-    def test_get_users_matching_categories_missing(self, test_client, userWithPopulatedFeed):
+    def test_get_items_category_missing(self, test_client, userWithPopulatedFeed):
         self.login(test_client, userWithPopulatedFeed.email, userWithPopulatedFeed.password)
 
         outside_item = item_factories.ItemWithCategoryFactory(category_1="nonexistent_category")
