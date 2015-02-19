@@ -11,7 +11,7 @@ role_users = db.Table('roles_users',
         db.Column('role_id', db.Integer, db.ForeignKey('role.id'))
 )
 
-users_items = db.Table('users_items',
+user_items = db.Table('user_items',
         db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
         db.Column('item_id', db.Integer, db.ForeignKey('item.id')),
         db.Column('vote', db.Integer)
@@ -32,7 +32,7 @@ class User(db.Model, UserMixin):
                             backref=db.backref('users', lazy='dynamic'),
                             lazy='dynamic')
     items = db.relationship('Item',
-                            secondary=users_items,
+                            secondary=user_items,
                             backref=db.backref('users', lazy='dynamic'),
                             lazy='dynamic')
     
