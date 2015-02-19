@@ -45,13 +45,21 @@ class TestItemAPI(TestBase):
         data = json.loads(r.data)
         assert data['item']['totalVotes'] == -1
 
-    def test_put_item_vote_missing(self, test_client, user, item):
+    def test_put_vote_missing(self, test_client, user, item):
         self.login(test_client, user.email, user.password)
 
         no_vote = dict()
         r = test_client.put('/api/items/%d' % item.id, data=no_vote)
         check_valid_header_type(r.headers)
         assert r.status_code == 400
+
+    def test_put_item_missing(self, test_client, user, item):
+        self.login(test_client, user.email, user.password)
+
+        upvote = dict(vote=1)
+        r = test_client.put('/api/items/%d' % (int(item.id+1)), data=upvote)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 404
 
 class TestFeedItemListAPI:
 
