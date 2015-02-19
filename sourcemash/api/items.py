@@ -40,6 +40,7 @@ class CategoryItemListAPI(Resource):
 
     @login_required
     def get(self, category):
+        category = category.title()
         user_feed_ids = [feed.id for feed in current_user.subscribed]
 
         items = Item.query.filter((Item.category_1 == category) | (Item.category_2 == category))    \
@@ -52,6 +53,7 @@ class CategoryItemListAPI(Resource):
 class CategoryItemListAllAPI(Resource):
 
     def get(self, category):
+        category = category.title()
         items = Item.query.filter((Item.category_1 == category) | (Item.category_2 == category)).all()
         return {'items': [marshal(item, item_fields) for item in items]}
 
