@@ -14,7 +14,7 @@ role_users = db.Table('roles_users',
 user_items = db.Table('user_items',
         db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
         db.Column('item_id', db.Integer, db.ForeignKey('item.id')),
-        db.Column('vote', db.Integer)
+        db.Column('vote', db.Integer, default=0)
 )
 
 class User(db.Model, UserMixin):

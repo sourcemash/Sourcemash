@@ -45,6 +45,26 @@ class TestItemAPI(TestBase):
         data = json.loads(r.data)
         assert data['item']['totalVotes'] == -1
 
+    def test_put_item_too_big_vote(self, test_client, user, item):
+        self.login(test_client, user.email, user.password)
+
+        original_vote_count = item.totalVotes
+        too_big_vote = dict(vote=5)
+        r = test_client.put('/api/items/%d' % item.id, data=too_big_vote)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 406
+
+        data = json.loads(r.data)
+        assert data['item']['totalVotes'] == original_vote_count
+
+    def test_put_item_non_integer_vote(self, test_client, user, item):
+        self.login(test_client, user.email, user.password)
+
+        non_integer_vote = dict(vote=0.33)
+        r = test_client.put('/api/items/%d' % item.id, data=non_integer_vote)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 400
+
     def test_put_vote_missing(self, test_client, user, item):
         self.login(test_client, user.email, user.password)
 
