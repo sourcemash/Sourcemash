@@ -88,7 +88,7 @@ class TestCategoryItemListAPI(TestBase):
     def test_get_users_matching_categories_missing(self, test_client, userWithPopulatedFeed):
         self.login(test_client, userWithPopulatedFeed.email, userWithPopulatedFeed.password)
 
-        outside_item = item_factories.ItemWithCategoryFactory(category_1="vegetables")
+        outside_item = item_factories.ItemWithCategoryFactory(category_1="nonexistent_category")
 
         r = test_client.get('/api/categories/' + outside_item.category_1 + '/items')
 
