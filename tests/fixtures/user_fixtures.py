@@ -14,7 +14,7 @@ def userWithFeed(request):
 
 @pytest.fixture()
 def userWithPopulatedFeed(request):
-    feed = feed_factories.FeedFactory(items=[item_factories.ItemWithCategory() for i in range(5)])
+    feed = feed_factories.FeedFactory(items=[item_factories.ItemWithCategoryFactory() for i in range(5)])
     return user_factories.UserFactory(subscribed=[feed])
 
 @pytest.fixture()
