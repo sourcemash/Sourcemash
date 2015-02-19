@@ -2,6 +2,8 @@ from . import api
 from sourcemash.database import db
 from flask import abort
 from flask.ext.restful import Resource, reqparse, fields, marshal
+from flask.ext.security import current_user, login_required
+
 
 from sourcemash.models import Item
 
@@ -20,16 +22,44 @@ item_fields = {
     'uri': fields.Url('api.item')
 }
 
-class ItemListAPI(Resource):
+
+class ItemAPI(Resource):
+
+    def get(self, id):
+        item = Item.query.get_or_404(id)
+        return {'item': marshal(item, item_fields)}
+
+
+class FeedItemListAPI(Resource):
 
     def get(self, feed_id):
         return {'items': [marshal(item, item_fields) for item in Item.query.filter_by(feed_id=feed_id).all()]}
 
-class ItemAPI(Resource):
 
-    def get(self, feed_id, id):
-        item = Item.query.get_or_404(id)
-        return {'item': marshal(item, item_fields)}
+class CategoryItemListAPI(Resource):
 
-api.add_resource(ItemListAPI, '/feeds/<int:feed_id>/items', endpoint='items')
-api.add_resource(ItemAPI, '/feeds/<int:feed_id>/items/<int:id>', endpoint='item')
+    @login_required
+    def get(self, category):
+        category = category.title()
+        user_feed_ids = [feed.id for feed in current_user.subscribed]
+
+        items = Item.query.filter((Item.category_1 == category) | (Item.category_2 == category))    \
+                            .filter(Item.feed_id.in_(user_feed_ids))                                \
+                            .all()
+
+        return {'items': [marshal(item, item_fields) for item in items]}
+
+
+class CategoryItemListAllAPI(Resource):
+
+    def get(self, category):
+        category = category.title()
+        items = Item.query.filter((Item.category_1 == category) | (Item.category_2 == category)).all()
+        return {'items': [marshal(item, item_fields) for item in items]}
+
+
+api.add_resource(ItemAPI, '/items/<int:id>', endpoint='item')
+api.add_resource(FeedItemListAPI, '/feeds/<int:feed_id>/items', endpoint='feed_items')
+api.add_resource(CategoryItemListAPI, '/categories/<string:category>/items', endpoint='category_items')
+api.add_resource(CategoryItemListAllAPI, '/categories/<string:category>/items/all', endpoint='category_items_all')
+

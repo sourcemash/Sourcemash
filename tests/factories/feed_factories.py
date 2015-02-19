@@ -11,6 +11,15 @@ class FeedFactory(SQLAlchemyModelFactory):
     url = factory.Sequence(lambda n: u'superfeed%d.com/rss' % n)
     last_updated = datetime.min
 
+    @factory.post_generation
+    def items(self, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if extracted:
+            for item in extracted:
+                self.items.append(item)
+
 class TechCrunchFeedFactory(FeedFactory):
     title = "TechCrunch"
     url = "http://feeds.feedburner.com/techcrunch/startups?format=xml"

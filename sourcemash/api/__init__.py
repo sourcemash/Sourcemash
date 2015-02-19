@@ -6,6 +6,5 @@ api = Api(bp, prefix="/api")
 
 import feeds
 import items
-import subscriptions
 import users
 import categories

@@ -1,40 +1,23 @@
 import pytest
 import json
 
-from tests.factories import feed_factories
-from sourcemash.models import Feed
+from . import TestBase
 
 def check_valid_header_type(headers):
     assert headers['Content-Type'] == 'application/json'
 
-class TestSubscriptionAPI:
+class TestFeedAPI(TestBase):
 
-    def login(self, test_client, email, password):
-        r = test_client.post('/login', data=dict(
-            email=email,
-            password=password
-        ), follow_redirects=True)
-        return r
-
-    def test_get_subscription_present(self, test_client, userWithFeed):
-        feed = userWithFeed.subscribed.first()
-
-        self.login(test_client, userWithFeed.email, userWithFeed.password)
-
-        r = test_client.get('/api/subscriptions/%d' % feed.id)
+    def test_get_feed_present(self, test_client, feed):
+        r = test_client.get('/api/feeds/%d' % feed.id)
         check_valid_header_type(r.headers)
         assert r.status_code == 200
 
         data = json.loads(r.data)
-        assert data['subscription']['id'] == feed.id
-        assert data['subscription']['feed']['id'] == feed.id
+        assert data['feed']['title'] == feed.title
 
-    def test_get_subscription_missing(self, test_client, user):
-        feed = user.subscribed.first()
-
-        self.login(test_client, user.email, user.password)
-
-        r = test_client.get('/api/subscriptions/0')
+    def test_get_feed_missing(self, test_client):
+        r = test_client.get('/api/feeds/0')
         check_valid_header_type(r.headers)
         assert r.status_code == 404
 
@@ -43,65 +26,65 @@ class TestSubscriptionAPI:
 
         self.login(test_client, userWithFeed.email, userWithFeed.password)
 
-        # Remove Dummy Feed
-        delete = test_client.delete('api/subscriptions/%d' % feed.id)
-        check_valid_header_type(delete.headers)
-        data = json.loads(delete.data)
+        unsubscribe = test_client.delete('api/feeds/%d' % feed.id)
+        check_valid_header_type(unsubscribe.headers)
+        data = json.loads(unsubscribe.data)
 
         assert data['result'] == True
-
-        # Dummy feed should no longer be reachable
-        get = test_client.get('api/subscriptions/%d' % feed.id)
-        assert get.status_code == 404
+        assert userWithFeed.subscribed.count() == 0
 
     def test_delete_subscription_invalid_feed_id(self, test_client, userWithFeed):
         feed = userWithFeed.subscribed.first()
 
         self.login(test_client, userWithFeed.email, userWithFeed.password)
 
-        # Failed remove Dummy Feed
-        delete = test_client.delete('api/subscriptions/%d' % (int(feed.id)+1))
-        check_valid_header_type(delete.headers)
-        assert delete.status_code == 404       
+        unsubscribe = test_client.delete('api/feeds/%d' % (int(feed.id)+1))
+        check_valid_header_type(unsubscribe.headers)
+        assert unsubscribe.status_code == 404   
 
-class TestSubscriptionListAPI:
 
-    def login(self, test_client, email, password):
-        return test_client.post('/login', data=dict(
-            email=email,
-            password=password
-        ), follow_redirects=True)
+class TestFeedListAllAPI:
+
+    def test_get_feeds(self, test_client, feed):
+        r = test_client.get('/api/feeds/all')
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert len(data['feeds']) == 1
+    
+
+class TestFeedListAPI(TestBase):
 
     def test_get_users_subscriptions(self, test_client, userWithFeed):
         self.login(test_client, userWithFeed.email, userWithFeed.password)
 
         user_feed = userWithFeed.subscribed.first()
 
-        r = test_client.get('/api/subscriptions')
+        r = test_client.get('/api/feeds')
         check_valid_header_type(r.headers)
         assert r.status_code == 200
 
         data = json.loads(r.data)
-        assert len(data['subscriptions']) == 1
+        assert len(data['feeds']) == 1
 
-        assert data['subscriptions'][0]['feed']['title'] == user_feed.title
+        assert data['feeds'][0]['title'] == user_feed.title
 
     def test_post_subscription_validURL_new_feed(self, test_client, user):
         self.login(test_client, user.email, user.password)
 
         subscription_data = dict(url='http://online.wsj.com/xml/rss/3_7085.xml')
-        r = test_client.post('/api/subscriptions', data=subscription_data)
+        r = test_client.post('/api/feeds', data=subscription_data)
 
         check_valid_header_type(r.headers)
         assert r.status_code == 201
-        assert Feed.query.first().url == 'http://online.wsj.com/xml/rss/3_7085.xml'
+        assert user.subscribed.first().url == 'http://online.wsj.com/xml/rss/3_7085.xml'
 
     def test_post_subscription_validURL_old_feed(self, test_client, user, real_feed):
         self.login(test_client, user.email, user.password)
 
-        existent_feed = Feed.query.first()
-        subscription_data = dict(url=existent_feed.url)
-        r = test_client.post('/api/subscriptions', data=subscription_data)
+        subscription_data = dict(url=real_feed.url)
+        r = test_client.post('/api/feeds', data=subscription_data)
 
         check_valid_header_type(r.headers)
         assert r.status_code == 201
@@ -110,7 +93,7 @@ class TestSubscriptionListAPI:
         self.login(test_client, user.email, user.password)
 
         subscription_data = dict(url='http://nonexistentURL')
-        r = test_client.post('/api/subscriptions', data=subscription_data)
+        r = test_client.post('/api/feeds', data=subscription_data)
 
         check_valid_header_type(r.headers)
         assert r.status_code == 422
@@ -125,7 +108,7 @@ class TestSubscriptionListAPI:
         feed = userWithRealFeed.subscribed.first()
 
         subscription_data = dict(url=feed.url)
-        r = test_client.post('/api/subscriptions', data=subscription_data)
+        r = test_client.post('/api/feeds', data=subscription_data)
 
         check_valid_header_type(r.headers)
         assert r.status_code == 409
@@ -133,6 +116,3 @@ class TestSubscriptionListAPI:
         data = json.loads(r.data)
         assert len(data['errors']['url']) == 1
         assert 'Already subscribed' in data['errors']['url'][0]
-
-
-
