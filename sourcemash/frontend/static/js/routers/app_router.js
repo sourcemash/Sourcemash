@@ -8,7 +8,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
 
     index: function() {
         var feedsView = new Sourcemash.Views.FeedsView({
-            collection: new Sourcemash.Collections.Subscriptions()
+            collection: new Sourcemash.Collections.Feeds()
         });
 
         feedsView.collection.fetch();
@@ -38,7 +38,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         var categoryView = new Sourcemash.Views.CategoryView({ model: category });
 
         category.fetch();
-        category.items.fetch({url: '/api/categories/' + keyword });
+        category.items.fetch();
         this._swapView(categoryView);
     },
 
