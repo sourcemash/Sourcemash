@@ -10,7 +10,7 @@ from flask.ext.assets import ManageAssets
 
 from sourcemash import create_app
 from sourcemash.database import db
-from sourcemash.models import User, Feed
+from sourcemash.models import User, Feed, Item
 
 from worker_tasks.categorize import Categorizer
 from worker_tasks.scraper import scrape_articles
@@ -107,6 +107,15 @@ def seed():
 
     # Scrape articles for feed
     scrape_articles(Categorizer())
+
+    # Add items to user_item relationship
+    for feed in feeds:
+        print "\n\n\nFEED:", feed, "\n\n"
+        raw_input()
+        for item in feed.items:
+            print "\n\n---ITEM: ", item
+            user.items.append(item)
+            db.session.commit()
 
 manager.add_command('server', Server())
 manager.add_command('shell', Shell(make_context=_make_context))

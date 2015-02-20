@@ -41,6 +41,9 @@ class ItemAPI(Resource):
         # Reject if size of vote is too large
         if abs(args.vote) > 1:
             return {'item': marshal(item, item_fields)}, 406 
+        # Reject if user has already voted
+        # Check vote column of user_items table
+        
         item.totalVotes += args.vote
         db.session.commit()
         return {'item': marshal(item, item_fields)}
