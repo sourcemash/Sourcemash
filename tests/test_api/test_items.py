@@ -97,3 +97,19 @@ class TestCategoryItemListAPI(TestBase):
 
         data = json.loads(r.data)
         assert len(data['items']) == 0
+
+
+    def test_get_items_category_with_unsubscribed_item(self, test_client, userWithPopulatedFeed, itemsWithCategory):
+        self.login(test_client, userWithPopulatedFeed.email, userWithPopulatedFeed.password)
+
+        feed = userWithPopulatedFeed.subscribed.first()
+        user_items_length = len(feed.items.all())
+
+        r = test_client.get('/api/categories/' + feed.items[0].category_1 + '/items')
+
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert len(data['items']) == user_items_length + 1
+        assert len(filter(lambda item: item['feed']['subscribed'] == False, data['items'])) == 1

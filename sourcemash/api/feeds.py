@@ -11,11 +11,20 @@ import feedparser
 from sourcemash.models import Feed
 from sourcemash.forms import FeedForm
 
+class isSubscribed(fields.Raw):
+    def output(self, key, feed):
+        if not current_user.is_authenticated():
+            return False
+
+        return feed in current_user.subscribed
+
+
 feed_fields = {
     'id': fields.Integer,
     'title': fields.String,
     'url': fields.String,
     'last_updated': fields.DateTime,
+    'subscribed': isSubscribed
 }
 
 class FeedListAPI(Resource):

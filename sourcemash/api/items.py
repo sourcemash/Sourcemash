@@ -4,7 +4,7 @@ from flask import abort
 from flask.ext.restful import Resource, reqparse, fields, marshal
 from flask.ext.security import current_user, login_required
 
-
+from feeds import feed_fields
 from sourcemash.models import Item
 
 item_fields = {
@@ -17,8 +17,7 @@ item_fields = {
     'category_1': fields.String,
     'category_2': fields.String,
     'summary': fields.String,
-    'category_1': fields.String,
-    'category_2': fields.String,
+    'feed': fields.Nested(feed_fields),
     'uri': fields.Url('api.item')
 }
 
@@ -46,6 +45,13 @@ class CategoryItemListAPI(Resource):
         items = Item.query.filter((Item.category_1 == category) | (Item.category_2 == category))    \
                             .filter(Item.feed_id.in_(user_feed_ids))                                \
                             .all()
+
+        unsubscribed_item = Item.query.filter((Item.category_1 == category) | (Item.category_2 == category))     \
+                                        .filter(~Item.feed_id.in_(user_feed_ids))                               \
+                                        .first()
+
+        if unsubscribed_item:
+            items.append(unsubscribed_item)
 
         return {'items': [marshal(item, item_fields) for item in items]}
 
