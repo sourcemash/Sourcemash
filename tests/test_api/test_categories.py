@@ -72,7 +72,4 @@ class TestCategoryListAPI(TestBase):
 
         data = json.loads(r.data)
 
-        assert set([data['categories'][0]['category'], data['categories'][1]['category']]) == \
-                set([item.category_1, item.category_2])
-
         assert data['categories'][0]['count'] == feed.items.count() + 1
