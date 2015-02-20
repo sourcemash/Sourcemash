@@ -29,7 +29,7 @@ The site was built for the CS98 course at Dartmouth College.
 
 ## Tests
 * To run the basic unittests, run ```python manage.py tests```.
-* To include the functional tests, start a server on localhost and run ```python manage.py tests --all``` or ```python manage.py tests -a```.
+* To include the functional tests, run ```python manage.py tests --all``` or ```python manage.py tests -a```.
 
 ## License
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or (at your option) any later version.
