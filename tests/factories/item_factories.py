@@ -15,7 +15,6 @@ class ItemFactory(SQLAlchemyModelFactory):
     summary = 'Summary of the feed item.'
     text = 'Text of the feed item.'
     feed = factory.SubFactory(FeedFactory)
-    totalVotes = 0
 
 class EbolaItemFactory(ItemFactory):
     title = "Officials Say Ebola Cases Are Falling In West Africa"

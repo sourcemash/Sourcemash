@@ -32,7 +32,7 @@ class TestItemAPI(TestBase):
         assert r.status_code == 200
 
         data = json.loads(r.data)
-        assert data['item']['totalVotes'] == 1
+        assert data['item']['voteSum'] == 1
 
     def test_put_item_downvote(self, test_client, user, item):
         self.login(test_client, user.email, user.password)
@@ -43,7 +43,7 @@ class TestItemAPI(TestBase):
         assert r.status_code == 200
 
         data = json.loads(r.data)
-        assert data['item']['totalVotes'] == -1
+        assert data['item']['voteSum'] == -1
 
     def test_put_multi_upvotes(self, test_client, user_item_upvote):
         self.login(test_client, user_item_upvote.user.email, user_item_upvote.user.password)
@@ -65,7 +65,7 @@ class TestItemAPI(TestBase):
         assert r.status_code == 200
 
         data = json.loads(r.data)
-        assert data['item']['totalVotes'] == 0
+        assert data['item']['voteSum'] == 0
 
     def test_put_multi_downvotes(self, test_client, user_item_downvote):
         self.login(test_client, user_item_downvote.user.email, user_item_downvote.user.password)
@@ -81,14 +81,15 @@ class TestItemAPI(TestBase):
     def test_put_item_too_big_vote(self, test_client, user, item):
         self.login(test_client, user.email, user.password)
 
-        original_vote_count = item.totalVotes
+        original_vote_count = item.voteSum
         too_big_vote = dict(vote=5)
+        
         r = test_client.put('/api/items/%d' % item.id, data=too_big_vote)
         check_valid_header_type(r.headers)
         assert r.status_code == 422
 
         data = json.loads(r.data)
-        assert data['item']['totalVotes'] == original_vote_count
+        assert data['item']['voteSum'] == original_vote_count
 
     def test_put_item_non_integer_vote(self, test_client, user, item):
         self.login(test_client, user.email, user.password)
@@ -101,10 +102,15 @@ class TestItemAPI(TestBase):
     def test_put_vote_missing(self, test_client, user, item):
         self.login(test_client, user.email, user.password)
 
+        original_vote_count = item.voteSum
         no_vote = dict()
+        
         r = test_client.put('/api/items/%d' % item.id, data=no_vote)
         check_valid_header_type(r.headers)
-        assert r.status_code == 400
+        assert r.status_code == 200 # Unspecified vote defaults to zero
+
+        data = json.loads(r.data)
+        assert data['item']['voteSum'] == original_vote_count
 
     def test_put_item_missing(self, test_client, user, item):
         self.login(test_client, user.email, user.password)

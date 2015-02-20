@@ -18,7 +18,7 @@ item_fields = {
     'category_2': fields.String,
     'summary': fields.String,
     'feed': fields.Nested(feed_fields),
-    'totalVotes': fields.Integer,
+    'voteSum': fields.Integer,
     'uri': fields.Url('api.item')
 }
 
@@ -26,7 +26,7 @@ item_fields = {
 class ItemAPI(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('vote', type = int, required = True)
+        self.reqparse.add_argument('vote', type = int, default = 0)
         super(ItemAPI, self).__init__()
 
     def get(self, id):
@@ -35,7 +35,7 @@ class ItemAPI(Resource):
 
     @login_required
     def put(self, id):
-        ''' Update item vote count '''
+        ''' Update item vote count (& mark as read/unread)'''
         args = self.reqparse.parse_args()
         item = Item.query.get_or_404(id)
         
@@ -50,13 +50,16 @@ class ItemAPI(Resource):
                                                 item_id=id).one()
         except:
             user_item = UserItem(user_id=current_user.id, item_id=id, vote=0)
+            db.session.add(user_item)
 
-        if user_item.vote == args.vote:
-            return {'errors': {'vote': ["You have already voted on this item."]}}, 422
+        if args.vote != 0: # not voting if vote = 0: unread/read check
+            if user_item.vote == args.vote:
+                return {'errors': {'vote': ["You have already voted on this item."]}}, 422
 
-        user_item.vote += args.vote
-        item.totalVotes += args.vote
-        db.session.commit()
+            user_item.vote += args.vote
+            item.voteSum += args.vote
+            db.session.commit()
+            
         return {'item': marshal(item, item_fields)}
 
 class FeedItemListAPI(Resource):
