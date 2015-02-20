@@ -51,8 +51,9 @@ class ItemAPI(Resource):
             user_item = UserItem.query.filter_by(user_id=current_user.id, 
                                                 item_id=id).one()
         except:
-            user_item = UserItem(user=current_user, item=item, vote=0)
+            user_item = UserItem(user=current_user, item=item)
             db.session.add(user_item)
+            db.session.commit()
 
         if args.vote: # not voting if vote = 0
             if user_item.vote == args.vote:
