@@ -29,6 +29,7 @@ class CategoryListAPI(Resource):
             categories.update({category: count})
 
         # Add unsubscribed items to the counts
+        # Total = len(subscribed user items) + 1 unsubscribed user item
         for category in categories:
             unsubscribed_item = Item.query.filter((Item.category_1 == category) | (Item.category_2 == category))    \
                                         .filter(~Item.feed_id.in_(user_feed_ids))                                   \
