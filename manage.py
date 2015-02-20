@@ -34,7 +34,7 @@ ITERATIONS_BEFORE_RESET = CATEGORY_DICT_LIFETIME * SECONDS_PER_DAY / SCRAPE_INTE
 def _make_context():
     """Return context dict for a shell session so you can access
     app, db, and the User model by default."""
-    return {'app': app, 'db': db, 'User': User, 'Item': Item, 'Feed': Feed, 'UserItems': UserItems}
+    return {'app': app, 'db': db, 'User': User, 'Item': Item, 'Feed': Feed, 'UserItem': UserItem}
 
 
 @manager.command
