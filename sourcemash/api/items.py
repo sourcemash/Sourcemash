@@ -51,10 +51,10 @@ class ItemAPI(Resource):
             user_item = UserItem.query.filter_by(user_id=current_user.id, 
                                                 item_id=id).one()
         except:
-            user_item = UserItem(user_id=current_user.id, item_id=id, vote=0)
+            user_item = UserItem(user=current_user, item=item, vote=0)
             db.session.add(user_item)
 
-        if args.vote != 0: # not voting if vote = 0: unread/read check
+        if args.vote: # not voting if vote = 0
             if user_item.vote == args.vote:
                 return {'errors': {'vote': ["You have already voted on this item."]}}, 422
 
