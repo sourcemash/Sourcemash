@@ -103,7 +103,7 @@ class TestCategoryItemListAPI(TestBase):
         self.login(test_client, userWithPopulatedFeed.email, userWithPopulatedFeed.password)
 
         feed = userWithPopulatedFeed.subscribed.first()
-        user_items_length = len(feed.items.all())
+        user_items_length = feed.items.count()
 
         r = test_client.get('/api/categories/' + feed.items[0].category_1 + '/items')
 

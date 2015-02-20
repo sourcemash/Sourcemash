@@ -28,6 +28,15 @@ class CategoryListAPI(Resource):
         for category, count in distinct_category_1 + distinct_category_2:
             categories.update({category: count})
 
+        # Add unsubscribed items to the counts
+        for category in categories:
+            unsubscribed_item = Item.query.filter((Item.category_1 == category) | (Item.category_2 == category))    \
+                                        .filter(~Item.feed_id.in_(user_feed_ids))                                   \
+                                        .first()
+            if unsubscribed_item:
+                categories.update({category: 1})
+
+
         return {'categories': [{'category': category, 'count': categories[category]} for category in categories]}
 
 
