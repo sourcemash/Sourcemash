@@ -58,3 +58,18 @@ class TestCategoryListAPI(TestBase):
                 set([item.category_1, item.category_2])
 
         assert data['categories'][0]['count'] == 5
+
+
+    def test_get_user_categories_with_unsubscribed_item(self, test_client, userWithPopulatedFeed, itemsWithCategory):
+        self.login(test_client, userWithPopulatedFeed.email, userWithPopulatedFeed.password)
+
+        feed = userWithPopulatedFeed.subscribed.first()
+        item = feed.items.first()
+
+        r = test_client.get('/api/categories')
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+
+        assert data['categories'][0]['count'] == feed.items.count() + 1
