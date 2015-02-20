@@ -5,7 +5,7 @@ from flask.ext.restful import Resource, reqparse, fields, marshal
 from flask.ext.security import current_user, login_required
 
 from feeds import feed_fields
-from sourcemash.models import Item, UserItems
+from sourcemash.models import Item, UserItem
 
 item_fields = {
     'id': fields.Integer,
@@ -46,10 +46,10 @@ class ItemAPI(Resource):
         # Reject if user has already voted
         # Check vote column of user_items table
         try:
-            user_item = UserItems.query.filter_by(user_id=current_user.id, 
+            user_item = UserItem.query.filter_by(user_id=current_user.id, 
                                                 item_id=id).one()
         except:
-            user_item = UserItems(user_id=current_user.id, item_id=id, vote=0)
+            user_item = UserItem(user_id=current_user.id, item_id=id, vote=0)
 
         if user_item.vote == args.vote:
             return {'errors': {'vote': ["You have already voted on this item."]}}, 422

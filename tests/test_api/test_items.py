@@ -2,7 +2,6 @@ import pytest
 import json
 
 from . import TestBase
-from sourcemash.models import UserItems
 from tests.factories import item_factories
 
 
@@ -46,50 +45,34 @@ class TestItemAPI(TestBase):
         data = json.loads(r.data)
         assert data['item']['totalVotes'] == -1
 
-    def test_put_multi_upvotes(self, db, test_client, user, itemWithUpvote):
-        self.login(test_client, user.email, user.password)
-
-        a = UserItems(vote=1)
-        a.item = itemWithUpvote
-        user.items.append(a)
+    def test_put_multi_upvotes(self, test_client, user_item_upvote):
+        self.login(test_client, user_item_upvote.user.email, user_item_upvote.user.password)
 
         upvote = dict(vote=1)
-        r = test_client.put('/api/items/%d' % itemWithUpvote.id, data=upvote)
+        r = test_client.put('/api/items/%d' % user_item_upvote.item.id, data=upvote)
         check_valid_header_type(r.headers)
         assert r.status_code == 422
 
         data = json.loads(r.data)
         assert "already voted" in data['errors']['vote'][0]
 
-    def test_put_upvote_then_downvote(self, db, test_client, user, itemWithUpvote):
-        self.login(test_client, user.email, user.password)
-
-        a = UserItems(vote=1)
-        a.item = itemWithUpvote
-        user.items.append(a)
-
-        original_vote = itemWithUpvote.totalVotes
-        itemWithUpvote.totalVotes += 1
+    def test_put_upvote_then_downvote(self, test_client, user_item_upvote):
+        self.login(test_client, user_item_upvote.user.email, user_item_upvote.user.password)
 
         downvote = dict(vote=-1)
-        r = test_client.put('/api/items/%d' % itemWithUpvote.id, data=downvote)
+        r = test_client.put('/api/items/%d' % user_item_upvote.item.id, data=downvote)
         check_valid_header_type(r.headers)
         assert r.status_code == 200
 
         data = json.loads(r.data)
-        assert data['item']['totalVotes'] == original_vote
+        assert data['item']['totalVotes'] == 0
 
-    def test_put_multi_downvotes(self, db, test_client, user, itemWithDownvote):
-        self.login(test_client, user.email, user.password)
-
-        a = UserItems(vote=-1)
-        a.item = itemWithDownvote
-        user.items.append(a)
+    def test_put_multi_downvotes(self, test_client, user_item_downvote):
+        self.login(test_client, user_item_downvote.user.email, user_item_downvote.user.password)
 
         downvote = dict(vote=-1)
-        r = test_client.put('/api/items/%d' % itemWithDownvote.id, data=downvote)
+        r = test_client.put('/api/items/%d' % user_item_downvote.item.id, data=downvote)
         check_valid_header_type(r.headers)
-        print UserItems.query.all()
         assert r.status_code == 422
 
         data = json.loads(r.data)
