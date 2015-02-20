@@ -5,7 +5,7 @@ from flask.ext.restful import Resource, reqparse, fields, marshal
 from flask.ext.security import current_user, login_required
 
 from feeds import feed_fields
-from sourcemash.models import Item
+from sourcemash.models import Item, UserItems
 
 item_fields = {
     'id': fields.Integer,
@@ -38,12 +38,23 @@ class ItemAPI(Resource):
         ''' Update item vote count '''
         args = self.reqparse.parse_args()
         item = Item.query.get_or_404(id)
+        
         # Reject if size of vote is too large
         if abs(args.vote) > 1:
-            return {'item': marshal(item, item_fields)}, 406 
+            return {'item': marshal(item, item_fields)}, 422 
+        
         # Reject if user has already voted
         # Check vote column of user_items table
-        
+        try:
+            user_item = UserItems.query.filter_by(user_id=current_user.id, 
+                                                item_id=id).one()
+        except:
+            user_item = UserItems(user_id=current_user.id, item_id=id, vote=0)
+
+        if user_item.vote == args.vote:
+            return {'errors': {'vote': ["You have already voted on this item."]}}, 422
+
+        user_item.vote += args.vote
         item.totalVotes += args.vote
         db.session.commit()
         return {'item': marshal(item, item_fields)}

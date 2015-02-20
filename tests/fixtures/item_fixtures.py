@@ -16,3 +16,11 @@ def itemWithCategory(request):
 @pytest.fixture()
 def itemsWithCategory(request):
 	return [item_factories.ItemWithCategoryFactory() for i in range(5)]
+
+@pytest.fixture()
+def itemWithUpvote(request):
+	return item_factories.ItemFactory(totalVotes=1)
+
+@pytest.fixture()
+def itemWithDownvote(request):
+	return item_factories.ItemFactory(totalVotes=-1)

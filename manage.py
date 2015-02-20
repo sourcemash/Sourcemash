@@ -10,7 +10,7 @@ from flask.ext.assets import ManageAssets
 
 from sourcemash import create_app
 from sourcemash.database import db
-from sourcemash.models import User, Feed, Item
+from sourcemash.models import User, Feed, Item, UserItems
 
 from worker_tasks.categorize import Categorizer
 from worker_tasks.scraper import scrape_articles
@@ -34,7 +34,7 @@ ITERATIONS_BEFORE_RESET = CATEGORY_DICT_LIFETIME * SECONDS_PER_DAY / SCRAPE_INTE
 def _make_context():
     """Return context dict for a shell session so you can access
     app, db, and the User model by default."""
-    return {'app': app, 'db': db, 'User': User}
+    return {'app': app, 'db': db, 'User': User, 'Item': Item, 'Feed': Feed, 'UserItems': UserItems}
 
 
 @manager.command
@@ -110,10 +110,7 @@ def seed():
 
     # Add items to user_item relationship
     for feed in feeds:
-        print "\n\n\nFEED:", feed, "\n\n"
-        raw_input()
         for item in feed.items:
-            print "\n\n---ITEM: ", item
             user.items.append(item)
             db.session.commit()
 

@@ -2,6 +2,7 @@ import pytest
 import json
 
 from . import TestBase
+from sourcemash.models import UserItems
 from tests.factories import item_factories
 
 
@@ -45,6 +46,47 @@ class TestItemAPI(TestBase):
         data = json.loads(r.data)
         assert data['item']['totalVotes'] == -1
 
+    def test_put_multi_upvotes(self, db, test_client, user, itemWithUpvote):
+        self.login(test_client, user.email, user.password)
+
+        user.items.append(itemWithUpvote)
+
+        upvote = dict(vote=1)
+        r = test_client.put('/api/items/%d' % itemWithUpvote.id, data=upvote)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 422
+
+        data = json.loads(r.data)
+        assert "already voted" in data['errors']['vote']
+
+    def test_put_upvote_then_downvote(self, db, test_client, user, itemWithUpvote):
+        self.login(test_client, user.email, user.password)
+
+        user.items.append(itemWithUpvote)
+        original_vote = itemWithUpvote.totalVotes
+
+        downvote = dict(vote=-1)
+        r = test_client.put('/api/items/%d' % itemWithUpvote.id, data=downvote)
+        check_valid_header_type(r.headers)
+        print UserItems.query.all()
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert data['item']['totalVotes'] == original_vote
+
+    def test_put_multi_downvotes(self, db, test_client, user, itemWithDownvote):
+        self.login(test_client, user.email, user.password)
+
+        user.items.append(itemWithDownvote)
+
+        downvote = dict(vote=-1)
+        r = test_client.put('/api/items/%d' % itemWithDownvote.id, data=downvote)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 422
+
+        data = json.loads(r.data)
+        assert "already voted" in data['errors']['vote']
+
     def test_put_item_too_big_vote(self, test_client, user, item):
         self.login(test_client, user.email, user.password)
 
@@ -52,7 +94,7 @@ class TestItemAPI(TestBase):
         too_big_vote = dict(vote=5)
         r = test_client.put('/api/items/%d' % item.id, data=too_big_vote)
         check_valid_header_type(r.headers)
-        assert r.status_code == 406
+        assert r.status_code == 422
 
         data = json.loads(r.data)
         assert data['item']['totalVotes'] == original_vote_count

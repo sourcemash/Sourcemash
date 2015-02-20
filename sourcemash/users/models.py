@@ -1,5 +1,6 @@
 from sourcemash.database import db
 from flask.ext.security import UserMixin, RoleMixin
+from sqlalchemy.ext.associationproxy import association_proxy
 
 subscriptions = db.Table('subscriptions',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
@@ -9,12 +10,6 @@ subscriptions = db.Table('subscriptions',
 role_users = db.Table('roles_users',
         db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
         db.Column('role_id', db.Integer, db.ForeignKey('role.id'))
-)
-
-user_items = db.Table('user_items',
-        db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-        db.Column('item_id', db.Integer, db.ForeignKey('item.id')),
-        db.Column('vote', db.Integer, default=0)
 )
 
 class User(db.Model, UserMixin):
@@ -32,12 +27,26 @@ class User(db.Model, UserMixin):
                             backref=db.backref('users', lazy='dynamic'),
                             lazy='dynamic')
     items = db.relationship('Item',
-                            secondary=user_items,
+                            secondary='user_items',
                             backref=db.backref('users', lazy='dynamic'),
                             lazy='dynamic')
     
     def __repr__(self):
         return "<User %r (%d)>" % (self.email, self.id)
+
+class UserItems(db.Model):
+    __tablename__ = 'user_items'
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    item_id = db.Column(db.Integer, db.ForeignKey('item.id'), primary_key=True)
+    vote = db.Column(db.Integer, nullable=False)
+
+    def __init__(self, user_id, item_id, vote=0):
+        self.user_id = user_id
+        self.item_id = item_id
+        self.vote = vote
+
+    def __repr__(self):
+        return "<UserItem: user %d, item %d (vote: %d)" % (self.user_id, self.item_id, self.vote)
 
 class Role(db.Model, RoleMixin):
     id = db.Column(db.Integer, primary_key=True)
