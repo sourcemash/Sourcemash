@@ -5,7 +5,8 @@ from flask.ext.restful import Resource, reqparse, fields, marshal
 from flask.ext.security import current_user, login_required
 
 from feeds import feed_fields
-from sourcemash.models import Item
+from sourcemash.models import Item, UserItem
+from sourcemash.forms import VoteForm
 
 item_fields = {
     'id': fields.Integer,
@@ -18,16 +19,50 @@ item_fields = {
     'category_2': fields.String,
     'summary': fields.String,
     'feed': fields.Nested(feed_fields),
+    'voteSum': fields.Integer,
     'uri': fields.Url('api.item')
 }
 
 
 class ItemAPI(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('vote', type = int, default = 0)
+        super(ItemAPI, self).__init__()
 
     def get(self, id):
         item = Item.query.get_or_404(id)
         return {'item': marshal(item, item_fields)}
 
+    @login_required
+    def put(self, id):
+        ''' Update item vote count (& mark as read/unread)'''
+        args = self.reqparse.parse_args()
+        form = VoteForm(obj=args)
+
+        if not form.validate():
+            return {"errors": form.errors}, 422
+
+        item = Item.query.get_or_404(id)
+        
+        # Reject if user has already voted
+        # Check vote column of user_items table
+        try:
+            user_item = UserItem.query.filter_by(user=current_user, item=item).one()
+        except:
+            user_item = UserItem(user=current_user, item=item)
+            db.session.add(user_item)
+            db.session.commit()
+
+        if args.vote: # not voting if vote = 0
+            if user_item.vote == args.vote:
+                return {'errors': {'vote': ["You have already voted on this item."]}}, 422
+
+            user_item.vote += args.vote
+            item.voteSum += args.vote
+            db.session.commit()
+            
+        return {'item': marshal(item, item_fields)}
 
 class FeedItemListAPI(Resource):
 
@@ -68,4 +103,3 @@ api.add_resource(ItemAPI, '/items/<int:id>', endpoint='item')
 api.add_resource(FeedItemListAPI, '/feeds/<int:feed_id>/items', endpoint='feed_items')
 api.add_resource(CategoryItemListAPI, '/categories/<string:category>/items', endpoint='category_items')
 api.add_resource(CategoryItemListAllAPI, '/categories/<string:category>/items/all', endpoint='category_items_all')
-

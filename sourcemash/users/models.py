@@ -1,6 +1,7 @@
 from sourcemash.database import db
 from flask.ext.security import UserMixin, RoleMixin
 
+
 subscriptions = db.Table('subscriptions',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('feed_id', db.Integer, db.ForeignKey('feed.id'))
@@ -8,7 +9,8 @@ subscriptions = db.Table('subscriptions',
 
 role_users = db.Table('roles_users',
         db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-        db.Column('role_id', db.Integer, db.ForeignKey('role.id')))
+        db.Column('role_id', db.Integer, db.ForeignKey('role.id'))
+)
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -24,9 +26,11 @@ class User(db.Model, UserMixin):
                             secondary=role_users,
                             backref=db.backref('users', lazy='dynamic'),
                             lazy='dynamic')
+    items = db.relationship('UserItem', backref='users')
     
     def __repr__(self):
         return "<User %r (%d)>" % (self.email, self.id)
+
 
 class Role(db.Model, RoleMixin):
     id = db.Column(db.Integer, primary_key=True)

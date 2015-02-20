@@ -78,7 +78,6 @@ class TestUserAPI:
         user_data_new = dict(email="new_email@sourcemash.com")
         put = test_client.put('/api/users/%d' % (int(user.id)+1), data=user_data_new)
         check_valid_header_type(put.headers)
-        print put.data
         assert put.status_code == 404
 
     def test_delete_user_present(self, test_client, user):

@@ -8,7 +8,7 @@ from tests.factories import item_factories
 def check_valid_header_type(headers):
     assert headers['Content-Type'] == 'application/json'
 
-class TestItemAPI:
+class TestItemAPI(TestBase):
 
     def test_get_item_present(self, test_client, item):
         r = test_client.get('/api/items/%d' % item.id)
@@ -20,6 +20,103 @@ class TestItemAPI:
 
     def test_get_item_missing(self, test_client):
         r = test_client.get('/api/items/%d' % 10)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 404
+
+    def test_put_item_upvote(self, test_client, user, item):
+        self.login(test_client, user.email, user.password)
+
+        upvote = dict(vote=1)
+        r = test_client.put('/api/items/%d' % item.id, data=upvote)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert data['item']['voteSum'] == 1
+
+    def test_put_item_downvote(self, test_client, user, item):
+        self.login(test_client, user.email, user.password)
+
+        downvote = dict(vote=-1)
+        r = test_client.put('/api/items/%d' % item.id, data=downvote)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert data['item']['voteSum'] == -1
+
+    def test_put_multi_upvotes(self, test_client, user_item_upvote):
+        self.login(test_client, user_item_upvote.user.email, user_item_upvote.user.password)
+
+        upvote = dict(vote=1)
+        r = test_client.put('/api/items/%d' % user_item_upvote.item.id, data=upvote)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 422
+
+        data = json.loads(r.data)
+        assert "already voted" in data['errors']['vote'][0]
+
+    def test_put_upvote_then_downvote(self, test_client, user_item_upvote):
+        self.login(test_client, user_item_upvote.user.email, user_item_upvote.user.password)
+
+        downvote = dict(vote=-1)
+        r = test_client.put('/api/items/%d' % user_item_upvote.item.id, data=downvote)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert data['item']['voteSum'] == 0
+
+    def test_put_multi_downvotes(self, test_client, user_item_downvote):
+        self.login(test_client, user_item_downvote.user.email, user_item_downvote.user.password)
+
+        downvote = dict(vote=-1)
+        r = test_client.put('/api/items/%d' % user_item_downvote.item.id, data=downvote)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 422
+
+        data = json.loads(r.data)
+        assert "already voted" in data['errors']['vote'][0]
+
+    def test_put_item_too_big_vote(self, test_client, user, item):
+        self.login(test_client, user.email, user.password)
+
+        original_vote_count = item.voteSum
+        too_big_vote = dict(vote=5)
+        
+        r = test_client.put('/api/items/%d' % item.id, data=too_big_vote)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 422
+
+        data = json.loads(r.data)
+        assert "Vote may only be" in data['errors']['vote'][0]
+
+    def test_put_item_non_integer_vote(self, test_client, user, item):
+        self.login(test_client, user.email, user.password)
+
+        non_integer_vote = dict(vote=0.33)
+        r = test_client.put('/api/items/%d' % item.id, data=non_integer_vote)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 400
+
+    def test_put_vote_missing(self, test_client, user, item):
+        self.login(test_client, user.email, user.password)
+
+        original_vote_count = item.voteSum
+        no_vote = dict()
+        
+        r = test_client.put('/api/items/%d' % item.id, data=no_vote)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200 # Unspecified vote defaults to zero
+
+        data = json.loads(r.data)
+        assert data['item']['voteSum'] == original_vote_count
+
+    def test_put_item_missing(self, test_client, user, item):
+        self.login(test_client, user.email, user.password)
+
+        upvote = dict(vote=1)
+        r = test_client.put('/api/items/%d' % (int(item.id+1)), data=upvote)
         check_valid_header_type(r.headers)
         assert r.status_code == 404
 
