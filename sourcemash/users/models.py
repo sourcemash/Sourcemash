@@ -26,10 +26,7 @@ class User(db.Model, UserMixin):
                             secondary=role_users,
                             backref=db.backref('users', lazy='dynamic'),
                             lazy='dynamic')
-    items = db.relationship('Item',
-                            secondary='user_items',
-                            backref=db.backref('users', lazy='dynamic'),
-                            lazy='dynamic')
+    items = db.relationship('UserItems', backref='users')
     
     def __repr__(self):
         return "<User %r (%d)>" % (self.email, self.id)
@@ -38,12 +35,8 @@ class UserItems(db.Model):
     __tablename__ = 'user_items'
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     item_id = db.Column(db.Integer, db.ForeignKey('item.id'), primary_key=True)
-    vote = db.Column(db.Integer, nullable=False)
-
-    def __init__(self, user_id, item_id, vote=0):
-        self.user_id = user_id
-        self.item_id = item_id
-        self.vote = vote
+    vote = db.Column(db.Integer, default=0)
+    item = db.relationship('Item')
 
     def __repr__(self):
         return "<UserItem: user %d, item %d (vote: %d)" % (self.user_id, self.item_id, self.vote)

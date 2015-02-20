@@ -49,7 +49,9 @@ class TestItemAPI(TestBase):
     def test_put_multi_upvotes(self, db, test_client, user, itemWithUpvote):
         self.login(test_client, user.email, user.password)
 
-        user.items.append(itemWithUpvote)
+        a = UserItems(vote=1)
+        a.item = itemWithUpvote
+        user.items.append(a)
 
         upvote = dict(vote=1)
         r = test_client.put('/api/items/%d' % itemWithUpvote.id, data=upvote)
@@ -57,18 +59,21 @@ class TestItemAPI(TestBase):
         assert r.status_code == 422
 
         data = json.loads(r.data)
-        assert "already voted" in data['errors']['vote']
+        assert "already voted" in data['errors']['vote'][0]
 
     def test_put_upvote_then_downvote(self, db, test_client, user, itemWithUpvote):
         self.login(test_client, user.email, user.password)
 
-        user.items.append(itemWithUpvote)
+        a = UserItems(vote=1)
+        a.item = itemWithUpvote
+        user.items.append(a)
+
         original_vote = itemWithUpvote.totalVotes
+        itemWithUpvote.totalVotes += 1
 
         downvote = dict(vote=-1)
         r = test_client.put('/api/items/%d' % itemWithUpvote.id, data=downvote)
         check_valid_header_type(r.headers)
-        print UserItems.query.all()
         assert r.status_code == 200
 
         data = json.loads(r.data)
@@ -77,15 +82,18 @@ class TestItemAPI(TestBase):
     def test_put_multi_downvotes(self, db, test_client, user, itemWithDownvote):
         self.login(test_client, user.email, user.password)
 
-        user.items.append(itemWithDownvote)
+        a = UserItems(vote=-1)
+        a.item = itemWithDownvote
+        user.items.append(a)
 
         downvote = dict(vote=-1)
         r = test_client.put('/api/items/%d' % itemWithDownvote.id, data=downvote)
         check_valid_header_type(r.headers)
+        print UserItems.query.all()
         assert r.status_code == 422
 
         data = json.loads(r.data)
-        assert "already voted" in data['errors']['vote']
+        assert "already voted" in data['errors']['vote'][0]
 
     def test_put_item_too_big_vote(self, test_client, user, item):
         self.login(test_client, user.email, user.password)
