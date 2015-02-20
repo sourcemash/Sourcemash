@@ -48,8 +48,7 @@ class ItemAPI(Resource):
         # Reject if user has already voted
         # Check vote column of user_items table
         try:
-            user_item = UserItem.query.filter_by(user_id=current_user.id, 
-                                                item_id=id).one()
+            user_item = UserItem.query.filter_by(user=current_user, item=item).one()
         except:
             user_item = UserItem(user=current_user, item=item)
             db.session.add(user_item)
