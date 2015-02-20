@@ -89,7 +89,7 @@ class TestItemAPI(TestBase):
         assert r.status_code == 422
 
         data = json.loads(r.data)
-        assert data['item']['voteSum'] == original_vote_count
+        assert "Vote may only be" in data['errors']['vote'][0]
 
     def test_put_item_non_integer_vote(self, test_client, user, item):
         self.login(test_client, user.email, user.password)

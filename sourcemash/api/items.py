@@ -6,6 +6,7 @@ from flask.ext.security import current_user, login_required
 
 from feeds import feed_fields
 from sourcemash.models import Item, UserItem
+from sourcemash.forms import VoteForm
 
 item_fields = {
     'id': fields.Integer,
@@ -37,11 +38,12 @@ class ItemAPI(Resource):
     def put(self, id):
         ''' Update item vote count (& mark as read/unread)'''
         args = self.reqparse.parse_args()
+        form = VoteForm(obj=args)
+
+        if not form.validate():
+            return {"errors": form.errors}, 422
+
         item = Item.query.get_or_404(id)
-        
-        # Reject if size of vote is too large
-        if abs(args.vote) > 1:
-            return {'item': marshal(item, item_fields)}, 422 
         
         # Reject if user has already voted
         # Check vote column of user_items table

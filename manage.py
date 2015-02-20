@@ -108,7 +108,7 @@ def seed():
     # Scrape articles for feed
     scrape_articles(Categorizer())
 
-    # Add items to user_item relationship
+    # Add some items to user_item relationship
     for item in techcrunch.items:
         user.items.append(item)
         db.session.commit()
