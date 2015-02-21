@@ -12,17 +12,33 @@ js_vendor = Bundle("js/vendor/jquery-2.1.3.js",
 js_default = Bundle("js/default.js",
 					filters="jsmin", output="js/default.min.js")
 
-
 js_templates = Bundle("../templates/*.tpl", 
                         filters="jst",
                         output="js/tpl.js")
 
-js_backbone = Bundle("js/sourcemash.js",
-                    "js/models/*.js",
-                    "js/collections/*.js",
-                    "js/views/*.js",
-                    "js/routers/*.js",
-                    filters="jsmin", output="js/feeds.min.js")
+js_sourcemash = Bundle("js/sourcemash.js")
+
+js_collections = Bundle("js/collections/*.js")
+
+js_models = Bundle("js/models/*.js")
+
+js_views = Bundle("js/views/items_view.js",
+                "js/views/category_view.js",
+                "js/views/categories_view.js",
+                "js/views/feed_view.js",
+                "js/views/feeds_view.js",
+                "js/views/item_view.js")
+
+js_routers = Bundle("js/routers/*.js")
+
+js_backbone = Bundle(
+            js_sourcemash,
+            js_models,
+            js_collections,
+            js_views,
+            js_routers,
+            filters='jsmin',
+            output='js/sourcemash.min.js')
 
 
 def init_app(app):
