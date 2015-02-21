@@ -1,14 +1,14 @@
 Sourcemash.Views.FeedsView = Backbone.View.extend({
   template: JST['feeds'],
   initialize: function () {
-    this.listenTo(this.collection, 'add sync remove change', this.render);
+    this.listenTo(this.collection, 'sync', this.render);
   },
   events: {
     'submit #add_feed_form': 'createFeed'
   },
   createFeed: function(e){
   	e.preventDefault()
-    this.collection.create(this.newAttributes(), {wait: true, success: this.updateCollection});
+    this.collection.create(this.newAttributes(), {success: this.updateCollection});
   },
   updateCollection: function(newFeed) {
   	this.$('#url').val('');
