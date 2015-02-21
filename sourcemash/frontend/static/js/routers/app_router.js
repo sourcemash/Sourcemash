@@ -44,6 +44,10 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
 
     _swapView: function(view) {
         if (this.currentView) {
+            if (this.currentView.close) {
+                this.currentView.close();
+            }
+
             this.currentView.remove();
         }
 

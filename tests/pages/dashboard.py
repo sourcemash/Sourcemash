@@ -27,11 +27,14 @@ class DashboardPage(BasePage):
     def get_header_text(self):
         return self.browser.get_element(self.header_text).text
 
-    def get_feeds_list_text(self, interval=None):
-        return self.browser.get_element(self.feeds_list, interval=interval, wait_first=True).text
+    def get_feeds_list_text(self, wait_first=False, interval=0.5):
+        if wait_first:
+            interval = 5
 
-    def get_url_input_errors_text(self, interval=None):
-        return self.browser.get_element(self.url_input_errors, interval=interval, wait_first=True).text
+        return self.browser.get_element(self.feeds_list, wait_first=wait_first, interval=interval).text
+
+    def get_url_input_errors_text(self):
+        return self.browser.get_element(self.url_input_errors).text
 
     def type_into_url_field(self, url):
         self.browser.get_element(self.url_input_field).click()
