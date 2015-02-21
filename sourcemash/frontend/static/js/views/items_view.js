@@ -28,6 +28,7 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
 
         _.each(this.itemViews, function(itemView) {
             itemView.remove();
+            itemView.unbind();
         })
     }
 });
