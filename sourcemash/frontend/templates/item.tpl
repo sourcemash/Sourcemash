@@ -1,4 +1,4 @@
-<div class="card-panel blue lighten-4">
+<div class="card-panel lighten-4">
   <div class="card-content black-text">
     <span class="card-title">
       <span class="badge"><a href="#/categories/<%=item.get('category_1')%>"><%=item.get('category_1')%></a></span>

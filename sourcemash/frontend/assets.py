@@ -3,6 +3,9 @@ from flask_assets import Environment, Bundle
 css_vendor = Bundle("scss/vendor/materialize/materialize.scss", 
                     filters="pyscss", output="css/vendor.css")
 
+css_sourcemash = Bundle("scss/sourcemash.scss",
+                    filters="pyscss", output="css/sourcemash.css")
+
 js_vendor = Bundle("js/vendor/jquery-2.1.3.js",                    
                     "js/vendor/underscore.js",
                     "js/vendor/backbone.js",
@@ -45,6 +48,7 @@ def init_app(app):
     webassets = Environment(app)
     webassets.url = app.static_url_path
     webassets.register('css_vendor', css_vendor)
+    webassets.register('css_sourcemash', css_sourcemash)
     webassets.register('js_vendor', js_vendor)
     webassets.register('js_default', js_default)
     webassets.register('js_templates', js_templates)
