@@ -38,7 +38,11 @@
 	}
 }
 
-
+/*
+ *******************************
+ Typeahead dropdown menu search
+ *******************************
+ */
 .dropdown-menu {
   position: absolute;
   background-color: #FFFFFF;
@@ -62,6 +66,35 @@
       padding: 1rem 1rem;
     }
   }
+}
+
+/*
+ ******************************
+ * Feed & Category Item Styles
+ ******************************
+ */
+.card {
+	height: 400px;
+	.card-content {
+		background-color: white;
+		z-index: 1;
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+	}
+	.card-reveal {
+		z-index: 2;
+	}
+	.card-action {
+		padding: 10px;
+		padding-left: 0px;
+	}
+	#reveal-button {
+		font-size: 1.75rem;
+	}
+	#voting-buttons {
+		padding-top: 10px;
+	}
 }
 
 /*

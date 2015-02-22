@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\000032}}
 .card {
   height: 400px; }
@@ -37,6 +38,8 @@
 =======
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\000031}}
 =======
+=======
+>>>>>>> fancier cards
 /* 536 selectors generated from '/Users/Alex/Development/rss-aggregator/sourcemash/frontend/static/scss/vendor/materialize/components/_color.scss' add up to a total of 536 selectors accumulated */
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/vendor\/materialize\/components\/_color\.scss}line{font-family:\000031}}
 .materialize-red.lighten-5 {
@@ -2183,7 +2186,14 @@
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 color: #FFFFFF !important; }
 /* 9 selectors generated from '/Users/Alex/Development/rss-aggregator/sourcemash/frontend/static/scss/sourcemash.scss' add up to a total of 545 selectors accumulated */
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\000034}}
+<<<<<<< HEAD
 >>>>>>> Fix sass files.
+=======
+=======
+<<<<<<< HEAD
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\000031}}
+>>>>>>> fancier cards
+>>>>>>> fancier cards
 .dropdown-menu {
   position: absolute;
   background-color: #FFFFFF;
@@ -2242,12 +2252,65 @@
     background-color: #4CAF50; }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000353}}
 >>>>>>> Add typeahead search for feeds.
 .downvote:hover, .downvote.active {
   color: #f44336; }
 =======
+=======
+>>>>>>> fancier cards
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000352}}
+=======
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000353}}
+=======
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\000032}}
+#feed-items .card-panel {
+  background-color: #BBDEFB; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\000037}}
+#category-items .card-panel {
+  background-color: #C8E6C9; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000313}}
+.card {
+  height: 400px; }
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000314}}
+  .card .card-content {
+    background-color: white;
+    z-index: 1;
+    position: absolute;
+    bottom: 0;
+    width: 100%; }
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000321}}
+    .card .card-reveal {
+      z-index: 2; }
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000324}}
+      .card .card-action {
+        padding: 10px;
+        padding-left: 0px; }
+        @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000328}}
+        .card #reveal-button {
+          font-size: 1.75rem; }
+          @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000331}}
+          .card #voting-buttons {
+            padding-top: 10px; }
+            @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000334}}
+            .card #card-summary {
+              height: 100%;
+              overflow: scroll; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000342}}
+.vote, .upvote, .downvote {
+  background-color: #DFDFDF; }
+
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000347}}
+  .upvote:hover, .upvote.active {
+    background-color: #4caf50; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000354}}
+>>>>>>> fancier cards
+>>>>>>> fancier cards
 .downvote:hover, .downvote.active {
   background-color: #F44336; }
 >>>>>>> Fix sass files.
