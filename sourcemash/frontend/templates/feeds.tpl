@@ -15,6 +15,8 @@
 
 <ul class="collection feeds">
   <% feeds.forEach(function(feed) { %>
-    <p><a href="#/feeds/<%= feed.get('id') %>" class="collection-item"><%= feed.get('title') %></a></p>
+    <a href="#/feeds/<%= feed.get('id') %>" class="collection-item"><%= feed.get('title') %>
+      <span class="badge"><%=feed.get('item_count')%></span>
+    </a>
   <% }); %>
 </ul>
