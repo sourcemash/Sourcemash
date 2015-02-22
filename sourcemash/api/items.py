@@ -8,6 +8,15 @@ from feeds import feed_fields
 from sourcemash.models import Item, UserItem
 from sourcemash.forms import VoteForm
 
+class getVote(fields.Raw):
+    def output(self, key, item):
+        try:
+            vote = UserItem.query.filter_by(user=current_user, item=item).one().vote
+        except:
+            vote = 0
+
+        return vote
+
 item_fields = {
     'id': fields.Integer,
     'title': fields.String,
@@ -19,6 +28,7 @@ item_fields = {
     'category_2': fields.String,
     'summary': fields.String,
     'feed': fields.Nested(feed_fields),
+    'vote': getVote,
     'voteSum': fields.Integer,
     'uri': fields.Url('api.item')
 }
@@ -58,8 +68,8 @@ class ItemAPI(Resource):
             if user_item.vote == args.vote:
                 return {'errors': {'vote': ["You have already voted on this item."]}}, 422
 
-            user_item.vote += args.vote
-            item.voteSum += args.vote
+            item.voteSum += args.vote - user_item.vote # + new vote - old vote
+            user_item.vote = args.vote
             db.session.commit()
             
         return {'item': marshal(item, item_fields)}
