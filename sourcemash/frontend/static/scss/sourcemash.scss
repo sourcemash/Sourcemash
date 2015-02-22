@@ -26,15 +26,23 @@
 	}
 	.card-reveal {
 		z-index: 2;
-		overflow: scroll;
+		overflow-y: scroll;
 		height: 100%;
+		width: 100%;
+		img {
+			width: 100%;
+		}
 	}
 	.card-action {
 		padding: 10px;
-		padding-left: 0px;
+		padding-left: 0;
+		margin: 0;
 	}
 	#reveal-button {
 		font-size: 1.75rem;
+		&:hover {
+			cursor: pointer;
+		}
 	}
 }
 
@@ -44,19 +52,23 @@
  ******************************
  */
 .vote {
-	background-color: #DFDFDF;
+	color: #DFDFDF;
+	line-height: 10px;
+	i {
+		vertical-align: middle;
+	}
 }
 
 .upvote {
 	@extend .vote;
 	&:hover, &.active {
-		background-color: #4caf50;
+		color: #4caf50;
 	}
 }
 
 .downvote {
 	@extend .vote;
 	&:hover, &.active {
-		background-color: #f44336;
+		color: #f44336;
 	}
 }
