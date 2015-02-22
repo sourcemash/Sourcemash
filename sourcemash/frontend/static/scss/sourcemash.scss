@@ -16,6 +16,7 @@
 
 .card {
 	height: 400px;
+	overflow: hidden;
 	.card-content {
 		background-color: white;
 		z-index: 1;
@@ -25,6 +26,8 @@
 	}
 	.card-reveal {
 		z-index: 2;
+		overflow: scroll;
+		height: 100%;
 	}
 	.card-action {
 		padding: 10px;
