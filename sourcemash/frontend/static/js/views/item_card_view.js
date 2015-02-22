@@ -1,6 +1,6 @@
-Sourcemash.Views.ItemView = Backbone.View.extend({
-    template: JST['item'],
-    className: "col m6",
+Sourcemash.Views.ItemCardView = Backbone.View.extend({
+    template: JST['item-card'],
+    className: "item-card",
 
     initialize: function(options) {
         this.render();

@@ -12,9 +12,9 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
 
         var itemViews = [];
         this.model.items.forEach(function(item) {
-            var itemView = new Sourcemash.Views.ItemView({ model: item });
-            $("#items").append(itemView.el)
-            itemViews.push(itemView)
+            var itemCardView = new Sourcemash.Views.ItemCardView({ model: item });
+            $("#items").append(itemCardView.el)
+            itemViews.push(itemCardView)
         })
 
         this.itemViews = itemViews;
