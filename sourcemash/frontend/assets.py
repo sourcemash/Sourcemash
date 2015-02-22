@@ -9,6 +9,7 @@ css_sourcemash = Bundle("scss/sourcemash.scss",
 js_vendor = Bundle("js/vendor/jquery-2.1.3.js",                    
                     "js/vendor/underscore.js",
                     "js/vendor/backbone.js",
+                    "js/vendor/backbone.typeahead.js",
                     "js/vendor/materialize/*.js",
                     filters="jsmin", output="js/vendor.min.js")
 

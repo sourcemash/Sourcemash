@@ -8,10 +8,11 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
 
     index: function() {
         var feedsView = new Sourcemash.Views.FeedsView({
-            collection: new Sourcemash.Collections.Feeds()
+            collection: new Sourcemash.Collections.Feeds(),
         });
 
         feedsView.collection.fetch();
+        feedsView.allFeeds.fetch();
         this._swapView(feedsView);
     },
 
