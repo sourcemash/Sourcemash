@@ -1,5 +1,7 @@
+@import "vendor/materialize/components/color";
+
+
 .dropdown-menu {
-  @extend .z-depth-1;
   position: absolute;
   background-color: #FFFFFF;
   margin: 0;
@@ -36,19 +38,19 @@
 }
 
 .vote {
-	background-color: #DFDFDF;
+	background-color: color("grey", "lighten-2");
 }
 
 .upvote {
 	@extend .vote;
 	&:hover, &.active {
-		background-color: #4caf50;
+		background-color: color("green", "base");
 	}
 }
 
 .downvote {
 	@extend .vote;
 	&:hover, &.active {
-		background-color: #f44336;
+		background-color: color("red", "base");
 	}
 }
