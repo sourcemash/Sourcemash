@@ -2209,6 +2209,7 @@
     position: absolute;
     bottom: 0;
     width: 100%; }
+<<<<<<< HEAD
     @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000373}}
     .card .card-reveal {
       z-index: 2;
@@ -2219,10 +2220,27 @@
       .card .card-reveal img {
         width: 100%; }
   @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000382}}
+=======
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000320}}
+    .card .card-content .card-title {
+      line-height: 32px;
+      font-size: 20px; }
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000326}}
+  .card .card-reveal {
+    z-index: 2;
+    overflow-y: scroll;
+    height: 100%;
+    width: 100%; }
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000330}}
+    .card .card-reveal img {
+      width: 100%; }
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000335}}
+>>>>>>> card title formatting
   .card .card-action {
     padding: 10px;
     padding-left: 0;
     margin: 0; }
+<<<<<<< HEAD
     @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000387}}
     .card #reveal-button {
       font-size: 1.75rem; }
@@ -2230,15 +2248,29 @@
       .card #reveal-button:hover {
         cursor: pointer; }
   @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000393}}
+=======
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000340}}
+    .card #reveal-button {
+      font-size: 1.75rem; }
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000341}}
+      .card #reveal-button:hover {
+        cursor: pointer; }
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000346}}
+>>>>>>> card title formatting
   .card .summary img {
     border: 0 none;
     width: 100%;
     height: auto; }
 
+<<<<<<< HEAD
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\00003104}}
+=======
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000357}}
+>>>>>>> card title formatting
 .vote, .upvote, .downvote {
   color: #e0e0e0;
   line-height: 10px; }
+<<<<<<< HEAD
   @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\00003106}}
   .vote i, .upvote i, .downvote i {
     vertical-align: middle; }
@@ -2248,5 +2280,48 @@
   color: #4CAF50; }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\00003120}}
+=======
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000359}}
+  .vote i, .upvote i, .downvote i {
+    vertical-align: middle; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000366}}
+.upvote:hover, .upvote.active {
+  color: #4caf50; }
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000354}}
+>>>>>>> fancier cards
+<<<<<<< HEAD
+>>>>>>> fancier cards
+=======
+=======
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000353}}
+>>>>>>> scrollable card reveals
+<<<<<<< HEAD
+>>>>>>> scrollable card reveals
+=======
+=======
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000350}}
+>>>>>>> remove div padding
+<<<<<<< HEAD
+>>>>>>> remove div padding
+.downvote:hover, .downvote.active {
+  background-color: #F44336; }
+=======
+=======
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000362}}
+>>>>>>> Realign cards. Make voting look nicer.
+=======
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000369}}
+>>>>>>> resize card reveal issues; bug with techcrunch adding extra issue on the bottom
+=======
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000373}}
+>>>>>>> card title formatting
+>>>>>>> card title formatting
 .downvote:hover, .downvote.active {
   color: #F44336; }
