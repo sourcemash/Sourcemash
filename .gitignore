@@ -64,7 +64,6 @@ flask/
 
 # Assets
 sourcemash/frontend/static/.webassets-cache/
-*.min.js
 
 # Secret
 instance/config.py
