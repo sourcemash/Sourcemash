@@ -1,19 +1,47 @@
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\000031}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\000032}}
 #feed-items .card-panel {
   background-color: #BBDEFB; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\000036}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\000037}}
 #category-items .card-panel {
   background-color: #C8E6C9; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000311}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000313}}
+.card {
+  height: 400px; }
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000314}}
+  .card .card-content {
+    background-color: white;
+    z-index: 1;
+    position: absolute;
+    bottom: 0;
+    width: 100%; }
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000321}}
+    .card .card-reveal {
+      z-index: 2; }
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000324}}
+      .card .card-action {
+        padding: 10px;
+        padding-left: 0px; }
+        @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000328}}
+        .card #reveal-button {
+          font-size: 1.75rem; }
+          @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000331}}
+          .card #voting-buttons {
+            padding-top: 10px; }
+            @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000334}}
+            .card #card-summary {
+              height: 100%;
+              overflow: scroll; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000342}}
 .vote, .upvote, .downvote {
   background-color: #DFDFDF; }
 
-  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000316}}
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000347}}
   .upvote:hover, .upvote.active {
     background-color: #4caf50; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000324}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000354}}
 .downvote:hover, .downvote.active {
   background-color: #f44336; }

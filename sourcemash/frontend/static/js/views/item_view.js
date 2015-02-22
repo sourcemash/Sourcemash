@@ -1,5 +1,6 @@
 Sourcemash.Views.ItemView = Backbone.View.extend({
     template: JST['item'],
+    className: "col m6",
 
     initialize: function(options) {
         this.render();
@@ -11,17 +12,19 @@ Sourcemash.Views.ItemView = Backbone.View.extend({
 	  	'click .downvote': 'downvote'
 	},
 
-	upvote: function() {
+	upvote: function(e) {
+		e.stopPropagation()
 		this.model.save({'vote': 1, 'voteSum': this._getNewVoteSum(1)},
 						{success: this.voted});
 	},
 
-	downvote: function() {
+	downvote: function(e) {
+		e.stopPropagation()
 		this.model.save({'vote': -1, 'voteSum': this._getNewVoteSum(-1)},
 						{success: this.voted});
 	},
 
-	voted: function(item) {
+	voted: function() {
 		toast("Vote recorded!", 3000)
 	},
 

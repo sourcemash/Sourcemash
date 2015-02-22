@@ -1,4 +1,9 @@
-#feed-items {
+/*
+ ******************************
+ * Feed & Category Item Styles
+ ******************************
+ */
+ #feed-items {
 	.card-panel {
 		background-color: #BBDEFB;
 	}
@@ -8,6 +13,36 @@
 		background-color: #C8E6C9;
 	}
 }
+
+.card {
+	height: 400px;
+	.card-content {
+		background-color: white;
+		z-index: 1;
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+	}
+	.card-reveal {
+		z-index: 2;
+	}
+	.card-action {
+		padding: 10px;
+		padding-left: 0px;
+	}
+	#reveal-button {
+		font-size: 1.75rem;
+	}
+	#voting-buttons {
+		padding-top: 10px;
+	}
+}
+
+/*
+ ******************************
+ * Upvote-downvote colors
+ ******************************
+ */
 .vote {
 	background-color: #DFDFDF;
 }
@@ -18,7 +53,6 @@
 		background-color: #4caf50;
 	}
 }
-
 
 .downvote {
 	@extend .vote;
