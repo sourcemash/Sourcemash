@@ -6,9 +6,9 @@
   
   <div class="card-content">
     
-    <div class="card-title activator grey-text text-darken-4">
-      <%= item.get('title') %>
-      <i class="mdi-navigation-more-vert right"></i>
+    <div class="card-title row activator grey-text text-darken-4">
+      <div class="col s11"><%= item.get('title') %></div>
+      <div class="col s1"><i class="mdi-navigation-more-vert right"></i></div>
     </div>
 
     <div class="card-action valign-wrapper row activator">
