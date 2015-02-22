@@ -2,7 +2,6 @@ Sourcemash.Views.ItemView = Backbone.View.extend({
     template: JST['item'],
 
     initialize: function(options) {
-    	this.parent = options.parent;
         this.render();
         this.listenTo(this.model, 'sync', this.render);
     },
@@ -13,16 +12,21 @@ Sourcemash.Views.ItemView = Backbone.View.extend({
 	},
 
 	upvote: function() {
-		this.model.save({'vote': 1}, {success: this.voted});
+		this.model.save({'vote': 1, 'voteSum': this._getNewVoteSum(1)},
+						{success: this.voted});
 	},
 
 	downvote: function() {
-		this.model.save({'vote': -1}, {success: this.voted});
+		this.model.save({'vote': -1, 'voteSum': this._getNewVoteSum(-1)},
+						{success: this.voted});
 	},
 
 	voted: function(item) {
-		item.collection.fetch()	// Force ItemsView refresh
 		toast("Vote recorded!", 3000)
+	},
+
+	_getNewVoteSum: function(vote) {
+		return this.model.get('voteSum') + vote - this.model.get('vote')
 	},
 
     render: function() {
