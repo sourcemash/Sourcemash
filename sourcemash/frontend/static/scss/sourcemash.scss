@@ -1,3 +1,5 @@
+@import "vendor/materialize/components/color";
+
 /*
  ******************************
  * Item Card Styles
@@ -14,9 +16,30 @@
 		.card-title {
 			line-height: 32px;
 		}
+	}
+	.card-reveal {
+		z-index: 2;
+		overflow-y: scroll;
+		img {
+			width: 100%;
+			height: auto;
+		}
+	}
+	.card-action {
+		padding: 10px;
+		padding-left: 0;
+		margin: 0;
+	}
+	#reveal-button {
+		font-size: 1.75rem;
+		&:hover {
+			cursor: pointer;
+		}
+	}
+}
+
 
 .dropdown-menu {
-  @extend .z-depth-1;
   position: absolute;
   background-color: #FFFFFF;
   margin: 0;
@@ -41,42 +64,13 @@
   }
 }
 
-#feed-items {
-	.card-panel {
-		background-color: #BBDEFB;
->>>>>>> Add typeahead search for feeds.
-	}
-	.card-reveal {
-		z-index: 2;
-		overflow-y: scroll;
-		img {
-			width: 100%;
-			height: auto;
-		}
-	}
-	.card-action {
-		padding: 10px;
-		padding-left: 0;
-		margin: 0;
-	}
-	#reveal-button {
-		font-size: 1.75rem;
-		&:hover {
-			cursor: pointer;
-		}
-	}
-}
-
-<<<<<<< HEAD
 /*
  ******************************
  * Upvote-downvote colors
  ******************************
  */
-=======
->>>>>>> Add typeahead search for feeds.
 .vote {
-	color: #DFDFDF;
+	color: color("grey", "lighten-2");
 	line-height: 10px;
 	i {
 		vertical-align: middle;
@@ -86,13 +80,13 @@
 .upvote {
 	@extend .vote;
 	&:hover, &.active {
-		color: #4caf50;
+		color: color("green", "base");
 	}
 }
 
 .downvote {
 	@extend .vote;
 	&:hover, &.active {
-		color: #f44336;
+		color: color("red", "base");
 	}
 }
