@@ -1,12 +1,6 @@
-<<<<<<< HEAD:sourcemash/frontend/static/js/views/item_card_view.js
 Sourcemash.Views.ItemCardView = Backbone.View.extend({
     template: JST['item-card'],
     className: "item-card",
-=======
-Sourcemash.Views.ItemView = Backbone.View.extend({
-    template: JST['item'],
-    className: "col m6",
->>>>>>> fancier cards:sourcemash/frontend/static/js/views/item_view.js
 
     initialize: function(options) {
         this.render();
