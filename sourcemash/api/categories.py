@@ -26,7 +26,8 @@ class CategoryListAPI(Resource):
                                         .all()
 
         for category, count in distinct_category_1 + distinct_category_2:
-            categories.update({category: count})
+            if category:
+                categories.update({category: count})
 
         # Add unsubscribed items to the counts
         # Total = len(subscribed user items) + 1 unsubscribed user item
@@ -55,7 +56,8 @@ class CategoryListAllAPI(Resource):
                                         .all()
 
         for category, count in distinct_category_1 + distinct_category_2:
-            categories.update({category: count})
+            if category:
+                categories.update({category: count})
 
         return {'categories': [{'category': category, 'count': categories[category]} for category in categories]}
 

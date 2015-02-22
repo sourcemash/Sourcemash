@@ -94,6 +94,7 @@
 		width: 100%;
 		img {
 			width: 100%;
+			height: auto;
 		}
 	}
 	.card-action {
@@ -105,13 +106,6 @@
 		font-size: 1.75rem;
 		&:hover {
 			cursor: pointer;
-		}
-	}
-	.summary {
-		img {
-			border: 0 none;
-			width: 100%;
-			height: auto;
 		}
 	}
 }
