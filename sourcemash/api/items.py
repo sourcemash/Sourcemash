@@ -27,6 +27,7 @@ item_fields = {
     'category_1': fields.String,
     'category_2': fields.String,
     'summary': fields.String,
+    'image_url': fields.String,
     'feed': fields.Nested(feed_fields),
     'vote': getVote,
     'voteSum': fields.Integer,

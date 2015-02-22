@@ -18,9 +18,20 @@ def scrape_articles(categorizer):
     for feed in Feed.query.all():
         _store_items_and_category_counts(feed, categorizer)
 
-    # Assign categories to articles after all feeds are processed
+    # Assign categories and extract first image from articles
     for item in Item.query.filter_by(category_1=None).all():
-        text_only = BeautifulSoup(item.text).get_text() # Remove HTML tags from item text
+        soup = BeautifulSoup(item.text)
+        
+        # Extract first image from item
+        try: 
+            img_url = soup.find('img')['src']
+            item.image_url = img_url
+            db.session.commit()
+        except:
+            pass
+
+        # Extract text and categorize item
+        text_only = soup.get_text()
         item.category_1, item.category_2 = categorizer.categorize_item(item.title, text_only)
         db.session.commit()
         logging.info("CATEGORIZED [%s]: (%s, %s)" % (item.title, item.category_1, item.category_2))
