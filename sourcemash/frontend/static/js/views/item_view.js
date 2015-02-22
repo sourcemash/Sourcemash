@@ -12,14 +12,12 @@ Sourcemash.Views.ItemView = Backbone.View.extend({
 	  	'click .downvote': 'downvote'
 	},
 
-	upvote: function(e) {
-		e.stopPropagation()
+	upvote: function() {
 		this.model.save({'vote': 1, 'voteSum': this._getNewVoteSum(1)},
 						{success: this.voted});
 	},
 
-	downvote: function(e) {
-		e.stopPropagation()
+	downvote: function() {
 		this.model.save({'vote': -1, 'voteSum': this._getNewVoteSum(-1)},
 						{success: this.voted});
 	},
