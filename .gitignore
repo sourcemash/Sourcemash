@@ -67,6 +67,3 @@ sourcemash/frontend/static/.webassets-cache/
 
 # Secret
 instance/config.py
-
-# Redis Dump
-*.rdb
