@@ -18,12 +18,16 @@ class isSubscribed(fields.Raw):
 
         return feed in current_user.subscribed
 
+class getItemCount(fields.Raw):
+    def output(self, key, feed):
+        return feed.items.count()
 
 feed_fields = {
     'id': fields.Integer,
     'title': fields.String,
     'url': fields.String,
     'last_updated': fields.DateTime,
+    'item_count': getItemCount,
     'subscribed': isSubscribed
 }
 
