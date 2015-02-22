@@ -14,6 +14,39 @@
 		.card-title {
 			line-height: 32px;
 		}
+
+.dropdown-menu {
+  @extend .z-depth-1;
+  position: absolute;
+  background-color: #FFFFFF;
+  margin: 0px;
+  min-width: 100px;
+  z-index: 1000;
+  overflow-y: hidden;
+
+  will-change: width, height;
+
+  li {
+    cursor: pointer;
+    font-size: 1.2rem;
+    line-height: 1.5rem;
+    border: 1px solid black;
+
+    &:hover {
+      background-color: rgba(0,0,0, .06);
+    }
+
+    & > a,& > span {
+      display: block;
+      padding: 1rem 1rem;
+    }
+  }
+}
+
+#feed-items {
+	.card-panel {
+		background-color: #BBDEFB;
+>>>>>>> Add typeahead search for feeds.
 	}
 	.card-reveal {
 		z-index: 2;
@@ -36,11 +69,14 @@
 	}
 }
 
+<<<<<<< HEAD
 /*
  ******************************
  * Upvote-downvote colors
  ******************************
  */
+=======
+>>>>>>> Add typeahead search for feeds.
 .vote {
 	color: #DFDFDF;
 	line-height: 10px;
