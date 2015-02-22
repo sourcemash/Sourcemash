@@ -17,6 +17,7 @@ class TestItemAPI(TestBase):
 
         data = json.loads(r.data)
         assert data['item']['title'] == item.title
+        assert data['item']['vote'] == 0
 
     def test_get_item_missing(self, test_client):
         r = test_client.get('/api/items/%d' % 10)
@@ -65,7 +66,18 @@ class TestItemAPI(TestBase):
         assert r.status_code == 200
 
         data = json.loads(r.data)
-        assert data['item']['voteSum'] == 0
+        assert data['item']['voteSum'] == -1
+
+    def test_put_downvote_then_upvote(self, test_client, user_item_downvote):
+        self.login(test_client, user_item_downvote.user.email, user_item_downvote.user.password)
+
+        upvote = dict(vote=1)
+        r = test_client.put('/api/items/%d' % user_item_downvote.item.id, data=upvote)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert data['item']['voteSum'] == 1
 
     def test_put_multi_downvotes(self, test_client, user_item_downvote):
         self.login(test_client, user_item_downvote.user.email, user_item_downvote.user.password)

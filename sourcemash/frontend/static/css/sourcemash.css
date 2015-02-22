@@ -1,7 +1,19 @@
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\000031}}
-.feed-items .card-panel {
+#feed-items .card-panel {
   background-color: #BBDEFB; }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\000036}}
-.category-items .card-panel {
+#category-items .card-panel {
   background-color: #C8E6C9; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000311}}
+.vote, .upvote, .downvote {
+  background-color: #DFDFDF; }
+
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000316}}
+  .upvote:hover, .upvote.active {
+    background-color: #4caf50; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000324}}
+.downvote:hover, .downvote.active {
+  background-color: #f44336; }

@@ -1,10 +1,28 @@
-.feed-items {
+#feed-items {
 	.card-panel {
 		background-color: #BBDEFB;
 	}
 }
-.category-items {
+#category-items {
 	.card-panel {
 		background-color: #C8E6C9;
+	}
+}
+.vote {
+	background-color: #DFDFDF;
+}
+
+.upvote {
+	@extend .vote;
+	&:hover, &.active {
+		background-color: #4caf50;
+	}
+}
+
+
+.downvote {
+	@extend .vote;
+	&:hover, &.active {
+		background-color: #f44336;
 	}
 }
