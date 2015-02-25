@@ -132,6 +132,28 @@ class TestItemAPI(TestBase):
         check_valid_header_type(r.headers)
         assert r.status_code == 404
 
+    def test_put_item_mark_read(self, test_client, user, item):
+        self.login(test_client, user.email, user.password)
+
+        read = dict(read=True)
+        r = test_client.put('/api/items/%d' % item.id, data=read)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert data['item']['unread'] == False
+
+    def test_put_item_mark_unread(self, test_client, user, user_item_read):
+        self.login(test_client, user.email, user.password)
+
+        unread = dict(unread=False)
+        r = test_client.put('/api/items/%d' % user_item_read.item.id, data=unread)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert data['item']['unread'] == True
+
 class TestFeedItemListAPI:
 
     def test_get_items(self, test_client, item):

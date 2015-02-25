@@ -17,6 +17,15 @@ class getVote(fields.Raw):
 
         return vote
 
+class getUnreadStatus(fields.Raw):
+    def output(self, key, item):
+        try:
+            unread = UserItem.query.filter_by(user=current_user, item=item).one().unread
+        except:
+            unread = True
+
+        return unread
+
 item_fields = {
     'id': fields.Integer,
     'title': fields.String,
@@ -29,6 +38,7 @@ item_fields = {
     'summary': fields.String,
     'image_url': fields.String,
     'feed': fields.Nested(feed_fields),
+    'unread': getUnreadStatus,
     'vote': getVote,
     'voteSum': fields.Integer,
     'uri': fields.Url('api.item')
@@ -39,6 +49,8 @@ class ItemAPI(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('vote', type = int, default = 0)
+        self.reqparse.add_argument('read', type = bool, default = False) # mark as read
+        self.reqparse.add_argument('unread', type = bool, default = True) # mark as unread
         super(ItemAPI, self).__init__()
 
     def get(self, id):
@@ -65,14 +77,24 @@ class ItemAPI(Resource):
             db.session.add(user_item)
             db.session.commit()
 
-        if args.vote: # not voting if vote = 0
+        # Cast vote (if vote != 0)
+        if args.vote: 
             if user_item.vote == args.vote:
                 return {'errors': {'vote': ["You have already voted on this item."]}}, 422
 
             item.voteSum += args.vote - user_item.vote # + new vote - old vote
             user_item.vote = args.vote
             db.session.commit()
-            
+        
+        # Mark unread as Read
+        if args.read:
+            user_item.unread = False
+            db.session.commit()
+        # Mark read as Unread
+        if not args.unread:
+            user_item.unread = True
+            db.session.commit()
+
         return {'item': marshal(item, item_fields)}
 
 class FeedItemListAPI(Resource):

@@ -14,3 +14,8 @@ def user_item_upvote(request):
 @pytest.fixture()
 def user_item_downvote(request):
     return user_item_factories.UserItemDownvoteFactory()
+
+
+@pytest.fixture()
+def user_item_read(request):
+    return user_item_factories.UserItemReadFactory()
