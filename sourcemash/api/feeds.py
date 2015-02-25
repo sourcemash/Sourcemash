@@ -95,9 +95,39 @@ class FeedListAllAPI(Resource):
 
 class FeedAPI(Resource):
 
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('subscribed', type = bool, default = True)
+        super(FeedAPI, self).__init__()
+
+
     def get(self, id):
         feed = Feed.query.get_or_404(id)
         return {'feed': marshal(feed, feed_fields)}
+
+
+    @login_required
+    def put(self, id):
+        args = self.reqparse.parse_args()
+
+        feed = Feed.query.get_or_404(id)
+
+        if args.subscribed:
+            try:
+                subscription = current_user.subscribed.filter(Feed.id==feed.id).one()
+                return {"errors": {"subscribed": ["Already subscribed"]}}, 409
+            except:
+                current_user.subscribed.append(feed)
+                db.session.commit()
+        else:
+            try:
+                subscription = current_user.subscribed.filter(Feed.id==feed.id).one()
+                current_user.subscribed.remove(subscription)
+                db.session.commit()
+            except:
+                return {"errors": {"subscribed": ["You are already unsubscribed."]}}, 409
+
+        return marshal(feed, feed_fields), 201
 
 
     @login_required
