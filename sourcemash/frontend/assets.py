@@ -6,7 +6,7 @@ css_vendor = Bundle("scss/vendor/materialize/materialize.scss",
 css_sourcemash = Bundle("scss/sourcemash.scss",
                     filters="pyscss", output="css/sourcemash.css")
 
-js_vendor = Bundle("js/vendor/jquery-2.1.3.js",                    
+js_vendor = Bundle("js/vendor/jquery.js",                    
                     "js/vendor/underscore.js",
                     "js/vendor/backbone.js",
                     "js/vendor/backbone.typeahead.js",
