@@ -49,13 +49,14 @@ class TestItemAPI(TestBase):
     def test_put_multi_upvotes(self, test_client, user_item_upvote):
         self.login(test_client, user_item_upvote.user.email, user_item_upvote.user.password)
 
+        original_vote_count = user_item_upvote.item.voteSum
         upvote = dict(vote=1)
         r = test_client.put('/api/items/%d' % user_item_upvote.item.id, data=upvote)
         check_valid_header_type(r.headers)
-        assert r.status_code == 422
+        assert r.status_code == 200
 
         data = json.loads(r.data)
-        assert "already voted" in data['errors']['vote'][0]
+        assert data['item']['voteSum'] == original_vote_count
 
     def test_put_upvote_then_downvote(self, test_client, user_item_upvote):
         self.login(test_client, user_item_upvote.user.email, user_item_upvote.user.password)
@@ -82,13 +83,14 @@ class TestItemAPI(TestBase):
     def test_put_multi_downvotes(self, test_client, user_item_downvote):
         self.login(test_client, user_item_downvote.user.email, user_item_downvote.user.password)
 
+        original_vote_count = user_item_downvote.item.voteSum
         downvote = dict(vote=-1)
         r = test_client.put('/api/items/%d' % user_item_downvote.item.id, data=downvote)
         check_valid_header_type(r.headers)
-        assert r.status_code == 422
+        assert r.status_code == 200
 
         data = json.loads(r.data)
-        assert "already voted" in data['errors']['vote'][0]
+        assert data['item']['voteSum'] == original_vote_count
 
     def test_put_item_too_big_vote(self, test_client, user, item):
         self.login(test_client, user.email, user.password)
@@ -135,7 +137,7 @@ class TestItemAPI(TestBase):
     def test_put_item_mark_read(self, test_client, user, item):
         self.login(test_client, user.email, user.password)
 
-        read = dict(read=True)
+        read = dict(mark_read=True)
         r = test_client.put('/api/items/%d' % item.id, data=read)
         check_valid_header_type(r.headers)
         assert r.status_code == 200
@@ -146,7 +148,7 @@ class TestItemAPI(TestBase):
     def test_put_item_mark_unread(self, test_client, user, user_item_read):
         self.login(test_client, user.email, user.password)
 
-        unread = dict(unread=False)
+        unread = dict(mark_unread=True)
         r = test_client.put('/api/items/%d' % user_item_read.item.id, data=unread)
         check_valid_header_type(r.headers)
         assert r.status_code == 200

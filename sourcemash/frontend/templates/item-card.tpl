@@ -2,19 +2,24 @@
   <div class="card">
     
     <div class="card-image waves-effect waves-block waves-light">
-      <img class="activator" src=<%=item.get('image_url')%>>
+      <img class="activator" id="mark-read" src=<%=item.get('image_url')%>>
     </div>
     
     <div class="card-content">
       
       <div class="card-title row activator grey-text text-darken-4">
-        <div class="col s11"><%= item.get('title') %></div>
-        <div class="col s1"><i class="mdi-navigation-more-vert right"></i></div>
+        <div class="col s11">
+          <%= item.get('title') %>
+        </div>  
+      <div class="col s1"><i class="mdi-navigation-more-vert right"></i></div>
       </div>
 
       <div class="card-action valign-wrapper row">
-        <div class="col s5"><a href="#/categories/<%=item.get('category_1')%>"><%=item.get('category_1')%></a></div>
-        <div class="col s5"><a href="#/categories/<%=item.get('category_2')%>"><%=item.get('category_2')%></a></div>
+        <div class="col s4"><a href="#/categories/<%=item.get('category_1')%>"><%=item.get('category_1')%></a></div>
+        <div class="col s4"><a href="#/categories/<%=item.get('category_2')%>"><%=item.get('category_2')%></a></div>
+        <div class="col s2">
+          <span class="<%= item.get('unread') == true ?  'new badge' : '' %>" id="mark-read"></span>
+        </div>
         <div class="col s2 center-align" id="voting-buttons">
           <div class="vote upvote <%= item.get('vote') == 1 ?  'active' : '' %>"><i class="small mdi-navigation-expand-less"></i></div>
           <div><%= item.get('voteSum') %></div>

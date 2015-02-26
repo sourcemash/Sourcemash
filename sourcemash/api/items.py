@@ -49,8 +49,8 @@ class ItemAPI(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('vote', type = int, default = 0)
-        self.reqparse.add_argument('read', type = bool, default = False) # mark as read
-        self.reqparse.add_argument('unread', type = bool, default = True) # mark as unread
+        self.reqparse.add_argument('mark_read', type = bool, default = False) 
+        self.reqparse.add_argument('mark_unread', type = bool, default = False)
         super(ItemAPI, self).__init__()
 
     def get(self, id):
@@ -77,21 +77,19 @@ class ItemAPI(Resource):
             db.session.add(user_item)
             db.session.commit()
 
-        # Cast vote (if vote != 0)
-        if args.vote: 
-            if user_item.vote == args.vote:
-                return {'errors': {'vote': ["You have already voted on this item."]}}, 422
+        # Cast vote (if vote isn't zero or revote)
+        if user_item.vote != args.vote:
 
             item.voteSum += args.vote - user_item.vote # + new vote - old vote
             user_item.vote = args.vote
             db.session.commit()
         
         # Mark unread as Read
-        if args.read:
+        if args.mark_read:
             user_item.unread = False
             db.session.commit()
         # Mark read as Unread
-        if not args.unread:
+        if args.mark_unread:
             user_item.unread = True
             db.session.commit()
 
