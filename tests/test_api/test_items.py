@@ -122,7 +122,6 @@ class TestItemAPI(TestBase):
         assert r.status_code == 200 
 
         data = json.loads(r.data)
-        print data
         assert data['item']['voteSum'] == original_vote_count
 
     def test_put_item_missing(self, test_client, user, item):

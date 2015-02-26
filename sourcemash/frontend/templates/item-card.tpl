@@ -2,7 +2,7 @@
   <div class="card <%= item.get('unread') ?  '' : 'read' %>">
     
     <div class="card-image waves-effect waves-block waves-light">
-      <img class="activator" id="mark-read" src=<%=item.get('image_url')%>>
+      <img class="activator" src=<%=item.get('image_url')%>>
     </div>
     
     <div class="card-content">

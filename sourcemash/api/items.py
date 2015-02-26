@@ -85,7 +85,7 @@ class ItemAPI(Resource):
             user_item.vote = args.vote
             db.session.commit()
         
-        # Mark unread as Read
+        # Mark unread as Read / read as Unread
         if args.unread != None:
             user_item.unread = args.unread
             db.session.commit()
