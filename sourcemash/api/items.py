@@ -49,8 +49,7 @@ class ItemAPI(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('vote', type = int, default = 0)
-        self.reqparse.add_argument('mark_read', type = bool, default = False) 
-        self.reqparse.add_argument('mark_unread', type = bool, default = False)
+        self.reqparse.add_argument('unread', type = bool, default = True)
         super(ItemAPI, self).__init__()
 
     def get(self, id):
@@ -85,12 +84,8 @@ class ItemAPI(Resource):
             db.session.commit()
         
         # Mark unread as Read
-        if args.mark_read:
+        if not args.unread:
             user_item.unread = False
-            db.session.commit()
-        # Mark read as Unread
-        if args.mark_unread:
-            user_item.unread = True
             db.session.commit()
 
         return {'item': marshal(item, item_fields)}
