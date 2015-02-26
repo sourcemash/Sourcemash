@@ -10,13 +10,13 @@ window.Sourcemash = {
 };
 
 /* Overwrite sync to handle only attributes that have changed */
-var Original_BackboneSync = Backbone.sync;
+var OriginalBackboneSync = Backbone.sync;
 Backbone.sync = function(method, model, options) {
-  if (!options.data && model && method == 'update') {
+  if (!options.data && model && method === 'update') {
     options.contentType = 'application/json';
     options.data = JSON.stringify(model.changedAttributes() || {});
   }
-  return Original_BackboneSync.apply(this, arguments);
+  return OriginalBackboneSync.apply(this, arguments);
 };
 
 $(document).ready(function() {
