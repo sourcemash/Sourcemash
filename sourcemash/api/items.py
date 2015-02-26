@@ -1,7 +1,7 @@
 from . import api
 from sourcemash.database import db
 from flask import abort
-from flask.ext.restful import Resource, reqparse, fields, marshal
+from flask.ext.restful import Resource, reqparse, inputs, fields, marshal
 from flask.ext.security import current_user, login_required
 
 from feeds import feed_fields
@@ -48,8 +48,8 @@ item_fields = {
 class ItemAPI(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('vote', type = int, default = 0)
-        self.reqparse.add_argument('unread', type = bool, default = True)
+        self.reqparse.add_argument('vote', type = int, default=0)
+        self.reqparse.add_argument('unread', type = inputs.boolean)
         super(ItemAPI, self).__init__()
 
     def get(self, id):
@@ -77,15 +77,17 @@ class ItemAPI(Resource):
             db.session.commit()
 
         # Cast vote (if vote isn't zero or revote)
-        if user_item.vote != args.vote:
+        if args.vote != 0:
+            if user_item.vote == args.vote:
+                return {'errors': {'vote': ["You have already voted on this item."]}}, 422
 
             item.voteSum += args.vote - user_item.vote # + new vote - old vote
             user_item.vote = args.vote
             db.session.commit()
         
         # Mark unread as Read
-        if not args.unread:
-            user_item.unread = False
+        if args.unread != None:
+            user_item.unread = args.unread
             db.session.commit()
 
         return {'item': marshal(item, item_fields)}
