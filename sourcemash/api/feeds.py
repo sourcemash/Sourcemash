@@ -8,7 +8,7 @@ from datetime import datetime, date
 
 import feedparser
 
-from sourcemash.models import Feed
+from sourcemash.models import Feed, UserItem
 from sourcemash.forms import FeedForm
 
 class isSubscribed(fields.Raw):
@@ -22,12 +22,24 @@ class getItemCount(fields.Raw):
     def output(self, key, feed):
         return feed.items.count()
 
+class getUnreadCount(fields.Raw):
+    def output(self, key, feed):
+        unread_count = 0
+        for item in feed.items:
+            try:
+                unread_count += UserItem.query.filter_by(user=current_user, item=item).one().unread
+            except:
+                unread_count += True
+
+        return unread_count
+
 feed_fields = {
     'id': fields.Integer,
     'title': fields.String,
     'url': fields.String,
     'last_updated': fields.DateTime,
     'item_count': getItemCount,
+    'unread_count': getUnreadCount,
     'subscribed': isSubscribed
 }
 
