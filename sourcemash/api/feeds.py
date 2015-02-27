@@ -1,7 +1,7 @@
 from . import api
 from sourcemash.database import db
 from flask import abort
-from flask.ext.restful import Resource, reqparse, fields, marshal
+from flask.ext.restful import Resource, reqparse, inputs, fields, marshal
 from flask.ext.security import current_user, login_required
 
 from datetime import datetime, date
@@ -97,7 +97,7 @@ class FeedAPI(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('subscribed', type = bool, default = True)
+        self.reqparse.add_argument('subscribed', type = inputs.boolean, default = True)
         super(FeedAPI, self).__init__()
 
 
@@ -127,22 +127,7 @@ class FeedAPI(Resource):
             except:
                 return {"errors": {"subscribed": ["You are already unsubscribed."]}}, 409
 
-        return marshal(feed, feed_fields), 201
-
-
-    @login_required
-    def delete(self, id):
-        """Unsubscribe user from feed."""
-
-        try:
-            subscription = current_user.subscribed.filter(Feed.id==id).one()
-        except:
-            abort(404)
-
-        current_user.subscribed.remove(subscription)
-        db.session.commit()
-
-        return {'result': True}
+        return {'feed': marshal(feed, feed_fields)}
 
 api.add_resource(FeedListAPI, '/feeds', endpoint='feeds')
 api.add_resource(FeedListAllAPI, '/feeds/all', endpoint='feeds_all')
