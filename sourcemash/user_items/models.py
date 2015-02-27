@@ -8,6 +8,9 @@ class UserItem(db.Model):
     unread = db.Column(db.Boolean, default=True)
     user = db.relationship('User')
     item = db.relationship('Item')
+    feed_id = db.Column(db.Integer, db.ForeignKey('feed.id'))
+    category_1 = db.Column(db.String(100))
+    category_2 = db.Column(db.String(100))
 
     def __repr__(self):
         return "<UserItem: %s, %s (vote: %d)>" % (self.user, self.item, self.vote)

@@ -72,7 +72,8 @@ class ItemAPI(Resource):
         try:
             user_item = UserItem.query.filter_by(user=current_user, item=item).one()
         except:
-            user_item = UserItem(user=current_user, item=item)
+            user_item = UserItem(user=current_user, item=item, feed_id=item.feed_id, 
+                                 category_1=item.category_1, category_2=item.category_2)
             db.session.add(user_item)
             db.session.commit()
 
