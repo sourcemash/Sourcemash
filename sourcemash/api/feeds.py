@@ -25,6 +25,10 @@ class getItemCount(fields.Raw):
 class getUnreadCount(fields.Raw):
     def output(self, key, feed):
         total_item_count = Item.query.filter_by(feed_id=feed.id).count() 
+        
+        if not current_user.is_authenticated():
+            return total_item_count 
+        
         read_item_count = UserItem.query.filter_by(user=current_user, feed_id=feed.id, unread=False).count()
 
         return total_item_count - read_item_count
