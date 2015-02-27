@@ -15,11 +15,9 @@
     <a href="#/feeds/<%= feed.get('id') %>" class="collection-item">
       <%= feed.get('title') %>
       <span class="badge"><%=feed.get('item_count')%></span>
-      <span class="<%= feed.get('unread_count') > 0 ? 'new badge' : '' %>">
         <% if (feed.get('unread_count') > 0) { %>
-          <%=feed.get('unread_count')%>
+          <span class="new badge"><%=feed.get('unread_count')%></span>
         <% }; %>
-      </span>
     </a>
   <% }); %>
 </ul>

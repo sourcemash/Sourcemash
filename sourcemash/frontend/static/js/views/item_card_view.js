@@ -10,7 +10,7 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
     events: {
 	  	'click .upvote': 'upvote',
 	  	'click .downvote': 'downvote',
-	  	'click #mark-read': 'markRead',
+	  	'click .mark-read': 'markRead',
 	},
 
 	upvote: function() {

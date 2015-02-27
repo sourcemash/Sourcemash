@@ -17,6 +17,7 @@
       <div class="card-action valign-wrapper row">
         <div class="col s4"><a href="#/categories/<%=item.get('category_1')%>"><%=item.get('category_1')%></a></div>
         <div class="col s4"><a href="#/categories/<%=item.get('category_2')%>"><%=item.get('category_2')%></a></div>
+        <div class="col s2"></div>
         <div class="col s2 center-align" id="voting-buttons">
           <div class="vote upvote <%= item.get('vote') == 1 ?  'active' : '' %>"><i class="small mdi-navigation-expand-less"></i></div>
           <div><%= item.get('voteSum') %></div>
@@ -28,7 +29,7 @@
     
     <div class="card-reveal">
       <span class="card-title grey-text text-darken-4">
-        <i class="mdi-navigation-close right" id="mark-read"></i>
+        <i class="mdi-navigation-close right mark-read"></i>
       </span>
       <p class="flow-text"><a href="<%= '#/items/' + item.get('id') %>"><%= item.get('title') %></a></p>
       <p class="flow-text"><%= item.get('author') %></p>

@@ -5,6 +5,6 @@ Sourcemash.Collections.Feeds = Backbone.Collection.extend({
 	  	return response.feeds;
 	  },
 	  comparator: function(feed) {
-	  	return [parseInt(feed.get('unread_count')) == 0, feed.get('title')]
+	  	return [parseInt(feed.get('unread_count')) === 0, feed.get('title')]
 	  }
 });

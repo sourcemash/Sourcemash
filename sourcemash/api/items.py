@@ -19,12 +19,7 @@ class getVote(fields.Raw):
 
 class getUnreadStatus(fields.Raw):
     def output(self, key, item):
-        try:
-            unread = UserItem.query.filter_by(user=current_user, item=item).one().unread
-        except:
-            unread = True
-
-        return unread
+        return UserItem.query.filter_by(user=current_user, item=item, unread=False).count() == 0
 
 item_fields = {
     'id': fields.Integer,
@@ -78,7 +73,7 @@ class ItemAPI(Resource):
             db.session.commit()
 
         # Cast vote (if vote isn't zero or revote)
-        if args.vote != 0:
+        if args.vote:
             if user_item.vote == args.vote:
                 return {'errors': {'vote': ["You have already voted on this item."]}}, 422
 
@@ -86,7 +81,7 @@ class ItemAPI(Resource):
             user_item.vote = args.vote
             db.session.commit()
         
-        # Mark unread as Read / read as Unread
+        # Toggle unread status
         if args.unread != None:
             user_item.unread = args.unread
             db.session.commit()
