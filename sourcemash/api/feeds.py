@@ -108,6 +108,7 @@ class FeedAPI(Resource):
 
     @login_required
     def put(self, id):
+        """Toggle Subscribed."""
         args = self.reqparse.parse_args()
 
         feed = Feed.query.get_or_404(id)
