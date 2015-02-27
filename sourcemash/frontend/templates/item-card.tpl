@@ -1,5 +1,9 @@
 <div class="col m6">
+<<<<<<< HEAD
   <div class="card <%= item.get('unread') ?  '' : 'read' %>">
+=======
+  <div class="card <%= item.get('feed').subscribed ? '' : 'unsubscribed'%>">
+>>>>>>> Add unsubscribe and modal.
     
     <div class="card-image waves-effect waves-block waves-light">
       <img class="activator" src=<%=item.get('image_url')%>>
@@ -35,5 +39,16 @@
       <p class="flow-text"><%= item.get('author') %></p>
       <p class="flow-text summary"><%= item.get('summary')%></p>
     </div>
+  </div>
+</div>
+
+<div class="subscribe-modal modal">
+  <div class="modal-content">
+    <h4>Interested?</h4>
+    <p>You upvoted an item from a feed you're not subscribed to. Would you like to add this feed to your subscriptions?<p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="subscribe-close waves-effect waves-green btn-flat modal-action modal-close">Subscribe!</a>
+    <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close">I'll pass...</a>
   </div>
 </div>

@@ -11,6 +11,7 @@ Sourcemash.Views.FeedView = Sourcemash.Views.ItemsView.extend({
         } else {
             this.model.save({'subscribed': true}, {success: this.toast});
         }
+        this.model.items.fetch();
     },
 
     toast: function(feed) {
