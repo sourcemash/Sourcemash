@@ -74,6 +74,18 @@
  * Feed & Category Item Styles
  ******************************
  */
+.switch {
+	label {
+		padding: 10px;
+	}
+}
+
+.modal-close {
+	&:hover {
+		background-color: color("green", "base");
+	}
+}
+
 .card {
 	height: 400px;
 	.card-content {
