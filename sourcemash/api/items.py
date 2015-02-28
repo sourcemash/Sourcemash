@@ -1,7 +1,7 @@
 from . import api
 from sourcemash.database import db
 from flask import abort
-from flask.ext.restful import Resource, reqparse, fields, marshal
+from flask.ext.restful import Resource, reqparse, inputs, fields, marshal
 from flask.ext.security import current_user, login_required
 
 from feeds import feed_fields
@@ -17,6 +17,12 @@ class getVote(fields.Raw):
 
         return vote
 
+class getUnreadStatus(fields.Raw):
+    def output(self, key, item):
+        if not current_user.is_authenticated():
+            return False
+        return UserItem.query.filter_by(user=current_user, item=item, unread=False).count() == 0
+
 item_fields = {
     'id': fields.Integer,
     'title': fields.String,
@@ -29,6 +35,7 @@ item_fields = {
     'summary': fields.String,
     'image_url': fields.String,
     'feed': fields.Nested(feed_fields),
+    'unread': getUnreadStatus,
     'vote': getVote,
     'voteSum': fields.Integer,
     'uri': fields.Url('api.item')
@@ -38,7 +45,8 @@ item_fields = {
 class ItemAPI(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('vote', type = int, default = 0)
+        self.reqparse.add_argument('vote', type = int, default=0)
+        self.reqparse.add_argument('unread', type = inputs.boolean)
         super(ItemAPI, self).__init__()
 
     def get(self, id):
@@ -61,18 +69,25 @@ class ItemAPI(Resource):
         try:
             user_item = UserItem.query.filter_by(user=current_user, item=item).one()
         except:
-            user_item = UserItem(user=current_user, item=item)
+            user_item = UserItem(user=current_user, item=item, feed_id=item.feed_id, 
+                                 category_1=item.category_1, category_2=item.category_2)
             db.session.add(user_item)
             db.session.commit()
 
-        if args.vote: # not voting if vote = 0
+        # Cast vote (if vote isn't zero or revote)
+        if args.vote:
             if user_item.vote == args.vote:
                 return {'errors': {'vote': ["You have already voted on this item."]}}, 422
 
             item.voteSum += args.vote - user_item.vote # + new vote - old vote
             user_item.vote = args.vote
             db.session.commit()
-            
+        
+        # Toggle unread status
+        if args.unread != None:
+            user_item.unread = args.unread
+            db.session.commit()
+
         return {'item': marshal(item, item_fields)}
 
 class FeedItemListAPI(Resource):

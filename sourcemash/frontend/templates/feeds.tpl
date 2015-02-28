@@ -12,8 +12,12 @@
 
 <ul class="collection feeds">
   <% feeds.forEach(function(feed) { %>
-    <a href="#/feeds/<%= feed.get('id') %>" class="collection-item"><%= feed.get('title') %>
+    <a href="#/feeds/<%= feed.get('id') %>" class="collection-item">
+      <%= feed.get('title') %>
       <span class="badge"><%=feed.get('item_count')%></span>
+        <% if (feed.get('unread_count') > 0) { %>
+          <span class="new badge"><%=feed.get('unread_count')%></span>
+        <% }; %>
     </a>
   <% }); %>
 </ul>

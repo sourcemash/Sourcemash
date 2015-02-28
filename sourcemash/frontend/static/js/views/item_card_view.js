@@ -9,18 +9,17 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
 
     events: {
 	  	'click .upvote': 'upvote',
-	  	'click .downvote': 'downvote'
+	  	'click .downvote': 'downvote',
+	  	'click .mark-read': 'markRead',
 	},
 
-	upvote: function(e) {
-		e.stopPropagation()
-		this.model.save({'vote': 1, 'voteSum': this._getNewVoteSum(1)},
+	upvote: function() {
+		this.model.save({vote: 1, voteSum: this._getNewVoteSum(1)},
 						{success: this.voted});
 	},
 
-	downvote: function(e) {
-		e.stopPropagation()
-		this.model.save({'vote': -1, 'voteSum': this._getNewVoteSum(-1)},
+	downvote: function() {
+		this.model.save({vote: -1, voteSum: this._getNewVoteSum(-1)},
 						{success: this.voted});
 	},
 
@@ -30,6 +29,10 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
 
 	_getNewVoteSum: function(vote) {
 		return this.model.get('voteSum') + vote - this.model.get('vote')
+	},
+
+	markRead: function() {
+		this.model.save({unread: false});
 	},
 
     render: function() {

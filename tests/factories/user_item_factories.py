@@ -21,3 +21,7 @@ class UserItemUpvoteFactory(UserItemFactory):
 class UserItemDownvoteFactory(UserItemFactory):
     vote = -1
     item = factory.SubFactory(ItemFactory, voteSum=-1)
+
+
+class UserItemReadFactory(UserItemFactory):
+	unread = False

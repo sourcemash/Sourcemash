@@ -7,6 +7,9 @@
     <a href="#/categories/<%= category.get('category') %>" class="collection-item">
         <%= category.get('category') %>
         <span class="badge"><%=category.get('count')%></span>
+        <% if (category.get('unread_count') > 0) { %>
+          <span class="new badge"><%=category.get('unread_count')%></span>
+        <% }; %>
     </a>
   <% }); %>
 </ul>

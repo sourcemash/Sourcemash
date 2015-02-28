@@ -108,6 +108,9 @@
 			cursor: pointer;
 		}
 	}
+	&.read {
+		opacity: 0.5;
+	}
 }
 
 /*

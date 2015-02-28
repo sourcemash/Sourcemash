@@ -119,7 +119,7 @@ class TestItemAPI(TestBase):
         
         r = test_client.put('/api/items/%d' % item.id, data=no_vote)
         check_valid_header_type(r.headers)
-        assert r.status_code == 200 # Unspecified vote defaults to zero
+        assert r.status_code == 200 
 
         data = json.loads(r.data)
         assert data['item']['voteSum'] == original_vote_count
@@ -131,6 +131,39 @@ class TestItemAPI(TestBase):
         r = test_client.put('/api/items/%d' % (int(item.id+1)), data=upvote)
         check_valid_header_type(r.headers)
         assert r.status_code == 404
+
+    def test_put_item_mark_read(self, test_client, user, item):
+        self.login(test_client, user.email, user.password)
+
+        read = dict(unread=False)
+        r = test_client.put('/api/items/%d' % item.id, data=read)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert data['item']['unread'] == False
+
+    def test_put_item_mark_unread(self, test_client, user, item):
+        self.login(test_client, user.email, user.password)
+
+        read = dict(unread=True)
+        r = test_client.put('/api/items/%d' % item.id, data=read)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert data['item']['unread'] == True
+
+    def test_put_item_mark_read_as_unread(self, test_client, user, user_item_read):
+        self.login(test_client, user.email, user.password)
+
+        read = dict(unread=True)
+        r = test_client.put('/api/items/%d' % user_item_read.item.id, data=read)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert data['item']['unread'] == True
 
 class TestFeedItemListAPI:
 
