@@ -13,6 +13,10 @@ js_vendor = Bundle("js/vendor/jquery.js",
                     "js/vendor/materialize.js",
                     filters="jsmin", output="js/vendor.min.js")
 
+js_mixpanel = Bundle("js/vendor/mixpanel.js",
+                    filters="jsmin", output="js/mixpanel.min.js")
+
+
 js_default = Bundle("js/default.js",
 					filters="jsmin", output="js/default.min.js")
 
@@ -26,7 +30,8 @@ js_collections = Bundle("js/collections/*.js")
 
 js_models = Bundle("js/models/*.js")
 
-js_views = Bundle("js/views/items_view.js",
+js_views = Bundle("js/views/profile_view.js",
+                "js/views/items_view.js",
                 "js/views/category_view.js",
                 "js/views/categories_view.js",
                 "js/views/feed_view.js",
@@ -51,6 +56,7 @@ def init_app(app):
     webassets.register('css_vendor', css_vendor)
     webassets.register('css_sourcemash', css_sourcemash)
     webassets.register('js_vendor', js_vendor)
+    webassets.register('js_mixpanel', js_mixpanel)
     webassets.register('js_default', js_default)
     webassets.register('js_templates', js_templates)
     webassets.register('js_backbone', js_backbone)

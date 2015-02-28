@@ -8,8 +8,13 @@ Sourcemash.Views.FeedView = Sourcemash.Views.ItemsView.extend({
     toggleSubscribed: function() {
         if (this.model.get('subscribed')) {
             this.model.save({'subscribed': false}, {success: this.toast});
+            
+            mixpanel.track("Unsubscribed", { "Feed Title": this.model.get('title') })
         } else {
             this.model.save({'subscribed': true}, {success: this.toast});
+            
+            mixpanel.track("Subscribed", { "Feed Title": this.model.get('title'),
+                                            "From Modal": false })
         }
         this.model.items.fetch();
     },

@@ -5,7 +5,7 @@
 {% block layout %}
 <h1>Login</h1>
 <div class="row">
-  <form class="col s12" action="{{ url_for_security('login') }}" method="POST" name="login_user_form">
+  <form class="col s12" id="login" action="{{ url_for_security('login') }}" method="POST" name="login_user_form">
     {{ login_user_form.hidden_tag() }}
     <div class="row">
       <div class="input-field col s12">
@@ -28,4 +28,8 @@
     {{ login_user_form.next }}
   </form>
 </div>
+
+<script>
+  mixpanel.track_forms("#login", "Logged In");
+</script>
 {% endblock %}

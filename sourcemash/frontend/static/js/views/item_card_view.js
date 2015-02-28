@@ -21,11 +21,17 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
 	upvote: function() {
 		this.model.save({vote: 1, voteSum: this._getNewVoteSum(1)},
 						{success: this.voted});
+        
+        mixpanel.track("Upvoted", { "Item Title": this.model.get('title'),
+                                    "Feed Title": this.model.get('feed').title })
     },
 
 	downvote: function() {
 		this.model.save({vote: -1, voteSum: this._getNewVoteSum(-1)},
 						{success: this.voted});
+        
+        mixpanel.track("Downvoted", { "Item Title": this.model.get('title'),
+                                    "Feed Title": this.model.get('feed').title })
 	},
 
 	voted: function() {
@@ -35,11 +41,18 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
     subscribe: function() {
         this.feed.save({'subscribed': true})
         this.items.fetch()
+        
+        mixpanel.track("Subscribed", { "Item Title": this.model.get('title'),
+                                        "Feed Title": this.model.get('feed').title,
+                                        "From Modal": true })
     },
 
     showSubscribeModal: function(e) {
         e.stopPropagation();
         this.$('.subscribe-modal').openModal();
+        
+        mixpanel.track("Subscribe Modal", { "Item Title": this.model.get('title'),
+                                            "Feed Title": this.model.get('feed').title })
     },
 
 	_getNewVoteSum: function(vote) {
@@ -48,6 +61,8 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
 
 	markRead: function() {
 		this.model.save({unread: false});
+        
+        mixpanel.people.increment("items read")
 	},
 
     render: function() {
