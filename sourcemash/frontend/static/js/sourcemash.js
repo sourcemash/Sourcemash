@@ -15,7 +15,7 @@ Backbone.sync = function(method, model, options) {
   if (!options.data && model && method === 'update') {
     options.contentType = 'application/json';
     options.data = JSON.stringify(model.changedAttributes() || {});
-    if (options.data == "{}") {
+    if (options.data === "{}") {
       return
     };
   }
