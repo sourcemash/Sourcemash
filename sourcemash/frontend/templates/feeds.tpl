@@ -8,8 +8,6 @@
     </form>
 </div>
 
-<a class="waves-effect waves-light btn green darken-1" href="#/categories">Categories</a>
-
 <ul class="collection feeds">
   <% feeds.forEach(function(feed) { %>
     <a href="#/feeds/<%= feed.get('id') %>" class="collection-item">
