@@ -1,7 +1,7 @@
 from . import api
 from sourcemash.database import db
 from flask import abort
-from flask.ext.restful import Resource, reqparse, fields, marshal
+from flask.ext.restful import Resource, reqparse, inputs, fields, marshal
 from flask.ext.security import current_user, login_required
 
 from datetime import datetime, date
@@ -95,24 +95,41 @@ class FeedListAllAPI(Resource):
 
 class FeedAPI(Resource):
 
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('subscribed', type = inputs.boolean, default = True)
+        super(FeedAPI, self).__init__()
+
+
     def get(self, id):
         feed = Feed.query.get_or_404(id)
         return {'feed': marshal(feed, feed_fields)}
 
 
     @login_required
-    def delete(self, id):
-        """Unsubscribe user from feed."""
+    def put(self, id):
+        args = self.reqparse.parse_args()
 
-        try:
-            subscription = current_user.subscribed.filter(Feed.id==id).one()
-        except:
-            abort(404)
+        feed = Feed.query.get_or_404(id)
 
-        current_user.subscribed.remove(subscription)
-        db.session.commit()
+        # Toggle Subscription
+        if args.subscribed != None:
+            if args.subscribed:
+                try:
+                    subscription = current_user.subscribed.filter(Feed.id==feed.id).one()
+                    return {"errors": {"subscribed": ["Already subscribed."]}}, 409
+                except:
+                    current_user.subscribed.append(feed)
+                    db.session.commit()
+            else:
+                try:
+                    subscription = current_user.subscribed.filter(Feed.id==feed.id).one()
+                    current_user.subscribed.remove(subscription)
+                    db.session.commit()
+                except:
+                    return {"errors": {"subscribed": ["You are already unsubscribed."]}}, 409
 
-        return {'result': True}
+        return {'feed': marshal(feed, feed_fields)}
 
 api.add_resource(FeedListAPI, '/feeds', endpoint='feeds')
 api.add_resource(FeedListAllAPI, '/feeds/all', endpoint='feeds_all')

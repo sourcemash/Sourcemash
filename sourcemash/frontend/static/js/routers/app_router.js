@@ -12,7 +12,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         });
 
         feedsView.collection.fetch();
-        feedsView.allFeeds.fetch();
+        feedsView.allFeeds.fetch({url: '/api/feeds/all'});
         this._swapView(feedsView);
     },
 

@@ -31,24 +31,62 @@ class TestFeedAPI(TestBase):
         check_valid_header_type(r.headers)
         assert r.status_code == 404
 
-    def test_delete_subscription_present(self, test_client, userWithFeed):
+    def test_put_feed_subscribe(self, test_client, user, feed):
+        self.login(test_client, user.email, user.password)
+
+        subscribe_data = dict(subscribed=True)
+        subscribe = test_client.put('/api/feeds/%d' % feed.id, data=subscribe_data)
+        check_valid_header_type(subscribe.headers)
+        data = json.loads(subscribe.data)
+
+        assert data['feed']['subscribed'] == True
+        assert user.subscribed.count() == 1
+
+
+    def test_put_feed_already_subscribed(self, test_client, userWithFeed):
         feed = userWithFeed.subscribed.first()
 
         self.login(test_client, userWithFeed.email, userWithFeed.password)
 
-        unsubscribe = test_client.delete('api/feeds/%d' % feed.id)
+        subscribe_data = dict(subscribed=True)
+        subscribe = test_client.put('/api/feeds/%d' % feed.id, data=subscribe_data)
+        check_valid_header_type(subscribe.headers)
+        data = json.loads(subscribe.data)
+
+        assert "Already subscribed" in data['errors']['subscribed'][0]
+
+    def test_put_feed_unsubscribe(self, test_client, userWithFeed):
+        feed = userWithFeed.subscribed.first()
+
+        self.login(test_client, userWithFeed.email, userWithFeed.password)
+
+        unsubscribe_data = dict(subscribed=False)
+        unsubscribe = test_client.put('api/feeds/%d' % feed.id, data=unsubscribe_data)
+        check_valid_header_type(unsubscribe.headers)
+        data = json.loads(unsubscribe.data)
+        print data
+
+        assert data['feed']['subscribed'] == False
+        assert userWithFeed.subscribed.count() == 0
+
+    def test_put_feed_already_unsubscribed(self, test_client, user, feed):
+        self.login(test_client, user.email, user.password)
+
+        unsubscribe_data = dict(subscribed=False)
+        unsubscribe = test_client.put('api/feeds/%d' % feed.id, data=unsubscribe_data)
         check_valid_header_type(unsubscribe.headers)
         data = json.loads(unsubscribe.data)
 
-        assert data['result'] == True
-        assert userWithFeed.subscribed.count() == 0
+        assert 'already unsubscribed' in data['errors']['subscribed'][0]
 
-    def test_delete_subscription_invalid_feed_id(self, test_client, userWithFeed):
+    def test_put_feed_invalid_id(self, test_client, userWithFeed):
         feed = userWithFeed.subscribed.first()
 
         self.login(test_client, userWithFeed.email, userWithFeed.password)
 
-        unsubscribe = test_client.delete('api/feeds/%d' % (int(feed.id)+1))
+        unsubscribe_data = dict(subscribed=False)
+
+        unsubscribe = test_client.put('api/feeds/%d' % (int(feed.id)+1), data=unsubscribe_data)
         check_valid_header_type(unsubscribe.headers)
         assert unsubscribe.status_code == 404   
 
