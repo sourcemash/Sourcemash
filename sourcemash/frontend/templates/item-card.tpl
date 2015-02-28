@@ -1,9 +1,5 @@
 <div class="col m6">
-<<<<<<< HEAD
-  <div class="card <%= item.get('unread') ?  '' : 'read' %>">
-=======
-  <div class="card <%= item.get('feed').subscribed ? '' : 'unsubscribed'%>">
->>>>>>> Add unsubscribe and modal.
+  <div class="card <%= item.get('unread') ?  '' : 'read' %> <%= item.get('feed').subscribed ? '' : 'unsubscribed'%>">
     
     <div class="card-image waves-effect waves-block waves-light">
       <img class="activator" src=<%=item.get('image_url')%>>
