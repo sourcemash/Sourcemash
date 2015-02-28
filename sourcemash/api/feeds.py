@@ -108,25 +108,26 @@ class FeedAPI(Resource):
 
     @login_required
     def put(self, id):
-        """Toggle Subscribed."""
         args = self.reqparse.parse_args()
 
         feed = Feed.query.get_or_404(id)
 
-        if args.subscribed:
-            try:
-                subscription = current_user.subscribed.filter(Feed.id==feed.id).one()
-                return {"errors": {"subscribed": ["Already subscribed"]}}, 409
-            except:
-                current_user.subscribed.append(feed)
-                db.session.commit()
-        else:
-            try:
-                subscription = current_user.subscribed.filter(Feed.id==feed.id).one()
-                current_user.subscribed.remove(subscription)
-                db.session.commit()
-            except:
-                return {"errors": {"subscribed": ["You are already unsubscribed."]}}, 409
+        # Toggle Subscription
+        if args.subscribed != None:
+            if args.subscribed:
+                try:
+                    subscription = current_user.subscribed.filter(Feed.id==feed.id).one()
+                    return {"errors": {"subscribed": ["Already subscribed."]}}, 409
+                except:
+                    current_user.subscribed.append(feed)
+                    db.session.commit()
+            else:
+                try:
+                    subscription = current_user.subscribed.filter(Feed.id==feed.id).one()
+                    current_user.subscribed.remove(subscription)
+                    db.session.commit()
+                except:
+                    return {"errors": {"subscribed": ["You are already unsubscribed."]}}, 409
 
         return {'feed': marshal(feed, feed_fields)}
 

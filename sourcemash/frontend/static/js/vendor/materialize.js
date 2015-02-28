@@ -3000,7 +3000,7 @@ $(document).ready(function(){
          offset: 200,
          callback: 'showStaggeredList("ul.staggered-list.' + label + '")'});
     });
-    console.log(staggeredListOptions);
+    // console.log(staggeredListOptions);
     scrollFire(staggeredListOptions);
 
 
