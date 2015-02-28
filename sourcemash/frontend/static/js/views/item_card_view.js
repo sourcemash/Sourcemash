@@ -44,7 +44,7 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
         
         mixpanel.track("Subscribed", { "Item Title": this.model.get('title'),
                                         "Feed Title": this.model.get('feed').title,
-                                        "From Modal": true })
+                                        "Source": 'modal' })
     },
 
     showSubscribeModal: function(e) {

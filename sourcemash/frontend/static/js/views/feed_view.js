@@ -14,7 +14,7 @@ Sourcemash.Views.FeedView = Sourcemash.Views.ItemsView.extend({
             this.model.save({'subscribed': true}, {success: this.toast});
             
             mixpanel.track("Subscribed", { "Feed Title": this.model.get('title'),
-                                            "From Modal": false })
+                                            "Source": 'feed page' })
         }
         this.model.items.fetch();
     },

@@ -21,7 +21,8 @@ Sourcemash.Views.FeedsView = Backbone.View.extend({
   	newFeed.collection.fetch();
     toast('Feed added!', 3000)
 
-    mixpanel.track("Subscribed", { "Feed Title": newFeed.get('title') })
+    mixpanel.track("Subscribed", { "Feed Title": newFeed.get('title'),
+                                    "Source": 'search' })
   },
   render: function() {
   	var content = this.template({feeds: this.collection.models})
