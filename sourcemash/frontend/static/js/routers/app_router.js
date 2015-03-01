@@ -1,12 +1,21 @@
 Sourcemash.Routers.AppRouter = Backbone.Router.extend({
     routes: {
-        "": "index",
+        "": "showProfile",
+        "feeds": "showFeeds",
         "feeds/:id": "showFeed",
         "categories": "showCategories",
         "categories/:category": "showCategory"
     },
 
-    index: function() {
+    showProfile: function() {
+        var user = new Sourcemash.Models.User()
+        var profileView = new Sourcemash.Views.ProfileView({ model: user });
+
+        user.fetch({success: this._identifyUser});
+        this._swapView(profileView);
+    },
+
+    showFeeds: function() {
         var feedsView = new Sourcemash.Views.FeedsView({
             collection: new Sourcemash.Collections.Feeds(),
         });
@@ -54,5 +63,13 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
 
         this.currentView = view;
         $('#app').html(view.render().$el);
+    },
+
+    _identifyUser: function(user) {
+        mixpanel.identify(user.get('email'));
+        mixpanel.people.set_once('$created', new Date());
+        mixpanel.people.set({
+            "$email": user.get('email')
+        });
     }
 })

@@ -1,6 +1,6 @@
 {% macro form_field(field) -%}
   {% if field.type == 'SubmitField' %}
-    <button type="submit" class="btn waves-effect waves-light" name={{ field.name }}>{{ field.label.text }} </button>
+    <button type="submit" class="btn waves-effect waves-light">{{ field.label.text }} </button>
   {% else %}
     {% set class_ = kwargs.pop('class_', '') %}
     {% set class_ = class_ + ' validate' %}

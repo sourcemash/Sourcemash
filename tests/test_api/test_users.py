@@ -1,6 +1,8 @@
 import pytest
 import json
 
+from . import TestBase
+
 def check_valid_header_type(headers):
     assert headers['Content-Type'] == 'application/json'
 
@@ -41,58 +43,46 @@ class TestUserListAPI:
         assert rv.status_code == 400
 
 
-class TestUserAPI:
+class TestUserAPI(TestBase):
 
-    def test_get_user_present(self, test_client, user):
-        rv = test_client.get('/api/users/%d' % user.id)
+    def test_get_user_logged_in(self, test_client, user):
+        self.login(test_client, user.email, user.password)
+
+        rv = test_client.get('/api/user')
         check_valid_header_type(rv.headers)
         assert rv.status_code == 200
 
         data = json.loads(rv.data)
         assert data['user']['email'] == user.email
 
-    def test_get_user_missing(self, test_client):
-        rv = test_client.get('/api/users/0')
-        check_valid_header_type(rv.headers)
-        assert rv.status_code == 404
-
     def test_put_user_valid(self, test_client, user):
-        # Edit dummy user
+        self.login(test_client, user.email, user.password)
+
         user_data_new = dict(email=u"admin@admin.com")
-        put = test_client.put('/api/users/%d' % user.id, data=user_data_new)
+        put = test_client.put('/api/user', data=user_data_new)
         check_valid_header_type(put.headers)
         data = json.loads(put.data)
         assert data['user']['email'] == u"admin@admin.com"
         assert put.status_code == 200
 
     def test_put_user_missing_email(self, test_client, user):
-        # Edit dummy user
+        self.login(test_client, user.email, user.password)
+
         user_data_new = dict()
-        put = test_client.put('/api/users/%d' % user.id, data=user_data_new)
+        put = test_client.put('/api/user', data=user_data_new)
         check_valid_header_type(put.headers)
         data = json.loads(put.data)
         assert put.status_code == 400
 
-    def test_put_user_invalid_id(self, test_client, user):
-        # Edit dummy user
-        user_data_new = dict(email="new_email@sourcemash.com")
-        put = test_client.put('/api/users/%d' % (int(user.id)+1), data=user_data_new)
-        check_valid_header_type(put.headers)
-        assert put.status_code == 404
+    def test_delete_user(self, test_client, user):
+        self.login(test_client, user.email, user.password)
 
-    def test_delete_user_present(self, test_client, user):
         # Remove dummy user
-        delete = test_client.delete('/api/users/%d' % user.id)
+        delete = test_client.delete('/api/user')
         check_valid_header_type(delete.headers)
         data = json.loads(delete.data)
         assert data['result'] == True
 
-        # Dummy user should no longer be reachable
-        get = test_client.get('/api/users/%d' % user.id)
-        assert get.status_code == 404
-
-    def test_delete_user_invalid_id(self, test_client, user):
-        # Remove dummy user
-        delete = test_client.delete('/api/users/%d' % (int(user.id)+1))
-        check_valid_header_type(delete.headers)
-        assert delete.status_code == 404
+        # Dummy user should no longer be logged in
+        get = test_client.get('/api/user')
+        assert get.status_code == 302
