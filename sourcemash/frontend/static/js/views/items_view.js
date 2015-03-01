@@ -3,7 +3,6 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
         this.listenTo(this.model, 'change', this.render);
 
         this.itemViews = [];
-        this.unsubscribedFeed = null;
     },
 
     events: {
@@ -25,11 +24,13 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
     },
 
     subscribeFromModal: function() {
-        this.unsubscribedFeed.save({'subscribed': true},
-                                    {'success': this.toast})
+        var item = this.collection.findWhere({title: $('#subscribe-modal #unsubscribed-item-title').text()});
+        var feed = this.model.get('title') ? this.model : item.feed;
 
-        mixpanel.track("Subscribed", { "Item Title": $('#subscribe-modal #unsubscribed-item-title').text,
-                                        "Feed Title": this.unsubscribedFeed.get('title'),
+        feed.save({'subscribed': true}, {'success': this.toast})
+
+        mixpanel.track("Subscribed", { "Item Title": item.get('title'),
+                                        "Feed Title": feed.get('title'),
                                         "Source": 'modal' })
     },
 
@@ -52,11 +53,6 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
             var feed = this.model.get('title') ? this.model : item.feed;
             var itemCardView = new Sourcemash.Views.ItemCardView({el: "#item-" + item.get('id'), model: item, feed: feed, items: items });
             itemCards.push(itemCardView)
-
-            if (!feed.get('subscribed')) {
-                this.unsubscribedFeed = feed;
-            }
-
         }, this))
 
         this.itemViews = itemCards;
