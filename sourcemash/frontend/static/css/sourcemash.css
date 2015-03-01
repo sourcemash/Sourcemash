@@ -2142,42 +2142,8 @@
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/vendor\/materialize\/components\/_color\.scss}line{font-family:\000034}}
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               .white-text {
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 color: #FFFFFF !important; }
-/* 27 selectors generated from '/Users/Alex/Development/rss-aggregator/sourcemash/frontend/static/scss/sourcemash.scss' add up to a total of 563 selectors accumulated */
+/* 19 selectors generated from '/Users/Alex/Development/rss-aggregator/sourcemash/frontend/static/scss/sourcemash.scss' add up to a total of 555 selectors accumulated */
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\000034}}
-.card {
-  height: 400px;
-  overflow: hidden; }
-  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\000036}}
-  .card .card-content {
-    background-color: white;
-    z-index: 1;
-    position: absolute;
-    bottom: 0;
-    width: 100%; }
-    @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000311}}
-    .card .card-content .card-title {
-      line-height: 32px; }
-  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000316}}
-  .card .card-reveal {
-    z-index: 2;
-    overflow-y: scroll; }
-    @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000318}}
-    .card .card-reveal img {
-      width: 100%;
-      height: auto; }
-  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000324}}
-  .card .card-action {
-    padding: 10px;
-    padding-left: 0;
-    margin: 0; }
-    @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000329}}
-    .card #reveal-button {
-      font-size: 1.75rem; }
-      @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000330}}
-      .card #reveal-button:hover {
-        cursor: pointer; }
-
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000339}}
 .dropdown-menu {
   position: absolute;
   background-color: #FFFFFF;
@@ -2185,79 +2151,77 @@
   min-width: 100px;
   z-index: 1000;
   overflow-y: hidden; }
-  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000346}}
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000311}}
   .dropdown-menu li {
     cursor: pointer;
     font-size: 1.2rem;
     line-height: 1.5rem;
     border: 1px solid black; }
-    @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000351}}
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000316}}
     .dropdown-menu li:hover {
       background-color: rgba(0, 0, 0, 0.06); }
-      @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000355}}
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000320}}
       .dropdown-menu li > a, .dropdown-menu li > span {
         display: block;
         padding: 1rem 1rem; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000365}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000330}}
 .switch label {
   padding: 10px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000371}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000336}}
 .modal-close:hover {
   background-color: #4CAF50; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000377}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000342}}
 .card {
   height: 400px; }
-  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000378}}
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000343}}
   .card .card-content {
     background-color: white;
     z-index: 1;
     position: absolute;
     bottom: 0;
     width: 100%; }
-    @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000383}}
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000348}}
     .card .card-content .card-title {
       line-height: 32px;
       font-size: 20px; }
-  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000389}}
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000354}}
+  .card.read .card-image {
+    opacity: 0.3; }
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000359}}
   .card .card-reveal {
     z-index: 2;
-    overflow-y: scroll;
-    height: 100%;
-    width: 100%; }
-    @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000393}}
+    overflow-y: scroll; }
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000361}}
     .card .card-reveal img {
       width: 100%;
       height: auto; }
-  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000399}}
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000367}}
   .card .card-action {
     padding: 10px;
     padding-left: 0;
     margin: 0; }
-    @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\00003104}}
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000372}}
     .card #reveal-button {
       font-size: 1.75rem; }
-      @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\00003105}}
-      .card #reveal-button:hover {
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000375}}
+      .card .activator {
         cursor: pointer; }
-  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\00003110}}
-  .card.read {
-    opacity: 0.5; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\00003117}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000382}}
 .vote, .upvote, .downvote {
   color: #e0e0e0;
   line-height: 10px; }
-  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\00003119}}
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000384}}
   .vote i, .upvote i, .downvote i {
     vertical-align: middle; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\00003126}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000391}}
 .upvote:hover, .upvote.active {
   color: #4CAF50; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\00003133}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/Alex\/Development\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000398}}
 .downvote:hover, .downvote.active {
   color: #F44336; }

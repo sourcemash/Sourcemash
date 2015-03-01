@@ -2,7 +2,7 @@ Sourcemash.Views.ProfileView = Backbone.View.extend({
   template: JST['profile'],
 
   initialize: function(options) {
-    this.listenTo(this.model, 'sync change', this.render);
+    this.listenTo(this.model, 'change', this.render);
   },
   
   render: function() {
