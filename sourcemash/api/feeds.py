@@ -9,7 +9,6 @@ from datetime import datetime, date
 import feedparser
 
 from sourcemash.models import Feed, UserItem, Item
-from sourcemash.forms import FeedForm
 
 class isSubscribed(fields.Raw):
     def output(self, key, feed):
@@ -59,13 +58,13 @@ class FeedListAPI(Resource):
     @login_required
     def post(self):
         args = self.reqparse.parse_args()
-        form = FeedForm(obj=args)
 
-        if not form.validate_on_submit():
-            return {"errors": form.errors}, 422
+        rss_feed = feedparser.parse(args.url)
 
-        rss_feed = feedparser.parse(form.url.data)
+        if rss_feed['bozo'] == 1:
+            return {"errors": {"url": ["URL is not a valid feed"]}}, 422
 
+        # Get or Create Feed
         try:
             feed = Feed.query.filter(Feed.url==rss_feed['url']).one()
         except:
@@ -77,6 +76,7 @@ class FeedListAPI(Resource):
             db.session.add(feed)
             db.session.commit()
 
+        # Subscribe User
         try:
             subscription = current_user.subscribed.filter(Feed.id==feed.id).one()
             return {"errors": {"url": ["Already subscribed"]}}, 409
