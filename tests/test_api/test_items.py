@@ -165,6 +165,41 @@ class TestItemAPI(TestBase):
         data = json.loads(r.data)
         assert data['item']['unread'] == True
 
+    def test_put_item_bookmark(self, test_client, user, item):
+        self.login(test_client, user.email, user.password)
+
+        bookmarked = dict(bookmarked=True)
+        r = test_client.put('/api/items/%d' % item.id, data=bookmarked)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert data['item']['bookmarked'] == True
+
+    def test_put_item_remove_bookmark(self, test_client, user, user_item_bookmarked):
+        self.login(test_client, user.email, user.password)
+
+        bookmarked = dict(bookmarked=False)
+        r = test_client.put('/api/items/%d' % user_item_bookmarked.item.id, data=bookmarked)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert data['item']['bookmarked'] == False
+
+class TestSavedItemListAPI(TestBase):
+
+    def test_get_items(self, test_client, user_item_bookmarked):
+        self.login(test_client, user_item_bookmarked.user.email, user_item_bookmarked.user.password)
+        r = test_client.get('/api/items/bookmarked')
+
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        print data
+        assert len(data['items']) == 1
+
 class TestFeedItemListAPI:
 
     def test_get_items(self, test_client, item):
