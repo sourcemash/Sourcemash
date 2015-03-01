@@ -1,17 +1,17 @@
 <div class="col m6">
-  <div class="card <%= item.get('unread') ?  '' : 'read' %> <%= item.get('feed').subscribed ? '' : 'unsubscribed'%>">
+  <div class="card <%= item.get('unread') ?  '' : 'read' %>">
     
     <div class="card-image waves-effect waves-block waves-light">
-      <img class="activator" src=<%=item.get('image_url')%>>
+      <img class="activator mark-read" src=<%=item.get('image_url')%>>
     </div>
     
     <div class="card-content">
       
-      <div class="card-title row activator grey-text text-darken-4">
-        <div class="col s11">
+      <div class="card-title row mark-read grey-text text-darken-4">
+        <div class="col s11 activator">
           <%= item.get('title') %>
         </div>  
-      <div class="col s1"><i class="mdi-navigation-more-vert right"></i></div>
+      <div class="col s1"><i class="mdi-navigation-more-vert activator right"></i></div>
       </div>
 
       <div class="card-action valign-wrapper row">
@@ -29,22 +29,11 @@
     
     <div class="card-reveal">
       <span class="card-title grey-text text-darken-4">
-        <i class="mdi-navigation-close right mark-read"></i>
+        <i class="mdi-navigation-close right"></i>
       </span>
-      <p class="flow-text"><a href="<%= '#/items/' + item.get('id') %>"><%= item.get('title') %></a></p>
+      <p class="flow-text"><a href="<%= item.get('link') %>"><%= item.get('title') %></a></p>
       <p class="flow-text"><%= item.get('author') %></p>
       <p class="flow-text summary"><%= item.get('summary')%></p>
     </div>
-  </div>
-</div>
-
-<div class="subscribe-modal modal">
-  <div class="modal-content">
-    <h4>Interested?</h4>
-    <p>You upvoted an item from a feed you're not subscribed to. Would you like to add this feed to your subscriptions?<p>
-  </div>
-  <div class="modal-footer">
-    <a href="#" class="subscribe-close waves-effect waves-green btn-flat modal-action modal-close">Subscribe!</a>
-    <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close">I'll pass...</a>
   </div>
 </div>

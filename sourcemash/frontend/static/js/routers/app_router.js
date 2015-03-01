@@ -27,10 +27,10 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
 
     showFeed: function(id) {
         var feed = new Sourcemash.Models.Feed({ id: id });
-        var feedView = new Sourcemash.Views.FeedView({ model: feed });
+        var feedView = new Sourcemash.Views.FeedView({ model: feed, collection: feed.items });
 
         feed.fetch();
-        feed.items.fetch();
+        feedView.collection.fetch({wait: true, success: function() {feedView.render()}});
         this._swapView(feedView);
     },
 
@@ -45,10 +45,10 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
 
     showCategory: function(keyword) {
         var category = new Sourcemash.Models.Category({ category: keyword });
-        var categoryView = new Sourcemash.Views.CategoryView({ model: category });
+        var categoryView = new Sourcemash.Views.CategoryView({ model: category, collection: category.items });
 
         category.fetch();
-        category.items.fetch();
+        categoryView.collection.fetch({wait: true, success: function() {categoryView.render()}});
         this._swapView(categoryView);
     },
 

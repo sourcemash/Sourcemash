@@ -13,5 +13,8 @@ Sourcemash.Collections.Items = Backbone.Collection.extend({
     initialize: function(items, options) {
         this.feed = options.feed;
         this.category = options.category;
+    },
+    comparator: function(item) {
+        return [-item.get('unread'), -Date.parse(item.get('last_updated'))]
     }
 });
