@@ -1,6 +1,6 @@
 Sourcemash.Views.ItemsView = Backbone.View.extend({
     initialize: function(options) {
-        this.listenTo(this.collection, 'subscribeToggled', this.render);
+        this.listenTo(this.collection, 'subscribeToggled', this.subrender);
         this.itemViews = [];
     },
 
@@ -47,6 +47,9 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
         // Render parent view
         this.$el.html(this.template({ model: this.model, items: this.collection.models }));
 
+        // Render subscribe slider for FeedView 
+        this.subrender();
+
         // Render item cards
         this.close();
         var itemCards = [];
@@ -57,6 +60,14 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
 
         this.itemViews = itemCards;
         return this;
+    },
+
+    subrender: function() {
+        if (this.model && this.model.get('title')) {
+            var checked = this.model.get('subscribed') ? 'checked' : '';
+            var subscribed = this.model.get('subscribed') ? 'Subscribed' : 'Unsubscribed';
+            this.$('#subscribe-switch').html("<input type='checkbox' " + checked + "><span class='lever'></span><p>" + subscribed + "</p>")
+        }  
     },
 
     close: function() {
