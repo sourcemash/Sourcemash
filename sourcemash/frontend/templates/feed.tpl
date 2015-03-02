@@ -2,7 +2,11 @@
     <h2 class="col s10 valign"><%= model.get('title') %></h2>
 
     <div class="switch col s2 valign-wrapper">
-        <label id="subscribe-switch" class="valign"></label>
+        <label id="subscribe-switch" class="valign">
+          <input type="checkbox" <%= model.get('subscribed') ? 'checked' : '' %>>
+          <span class="lever"></span>
+          <p><%= model.get('subscribed') ? 'Subscribed' : 'Unsubscribed' %></p>
+        </label>
     </div>
 </div>
 

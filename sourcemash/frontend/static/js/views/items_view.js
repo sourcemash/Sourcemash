@@ -1,6 +1,7 @@
 Sourcemash.Views.ItemsView = Backbone.View.extend({
     initialize: function(options) {
-        this.listenTo(this.collection, 'subscribeToggled', this.subrender);
+        this.listenTo(this.model, 'change', this.render);
+
         this.itemViews = [];
     },
 
@@ -11,11 +12,11 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
 
     subscribeFromSwitch: function() {
         if (this.model.get('subscribed')) {
-            this.model.save({'subscribed': false}, {success: _.bind(this.subscribeToggled, this)});
+            this.model.save({'subscribed': false}, {success: this.subscribed});
             
             mixpanel.track("Unsubscribed", { "Feed Title": this.model.get('title') })
         } else {
-            this.model.save({'subscribed': true}, {success: _.bind(this.subscribeToggled, this)});
+            this.model.save({'subscribed': true}, {success: this.subscribed});
             
             mixpanel.track("Subscribed", { "Feed Title": this.model.get('title'),
                                             "Source": 'feed page' })
@@ -25,30 +26,24 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
     subscribeFromModal: function() {
         var item = this.collection.findWhere({title: $('#subscribe-modal #unsubscribed-item-title').text()});
 
-        item.feed.save({'subscribed': true}, {success: _.bind(this.subscribeToggled, this)})
+        item.feed.save({'subscribed': true}, {success: this.subscribed})
 
         mixpanel.track("Subscribed", { "Item Title": item.get('title'),
                                         "Feed Title": item.feed.get('title'),
                                         "Source": 'modal' })
     },
 
-    subscribeToggled: function(feed) {
-
+    subscribed: function(feed) {
         if (feed.get('subscribed')) {
             toast("Subscribed!", 3000);
         } else {
             toast("You have unsubscribed...", 3000);
         }
-
-        this.collection.trigger('subscribeToggled')
     },
 
     render: function() {
         // Render parent view
         this.$el.html(this.template({ model: this.model, items: this.collection.models }));
-
-        // Render subscribe slider for FeedView 
-        this.subrender();
 
         // Render item cards
         this.close();
@@ -60,14 +55,6 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
 
         this.itemViews = itemCards;
         return this;
-    },
-
-    subrender: function() {
-        if (this.model && this.model.get('title')) {
-            var checked = this.model.get('subscribed') ? 'checked' : '';
-            var subscribed = this.model.get('subscribed') ? 'Subscribed' : 'Unsubscribed';
-            this.$('#subscribe-switch').html("<input type='checkbox' " + checked + "><span class='lever'></span><p>" + subscribed + "</p>")
-        }  
     },
 
     close: function() {
