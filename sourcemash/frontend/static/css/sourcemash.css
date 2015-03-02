@@ -2210,7 +2210,7 @@
       .card .activator {
         cursor: pointer; }
         @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000378}}
-        .card .bookmarked {
+        .card .saved {
           color: #B71C1C; }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/lhpglad\/rss-aggregator\/sourcemash\/frontend\/static\/scss\/sourcemash\.scss}line{font-family:\0000385}}

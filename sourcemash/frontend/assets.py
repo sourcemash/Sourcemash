@@ -36,7 +36,7 @@ js_views = Bundle("js/views/profile_view.js",
                 "js/views/categories_view.js",
                 "js/views/feed_view.js",
                 "js/views/feeds_view.js",
-                "js/views/bookmarked_view.js",
+                "js/views/saved_view.js",
                 "js/views/item_card_view.js")
 
 js_routers = Bundle("js/routers/*.js")

@@ -11,7 +11,7 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
 	  	'click .upvote': 'upvote',
 	  	'click .downvote': 'downvote',
 	  	'click .mark-read': 'markRead',
-        'click .bookmarked': 'bookmark'
+        'click .saved': 'markSaved'
 	},
 
 	upvote: function() {
@@ -64,28 +64,28 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
         }
 	},
 
-    bookmark: function() {
-        if (this.model.get('bookmarked')) {
-            this.model.save({bookmarked: false},
-                {success: this.bookmark_toast});
+    markSaved: function() {
+        if (this.model.get('saved')) {
+            this.model.save({saved: false},
+                {success: this.savedToast});
             
             if (this.model.changedAttributes()) {
-            mixpanel.track("Bookmarked", { "Item Title": this.model.get('title'),
+            mixpanel.track("Saved", { "Item Title": this.model.get('title'),
                                         "Feed Title": this.model.feed.get('title') });
             }
 
         } else {
-            this.model.save({bookmarked: true},
-                {success: this.bookmark_toast});            
+            this.model.save({saved: true},
+                {success: this.savedToast});            
         }
 
     },
 
-    bookmark_toast: function(item) {
-        if (item.get('bookmarked')) {
-            toast("Bookmarked!", 3000);
+    savedToast: function(item) {
+        if (item.get('saved')) {
+            toast("Saved!", 3000);
         } else {
-            toast("Bookmark removed...", 3000)
+            toast("Unsaved...", 3000)
         }
     },
 

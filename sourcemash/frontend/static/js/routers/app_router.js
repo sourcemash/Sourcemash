@@ -54,10 +54,10 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
     },
 
     showSaved: function() {
-        var bookmarkedView = new Sourcemash.Views.BookmarkedView({ model: {}, collection: new Sourcemash.Collections.Items([], {}) });
+        var savedView = new Sourcemash.Views.SavedView({ model: {}, collection: new Sourcemash.Collections.Items([], {}) });
 
-        bookmarkedView.collection.fetch({url: '/api/items/bookmarked', wait: true, success: function() {bookmarkedView.render()}});
-        this._swapView(bookmarkedView);
+        savedView.collection.fetch({url: '/api/items/saved', wait: true, success: function() {savedView.render()}});
+        this._swapView(savedView);
     },
 
     _swapView: function(view) {
