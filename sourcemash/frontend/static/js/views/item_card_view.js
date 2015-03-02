@@ -12,6 +12,7 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
 	  	'click .upvote': 'upvote',
 	  	'click .downvote': 'downvote',
 	  	'click .mark-read': 'markRead',
+        'click .bookmarked': 'bookmark'
 	},
 
 	upvote: function() {
@@ -63,6 +64,31 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
             mixpanel.people.increment("items read")
         }
 	},
+
+    bookmark: function() {
+        if (this.model.get('bookmarked')) {
+            this.model.save({bookmarked: false},
+                {success: this.bookmark_toast});
+            
+            if (this.model.changedAttributes()) {
+            mixpanel.track("Bookmarked", { "Item Title": this.model.get('title'),
+                                        "Feed Title": this.feed.get('title') });
+            }
+
+        } else {
+            this.model.save({bookmarked: true},
+                {success: this.bookmark_toast});            
+        }
+
+    },
+
+    bookmark_toast: function(item) {
+        if (item.get('bookmarked')) {
+            toast("Bookmarked!", 3000);
+        } else {
+            toast("Bookmark removed...", 3000)
+        }
+    },
 
     openCard: function() {
       this.$('.card-reveal').velocity({translateY: '-100%'}, {duration: 300, queue: false, easing: 'easeInOutQuad'});
