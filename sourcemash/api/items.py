@@ -27,7 +27,7 @@ class getBookmarkedStatus(fields.Raw):
     def output(self, key, item):
         if not current_user.is_authenticated():
             return False
-        return UserItem.query.filter_by(user=current_user, item=item, bookmarked=False).count() == 0
+        return UserItem.query.filter_by(user=current_user, item=item, bookmarked=True).count() > 0
 
 item_fields = {
     'id': fields.Integer,
