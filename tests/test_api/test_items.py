@@ -165,6 +165,41 @@ class TestItemAPI(TestBase):
         data = json.loads(r.data)
         assert data['item']['unread'] == True
 
+    def test_put_item_save(self, test_client, user_item):
+        self.login(test_client, user_item.user.email, user_item.user.password)
+
+        saved = dict(saved=True)
+        r = test_client.put('/api/items/%d' % user_item.item.id, data=saved)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        print data
+        assert data['item']['saved'] == True
+
+    def test_put_item_remove_saved(self, test_client, user_item_saved):
+        self.login(test_client, user_item_saved.user.email, user_item_saved.user.password)
+
+        saved = dict(saved=False)
+        r = test_client.put('/api/items/%d' % user_item_saved.item.id, data=saved)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert data['item']['saved'] == False
+
+class TestSavedItemListAPI(TestBase):
+
+    def test_get_items(self, test_client, user_item_saved):
+        self.login(test_client, user_item_saved.user.email, user_item_saved.user.password)
+        r = test_client.get('/api/items/saved')
+
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert len(data['items']) == 1
+
 class TestFeedItemListAPI:
 
     def test_get_items(self, test_client, item):

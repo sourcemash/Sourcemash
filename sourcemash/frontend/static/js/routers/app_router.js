@@ -4,7 +4,8 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         "feeds": "showFeeds",
         "feeds/:id": "showFeed",
         "categories": "showCategories",
-        "categories/:category": "showCategory"
+        "categories/:category": "showCategory",
+        "saved": "showSaved"
     },
 
     showProfile: function() {
@@ -27,10 +28,12 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
 
     showFeed: function(id) {
         var feed = new Sourcemash.Models.Feed({ id: id });
-        var feedView = new Sourcemash.Views.FeedView({ model: feed, collection: feed.items });
+        var feeds = new Sourcemash.Collections.Feeds([feed]);
+        var feedItems = new Sourcemash.Collections.Items([], {feed: feed});
+        var feedView = new Sourcemash.Views.FeedView({ model: feed, collection: feedItems });
 
         feed.fetch();
-        feedView.collection.fetch({wait: true, success: function() {feedView.render()}});
+        feedView.collection.fetch({feeds: feeds, success: function() {feedView.render()}});
         this._swapView(feedView);
     },
 
@@ -44,12 +47,22 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
     },
 
     showCategory: function(keyword) {
+        var feeds = new Sourcemash.Collections.Feeds();
         var category = new Sourcemash.Models.Category({ category: keyword });
-        var categoryView = new Sourcemash.Views.CategoryView({ model: category, collection: category.items });
+        var categoryItems = new Sourcemash.Collections.Items([], {category: category});
+        var categoryView = new Sourcemash.Views.CategoryView({ model: category, collection: categoryItems });
 
-        category.fetch();
-        categoryView.collection.fetch({wait: true, success: function() {categoryView.render()}});
+        categoryView.collection.fetch({feeds: feeds, success: function() {categoryView.render()}});
         this._swapView(categoryView);
+    },
+
+    showSaved: function() {
+        var feeds = new Sourcemash.Collections.Feeds();
+        var savedItems = new Sourcemash.Collections.Items([], {saved: true});
+        var savedView = new Sourcemash.Views.SavedView({ collection: savedItems });
+
+        savedView.collection.fetch({feeds: feeds, success: function() {savedView.render()}});
+        this._swapView(savedView);
     },
 
     _swapView: function(view) {
@@ -59,6 +72,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
             }
 
             this.currentView.remove();
+            this.currentView.unbind();
         }
 
         this.currentView = view;

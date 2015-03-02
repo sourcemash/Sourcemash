@@ -17,7 +17,11 @@
       <div class="card-action valign-wrapper row">
         <div class="col s4"><a href="#/categories/<%=item.get('category_1')%>"><%=item.get('category_1')%></a></div>
         <div class="col s4"><a href="#/categories/<%=item.get('category_2')%>"><%=item.get('category_2')%></a></div>
-        <div class="col s2"></div>
+        <div class="col s2">
+          <div class="saved">
+            <i class="mdi-action-bookmark<%= item.get('saved') ? '' : '-outline' %> small"></i>
+          </div>
+        </div>
         <div class="col s2 center-align" id="voting-buttons">
           <div class="vote upvote <%= item.get('vote') == 1 ?  'active' : '' %>"><i class="small mdi-navigation-expand-less"></i></div>
           <div><%= item.get('voteSum') %></div>

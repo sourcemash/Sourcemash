@@ -25,3 +25,7 @@ class UserItemDownvoteFactory(UserItemFactory):
 
 class UserItemReadFactory(UserItemFactory):
 	unread = False
+
+
+class UserItemSavedFactory(UserItemFactory):
+	saved = True
