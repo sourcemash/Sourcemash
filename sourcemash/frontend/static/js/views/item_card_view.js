@@ -3,7 +3,6 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
 
     initialize: function(options) {
         this.listenTo(this.model, 'change', this.render);
-
         this.render();
     },
 
@@ -11,7 +10,7 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
 	  	'click .upvote': 'upvote',
 	  	'click .downvote': 'downvote',
 	  	'click .mark-read': 'markRead',
-        'click .saved': 'markSaved'
+        'click .saved': 'saveToggled'
 	},
 
 	upvote: function() {
@@ -64,7 +63,7 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
         }
 	},
 
-    markSaved: function() {
+    saveToggled: function() {
         if (this.model.get('saved')) {
             this.model.save({saved: false},
                 {success: this.savedToast});

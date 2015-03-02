@@ -5,6 +5,8 @@ Sourcemash.Collections.Items = Backbone.Collection.extend({
             return '/api/feeds/' + this.feed.get('id') + '/items'
         } else if (this.category) {
             return '/api/categories/' + this.category.get('category') + '/items'
+        } else if (this.saved) {
+            return '/api/items/saved'
         }
     },
     parse: function(response) {
@@ -13,6 +15,7 @@ Sourcemash.Collections.Items = Backbone.Collection.extend({
     initialize: function(items, options) {
         this.feed = options.feed;
         this.category = options.category;
+        this.saved = options.saved;
     },
     comparator: function(item) {
         return [-item.get('unread'), Date.parse(item.get('last_updated'))]

@@ -1,7 +1,6 @@
 Sourcemash.Views.ItemsView = Backbone.View.extend({
     initialize: function(options) {
-        this.listenTo(this.model, 'change', this.render);
-
+        this.listenTo(this.collection, 'subscribeToggled', this.render);
         this.itemViews = [];
     },
 
@@ -12,11 +11,11 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
 
     subscribeFromSwitch: function() {
         if (this.model.get('subscribed')) {
-            this.model.save({'subscribed': false}, {success: this.toast});
+            this.model.save({'subscribed': false}, {success: _.bind(this.subscribeToggled, this)});
             
             mixpanel.track("Unsubscribed", { "Feed Title": this.model.get('title') })
         } else {
-            this.model.save({'subscribed': true}, {success: this.toast});
+            this.model.save({'subscribed': true}, {success: _.bind(this.subscribeToggled, this)});
             
             mixpanel.track("Subscribed", { "Feed Title": this.model.get('title'),
                                             "Source": 'feed page' })
@@ -25,21 +24,23 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
 
     subscribeFromModal: function() {
         var item = this.collection.findWhere({title: $('#subscribe-modal #unsubscribed-item-title').text()});
-        var feed = ('get' in this.model && this.model.get('title')) ? this.model : item.feed;
 
-        feed.save({'subscribed': true}, {'success': this.toast})
+        item.feed.save({'subscribed': true}, {success: _.bind(this.subscribeToggled, this)})
 
         mixpanel.track("Subscribed", { "Item Title": item.get('title'),
                                         "Feed Title": item.feed.get('title'),
                                         "Source": 'modal' })
     },
 
-    toast: function(feed) {
+    subscribeToggled: function(feed) {
+
         if (feed.get('subscribed')) {
             toast("Subscribed!", 3000);
         } else {
             toast("You have unsubscribed...", 3000);
         }
+
+        this.collection.trigger('subscribeToggled')
     },
 
     render: function() {
@@ -50,7 +51,7 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
         this.close();
         var itemCards = [];
         this.collection.models.forEach(_.bind(function(item) {
-            var itemCardView = new Sourcemash.Views.ItemCardView({el: "#item-" + item.get('id'), model: item });
+            var itemCardView = new Sourcemash.Views.ItemCardView({el: "#item-" + item.get('id'), model: item});
             itemCards.push(itemCardView)
         }, this))
 
@@ -61,6 +62,7 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
     close: function() {
         _.each(this.itemViews, function(itemView) {
             itemView.remove();
+            itemView.unbind();
         })
     }
 });
