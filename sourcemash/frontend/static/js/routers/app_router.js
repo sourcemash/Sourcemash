@@ -5,7 +5,8 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         "feeds/:id": "showFeed",
         "categories": "showCategories",
         "categories/:category": "showCategory",
-        "saved": "showSaved"
+        "saved": "showSaved",
+        "browse/feeds": "browseFeeds"
     },
 
     showProfile: function() {
@@ -24,6 +25,15 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         feedsView.collection.fetch();
         feedsView.allFeeds.fetch({url: '/api/feeds/all'});
         this._swapView(feedsView);
+    },
+
+    browseFeeds: function() {
+        var browseView = new Sourcemash.Views.BrowseView({
+            collection: new Sourcemash.Collections.Feeds(),
+        });
+
+        browseView.collection.fetch({url: '/api/feeds/all'});
+        this._swapView(browseView);
     },
 
     showFeed: function(id) {
