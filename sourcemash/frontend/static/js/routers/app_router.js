@@ -6,7 +6,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         "categories": "showCategories",
         "categories/:category": "showCategory",
         "saved": "showSaved",
-        "browse/feeds": "browseFeeds"
+        "browse": "browseFeeds"
     },
 
     showProfile: function() {

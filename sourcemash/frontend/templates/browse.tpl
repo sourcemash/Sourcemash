@@ -8,7 +8,7 @@
     </form>
 </div>
 
-<ul class="browse-feeds">
+<ul class="browse-feeds row">
   <% models.forEach(function(model) { %>
     <div id="feed-card-<%= model.get('id') %>" class="feed-card"></div>
   <% }); %>
