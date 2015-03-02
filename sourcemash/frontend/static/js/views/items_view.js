@@ -25,8 +25,9 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
 
     subscribeFromModal: function() {
         var item = this.collection.findWhere({title: $('#subscribe-modal #unsubscribed-item-title').text()});
+        var feed = ('get' in this.model && this.model.get('title')) ? this.model : item.feed;
 
-        item.feed.save({'subscribed': true}, {'success': this.toast})
+        feed.save({'subscribed': true}, {'success': this.toast})
 
         mixpanel.track("Subscribed", { "Item Title": item.get('title'),
                                         "Feed Title": item.feed.get('title'),

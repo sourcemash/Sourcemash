@@ -54,7 +54,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
     },
 
     showSaved: function() {
-        var savedView = new Sourcemash.Views.SavedView({ model: {}, collection: new Sourcemash.Collections.Items([], {}) });
+        var savedView = new Sourcemash.Views.SavedView({ collection: new Sourcemash.Collections.Items([], {}) });
 
         savedView.collection.fetch({url: '/api/items/saved', wait: true, success: function() {savedView.render()}});
         this._swapView(savedView);
