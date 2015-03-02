@@ -23,11 +23,11 @@ class getUnreadStatus(fields.Raw):
             return False
         return UserItem.query.filter_by(user=current_user, item=item, unread=False).count() == 0
 
-class getBookmarkedStatus(fields.Raw):
+class getSavedStatus(fields.Raw):
     def output(self, key, item):
         if not current_user.is_authenticated():
             return False
-        return UserItem.query.filter_by(user=current_user, item=item, bookmarked=True).count() > 0
+        return UserItem.query.filter_by(user=current_user, item=item, saved=True).count() > 0
 
 item_fields = {
     'id': fields.Integer,
@@ -42,7 +42,7 @@ item_fields = {
     'image_url': fields.String,
     'feed': fields.Nested(feed_fields),
     'unread': getUnreadStatus,
-    'bookmarked': getBookmarkedStatus,
+    'saved': getSavedStatus,
     'vote': getVote,
     'voteSum': fields.Integer,
     'uri': fields.Url('api.item')
@@ -54,7 +54,7 @@ class ItemAPI(Resource):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('vote', type = int, default=0)
         self.reqparse.add_argument('unread', type = inputs.boolean)
-        self.reqparse.add_argument('bookmarked', type = inputs.boolean)
+        self.reqparse.add_argument('saved', type = inputs.boolean)
         super(ItemAPI, self).__init__()
 
     def get(self, id):
@@ -96,9 +96,9 @@ class ItemAPI(Resource):
             user_item.unread = args.unread
             db.session.commit()
 
-        # Toggle bookmarked status (aka saved-for-later)
-        if args.bookmarked != None:
-            user_item.bookmarked = args.bookmarked
+        # Toggle saved-for-later status (aka bookmarked)
+        if args.saved != None:
+            user_item.saved = args.saved
             db.session.commit()
 
         return {'item': marshal(item, item_fields)}
@@ -107,7 +107,7 @@ class SavedItemListAPI(Resource):
 
     @login_required
     def get(self):
-        user_items = UserItem.query.filter_by(user=current_user, bookmarked=True).all()
+        user_items = UserItem.query.filter_by(user=current_user, saved=True).all()
         return {'items': [marshal(user_item.item, item_fields) for user_item in user_items]}
 
 class FeedItemListAPI(Resource):
@@ -146,7 +146,7 @@ class CategoryItemListAllAPI(Resource):
 
 
 api.add_resource(ItemAPI, '/items/<int:id>', endpoint='item')
-api.add_resource(SavedItemListAPI, '/items/bookmarked', endpoint='bookmarked_items')
+api.add_resource(SavedItemListAPI, '/items/saved', endpoint='saved_items')
 api.add_resource(FeedItemListAPI, '/feeds/<int:feed_id>/items', endpoint='feed_items')
 api.add_resource(CategoryItemListAPI, '/categories/<string:category>/items', endpoint='category_items')
 api.add_resource(CategoryItemListAllAPI, '/categories/<string:category>/items/all', endpoint='category_items_all')

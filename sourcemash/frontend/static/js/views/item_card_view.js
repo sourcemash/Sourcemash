@@ -2,7 +2,6 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
     template: JST['item-card'],
 
     initialize: function(options) {
-        this.feed = options.feed;
         this.listenTo(this.model, 'change', this.render);
 
         this.render();
@@ -21,9 +20,9 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
         
         if (this.model.changedAttributes()) {
             mixpanel.track("Upvoted", { "Item Title": this.model.get('title'),
-                                        "Feed Title": this.feed.get('title') })
+                                        "Feed Title": this.model.feed.get('title') })
 
-            if (!this.feed.get('subscribed')) {
+            if (!this.model.feed.get('subscribed')) {
                 this.showSubscribeModal();
             }
         }
@@ -35,7 +34,7 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
         
         if (this.model.changedAttributes()) {
             mixpanel.track("Downvoted", { "Item Title": this.model.get('title'),
-                                        "Feed Title": this.feed.get('title') })
+                                        "Feed Title": this.model.feed.get('title') })
         }
 	},
 
@@ -45,11 +44,11 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
 
     showSubscribeModal: function(e) {
         $('#subscribe-modal #unsubscribed-item-title').html(this.model.get('title'));
-        $('#subscribe-modal #unsubscribed-feed-title').html(this.feed.get('title'));
+        $('#subscribe-modal #unsubscribed-feed-title').html(this.model.feed.get('title'));
         $('#subscribe-modal').openModal();
         
         mixpanel.track("Subscribe Modal", { "Item Title": this.model.get('title'),
-                                            "Feed Title": this.feed.get('title') })
+                                            "Feed Title": this.model.feed.get('title') })
     },
 
 	_getNewVoteSum: function(vote) {
@@ -72,7 +71,7 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
             
             if (this.model.changedAttributes()) {
             mixpanel.track("Bookmarked", { "Item Title": this.model.get('title'),
-                                        "Feed Title": this.feed.get('title') });
+                                        "Feed Title": this.model.feed.get('title') });
             }
 
         } else {

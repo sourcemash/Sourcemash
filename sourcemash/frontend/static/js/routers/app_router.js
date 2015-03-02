@@ -4,7 +4,8 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         "feeds": "showFeeds",
         "feeds/:id": "showFeed",
         "categories": "showCategories",
-        "categories/:category": "showCategory"
+        "categories/:category": "showCategory",
+        "saved": "showSaved"
     },
 
     showProfile: function() {
@@ -50,6 +51,13 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         category.fetch();
         categoryView.collection.fetch({wait: true, success: function() {categoryView.render()}});
         this._swapView(categoryView);
+    },
+
+    showSaved: function() {
+        var bookmarkedView = new Sourcemash.Views.BookmarkedView({ model: {}, collection: new Sourcemash.Collections.Items([], {}) });
+
+        bookmarkedView.collection.fetch({url: '/api/items/bookmarked', wait: true, success: function() {bookmarkedView.render()}});
+        this._swapView(bookmarkedView);
     },
 
     _swapView: function(view) {

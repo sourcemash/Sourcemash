@@ -84,6 +84,9 @@
     .activator {
         cursor: pointer;
     }
+    .bookmarked {
+        color: color("red", "darken-4");
+    }
 }
 
 /*

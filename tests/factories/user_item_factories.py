@@ -27,5 +27,5 @@ class UserItemReadFactory(UserItemFactory):
 	unread = False
 
 
-class UserItemBookmarkedFactory(UserItemFactory):
-	bookmarked = True
+class UserItemSavedFactory(UserItemFactory):
+	saved = True

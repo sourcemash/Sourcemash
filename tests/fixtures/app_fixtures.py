@@ -54,7 +54,7 @@ def session(db, request):
     user_item_factories.UserItemUpvoteFactory._meta.sqlalchemy_session = session
     user_item_factories.UserItemDownvoteFactory._meta.sqlalchemy_session = session
     user_item_factories.UserItemReadFactory._meta.sqlalchemy_session = session
-    user_item_factories.UserItemBookmarkedFactory._meta.sqlalchemy_session = session
+    user_item_factories.UserItemSavedFactory._meta.sqlalchemy_session = session
     item_factories.EbolaItemFactory._meta.sqlalchemy_session = session
     item_factories.ItemWithCategoryFactory._meta.sqlalchemy_session = session
     role_factories.RoleFactory._meta.sqlalchemy_session = session

@@ -25,12 +25,11 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
 
     subscribeFromModal: function() {
         var item = this.collection.findWhere({title: $('#subscribe-modal #unsubscribed-item-title').text()});
-        var feed = this.model.get('title') ? this.model : item.feed;
 
-        feed.save({'subscribed': true}, {'success': this.toast})
+        item.feed.save({'subscribed': true}, {'success': this.toast})
 
         mixpanel.track("Subscribed", { "Item Title": item.get('title'),
-                                        "Feed Title": feed.get('title'),
+                                        "Feed Title": item.feed.get('title'),
                                         "Source": 'modal' })
     },
 
@@ -50,8 +49,7 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
         this.close();
         var itemCards = [];
         this.collection.models.forEach(_.bind(function(item) {
-            var feed = this.model.get('title') ? this.model : item.feed;
-            var itemCardView = new Sourcemash.Views.ItemCardView({el: "#item-" + item.get('id'), model: item, feed: feed, items: items });
+            var itemCardView = new Sourcemash.Views.ItemCardView({el: "#item-" + item.get('id'), model: item });
             itemCards.push(itemCardView)
         }, this))
 

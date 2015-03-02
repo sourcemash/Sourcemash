@@ -22,5 +22,5 @@ def user_item_read(request):
 
 
 @pytest.fixture()
-def user_item_bookmarked(request):
-    return user_item_factories.UserItemBookmarkedFactory()
+def user_item_saved(request):
+    return user_item_factories.UserItemSavedFactory()
