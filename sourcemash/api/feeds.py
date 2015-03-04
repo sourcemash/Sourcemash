@@ -36,6 +36,8 @@ feed_fields = {
     'id': fields.Integer,
     'title': fields.String,
     'url': fields.String,
+    'description': fields.String,
+    'image_url': fields.String,
     'last_updated': fields.DateTime,
     'item_count': getItemCount,
     'unread_count': getUnreadCount,

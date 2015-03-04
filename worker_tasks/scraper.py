@@ -67,6 +67,13 @@ def _store_items_and_category_counts(feed, categorizer):
 
         db.session.add(new_entry)
         db.session.commit()
+  
+    try:
+        feed.description = fp.feed.description
+        feed.image_url = fp.feed.image.url
+        db.session.commit()
+    except:
+        pass
 
     feed.last_updated = datetime.utcnow()
     db.session.commit()

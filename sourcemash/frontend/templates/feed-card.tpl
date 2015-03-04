@@ -2,7 +2,9 @@
   <div class="card">
 
     <div class="card-image waves-effect waves-block waves-light">
-      <img class="activator mark-read" src="https://tctechcrunch2011.files.wordpress.com/2014/11/tinder2014-10.jpg?w=738">
+      <a href="#/feeds/<%= model.get('id') %>">
+        <img class="activator mark-read" src=<%= model.get('image_url') %>>
+      </a>
     </div>
     
     <div class="card-content">
@@ -24,7 +26,7 @@
 
       <div class="card-action valign-wrapper row">
         <p class="flow-text">
-          I am a feed description.
+          <%= model.get('description') %>
         </p>
       </div>
 
