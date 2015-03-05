@@ -100,7 +100,7 @@ class FeedAPI(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('subscribed', type = inputs.boolean, default = True)
+        self.reqparse.add_argument('subscribed', type = inputs.boolean)
         super(FeedAPI, self).__init__()
 
 
