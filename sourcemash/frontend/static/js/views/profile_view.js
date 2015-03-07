@@ -16,6 +16,6 @@ Sourcemash.Views.ProfileView = Backbone.View.extend({
   },
 
   deleteUser: function() {
-    this.model.destroy({url: '/api/user'});
+    this.model.destroy();
   }
 });
