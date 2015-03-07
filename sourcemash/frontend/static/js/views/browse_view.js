@@ -25,7 +25,7 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
     toast('Feed added!', 3000)
 
     mixpanel.track("Subscribed", { "Feed Title": newFeed.get('title'),
-                                    "Source": 'search' })
+                                    "Source": 'browse' })
   },
 
   render: function() {

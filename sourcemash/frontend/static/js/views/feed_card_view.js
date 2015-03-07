@@ -7,10 +7,10 @@ Sourcemash.Views.FeedCardView = Backbone.View.extend({
     },
 
     events: {
-        "click #subscribe-switch": 'subscribeFromSwitch',
+        "click #subscribe-switch": 'toggleSubscribe',
 	},
 
-    subscribeFromSwitch: function() {
+    toggleSubscribe: function() {
         if (this.model.get('subscribed')) {
             this.model.save({'subscribed': false}, {success: this.subscribed});
             
