@@ -9,7 +9,6 @@ from sourcemash.database import user_datastore
 from sourcemash.models import User
 
 user_fields = {
-    'id': fields.Integer,
     'email': fields.String,
 }
 
