@@ -5,7 +5,7 @@ Sourcemash.Views.FeedsView = Backbone.View.extend({
       template: JST['new-feed-form'],
     });
 
-    this.allFeeds = new Sourcemash.Collections.Feeds()
+    this.allFeeds = new Sourcemash.Collections.Feeds([], {allFeeds: true})
     this.typeahead = new ExtendedTypeahead({collection: this.allFeeds, key: 'title'});
     this.listenTo(this.collection, 'sync', this.render);
   },
