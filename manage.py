@@ -53,8 +53,7 @@ def scrape():
 
         scrape_articles(categorizer)
 
-        logging.info("Finished scrape. Zzz...")
-        time.sleep(SCRAPE_INTERVAL)
+        logging.info("Finished scrape. Let's run it back...")
 
 @manager.command
 def seed():
