@@ -297,6 +297,8 @@ class Categorizer:
             best_keywords.update({original_keywords[0][0]: original_keywords[0][1]})
             best_keywords.update({original_keywords[1][0]: original_keywords[1][1]})
         
+        # TODO: Skip nested categories
+
         return map(lambda x: x[0].title(), best_keywords.most_common())
 
 
