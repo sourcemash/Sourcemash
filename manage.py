@@ -26,11 +26,6 @@ TEST_CMD = "py.test --cov-config .coveragerc --cov sourcemash \
                     --boxed -n14 -k 'not functional' tests/"
 FUNCTIONAL_TEST_CMD = "./functional_test.sh"
 
-CATEGORY_DICT_LIFETIME = 2      # days
-SCRAPE_INTERVAL = 1200          # seconds
-SECONDS_PER_DAY = 86400
-ITERATIONS_BEFORE_RESET = CATEGORY_DICT_LIFETIME * SECONDS_PER_DAY / SCRAPE_INTERVAL
-
 def _make_context():
     """Return context dict for a shell session so you can access
     app, db, and the User model by default."""
@@ -51,17 +46,13 @@ def test(all=False):
 @manager.command
 def scrape():
     """Start an infinte loop to scrape & categorize articles."""
-    iterations = 0
     categorizer = Categorizer()
 
     while True:
         logging.info("Starting scrape...")
-        if (iterations % ITERATIONS_BEFORE_RESET) == 0:
-            categorizer.reset_title_categories()
 
         scrape_articles(categorizer)
 
-        iterations += 1
         logging.info("Finished scrape. Zzz...")
         time.sleep(SCRAPE_INTERVAL)
 

@@ -30,7 +30,13 @@ def scrape_articles(categorizer):
 
         # Extract text and categorize item
         text_only = soup.get_text()
-        item.category_1, item.category_2 = categorizer.categorize_item(item.title, text_only)
+        categories = categorizer.categorize_item(item.title, text_only)
+        if len(categories) >= 1:
+            item.category_1 = categories[0]
+
+        if len(categories) >= 2:
+            item.category_2 = categories[1]
+            
         db.session.commit()
         logging.info("CATEGORIZED [%s]: (%s, %s)" % (item.title, item.category_1, item.category_2))
 
@@ -47,11 +53,6 @@ def _store_items_and_category_counts(feed, categorizer):
     fp = feedparser.parse(feed.url)
     for item in fp.entries:
         item_last_updated = datetime(*item.updated_parsed[:6])
-
-        # Store counts of categories in article titles
-        # Due to concurrency issues, parse all titles
-        # even if feed is out of date
-        categorizer.parse_title_categories([item.title])
 
         # Stop when older items hit
         if item_last_updated < feed.last_updated:
