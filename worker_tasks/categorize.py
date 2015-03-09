@@ -224,7 +224,7 @@ class Categorizer:
                 if i == j:
                     continue
 
-                if not self.memoized_article_links[article] and not self.memoized_article_links[compared_article]:
+                if not self.memoized_article_links[article] or not self.memoized_article_links[compared_article]:
                     continue
 
                 edge_weight = weight * self.get_relatedness_score(article, compared_article)
