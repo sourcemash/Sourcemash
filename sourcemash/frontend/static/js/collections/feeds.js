@@ -1,11 +1,7 @@
 Sourcemash.Collections.Feeds = Backbone.Collection.extend({
 	  model: Sourcemash.Models.Feed,
 	  url: function() {
-	  	if (this.allFeeds) {
-	  		return '/api/feeds/all';
-	  	} else {
-	  		return '/api/feeds';
-	  	}
+	  	return (this.allFeeds) ? '/api/feeds/all' : '/api/feeds';
 	  },
 	  initialize: function(feeds, options) {
 	  	feeds = feeds || [];
