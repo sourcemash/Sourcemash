@@ -307,10 +307,6 @@ class Categorizer:
         if len(phrase) < 2:
             return False
 
-        # Ignore stop words
-        if phrase.lower() in STOP_WORDS:
-            return False
-
         # Ignore numbers
         try:
             phrase = phrase.replace(',', '')
@@ -319,12 +315,20 @@ class Categorizer:
         except ValueError:
             pass
 
-        # Ignore non-titled words
         words = phrase.split()
+
+        # Ignore stop words
+        if words[0].lower() in STOP_WORDS:
+            return False
+
+        # Ignore non-titled ngrams
         if len(words) == 2 and not phrase.istitle():
             return False
 
         if len(words) == 3:
+            if words[2].lower() in STOP_WORDS:
+                return False
+
             titled_words = map(lambda x: x.istitle(), words)
             if titled_words not in [[True, False, True], [True, True,True]]:
                 return False 
