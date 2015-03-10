@@ -22,7 +22,7 @@ import logging
 app = create_app(os.environ.get("APP_CONFIG_FILE") or "development")
 manager = Manager(app)
 
-TEST_CMD = "py.test --cov-config .coveragerc --cov sourcemash \
+TEST_CMD = "py.test --cov-config .coveragerc --cov . \
                     --boxed -n14 -k 'not functional' tests/"
 FUNCTIONAL_TEST_CMD = "./functional_test.sh"
 

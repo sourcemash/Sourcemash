@@ -25,6 +25,11 @@ SECURITY_MSG_INVALID_PASSWORD = ("Invalid username/password combination", "error
 SECURITY_MSG_PASSWORD_NOT_PROVIDED = ("Invalid username/password combination", "error")
 SECURITY_MSG_USER_DOES_NOT_EXIST = ("Invalid username/password combination", "error")
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.WARNING)
 
-logging.info("Default settings loaded.")
+logging.getLogger("requests").setLevel(logging.WARNING)
+
+logger = logging.getLogger('Sourcemash')
+logger.setLevel(logging.INFO)
+
+logger.info("Default settings loaded.")

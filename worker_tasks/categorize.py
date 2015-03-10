@@ -1,6 +1,8 @@
 import sys
 import operator
 
+import logging
+
 from collections import Counter, defaultdict
 from string import punctuation
 from datetime import datetime, timedelta
@@ -56,6 +58,7 @@ STOP_WORDS = [ "a", "about", "above", "across", "after", "afterwards", \
     "with", "within", "without", "would", "yet", "you", "your", "yours", "yourself", \
     "yourselves" ] # Source: http://xpo6.com/list-of-english-stop-words/
 
+logger = logging.getLogger('Sourcemash')
 
 class Categorizer:
 
@@ -126,7 +129,7 @@ class Categorizer:
         Store all related (disambiguated) Wiki articles for each
         ngram, if missing from memoization
         """
-        print "Memoizing Related Articles..."
+        logger.debug("Memoizing Related Articles...")
 
         # Scrape for disambiguation links
         disambiguated_titles = map(lambda x: x + " (disambiguation)", ngrams)
@@ -138,7 +141,7 @@ class Categorizer:
 
     def memoize_article_links(self, ngrams):
 
-        print "\nMemoizing Articles Links..."
+        logger.debug("\nMemoizing Articles Links...")
 
         article_titles = []
         for ngram in ngrams:
@@ -152,7 +155,7 @@ class Categorizer:
     def assign_closest_articles(self, ngrams):
         assigned_articles = defaultdict(list)
 
-        print "\nAssigning Articles to Phrases..."
+        logger.debug("\nAssigning Articles to Phrases...")
 
         ngrams = filter(lambda x: self.memoized_related_articles[x], ngrams)
 
@@ -209,7 +212,7 @@ class Categorizer:
 
 
     def build_semantic_graph(self, articles):
-        print "\nBuilding semantic graph..."
+        logger.debug("\nBuilding semantic graph...")
 
         edges = []
         vertex_attrs = {"name": []}
@@ -285,7 +288,7 @@ class Categorizer:
 
         clusters = sorted(clusters.items(), key=operator.itemgetter(1), reverse=True)
 
-        print clusters
+        logger.debug(clusters)
 
         best_keywords = Counter()
         for cluster in clusters:
@@ -293,7 +296,7 @@ class Categorizer:
                 for keyword in cluster[0]:
                     best_keywords.update({keyword: keyword_counts[keyword] if keyword in keyword_counts else 0})
 
-        if len(best_keywords) < 2:
+        if 0 < len(best_keywords) < 2:
             best_keywords.update({original_keywords[0][0]: original_keywords[0][1]})
             best_keywords.update({original_keywords[1][0]: original_keywords[1][1]})
         
@@ -343,7 +346,7 @@ class Categorizer:
 
         total_titles = len(unscraped_titles)
         for i in xrange(0, len(unscraped_titles), 5):
-            sys.stdout.write("\r%d%%" % (100 * i / total_titles))
+            logger.debug("\r%d%%" % (100 * i / total_titles))
             sys.stdout.flush()
 
             title_chunk = unscraped_titles[i:i + 5]

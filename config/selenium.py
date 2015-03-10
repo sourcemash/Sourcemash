@@ -7,4 +7,5 @@ TESTING = True
 LOGIN_DISABLED = False
 SQLALCHEMY_DATABASE_URI = ('sqlite:///' + os.path.join(basedir, 'test.db'))
 
-logging.info("Functional testing settings loaded.")
+logger = logging.getLogger('Sourcemash')
+logger.info("Functional testing settings loaded.")
