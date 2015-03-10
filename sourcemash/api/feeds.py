@@ -36,6 +36,8 @@ feed_fields = {
     'id': fields.Integer,
     'title': fields.String,
     'url': fields.String,
+    'description': fields.String,
+    'image_url': fields.String,
     'last_updated': fields.DateTime,
     'item_count': getItemCount,
     'unread_count': getUnreadCount,
@@ -71,6 +73,7 @@ class FeedListAPI(Resource):
 
             feed = Feed(title=rss_feed['feed']['title'],
                         url=rss_feed['url'],
+                        description=rss_feed['feed']['description'],
                         last_updated=datetime.min)
 
             db.session.add(feed)
@@ -97,7 +100,7 @@ class FeedAPI(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('subscribed', type = inputs.boolean, default = True)
+        self.reqparse.add_argument('subscribed', type = inputs.boolean)
         super(FeedAPI, self).__init__()
 
 

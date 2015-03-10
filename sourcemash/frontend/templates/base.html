@@ -22,6 +22,7 @@
           <ul id="nav-mobile" class="right side-nav">
             {% if current_user.is_authenticated() %}
             <li><a href="{{ url_for('.dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('.dashboard') }}#/browse">Browse</a></li>
             <li><a href="{{ url_for('.dashboard') }}#/feeds">Feeds</a></li>
             <li><a href="{{ url_for('.dashboard') }}#/categories">Categories</a></li>
             <li><a href="{{ url_for('.dashboard') }}#/saved">Saved</a></li>

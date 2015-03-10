@@ -2,8 +2,6 @@ from sourcemash.database import db
 
 from sourcemash.models import Item, Feed
 from datetime import datetime
-from string import punctuation
-from collections import Counter
 
 from readability.readability import Document
 import requests
@@ -67,7 +65,22 @@ def _store_items_and_category_counts(feed, categorizer):
 
         db.session.add(new_entry)
         db.session.commit()
-
+  
+    if not feed.image_url:
+        try:
+            feed.image_url = fp.feed.image.url
+            db.session.commit()
+        except:
+            img_tags = BeautifulSoup(requests.get(fp.feed.link).content).find_all('img')
+            for image_tag in img_tags:
+                if "logo" in str(image_tag):
+                    feed.image_url = image_tag.get('src') or image_tag.get('href')
+                    db.session.commit()
+                    break
+    
+    if not feed.description:
+        feed.description = fp.feed.description
+    
     feed.last_updated = datetime.utcnow()
     db.session.commit()
 

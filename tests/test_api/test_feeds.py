@@ -137,10 +137,23 @@ class TestFeedListAPI(TestBase):
         check_valid_header_type(r.headers)
         assert r.status_code == 201
 
-    def test_post_subscription_invalid_feed_url(self, test_client, user):
+    def test_post_subscription_nonexistent_feed_url(self, test_client, user):
         self.login(test_client, user.email, user.password)
 
-        subscription_data = dict(url='http://nonexistentURL')
+        subscription_data = dict(url='nonexistentURLforsourcemashtests')
+        r = test_client.post('/api/feeds', data=subscription_data)
+
+        check_valid_header_type(r.headers)
+        assert r.status_code == 422
+
+        data = json.loads(r.data)
+        assert len(data['errors']['url']) == 1
+        assert 'not a valid feed' in data['errors']['url'][0]
+
+    def test_post_subscription_nonRSS_feed_url(self, test_client, user):
+        self.login(test_client, user.email, user.password)
+
+        subscription_data = dict(url='http://cnn.com')
         r = test_client.post('/api/feeds', data=subscription_data)
 
         check_valid_header_type(r.headers)

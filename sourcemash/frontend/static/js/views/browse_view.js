@@ -1,35 +1,51 @@
-Sourcemash.Views.FeedsView = Backbone.View.extend({
-  template: JST['feeds'],
+Sourcemash.Views.BrowseView = Backbone.View.extend({
+  template: JST['browse'],
+
   initialize: function (options) {
     var ExtendedTypeahead = Backbone.Typeahead.extend({
       template: JST['new-feed-form'],
     });
 
-    this.allFeeds = new Sourcemash.Collections.Feeds([], {allFeeds: true})
-    this.typeahead = new ExtendedTypeahead({collection: this.allFeeds, key: 'title'});
+    this.typeahead = new ExtendedTypeahead({collection: this.collection, key: 'title'});
     this.listenTo(this.collection, 'sync', this.render);
+
+    this.feedCardViews = []
   },
+
   events: {
-    'submit #add_feed_form': 'createFeed'
+    'submit #add_feed_form': 'createFeed',
   },
+
   createFeed: function(e){
   	e.preventDefault()
     this.collection.create(this.newAttributes(), {success: this.updateCollection});
   },
+
   updateCollection: function(newFeed) {
   	this.$('#url').val('');
   	newFeed.collection.fetch();
     toast('Feed added!', 3000)
 
     mixpanel.track("Subscribed", { "Feed Title": newFeed.get('title'),
-                                    "Source": 'search' })
+                                    "Source": 'browse' })
   },
+
   render: function() {
-  	var content = this.template({feeds: this.collection.models})
-  	this.$el.html(content);
+    // Render parent view
+    this.$el.html(this.template({ models: this.collection.models }));
     $('#typeahead').html(this.typeahead.render().el);
-  	return this;
+
+    // Render item cards
+    var feedCards = [];
+    this.collection.models.forEach(function(feed) {
+        var feedCardView = new Sourcemash.Views.FeedCardView({el: "#feed-card-" + feed.get('id'), model: feed});
+        feedCards.push(feedCardView)
+    }, this)
+
+    this.feedCardViews = feedCards;
+    return this;
   },
+
   newAttributes: function(){
     var url = this.$('#url').val()
     
@@ -44,8 +60,18 @@ Sourcemash.Views.FeedsView = Backbone.View.extend({
       url: url,
     }
   },
+
   _isValidURL: function(str) {
     var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
     return regexp.test(str);
+  },
+
+  close: function() {
+    _.each(this.feedCardViews, function(feedCardView) {
+        feedCardView.close();
+        feedCardView.remove();
+        feedCardView.unbind();
+    })
   }
+
 });
