@@ -1,5 +1,5 @@
 Sourcemash.Models.User = Backbone.Model.extend({
-    urlRoot: '/api/user',
+    url: '/api/user',
 
     parse: function (response) {
         return response.user;

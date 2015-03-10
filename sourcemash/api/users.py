@@ -9,6 +9,7 @@ from sourcemash.database import user_datastore
 from sourcemash.models import User
 
 user_fields = {
+    'id': fields.Integer,
     'email': fields.String,
 }
 
@@ -38,7 +39,6 @@ class UserListAPI(Resource):
         login_user(user)
         return { 'user': marshal(user, user_fields)}, 201
 
-
 class UserAPI(Resource):
     method_decorators = [login_required]
 
@@ -62,6 +62,7 @@ class UserAPI(Resource):
         db.session.commit()
         logout_user()
         return {'result': True}
+
 
 api.add_resource(UserListAPI, '/users', endpoint = 'users')
 api.add_resource(UserAPI, '/user', endpoint = 'user')
