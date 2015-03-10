@@ -6,13 +6,13 @@ class TestCategorize:
         categories = categorizer.categorize_item(ebolaItem.title, ebolaItem.text)
 
         overlapping_categories = filter(lambda x: "Ebola" in x or "West Africa" in x, categories)
-        assert len(overlapping_categories) > 2
+        assert len(overlapping_categories) > 0
 
     
     def test_empty_categories(self, categorizer):
         categories = categorizer.categorize_item("Of The", "Of The Of The Of The Of The")
 
-        assert set(categories) == set(["", ""])
+        assert categories == [""]
 
 
     def test_get_valid_ngrams_apostrophe_s(self, categorizer):

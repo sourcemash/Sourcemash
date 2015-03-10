@@ -14,10 +14,11 @@ from bs4 import BeautifulSoup
 
 import igraph
 
+logger = logging.getLogger('Sourcemash')
+
 NGRAMS = 3
 WIKIPEDIA_LINKS = "http://en.wikipedia.org/w/api.php?action=query&prop=pageprops|links&continue=&pllimit=500&redirects&format=json&titles=%s"
 WIKIPEDIA_ARTICLE = "http://en.wikipedia.org/wiki/%s"
-
 
 STOP_WORDS = [ "a", "about", "above", "across", "after", "afterwards", \
     "again", "against", "all", "almost", "alone", "along", "already", \
@@ -58,7 +59,6 @@ STOP_WORDS = [ "a", "about", "above", "across", "after", "afterwards", \
     "with", "within", "without", "would", "yet", "you", "your", "yours", "yourself", \
     "yourselves" ] # Source: http://xpo6.com/list-of-english-stop-words/
 
-logger = logging.getLogger('Sourcemash')
 
 class Categorizer:
 
@@ -101,18 +101,19 @@ class Categorizer:
     def get_valid_ngrams(self, string):
         ngrams = Counter()
 
-        split_words = [word.strip(punctuation).replace(u"\u2018", "").replace(u"\u2019", "").replace(u"\u201c","").replace(u"\u201d", "") for word in string.split()]
+        split_words = []
+        for word in string.split():
 
-        marked_for_deletion = []
-        for index, word in enumerate(split_words):
-            try:
-                decoded = word.decode('utf-8', errors='replace')      
-                split_words[index] = decoded
-            except UnicodeEncodeError:
-                marked_for_deletion.append(word)
+            # Strip punctuation
+            word = word.strip(punctuation)
 
-        for word in marked_for_deletion:
-            split_words.remove(word)
+            # Remove Smart Quotes
+            word = word.replace(u"\u2018", "").replace(u"\u2019", "").replace(u"\u201c","").replace(u"\u201d", "")
+            
+            # Remove 's
+            word = word.replace("'s", "")
+
+            split_words.append(word)
 
         for n in range(NGRAMS):
             ngrams_tupled = zip(*[split_words[i:] for i in range(n + 1)])
@@ -180,7 +181,7 @@ class Categorizer:
             best_article = None
             for article in self.memoized_related_articles[ngram]:
 
-                if not self.memoized_article_links[article]:
+                if article not in self.memoized_article_links or not self.memoized_article_links[article]:
                     continue
 
                 article_relatedness_total = 0
@@ -225,9 +226,6 @@ class Categorizer:
 
             for j, compared_article in enumerate(articles):
                 if i == j:
-                    continue
-
-                if not self.memoized_article_links[article] or not self.memoized_article_links[compared_article]:
                     continue
 
                 edge_weight = weight * self.get_relatedness_score(article, compared_article)
@@ -288,7 +286,7 @@ class Categorizer:
 
         clusters = sorted(clusters.items(), key=operator.itemgetter(1), reverse=True)
 
-        logger.debug(clusters)
+        logger.info(clusters)
 
         best_keywords = Counter()
         for cluster in clusters:
@@ -300,10 +298,11 @@ class Categorizer:
             best_keywords.update({original_keywords[0][0]: original_keywords[0][1]})
             best_keywords.update({original_keywords[1][0]: original_keywords[1][1]})
         
-        # TODO: Skip nested categories
+        # TODO: Handle nested categories (i.e. Google Maps vs Google vs Maps)
 
-        return map(lambda x: x[0].title(), best_keywords.most_common())
+        best_keywords = map(lambda x: x[0].title(), best_keywords.most_common())
 
+        return best_keywords if best_keywords else [""]
 
     def is_viable_candidate(self, phrase):
         # Ignore 1-character phrases
@@ -324,10 +323,7 @@ class Categorizer:
         if words[0].lower() in STOP_WORDS:
             return False
 
-        # Ignore non-titled ngrams
-        if len(words) == 2 and not phrase.istitle():
-            return False
-
+        # Ignore non-title trigrams
         if len(words) == 3:
             if words[2].lower() in STOP_WORDS:
                 return False
@@ -477,9 +473,3 @@ class Categorizer:
                 value = self._decode_dict(value)
             rv[key] = value
         return rv
-
-
-if __name__ == "__main__":
-    categorizer = Categorizer()
-    # print categorizer.categorize_item("Officials Say Ebola Cases Are Falling In West Africa", "")
-    print categorizer.categorize_item("Officials Say Ebola Cases Are Falling In West Africa", "GENEVA The number of people falling victim to the Ebola virus in West Africa has dropped to the lowest level in months, the World Health Organization said on Friday, but dwindling funds and a looming rainy season threaten to hamper efforts to control the disease. More than 8,668 people have died in the Ebola epidemic in West Africa, which first surfaced in Guinea more than a year ago. But the three worst-affected countries Guinea, Liberia and Sierra Leone have now recorded falling numbers of new cases for four successive weeks, Dr. Bruce Aylward, the health organizations assistant director general, told reporters in Geneva. Liberia, which was struggling with more than 300 new cases a week in August and September, recorded only eight new cases in the week to Jan. 18, the organization reported. In Sierra Leone, where the infection rate is now highest, there were 118 new cases reported in that week, compared with 184 in the previous week and 248 in the week before that. Speaking just after a visit to the region, Dr. Aylward said on Friday that the really substantial reduction in new cases was a direct result of last falls vast buildup of resources for fighting the epidemic. This is the first time that the countries were in a position to stop Ebola, he said. President Ernest Bai Koroma of Sierra Leone announced on Friday that the country was lifting the travel restrictions that it had imposed in an effort to contain the virus. Victory is in sight, Mr. Koroma said. Dr. Aylward cautioned that the things that have been driving the reduction so far will not get us to zero, and that health authorities do not yet have the spread of the disease completely under control. The good news about falling infection rates also bore a danger, Dr. Aylward said: Pledges of international financial support for the Ebola response were falling, as well. He said that $1.5 billion was needed to fight the disease for the next six months, but that only $482 million had been committed so far. Most of those pledges were made last year.'")

@@ -11,6 +11,8 @@ import feedparser
 
 import logging
 
+logger = logging.getLogger('Sourcemash')
+
 def scrape_articles(categorizer):
     # Pull down all articles from RSS feeds
     for feed in Feed.query.all():
@@ -38,7 +40,7 @@ def scrape_articles(categorizer):
             item.category_2 = categories[1]
             
         db.session.commit()
-        logging.info("CATEGORIZED [%s]: (%s, %s)" % (item.title, item.category_1, item.category_2))
+        logger.info("CATEGORIZED [%s]: (%s, %s)" % (item.title, item.category_1, item.category_2))
 
 
 def _get_full_text(url):
@@ -48,7 +50,7 @@ def _get_full_text(url):
 
 
 def _store_items_and_category_counts(feed, categorizer):
-    logging.info("Starting to parse: %s" % feed.title)
+    logger.info("Starting to parse: %s" % feed.title)
 
     fp = feedparser.parse(feed.url)
     for item in fp.entries:
@@ -85,4 +87,4 @@ def _store_items_and_category_counts(feed, categorizer):
     feed.last_updated = datetime.utcnow()
     db.session.commit()
 
-    logging.info("Finished parsing: %s" % feed.title)
+    logger.info("Finished parsing: %s" % feed.title)
