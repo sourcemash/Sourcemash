@@ -6,32 +6,14 @@ Sourcemash.Views.FeedCardView = Backbone.View.extend({
         this.render();
     },
 
-    events: {
-        "click #subscribe-switch": 'toggleSubscribe',
-	},
-
-    toggleSubscribe: function() {
-        if (this.model.get('subscribed')) {
-            this.model.save({'subscribed': false}, {success: this.subscribed});
-            
-            mixpanel.track("Unsubscribed", { "Feed Title": this.model.get('title') })
-        } else {
-            this.model.save({'subscribed': true}, {success: this.subscribed});
-            
-            mixpanel.track("Subscribed", { "Feed Title": this.model.get('title'),
-                                            "Source": 'feed page' })
-        }
-        },
-
-        subscribed: function(feed) {
-          if (feed.get('subscribed')) {
-              toast("Subscribed!", 3000);
-          } else {
-              toast("You have unsubscribed...", 3000);
-          }
-    },
-
     render: function() {
         this.$el.html(this.template({ model: this.model }));
+        this.subscribeSwitchView = new Sourcemash.Views.SubscribeSwitchView({ model: this.model });
+        this.$(".subscribe-switch").html(this.subscribeSwitchView.render().el)
+    },
+
+    close: function() {
+        this.subscribeSwitchView.remove();
+        this.subscribeSwitchView.unbind();
     }
 });

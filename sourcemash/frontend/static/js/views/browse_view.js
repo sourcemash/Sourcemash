@@ -8,6 +8,8 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
 
     this.typeahead = new ExtendedTypeahead({collection: this.collection, key: 'title'});
     this.listenTo(this.collection, 'sync', this.render);
+
+    this.feedCardViews = []
   },
 
   events: {
@@ -40,7 +42,7 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
         feedCards.push(feedCardView)
     }, this)
 
-    this.feedViews = feedCards;
+    this.feedCardViews = feedCards;
     return this;
   },
 
@@ -62,5 +64,14 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
   _isValidURL: function(str) {
     var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
     return regexp.test(str);
+  },
+
+  close: function() {
+    _.each(this.feedCardViews, function(feedCardView) {
+        feedCardView.close();
+        feedCardView.remove();
+        feedCardView.unbind();
+    })
   }
+
 });
