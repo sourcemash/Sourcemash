@@ -10,6 +10,8 @@ from sourcemash.forms import VoteForm
 
 class getVote(fields.Raw):
     def output(self, key, item):
+        if not current_user.is_authenticated():
+            return 0      
         try:
             vote = UserItem.query.filter_by(user=current_user, item=item).one().vote
         except:
@@ -41,15 +43,10 @@ item_fields = {
     'image_url': fields.String,
     'summary': fields.String,
     'feed': fields.Nested(feed_fields),
-}
-
-item_fields_detailed = {
     'unread': getUnreadStatus,
     'saved': getSavedStatus,
-    'vote': getVote,
+    'vote': getVote
 }
-item_fields_detailed.update(item_fields)
-
 
 class ItemAPI(Resource):
     def __init__(self):
@@ -103,20 +100,19 @@ class ItemAPI(Resource):
             user_item.saved = args.saved
             db.session.commit()
 
-        return {'item': marshal(item, item_fields_detailed)}
+        return {'item': marshal(item, item_fields)}
 
 class SavedItemListAPI(Resource):
 
     @login_required
     def get(self):
         user_items = UserItem.query.filter_by(user=current_user, saved=True).all()
-        return {'items': [marshal(user_item.item, item_fields_detailed) for user_item in user_items]}
+        return {'items': [marshal(user_item.item, item_fields) for user_item in user_items]}
 
 class FeedItemListAPI(Resource):
 
     def get(self, feed_id):
-        return {'items': [marshal(item, item_fields_detailed) for item in Item.query.filter_by(feed_id=feed_id).all()]}
-
+        return {'items': [marshal(item, item_fields) for item in Item.query.filter_by(feed_id=feed_id).all()]}
 
 class CategoryItemListAPI(Resource):
 
@@ -136,7 +132,7 @@ class CategoryItemListAPI(Resource):
         if unsubscribed_item:
             items.append(unsubscribed_item)
 
-        return {'items': [marshal(item, item_fields_detailed) for item in items]}
+        return {'items': [marshal(item, item_fields) for item in items]}
 
 
 class CategoryItemListAllAPI(Resource):
@@ -144,8 +140,7 @@ class CategoryItemListAllAPI(Resource):
     def get(self, category):
         category = category.title()
         items = Item.query.filter((Item.category_1 == category) | (Item.category_2 == category)).all()
-        return {'items': [marshal(item, item_fields_detailed) for item in items]}
-
+        return {'items': [marshal(item, item_fields) for item in items]}
 
 api.add_resource(ItemAPI, '/items/<int:id>', endpoint='item')
 api.add_resource(SavedItemListAPI, '/items/saved', endpoint='saved_items')
