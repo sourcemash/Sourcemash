@@ -1,11 +1,30 @@
-import sys
-import operator
+# categorize.py
+# 
+# Adapted from algorithm by Grineva, et. al. presented at:
+# http://www.slideshare.net/maria.grineva/extracting-key-terms-from-noisy-and-multitheme-documents?related=1
+# 
+# Algorithm Overview
+# 1) Get initial list of possible keyword candidates using ngram frequencies
+# 2) For each keyword candidate, use Wikipedia to extract all related article titles
+#       a) Related articles are called (disambiguation links) on Wikipedia
+# 3) Try to assign one Wikipedia article to each keyword candidate
+#       a) First, assign articles to the keywords with only 1 related article
+#       b) Use these "auto-assigned" articles as the context to narrow the other categories' article
+#       c) With the context from (b), compute relatedness scores to find the best article match
+#           i) relatedness score = [SUM OF SHARED WIKIPEDIA HYPERLINKS] / [TOTAL NUMBER OF WIKIPEDIA HYPERLINKS]
+# 4) With each keyword assigned 1 article, create a graph where each vertex is an article and the edge weight
+#       is the relatedness score between two articles
+# 5) Analyze the graph from (4) to identify keyword clusters
+# 6) Only keep the clusters that have a sufficient number of keywords that contain an original keyword candidate from (1)
+# 8) Return the best keywords
+#       a) For now, we still pick the top two keywords by frequency from kept clusters, but...
+#       b) TODO: WE WILL KEEP ALL KEYWORDS FROM THE KEPT CLUSTERS
+
 
 import logging
 
 from collections import Counter, defaultdict
 from string import punctuation
-from datetime import datetime, timedelta
 
 import requests
 import urllib
@@ -185,6 +204,12 @@ class Categorizer:
 
 
     def _build_semantic_graph(self, articles):
+        """
+        Create a category graph where each vertex is a Wikipedia article
+        and the edges are weighted by relatedness scores (number of overlapping
+        links) between each pair.
+        """
+
         logger.debug("\nBuilding semantic graph...")
 
         edges = []
