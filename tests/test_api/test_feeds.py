@@ -15,16 +15,6 @@ class TestFeedAPI(TestBase):
 
         data = json.loads(r.data)
         assert data['feed']['title'] == feed.title
-        assert data['feed']['item_count'] == 0
-
-    def test_get_populated_feed_present(self, test_client, feedWithItems):
-        r = test_client.get('/api/feeds/%d' % feedWithItems.id)
-        check_valid_header_type(r.headers)
-        assert r.status_code == 200
-
-        data = json.loads(r.data)
-        assert data['feed']['title'] == feedWithItems.title
-        assert data['feed']['item_count'] == 5
 
     def test_get_feed_missing(self, test_client):
         r = test_client.get('/api/feeds/0')
