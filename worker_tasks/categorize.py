@@ -31,7 +31,7 @@ import urllib
 import json
 from bs4 import BeautifulSoup
 
-from igraph import Graph
+import igraph
 
 logger = logging.getLogger('Sourcemash')
 
@@ -234,7 +234,7 @@ class Categorizer:
                     edges.append([i, j])
                     edge_attrs["weight"].append(relatedness_score)
 
-        return Graph(edges=edges, vertex_attrs=vertex_attrs, edge_attrs=edge_attrs)
+        return igraph.Graph(edges=edges, vertex_attrs=vertex_attrs, edge_attrs=edge_attrs)
 
 
     def _get_relatedness_score(self, article_1_links, article_2_links):
