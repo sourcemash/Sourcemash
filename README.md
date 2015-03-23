@@ -14,7 +14,8 @@ The site was built for the CS98 course at Dartmouth College.
 
 ## Installation
 1. Clone repo to computer
-2. Install all requirements from requirements.txt
+2. Install postgresql (e.g. ```brew install postgresql```)
+3. Install all requirements from requirements.txt
 	
 	System-wide: ```sudo pip install -r requirements.txt```
 	
