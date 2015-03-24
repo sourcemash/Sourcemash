@@ -90,7 +90,7 @@ class Categorizer:
 
 
     def categorize_item(self, title, text):
-        # Use old word count approach to get possible keywords
+        # Use ngram word count approach to get possible keywords
         keyword_candidates = self._get_keyword_candidates(title, text)
         
         # Store possible wiki articles and their links
@@ -123,7 +123,7 @@ class Categorizer:
             if ngram in title_ngrams:
                 ngrams.update({ngram: count})
 
-            # ...bigram (x2) or trigram (x4)
+            # ...from bigram (x2) or trigram (x3)
             for n in range(ngram.count(' ')):
                 ngrams.update({ngram: count})
 
