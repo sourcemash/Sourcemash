@@ -147,6 +147,19 @@ class Categorizer:
         return valid_ngrams
 
 
+    def _clean_word(self, word):
+        # Strip punctuation
+        word = word.strip(punctuation)
+        
+        # Remove 's
+        word = word.replace("'s", "")
+
+        # Remove Smart Quotes
+        word = word.replace(u"\u2018", "").replace(u"\u2019", "").replace(u"\u201c","").replace(u"\u201d", "")
+
+        return word
+
+
     def _memoize_related_articles(self, ngrams):
         """Store all related (disambiguated) Wikipedia articles for each ngram"""
 
@@ -313,19 +326,6 @@ class Categorizer:
                 return False 
 
         return True
-
-
-    def _clean_word(self, word):
-        # Strip punctuation
-        word = word.strip(punctuation)
-        
-        # Remove 's
-        word = word.replace("'s", "")
-
-        # Remove Smart Quotes
-        word = word.replace(u"\u2018", "").replace(u"\u2019", "").replace(u"\u201c","").replace(u"\u201d", "")
-
-        return word
 
 
     def _scrape_wiki_links(self, titles):
