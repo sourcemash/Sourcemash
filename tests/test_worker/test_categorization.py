@@ -41,7 +41,7 @@ class TestCategorize:
         assert categorizer._is_viable_candidate("and alligator") == False
 
     def test_is_viable_candidate_trigram_valid(self, categorizer):
-        assert categorizer._is_viable_candidate("Ambercrombie and Fitch") == True
+        assert categorizer._is_viable_candidate("Abercrombie and Fitch") == True
 
     def test_decode_list_unicode(self, categorizer):
         assert categorizer._decode_list([u"éxit"]) == ["éxit"]
