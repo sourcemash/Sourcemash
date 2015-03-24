@@ -37,6 +37,7 @@ import igraph
 logger = logging.getLogger('Sourcemash')
 
 NGRAMS = 3
+MAX_CANDIDATE_COUNT = 20
 MINIMUM_RELATEDNESS_SCORE = 0.1
 WIKIPEDIA_LINKS = "http://en.wikipedia.org/w/api.php?action=query&prop=pageprops|links&continue=&pllimit=500&redirects&format=json&titles=%s"
 WIKIPEDIA_ARTICLE = "http://en.wikipedia.org/wiki/%s"
@@ -127,7 +128,7 @@ class Categorizer:
             for n in range(ngram.count(' ')):
                 ngrams.update({ngram: count})
 
-        return dict(ngrams.most_common(20))
+        return dict(ngrams.most_common(MAX_CANDIDATE_COUNT))
 
 
     def _get_valid_ngrams(self, string):
