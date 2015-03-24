@@ -1,5 +1,18 @@
 @import "vendor/materialize/components/color";
 
+
+/*
+ *******************************
+ General Styles
+ *******************************
+ */
+.truncate {
+  width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /*
  *******************************
  Side Navigation Bar
@@ -23,7 +36,7 @@
 }
 
 header, main, footer {
-  padding-left: 240px;
+  padding-left: 360px;
 
   @media only screen and (max-width: 992px) {
     padding-left: 0;
@@ -32,7 +45,7 @@ header, main, footer {
 
 div.side-nav {
   position: fixed;
-  width: 240px;
+  width: 360px;
   top: 0;
   left: -105%;
   height: 100%;
@@ -76,6 +89,10 @@ div.side-nav {
       }
     }
   }
+}
+
+.lists .collection a.collection-item:hover {
+  background-color: inherit;
 }
 
 .lists .collection {

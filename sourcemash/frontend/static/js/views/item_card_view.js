@@ -16,7 +16,7 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
 	upvote: function() {
 		this.model.save({vote: 1, voteSum: this._getNewVoteSum(1)},
                         {success: this.voted});
-        
+
         if (this.model.changedAttributes()) {
             mixpanel.track("Upvoted", { "Item Title": this.model.get('title'),
                                         "Feed Title": this.model.feed.get('title') })
@@ -30,7 +30,7 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
 	downvote: function() {
 		this.model.save({vote: -1, voteSum: this._getNewVoteSum(-1)},
                         {success: this.voted});
-        
+
         if (this.model.changedAttributes()) {
             mixpanel.track("Downvoted", { "Item Title": this.model.get('title'),
                                         "Feed Title": this.model.feed.get('title') })
@@ -45,7 +45,7 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
         $('#subscribe-modal #unsubscribed-item-title').html(this.model.get('title'));
         $('#subscribe-modal #unsubscribed-feed-title').html(this.model.feed.get('title'));
         $('#subscribe-modal').openModal();
-        
+
         mixpanel.track("Subscribe Modal", { "Item Title": this.model.get('title'),
                                             "Feed Title": this.model.feed.get('title') })
     },
@@ -57,7 +57,9 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
 	markRead: function() {
 		this.model.save({unread: false},
                         {success: _.bind(this.openCard, this)});
-        
+
+        this.model.feed.set({unread_count: this.model.feed.get('unread_count') - 1});
+
         if (this.model.changedAttributes()) {
             mixpanel.people.increment("items read")
         }
@@ -67,7 +69,7 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
         if (this.model.get('saved')) {
             this.model.save({saved: false},
                 {success: this.savedToast});
-            
+
             if (this.model.changedAttributes()) {
             mixpanel.track("Saved", { "Item Title": this.model.get('title'),
                                         "Feed Title": this.model.feed.get('title') });
@@ -75,7 +77,7 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
 
         } else {
             this.model.save({saved: true},
-                {success: this.savedToast});            
+                {success: this.savedToast});
         }
 
     },
