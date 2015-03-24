@@ -47,7 +47,4 @@ class TestCategorize:
         assert categorizer._decode_list([u"éxit"]) == ["éxit"]
 
     def test_decode_list_list(self, categorizer):
-        assert categorizer._decode_list([["String"]]) == [["String"]]
-
-    def test_decode_multilist_list(self, categorizer):
         assert categorizer._decode_list([["String", u"éxit"]]) == [["String", "éxit"]]
