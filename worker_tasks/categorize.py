@@ -8,7 +8,8 @@
 # 2) For each keyword candidate, use Wikipedia to extract all related article titles
 #       a) Related articles are called (disambiguation links) on Wikipedia
 # 3) Try to assign one Wikipedia article to each keyword candidate
-#       a) First, assign articles to the keywords with only 1 related article
+#       a) First, assign articles to the keywords that have only 1 related article
+#           i) i.e. Sergey Brin only corresponds to wikipedia.org/wiki/Sergey_Brin, whereas Apple might be any link in wikipedia.org/wiki/Apple_(disambiguation).
 #       b) Use these "auto-assigned" articles as the context to narrow the other categories' article
 #       c) With the context from (b), compute relatedness scores to find the best article match
 #           i) relatedness score = [SUM OF SHARED WIKIPEDIA HYPERLINKS] / [TOTAL NUMBER OF WIKIPEDIA HYPERLINKS]
