@@ -184,6 +184,82 @@ class Categorizer:
         self._scrape_wiki_links(article_titles)
 
 
+    def _scrape_wiki_links(self, titles):
+        unscraped_titles = filter(lambda x: x not in self._memoized_article_links, titles)
+
+        for i in xrange(0, len(unscraped_titles), 5):
+
+            grouped_titles = unscraped_titles[i:i + 5]
+            grouped_titles_string = "|".join(grouped_titles)
+
+            data = {}
+            sublinks = []
+
+            links = defaultdict(list)
+            disambiguation_pages = []
+
+            # Make calls to the Wikipedia API for batches of articles
+            while 'batchcomplete' not in data:
+
+                url = WIKIPEDIA_LINKS % urllib.quote(grouped_titles_string)
+                if 'continue' in data:
+                    url += "&plcontinue=" + data['continue']['plcontinue']
+
+                resp = requests.get(url)
+                data = json.loads(resp.text, object_hook=self._decode_dict)
+
+                sublinks = self._compile_sublinks(data['query'], sublinks)
+
+                for page in data['query']['pages'].itervalues():
+
+                    if "missing" in page:
+                        self._memoized_article_links[page['title']] = []
+                        self._memoized_related_articles[page['title']] = []
+                        continue
+
+                    if 'pageprops' in page and ('disambiguation' in page['title'] or 'disambiguation' in page['pageprops']):
+                        disambiguation_pages.append(page['title'])
+
+                    if "links" in page:
+                        for link in page['links']:
+                            links[page["title"]].append(link['title'])
+
+            # Store the scraped information
+            for link_title in links:
+                
+                # Store links in article
+                if link_title not in self._memoized_article_links:
+                    self._memoized_article_links[link_title] = links[link_title]
+
+                if link_title in sublinks:
+                    for sublink in sublinks[link_title]:
+                        if sublink not in self._memoized_article_links:
+                            self._memoized_article_links[sublink] = links[link_title]
+
+                # Store related articles
+                if link_title in disambiguation_pages:
+                    related_links = filter(lambda x: link_title.replace(" (disambiguation)", "").lower() in x.lower(), links[link_title])
+
+                    if link_title not in self._memoized_related_articles:
+                            self._memoized_related_articles[link_title] = related_links
+                            self._memoized_related_articles[link_title.replace(" (disambiguation)", "")] = related_links
+
+
+                    if link_title in sublinks:
+                        for sublink in sublinks[link_title]:
+                            if sublink not in self._memoized_related_articles:
+                                self._memoized_related_articles[sublink] = related_links
+                                self._memoized_related_articles[sublink.replace(" (disambiguation)", "")] = related_links
+                else:
+                    if link_title not in self._memoized_related_articles:
+                            self._memoized_related_articles[link_title] = [link_title]
+
+                    if link_title in sublinks:
+                        for sublink in sublinks[link_title]:
+                            if sublink not in self._memoized_related_articles:
+                                self._memoized_related_articles[sublink] = [link_title]
+
+
     def _assign_closest_articles(self, ngrams):
         """Extract Wikipedia articles closest to an ngram"""
 
@@ -326,82 +402,6 @@ class Categorizer:
                 return False 
 
         return True
-
-
-    def _scrape_wiki_links(self, titles):
-        unscraped_titles = filter(lambda x: x not in self._memoized_article_links, titles)
-
-        for i in xrange(0, len(unscraped_titles), 5):
-
-            grouped_titles = unscraped_titles[i:i + 5]
-            grouped_titles_string = "|".join(grouped_titles)
-
-            data = {}
-            sublinks = []
-
-            links = defaultdict(list)
-            disambiguation_pages = []
-
-            # Make calls to the Wikipedia API for batches of articles
-            while 'batchcomplete' not in data:
-
-                url = WIKIPEDIA_LINKS % urllib.quote(grouped_titles_string)
-                if 'continue' in data:
-                    url += "&plcontinue=" + data['continue']['plcontinue']
-
-                resp = requests.get(url)
-                data = json.loads(resp.text, object_hook=self._decode_dict)
-
-                sublinks = self._compile_sublinks(data['query'], sublinks)
-
-                for page in data['query']['pages'].itervalues():
-
-                    if "missing" in page:
-                        self._memoized_article_links[page['title']] = []
-                        self._memoized_related_articles[page['title']] = []
-                        continue
-
-                    if 'pageprops' in page and ('disambiguation' in page['title'] or 'disambiguation' in page['pageprops']):
-                        disambiguation_pages.append(page['title'])
-
-                    if "links" in page:
-                        for link in page['links']:
-                            links[page["title"]].append(link['title'])
-
-            # Store the scraped information
-            for link_title in links:
-                
-                # Store links in article
-                if link_title not in self._memoized_article_links:
-                    self._memoized_article_links[link_title] = links[link_title]
-
-                if link_title in sublinks:
-                    for sublink in sublinks[link_title]:
-                        if sublink not in self._memoized_article_links:
-                            self._memoized_article_links[sublink] = links[link_title]
-
-                # Store related articles
-                if link_title in disambiguation_pages:
-                    related_links = filter(lambda x: link_title.replace(" (disambiguation)", "").lower() in x.lower(), links[link_title])
-
-                    if link_title not in self._memoized_related_articles:
-                            self._memoized_related_articles[link_title] = related_links
-                            self._memoized_related_articles[link_title.replace(" (disambiguation)", "")] = related_links
-
-
-                    if link_title in sublinks:
-                        for sublink in sublinks[link_title]:
-                            if sublink not in self._memoized_related_articles:
-                                self._memoized_related_articles[sublink] = related_links
-                                self._memoized_related_articles[sublink.replace(" (disambiguation)", "")] = related_links
-                else:
-                    if link_title not in self._memoized_related_articles:
-                            self._memoized_related_articles[link_title] = [link_title]
-
-                    if link_title in sublinks:
-                        for sublink in sublinks[link_title]:
-                            if sublink not in self._memoized_related_articles:
-                                self._memoized_related_articles[sublink] = [link_title]
 
 
     def _compile_sublinks(self, data, link_path=None):
