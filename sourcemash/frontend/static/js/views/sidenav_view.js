@@ -20,10 +20,8 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
 
   render: function() {
     var content = this.template({active: this.active, current_user: this.user, feeds: this.feeds, categories: this.categories})
-    this.$el.html(content);
+    $('#nav-mobile').html(content);
 
     $('ul.tabs').tabs();
-
-    return this;
   },
 });

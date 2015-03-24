@@ -19,6 +19,11 @@
               <% }; %>
           </a></li>
         <% }); %>
+        <% if (!feeds.length) { %>
+          <li class="row center-align"><a href="#/browse" class="collection-item">
+            Browse Feeds
+          </a></li>
+        <% }; %>
       </ul>
       <ul id="feeds-list" class="collection col s12">
         <% feeds.forEach(function(feed) { %>
@@ -32,6 +37,11 @@
             </a></li>
           <% }; %>
         <% }); %>
+        <% if (!feeds.length) { %>
+          <li class="row center-align"><a href="#/browse" class="collection-item">
+            Browse Feeds
+          </a></li>
+        <% }; %>
       </ul>
     </div>
   </div>
