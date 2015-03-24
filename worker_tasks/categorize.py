@@ -331,9 +331,12 @@ class Categorizer:
     def _get_relatedness_score(self, article_1_links, article_2_links):
         """Calculate overlap of two Wikipedia articles: 2 * [# of shared links] / [total # of links]"""
 
-        shared_links_count = 0
         total_links_count = len(article_1_links) + len(article_2_links)
 
+        if not total_links_count:
+            return 0
+
+        shared_links_count = 0
         for article_link in article_1_links:
             weight = 1
             if "Template" in article_link or \
