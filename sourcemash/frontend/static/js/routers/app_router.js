@@ -1,30 +1,37 @@
 Sourcemash.Routers.AppRouter = Backbone.Router.extend({
     routes: {
-        "": "showProfile",
-        "feeds": "showFeeds",
+        "": "showSplash",
+        "profile": "showProfile",
         "feeds/:id": "showFeed",
-        "categories": "showCategories",
         "categories/:category": "showCategory",
         "saved": "showSaved",
         "browse": "browseFeeds"
     },
 
-    showProfile: function() {
-        var user = new Sourcemash.Models.User()
-        var profileView = new Sourcemash.Views.ProfileView({ model: user });
+    initialize: function(options){
+        var self = this;
 
-        user.fetch({success: this._identifyUser});
-        this._swapView(profileView);
+        self._user = new Sourcemash.Models.User();
+        self._feeds = new Sourcemash.Collections.Feeds();
+        self._categories = new Sourcemash.Collections.Categories();
+
+        self._sidenav = new Sourcemash.Views.SidenavView({ user: self._user, feeds: self._feeds, categories: self._categories });
+
+        self._user.fetch({success: this._identifyUser});
+        self._sidenav.feeds.fetch();
+        self._sidenav.categories.fetch();
+
+        $('#nav-mobile').html(self._sidenav.render().$el);
     },
 
-    showFeeds: function() {
-        var feedsView = new Sourcemash.Views.FeedsView({
-            collection: new Sourcemash.Collections.Feeds(),
-        });
+    showSplash: function() {
+        var splashView = new Sourcemash.Views.SplashView();
+        this._swapView(splashView);
+    },
 
-        feedsView.collection.fetch();
-        feedsView.allFeeds.fetch();
-        this._swapView(feedsView);
+    showProfile: function() {
+        var profileView = new Sourcemash.Views.ProfileView({ model: this._user });
+        this._swapView(profileView);
     },
 
     browseFeeds: function() {
@@ -86,7 +93,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         }
 
         this.currentView = view;
-        $('#app').html(view.render().$el);
+        $('#main').html(view.render().$el);
     },
 
     _identifyUser: function(user) {

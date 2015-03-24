@@ -2,6 +2,113 @@
 
 /*
  *******************************
+ Side Navigation Bar
+ *******************************
+ */
+
+.top-nav {
+  background: white;
+  box-shadow: None;
+
+  a {
+    color: color("red", "lighten-2");
+    font-size: 24px;
+  }
+}
+
+.container {
+  @media only screen and (min-width: 993px) {
+    width: 85%;
+  }
+}
+
+header, main, footer {
+  padding-left: 240px;
+
+  @media only screen and (max-width: 992px) {
+    padding-left: 0;
+  }
+}
+
+div.side-nav {
+  position: fixed;
+  width: 240px;
+  top: 0;
+  left: -105%;
+  height: 100%;
+  height: calc(100% + 60px);
+  height: -moz-calc(100%);
+  background-color: #FFF;
+  z-index: 999;
+  will-change: left;
+
+  -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+
+  a {
+    color: black;
+  }
+
+  &.fixed {
+    left: 0;
+    position: fixed;
+    overflow: hidden;
+
+    @media only screen and (max-width: 992px) {
+      left: -105%;
+    }
+
+    li {
+
+      &:hover {
+        background-color: #ddd;
+      }
+
+      &.logo {
+        text-align: center;
+        background: color("red", "lighten-2");
+
+        a {
+          color: white;
+          font-size: 24px;
+        }
+      }
+    }
+  }
+}
+
+.lists .collection {
+  max-height: 60%;
+  overflow-y: scroll;
+}
+
+.sidenav-element {
+  margin: 0;
+}
+
+a.button-collapse.top-nav.full {
+  line-height: 64px;
+}
+a.button-collapse.top-nav {
+  position: absolute;
+  left: 7.5%;
+  top: 0;
+  float: none;
+  margin-left: 1.5rem;
+  color: black;
+  font-size: 32px;
+  z-index: 2;
+}
+
+.nav-wrapper {
+  @media only screen and (max-width: 992px) {
+    text-align: center;
+  }
+}
+
+/*
+ *******************************
  Typeahead dropdown menu search
  *******************************
  */
