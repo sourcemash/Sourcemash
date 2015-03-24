@@ -1,8 +1,8 @@
 # categorize.py
-# 
+#
 # Adapted from algorithm by Grineva, et. al. presented at:
 # http://www.slideshare.net/maria.grineva/extracting-key-terms-from-noisy-and-multitheme-documents?related=1
-# 
+#
 # Algorithm Overview
 # 1) Get initial list of possible keyword candidates using ngram frequencies
 # 2) For each keyword candidate, use Wikipedia to extract all related article titles
@@ -93,18 +93,18 @@ class Categorizer:
     def categorize_item(self, title, text):
         # Use ngram word count approach to get possible keywords
         keyword_candidates = self._get_keyword_candidates(title, text)
-        
+
         # Store possible wiki articles and their links
         self._memoize_related_articles(keyword_candidates.keys())
         self._memoize_article_links(keyword_candidates.keys())
 
-        # Assign best article for each possible keyword 
+        # Assign best article for each possible keyword
         assigned_articles   = self._assign_closest_articles(keyword_candidates.keys())
-        
+
         # Build a graph and identify keyword clusters
         semantic_graph      = self._build_semantic_graph(assigned_articles)
         clustering          = semantic_graph.community_multilevel(weights='weight')
-        
+
         # Use keywords from best clusters
         selected_categories = self._get_best_keywords(clustering, keyword_candidates)
 
@@ -119,7 +119,7 @@ class Categorizer:
 
         # Apply weights...
         for ngram, count in ngrams.iteritems():
-            
+
             # ...from title (x2)
             if ngram in title_ngrams:
                 ngrams.update({ngram: count})
@@ -150,7 +150,7 @@ class Categorizer:
     def _clean_word(self, word):
         # Strip punctuation
         word = word.strip(punctuation)
-        
+
         # Remove 's
         word = word.replace("'s", "")
 
@@ -163,7 +163,7 @@ class Categorizer:
     def _memoize_related_articles(self, ngrams):
         """Store all related (disambiguated) Wikipedia articles for each ngram"""
 
-        logger.debug("\nMemoizing Related Articles...")
+        logger.debug("Memoizing Related Articles...")
 
         # Scrape for disambiguation links
         disambiguated_titles = map(lambda x: x + " (disambiguation)", ngrams)
@@ -178,7 +178,7 @@ class Categorizer:
     def _memoize_article_links(self, ngrams):
         """Store all links for a Wikipedia article"""
 
-        logger.debug("\nMemoizing Articles Links...")
+        logger.debug("Memoizing Articles Links...")
 
         article_titles = [title for ngram in ngrams for title in self._memoized_related_articles[ngram]]
         self._scrape_wiki_links(article_titles)
@@ -226,7 +226,7 @@ class Categorizer:
 
             # Store the scraped information
             for link_title in links:
-                
+
                 # Store links in article
                 if link_title not in self._memoized_article_links:
                     self._memoized_article_links[link_title] = links[link_title]
@@ -263,7 +263,7 @@ class Categorizer:
     def _assign_closest_articles(self, ngrams):
         """Extract Wikipedia articles closest to an ngram"""
 
-        logger.debug("\nAssigning Articles to Phrases...")
+        logger.debug("Assigning Articles to Phrases...")
 
         ambiguous_ngrams = filter(lambda x: len(self._memoized_related_articles[x]) > 1, ngrams)
         unambiguous_ngrams = filter(lambda x: len(self._memoized_related_articles[x]) == 1, ngrams)
@@ -290,7 +290,7 @@ class Categorizer:
 
             if best_article:
                 assigned_articles.append(best_article)
-                
+
         return assigned_articles
 
 
@@ -301,7 +301,7 @@ class Categorizer:
         links) between each pair.
         """
 
-        logger.debug("\nBuilding semantic graph...")
+        logger.debug("Building semantic graph...")
 
         edges = []
         vertex_attrs = {"name": []}
@@ -357,7 +357,7 @@ class Categorizer:
 
         for cluster in communities.subgraphs():
             vertex_names = map(lambda x: x['name'], cluster.vs)
-            
+
             matching_vertices_count = sum(map(lambda x: keyword_counts[x] if x in keyword_counts else 0, vertex_names))
 
             cluster_score = float(matching_vertices_count) / len(cluster.vs)
@@ -368,12 +368,12 @@ class Categorizer:
         if len(best_keywords) < 2:
             best_original_keywords = keyword_counts.most_common(2)
             best_keywords.update([keyword[0] for keyword in best_original_keywords])
-        
+
         return [keyword.title() for keyword in best_keywords] if best_keywords else [""]
 
 
     def _is_viable_candidate(self, phrase):
-        
+
         # Ignore 1-character phrases
         if len(phrase) < 2:
             return False
@@ -399,7 +399,7 @@ class Categorizer:
 
             titled_words = map(lambda x: x.istitle(), words)
             if titled_words not in [[True, False, True], [True, True,True]]:
-                return False 
+                return False
 
         return True
 
@@ -413,12 +413,12 @@ class Categorizer:
                 link_redirects[redirect['to']].add(redirect['from'])
 
         if not link_path:
-            link_path = link_redirects    
+            link_path = link_redirects
 
-        if "normalized" in data: 
+        if "normalized" in data:
             for normalized_link in data['normalized']:
                 link_path[normalized_link['to']].add(normalized_link['from'])
-                
+
                 for to_link, from_links in link_path.iteritems():
                     if normalized_link['to'] in from_links:
                         link_path[to_link].update(normalized_link['to'], normalized_link['from'])
