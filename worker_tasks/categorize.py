@@ -191,6 +191,7 @@ class Categorizer:
 
             grouped_titles = unscraped_titles[i:i + 5]
             grouped_titles_string = "|".join(grouped_titles)
+            grouped_titles_string = grouped_titles_string.encode('utf8')
 
             data = {}
             sublinks = []
