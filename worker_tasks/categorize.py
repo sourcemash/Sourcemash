@@ -28,7 +28,6 @@ from collections import Counter, defaultdict
 from string import punctuation
 
 import requests
-import urllib
 import json
 from bs4 import BeautifulSoup
 
@@ -191,7 +190,6 @@ class Categorizer:
 
             grouped_titles = unscraped_titles[i:i + 5]
             grouped_titles_string = "|".join(grouped_titles)
-            grouped_titles_string = grouped_titles_string.encode('utf8')
 
             data = {}
             sublinks = []
@@ -202,12 +200,12 @@ class Categorizer:
             # Make calls to the Wikipedia API for batches of articles
             while 'batchcomplete' not in data:
 
-                url = WIKIPEDIA_LINKS % urllib.quote(grouped_titles_string)
+                url = WIKIPEDIA_LINKS % grouped_titles_string
                 if 'continue' in data:
                     url += "&plcontinue=" + data['continue']['plcontinue']
 
                 resp = requests.get(url)
-                data = json.loads(resp.text, object_hook=self._decode_dict)
+                data = json.loads(resp.text)
 
                 sublinks = self._compile_sublinks(data['query'], sublinks)
 
@@ -428,31 +426,3 @@ class Categorizer:
                         link_path[to_link].update(normalized_link['to'], normalized_link['from'])
 
         return link_path
-
-
-    def _decode_list(self, data):
-        rv = []
-        for item in data:
-            if isinstance(item, unicode):
-                item = item.encode('utf-8')
-            elif isinstance(item, list):
-                item = self._decode_list(item)
-            elif isinstance(item, dict):
-                item = self._decode_dict(item)
-            rv.append(item)
-        return rv
-
-
-    def _decode_dict(self, data):
-        rv = {}
-        for key, value in data.iteritems():
-            if isinstance(key, unicode):
-                key = key.encode('utf-8')
-            if isinstance(value, unicode):
-                value = value.encode('utf-8')
-            elif isinstance(value, list):
-                value = self._decode_list(value)
-            elif isinstance(value, dict):
-                value = self._decode_dict(value)
-            rv[key] = value
-        return rv

@@ -42,9 +42,3 @@ class TestCategorize:
 
     def test_is_viable_candidate_trigram_valid(self, categorizer):
         assert categorizer._is_viable_candidate("Abercrombie and Fitch") == True
-
-    def test_decode_list_unicode(self, categorizer):
-        assert categorizer._decode_list([u"éxit"]) == ["éxit"]
-
-    def test_decode_list_list(self, categorizer):
-        assert categorizer._decode_list([["String", u"éxit"]]) == [["String", "éxit"]]
