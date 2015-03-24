@@ -16,7 +16,7 @@ import logging
 logger = logging.getLogger('Sourcemash')
 
 def scrape_and_categorize_articles():
-    categorize = Categorizer()
+    categorizer = Categorizer()
 
     # Pull down all articles from RSS feeds
     for feed in Feed.query.all():
