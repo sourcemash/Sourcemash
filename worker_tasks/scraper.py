@@ -1,6 +1,8 @@
 from sourcemash.database import db
 
 from sourcemash.models import Item, Feed
+from worker_tasks.categorize import Categorizer
+
 from datetime import datetime
 
 from readability.readability import Document
@@ -13,17 +15,19 @@ import logging
 
 logger = logging.getLogger('Sourcemash')
 
-def scrape_articles(categorizer):
+def scrape_and_categorize_articles():
+    categorize = Categorizer()
+
     # Pull down all articles from RSS feeds
     for feed in Feed.query.all():
-        _store_items_and_category_counts(feed, categorizer)
+        _store_items(feed)
 
     # Assign categories and extract first image from articles
     for item in Item.query.filter_by(category_1=None).all():
         soup = BeautifulSoup(item.text)
-        
+
         # Extract first image from item
-        try: 
+        try:
             img_url = soup.find('img')['src']
             item.image_url = img_url
             db.session.commit()
@@ -38,7 +42,7 @@ def scrape_articles(categorizer):
 
         if len(categories) >= 2:
             item.category_2 = categories[1]
-            
+
         db.session.commit()
         logger.info("CATEGORIZED [%s]: (%s, %s)" % (item.title, item.category_1, item.category_2))
 
@@ -49,7 +53,7 @@ def _get_full_text(url):
     return Document(html, url=base_url).summary(html_partial=True)
 
 
-def _store_items_and_category_counts(feed, categorizer):
+def _store_items(feed):
     logger.info("Starting to parse: %s" % feed.title)
 
     fp = feedparser.parse(feed.url)
@@ -62,13 +66,13 @@ def _store_items_and_category_counts(feed, categorizer):
 
         text = _get_full_text(item.link)
 
-        new_entry = Item(title=item.title, text=text, link=item.link, 
+        new_entry = Item(title=item.title, text=text, link=item.link,
                             last_updated=item_last_updated, author=getattr(item, 'author', None),
                             summary=getattr(item, 'summary', None), feed_id=feed.id)
 
         db.session.add(new_entry)
         db.session.commit()
-  
+
     if not feed.image_url:
         try:
             feed.image_url = fp.feed.image.url
@@ -80,10 +84,10 @@ def _store_items_and_category_counts(feed, categorizer):
                     feed.image_url = image_tag.get('src') or image_tag.get('href')
                     db.session.commit()
                     break
-    
+
     if not feed.description:
         feed.description = fp.feed.description
-    
+
     feed.last_updated = datetime.utcnow()
     db.session.commit()
 
