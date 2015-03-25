@@ -341,7 +341,7 @@ class Categorizer:
             if "Template" in article_link or \
                 "Wikipedia" in article_link or \
                 "Help" in article_link:
-                weight = 0.1
+                weight = 0.0
             if "Category" in article_link:
                 weight = 1.5
 
