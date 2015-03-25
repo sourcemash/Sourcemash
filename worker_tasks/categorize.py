@@ -352,7 +352,13 @@ class Categorizer:
 
 
     def _get_best_keywords(self, communities, original_keywords):
-        """Return all keywords from clusters that contain a satisfactory number of the original keywords"""
+        """
+        Return all keywords from clusters that contain a satisfactory number
+        of the original keywords. We take ALL clusters above a threshold
+        because some articles have two distinct, but important categories. For
+        example, an article about Apple building features for the blind
+        community should categorize to both Apple and Blindness.
+        """
 
         best_keywords = set()
         keyword_counts = Counter(original_keywords)
