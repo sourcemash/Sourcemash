@@ -25,6 +25,9 @@ class TestCategorize:
     def test_get_valid_ngrams_bigram(self, categorizer):
         assert set(categorizer._get_valid_ngrams("Google Maps")) == set(["Google", "Maps", "Google Maps"])
 
+    def test_relatedness_score_missing_links(self, categorizer):
+        assert categorizer._get_relatedness_score([], []) == 0
+
     def test_is_viable_candidate_single_char(self, categorizer):
         assert categorizer._is_viable_candidate("a") == False
 
