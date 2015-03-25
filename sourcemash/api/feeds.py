@@ -31,21 +31,17 @@ feed_fields = {
     'id': fields.Integer,
     'title': fields.String,
     'url': fields.String,
-    'subscribed': isSubscribed
-}
-
-feed_fields_detailed = {
+    'subscribed': isSubscribed,
     'description': fields.String,
     'image_url': fields.String,
     'last_updated': fields.DateTime
 }
-feed_fields_detailed.update(feed_fields)
 
-feed_fields_status = {
+feed_status_fields = {
     'item_count': getItemCount,
     'unread_count': getUnreadCount
 }
-feed_fields_status.update(feed_fields)
+feed_status_fields = dict(feed_fields, **feed_status_fields)
 
 class FeedListAPI(Resource):
 
@@ -57,7 +53,7 @@ class FeedListAPI(Resource):
 
     @login_required
     def get(self):
-        return {'feeds': [marshal(feed, feed_fields_status) for feed in current_user.subscribed]}
+        return {'feeds': [marshal(feed, feed_status_fields) for feed in current_user.subscribed]}
 
 
     @login_required
@@ -90,13 +86,13 @@ class FeedListAPI(Resource):
             current_user.subscribed.append(feed)
             db.session.commit()
 
-        return marshal(feed, feed_fields_status), 201
+        return marshal(feed, feed_status_fields), 201
 
 
 class FeedListAllAPI(Resource):
 
     def get(self):
-        return {'feeds': [marshal(feed, feed_fields_detailed) for feed in Feed.query.all()]}
+        return {'feeds': [marshal(feed, feed_fields) for feed in Feed.query.all()]}
 
 
 class FeedAPI(Resource):
