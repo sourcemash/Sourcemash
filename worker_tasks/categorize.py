@@ -1,11 +1,45 @@
-from collections import Counter
+# categorize.py
+#
+# Adapted from algorithm by Grineva, et. al. presented at:
+# http://www.slideshare.net/maria.grineva/extracting-key-terms-from-noisy-and-multitheme-documents?related=1
+#
+# Algorithm Overview
+# 1) Get initial list of possible keyword candidates using ngram frequencies
+# 2) For each keyword candidate, use Wikipedia to extract all related article titles
+#       a) Related articles are called (disambiguation links) on Wikipedia
+# 3) Try to assign one Wikipedia article to each keyword candidate
+#       a) First, assign articles to the keywords that have only 1 related article
+#           i) i.e. Sergey Brin only corresponds to wikipedia.org/wiki/Sergey_Brin, whereas Apple might be any link in wikipedia.org/wiki/Apple_(disambiguation).
+#       b) Use these "auto-assigned" articles as the context to narrow the other categories' article
+#       c) With the context from (b), compute relatedness scores to find the best article match
+#           i) relatedness score = [SUM OF SHARED WIKIPEDIA HYPERLINKS] / [TOTAL NUMBER OF WIKIPEDIA HYPERLINKS]
+# 4) With each keyword assigned 1 article, create a graph where each vertex is an article and the edge weight
+#       is the relatedness score between two articles
+# 5) Analyze the graph from (4) to identify keyword clusters
+# 6) Only keep the clusters that have a sufficient number of keywords that contain an original keyword candidate from (1)
+# 8) Return the best keywords
+#       a) For now, we still pick the top two keywords by frequency from kept clusters, but...
+#       b) TODO: WE WILL KEEP ALL KEYWORDS FROM THE KEPT CLUSTERS
+
+
+import logging
+
+from collections import Counter, defaultdict
 from string import punctuation
-from datetime import datetime, timedelta
 
-from sourcemash.models import Item
+import requests
+import json
+from bs4 import BeautifulSoup
 
-BIGRAM_WEIGHT = 1.25
-CAPITALIZED_WORD_WEIGHT = 1.5
+import igraph
+
+logger = logging.getLogger('Sourcemash')
+
+NGRAMS = 3
+MAX_CANDIDATE_COUNT = 20
+MINIMUM_RELATEDNESS_SCORE = 0.1
+WIKIPEDIA_LINKS = "http://en.wikipedia.org/w/api.php?action=query&prop=pageprops|links&continue=&pllimit=500&redirects&format=json&titles=%s"
+WIKIPEDIA_ARTICLE = "http://en.wikipedia.org/wiki/%s"
 
 STOP_WORDS = [ "a", "about", "above", "across", "after", "afterwards", \
     "again", "against", "all", "almost", "alone", "along", "already", \
@@ -46,109 +80,355 @@ STOP_WORDS = [ "a", "about", "above", "across", "after", "afterwards", \
     "with", "within", "without", "would", "yet", "you", "your", "yours", "yourself", \
     "yourselves" ] # Source: http://xpo6.com/list-of-english-stop-words/
 
+
 class Categorizer:
 
     def __init__(self):
-        self.title_categories = Counter()
+        self._memoized_related_articles = defaultdict(list)
+        self._memoized_article_links = defaultdict(list)
+        self._memoized_semantic_relatedness_scores = defaultdict(float)
+
 
     def categorize_item(self, title, text):
-        categories = Counter()
+        # Use ngram word count approach to get possible keywords
+        keyword_candidates = self._get_keyword_candidates(title, text)
 
-        # Extract words present in category dictonary
-        title = filter(self.is_from_titles, self.get_valid_ngrams(title))
-        text = filter(self.is_from_titles, self.get_valid_ngrams(text))
+        # Store possible wiki articles and their links
+        self._memoize_related_articles(keyword_candidates.keys())
+        self._memoize_article_links(keyword_candidates.keys())
 
-        # Get word counts from title, text of article
-        categories.update(title + text)
+        # Assign best article for each possible keyword
+        assigned_articles   = self._assign_closest_articles(keyword_candidates.keys())
 
-        categories = self.get_weighted_categories(categories)
+        # Build a graph and identify keyword clusters
+        semantic_graph      = self._build_semantic_graph(assigned_articles)
+        clustering          = semantic_graph.community_multilevel(weights='weight')
 
-        return self.get_best_categories(categories)
+        # Use keywords from best clusters
+        selected_categories = self._get_best_keywords(clustering, keyword_candidates)
 
-
-    def reset_title_categories(self):
-        self.title_categories.clear()
-
-        one_day_ago = datetime.now() - timedelta(hours=24)
-        titles = [item.title for item in Item.query.filter(Item.category_1==None, Item.last_updated>=one_day_ago).all()]
-        self.parse_title_categories(titles)
+        return selected_categories
 
 
-    def parse_title_categories(self, titles):
-        for title in titles:
-            self.title_categories.update(self.get_valid_ngrams(title))
+    def _get_keyword_candidates(self, title, text):
+        title_ngrams = self._get_valid_ngrams(title)
+        text_ngrams = self._get_valid_ngrams(text)
+
+        ngrams = title_ngrams + text_ngrams
+
+        # Apply weights...
+        for ngram, count in ngrams.iteritems():
+
+            # ...from title (x2)
+            if ngram in title_ngrams:
+                ngrams.update({ngram: count})
+
+            # ...from bigram (x2) or trigram (x3)
+            for n in range(ngram.count(' ')):
+                ngrams.update({ngram: count})
+
+        return dict(ngrams.most_common(MAX_CANDIDATE_COUNT))
 
 
-    def get_valid_ngrams(self, string):
-        unigrams = [word.strip(punctuation) for word in string.replace("'s", '').split()]
-        unigrams = filter(None, unigrams)   # Remove empty strings
-        
-        bigrams = zip(*[unigrams[i:] for i in range(2)])  # tuples
-        bigrams = [' '.join(word) for word in bigrams]  # strings
-        
-        return filter(self.is_valid_category, unigrams + bigrams)
+    def _get_valid_ngrams(self, string):
+        valid_ngrams = Counter()
+
+        words = [self._clean_word(word) for word in string.split()]
+
+        for n in range(NGRAMS):
+            ngrams = zip(*[words[i:] for i in range(n + 1)])
+
+            for ngram in ngrams:
+                ngram = ' '.join(ngram)
+                if self._is_viable_candidate(ngram):
+                    valid_ngrams.update([ngram])
+
+        return valid_ngrams
 
 
-    def get_weighted_categories(self, categories):
-        for category in categories:
-            if self.is_bigram(category):
-                categories[category] *= BIGRAM_WEIGHT
+    def _clean_word(self, word):
+        # Strip punctuation
+        word = word.strip(punctuation)
 
-            if category.istitle():
-                categories[category] *= CAPITALIZED_WORD_WEIGHT
+        # Remove 's
+        word = word.replace("'s", "")
 
-        return categories
+        # Remove Smart Quotes
+        word = word.replace(u"\u2018", "").replace(u"\u2019", "").replace(u"\u201c","").replace(u"\u201d", "")
+
+        return word
 
 
-    def get_best_categories(self, categories):
+    def _memoize_related_articles(self, ngrams):
+        """Store all related (disambiguated) Wikipedia articles for each ngram"""
+
+        logger.debug("Memoizing Related Articles...")
+
+        # Scrape for disambiguation links
+        disambiguated_titles = map(lambda x: x + " (disambiguation)", ngrams)
+        self._scrape_wiki_links(disambiguated_titles)
+
+        # Scrape for remaining disambiguation pages without (disambiguation) in title
+        # If it's just a regular page (i.e. not disambiguation), then the scrape
+        # gets the page links anyway.
+        self._scrape_wiki_links(ngrams)
+
+
+    def _memoize_article_links(self, ngrams):
+        """Store all links for a Wikipedia article"""
+
+        logger.debug("Memoizing Articles Links...")
+
+        article_titles = [title for ngram in ngrams for title in self._memoized_related_articles[ngram]]
+        self._scrape_wiki_links(article_titles)
+
+
+    def _scrape_wiki_links(self, titles):
+        unscraped_titles = filter(lambda x: x not in self._memoized_article_links, titles)
+
+        for i in xrange(0, len(unscraped_titles), 5):
+
+            grouped_titles = unscraped_titles[i:i + 5]
+            grouped_titles_string = "|".join(grouped_titles)
+
+            data = {}
+            sublinks = []
+
+            links = defaultdict(list)
+            disambiguation_pages = []
+
+            # Make calls to the Wikipedia API for batches of articles
+            while 'batchcomplete' not in data:
+
+                url = WIKIPEDIA_LINKS % grouped_titles_string
+                if 'continue' in data:
+                    url += "&plcontinue=" + data['continue']['plcontinue']
+
+                resp = requests.get(url)
+                data = json.loads(resp.text)
+
+                sublinks = self._compile_sublinks(data['query'], sublinks)
+
+                for page in data['query']['pages'].itervalues():
+
+                    if "missing" in page:
+                        self._memoized_article_links[page['title']] = []
+                        self._memoized_related_articles[page['title']] = []
+                        continue
+
+                    if 'pageprops' in page and ('disambiguation' in page['title'] or 'disambiguation' in page['pageprops']):
+                        disambiguation_pages.append(page['title'])
+
+                    if "links" in page:
+                        for link in page['links']:
+                            links[page["title"]].append(link['title'])
+
+            # Store the scraped information
+            for link_title in links:
+
+                # Store links in article
+                if link_title not in self._memoized_article_links:
+                    self._memoized_article_links[link_title] = links[link_title]
+
+                if link_title in sublinks:
+                    for sublink in sublinks[link_title]:
+                        if sublink not in self._memoized_article_links:
+                            self._memoized_article_links[sublink] = links[link_title]
+
+                # Store related articles
+                if link_title in disambiguation_pages:
+                    related_links = filter(lambda x: link_title.replace(" (disambiguation)", "").lower() in x.lower(), links[link_title])
+
+                    if link_title not in self._memoized_related_articles:
+                            self._memoized_related_articles[link_title] = related_links
+                            self._memoized_related_articles[link_title.replace(" (disambiguation)", "")] = related_links
+
+
+                    if link_title in sublinks:
+                        for sublink in sublinks[link_title]:
+                            if sublink not in self._memoized_related_articles:
+                                self._memoized_related_articles[sublink] = related_links
+                                self._memoized_related_articles[sublink.replace(" (disambiguation)", "")] = related_links
+                else:
+                    if link_title not in self._memoized_related_articles:
+                            self._memoized_related_articles[link_title] = [link_title]
+
+                    if link_title in sublinks:
+                        for sublink in sublinks[link_title]:
+                            if sublink not in self._memoized_related_articles:
+                                self._memoized_related_articles[sublink] = [link_title]
+
+
+    def _assign_closest_articles(self, ngrams):
+        """Extract Wikipedia articles closest to an ngram"""
+
+        logger.debug("Assigning Articles to Phrases...")
+
+        ambiguous_ngrams = filter(lambda x: len(self._memoized_related_articles[x]) > 1, ngrams)
+        unambiguous_ngrams = filter(lambda x: len(self._memoized_related_articles[x]) == 1, ngrams)
+
+        # First assign all of the definite matches
+        assigned_articles = [self._memoized_related_articles[unambiguous_ngram][0] for unambiguous_ngram in unambiguous_ngrams]
+
+        # Use the definite matches as contextual links
+        context_links = [link for article in assigned_articles for link in self._memoized_article_links[article]]
+
+        # Word-Sense disambiguate remaining words, using context links
+        for ambiguous_ngram in ambiguous_ngrams:
+
+            max_relatedness_score = MINIMUM_RELATEDNESS_SCORE
+            best_article = None
+
+            for article in self._memoized_related_articles[ambiguous_ngram]:
+
+                article_relatedness_score = self._get_relatedness_score(self._memoized_article_links[article], context_links)
+
+                if article_relatedness_score > max_relatedness_score:
+                    max_relatedness_score = article_relatedness_score
+                    best_article = article
+
+            if best_article:
+                assigned_articles.append(best_article)
+
+        return assigned_articles
+
+
+    def _build_semantic_graph(self, articles):
         """
-        Choose the two highest-weighted categories that don't share
-        a common word. For example, "Just" and "Just Works" should
-        not be selected as the two best.
+        Create a category graph where each vertex is a Wikipedia article
+        and the edges are weighted by relatedness scores (number of overlapping
+        links) between each pair.
         """
-        cat1, cat2 = "", ""
-        for category, weights in categories.most_common():
-            category = category.title()
-            if cat1 in cat2:
-                cat1 = category
-            elif cat2 in cat1:
-                cat2 = category
-            else:
-                break
 
-        return cat1, cat2
+        logger.debug("Building semantic graph...")
+
+        edges = []
+        vertex_attrs = {"name": []}
+        edge_attrs = {"weight": []}
+
+        for i, article_1 in enumerate(articles):
+            vertex_attrs["name"].append(article_1)
+
+            for j, article_2 in enumerate(articles):
+                if i == j:
+                    continue
+
+                if (article_1, article_2) in self._memoized_semantic_relatedness_scores:
+                    relatedness_score = self._memoized_semantic_relatedness_scores[(article_1, article_2)]
+                else:
+                    relatedness_score = self._get_relatedness_score(self._memoized_article_links[article_1], self._memoized_article_links[article_2])
+                    self._memoized_semantic_relatedness_scores[(article_1, article_2)] = relatedness_score
+                    self._memoized_semantic_relatedness_scores[(article_2, article_1)] = relatedness_score
+
+                if relatedness_score:
+                    edges.append([i, j])
+                    edge_attrs["weight"].append(relatedness_score)
+
+        return igraph.Graph(edges=edges, vertex_attrs=vertex_attrs, edge_attrs=edge_attrs)
 
 
-    def is_from_titles(self, word):
-        # Case-Insensitive Comparison
-        # since titles are uppercase and body text lowercase
-        return word.title() in self.title_categories
+    def _get_relatedness_score(self, article_1_links, article_2_links):
+        """Calculate overlap of two Wikipedia articles: 2 * [# of shared links] / [total # of links]"""
+
+        total_links_count = len(article_1_links) + len(article_2_links)
+
+        if not total_links_count:
+            return 0
+
+        shared_links_count = 0
+        for article_link in article_1_links:
+            weight = 1
+            if "Template" in article_link or \
+                "Wikipedia" in article_link or \
+                "Help" in article_link:
+                weight = 0.0
+            if "Category" in article_link:
+                weight = 1.5
+
+            if article_link in article_2_links:
+                shared_links_count += weight
+
+        return 2.0 * shared_links_count / total_links_count
 
 
-    def is_bigram(self, word):
-        return " " in word
+    def _get_best_keywords(self, communities, original_keywords):
+        """
+        Return all keywords from clusters that contain a satisfactory number
+        of the original keywords. We take ALL clusters above a threshold
+        because some articles have two distinct, but important categories. For
+        example, an article about Apple building features for the blind
+        community should categorize to both Apple and Blindness.
+        """
+
+        best_keywords = set()
+        keyword_counts = Counter(original_keywords)
+
+        for cluster in communities.subgraphs():
+            vertex_names = map(lambda x: x['name'], cluster.vs)
+
+            matching_vertices_count = sum(map(lambda x: keyword_counts[x] if x in keyword_counts else 0, vertex_names))
+
+            cluster_score = float(matching_vertices_count) / len(cluster.vs)
+
+            if cluster_score > 1:
+                best_keywords.update(vertex_names)
+
+        if len(best_keywords) < 2:
+            best_original_keywords = keyword_counts.most_common(2)
+            best_keywords.update([keyword[0] for keyword in best_original_keywords])
+
+        return [keyword.title() for keyword in best_keywords] if best_keywords else [""]
 
 
-    def is_valid_category(self, category):
+    def _is_viable_candidate(self, phrase):
 
-        # If bigram, check that both words are valid
-        if self.is_bigram(category):
-            category = category.split()
-            return self.is_valid_category(category[0]) and self.is_valid_category(category[1])
-
-        # Ignore single characters
-        if len(category) < 2:
-            return False
-
-        # Ignore stop words
-        if category.lower() in STOP_WORDS:
+        # Ignore 1-character phrases
+        if len(phrase) < 2:
             return False
 
         # Ignore numbers
         try:
-            float(category)
+            phrase = phrase.replace(',', '')
+            float(phrase)
             return False
         except ValueError:
             pass
 
+        words = phrase.split()
+
+        # Ignore stop words
+        if words[0].lower() in STOP_WORDS:
+            return False
+
+        # Ignore non-title trigrams
+        if len(words) == 3:
+            if words[2].lower() in STOP_WORDS:
+                return False
+
+            titled_words = map(lambda x: x.istitle(), words)
+            if titled_words not in [[True, False, True], [True, True,True]]:
+                return False
+
         return True
+
+
+    def _compile_sublinks(self, data, link_path=None):
+        """Flatten normalized and redirect links for quick lookup"""
+
+        link_redirects = defaultdict(set)
+        if "redirects" in data:
+            for redirect in data['redirects']:
+                link_redirects[redirect['to']].add(redirect['from'])
+
+        if not link_path:
+            link_path = link_redirects
+
+        if "normalized" in data:
+            for normalized_link in data['normalized']:
+                link_path[normalized_link['to']].add(normalized_link['from'])
+
+                for to_link, from_links in link_path.iteritems():
+                    if normalized_link['to'] in from_links:
+                        link_path[to_link].update(normalized_link['to'], normalized_link['from'])
+
+        return link_path

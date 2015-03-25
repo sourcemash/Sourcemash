@@ -9,6 +9,8 @@ SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
 
 SECRET_KEY = os.environ['SECRET_KEY']
 
-logging.basicConfig(level=logging.DEBUG, streak=sys.stdout)
+logger = logging.getLogger('Sourcemash')
+logger.setLevel(logging.DEBUG)
+logger.addHandler(sys.stdout)
 
-logging.info("Staging settings loaded.")
+logger.info("Staging settings loaded.")

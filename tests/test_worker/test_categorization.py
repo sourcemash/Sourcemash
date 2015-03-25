@@ -1,101 +1,47 @@
+# -*- coding: UTF-8 -*-
+
 import pytest
-from worker_tasks.categorize import Categorizer
-from collections import Counter
 
 class TestCategorize:
 
-    def test_categorize_item(self, ebolaItem):
-        categorizer = Categorizer()
-        
-        categorizer.parse_title_categories([ebolaItem.title])
-        
-        (cat1, cat2) = categorizer.categorize_item(ebolaItem.title, ebolaItem.text)
+    def test_categorize_item(self, categorizer, ebolaItem):
+        categories = categorizer.categorize_item(ebolaItem.title, ebolaItem.text)
+        overlapping_categories = filter(lambda x: "Ebola" in x or "West Africa" in x, categories)
+        assert len(overlapping_categories) == 2
 
-        assert set([cat1, cat2]) == set(["Ebola", "West Africa"])
+    def test_categorize_items_too_few_wiki_links(self, categorizer, ebolaItem):
+        assert set(categorizer.categorize_item("ZenPayroll", "company")) == set(["Zenpayroll", "Company"])
 
-    
-    def test_empty_categories(self):
-        categorizer = Categorizer()
+    def test_empty_categories(self, categorizer):
+        categories = categorizer.categorize_item("Of The", "Of The Of The Of The Of The")
+        assert categories == [""]
 
-        (cat1, cat2) = categorizer.categorize_item("Of The", "Of The Of The Of The Of The")
+    def test_get_valid_ngrams_apostrophe_s(self, categorizer):
+        assert categorizer._get_valid_ngrams("Harry's").keys() == ["Harry"]
 
-        assert (cat1, cat2) == ("", "")
+    def test_get_valid_ngrams_punctuation(self, categorizer):
+        assert categorizer._get_valid_ngrams('Google.').keys() == ["Google"]
 
+    def test_get_valid_ngrams_bigram(self, categorizer):
+        assert set(categorizer._get_valid_ngrams("Google Maps")) == set(["Google", "Maps", "Google Maps"])
 
-    def test_parse_title_categories(self, item):
-        categorizer = Categorizer()
-        categorizer.parse_title_categories([item.title])
+    def test_relatedness_score_missing_links(self, categorizer):
+        assert categorizer._get_relatedness_score([], []) == 0
 
-        assert categorizer.title_categories['Item'] == 1
+    def test_is_viable_candidate_single_char(self, categorizer):
+        assert categorizer._is_viable_candidate("a") == False
 
+    def test_is_viable_candidate_stopword(self, categorizer):
+        assert categorizer._is_viable_candidate("and") == False
 
-    def test_reset_title_categories(self, item):
-        categorizer = Categorizer()
-        categorizer.parse_title_categories([item.title])
+    def test_is_viable_candidate_number(self, categorizer):
+        assert categorizer._is_viable_candidate("100") == False
 
-        assert categorizer.title_categories['Item'] == 1
+    def test_is_viable_candidate_bigram_both_valid(self, categorizer):
+        assert categorizer._is_viable_candidate("elemental alligator") == True
 
-        categorizer.reset_title_categories()
+    def test_is_viable_candidate_bigram_one_invalid(self, categorizer):
+        assert categorizer._is_viable_candidate("and alligator") == False
 
-        # Counts should have been set back to zero
-        assert categorizer.title_categories['Item'] == 1
-
-
-    def test_get_best_categories(self, item):
-        categorizer = Categorizer()
-        categorizer.parse_title_categories(["Google and Facebook settle on big deal"])
-        weighted_categories = categorizer.get_weighted_categories(categorizer.title_categories)
-
-        assert set(categorizer.get_best_categories(weighted_categories)) == set(["Google", "Facebook"])
-
-
-    def test_get_best_categories_with_overlapped_tags(self, item):
-        """
-        Google should not be a category since Google Maps is one. 
-        Facebook should be one instead.
-        """
-        categorizer = Categorizer()
-        categorizer.parse_title_categories(["Google Maps gives Google leg up on Facebook despite Google's best efforts."])
-        weighted_categories = categorizer.get_weighted_categories(categorizer.title_categories)
-
-        assert set(categorizer.get_best_categories(weighted_categories)) == set(["Google Maps", "Facebook"])
-
-
-    def test_polished_string_apostrophe_s(self):
-        categorizer = Categorizer()
-        assert categorizer.get_valid_ngrams("Harry's") == ["Harry"]
-
-
-    def test_get_valid_ngrams_punctuation(self):
-        categorizer = Categorizer()
-        assert categorizer.get_valid_ngrams('Google.') == ["Google"]
-
-
-    def test_get_valid_ngrams_bigram(self):
-        categorizer = Categorizer()
-        assert set(categorizer.get_valid_ngrams("Google Maps")) == set(["Google", "Maps", "Google Maps"])
-
-
-    def test_is_valid_category_single_char(self):
-        categorizer = Categorizer()
-        assert categorizer.is_valid_category('a') == False
-
-
-    def test_is_valid_category_stopword(self):
-        categorizer = Categorizer()
-        assert categorizer.is_valid_category('and') == False
-
-
-    def test_is_valid_category_number(self):
-        categorizer = Categorizer()
-        assert categorizer.is_valid_category('100') == False
-
-
-    def test_is_valid_category_tuple_both_valid(self):
-        categorizer = Categorizer()
-        assert categorizer.is_valid_category(('elemental alligator')) == True
-
-
-    def test_is_valid_category_tuple_one_invalid(self):
-        categorizer = Categorizer()
-        assert categorizer.is_valid_category(('and alligator')) == False
+    def test_is_viable_candidate_trigram_valid(self, categorizer):
+        assert categorizer._is_viable_candidate("Abercrombie and Fitch") == True

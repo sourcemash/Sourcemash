@@ -7,4 +7,5 @@ TESTING = True
 LOGIN_DISABLED = False
 SQLALCHEMY_DATABASE_URI = ('sqlite:///:memory:')
 
-logging.info("Testing settings loaded.")
+logger = logging.getLogger('Sourcemash')
+logger.info("Testing settings loaded.")

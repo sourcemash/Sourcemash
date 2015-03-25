@@ -15,4 +15,5 @@ WTF_CSRF_SECRET_KEY = os.environ['WTF_CSRF_SECRET_KEY']
 SAUCE_USERNAME = os.environ['SAUCE_USERNAME']
 SAUCE_ACCESS_KEY = os.environ['SAUCE_ACCESS_KEY']
 
-logging.info("Travis settings loaded.")
+logger = logging.getLogger('Sourcemash')
+logger.info("Travis settings loaded.")

@@ -1,8 +1,17 @@
 # .coveragerc to control coverage.py
 
+[run]
+omit =
+    config/*
+    flask/*
+    instance/*
+    migrations/*
+    sourcemash/frontend/*
+    tests/*
+    worker_tasks/scraper.py
+    manage.py
+
 [report]
-# Regexes for lines to exclude from consideration
-omit = sourcemash/frontend/*
 exclude_lines =
     # Have to re-enable the standard pragma
     pragma: no cover
