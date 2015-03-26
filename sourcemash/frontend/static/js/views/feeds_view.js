@@ -32,7 +32,7 @@ Sourcemash.Views.FeedsView = Backbone.View.extend({
   },
   newAttributes: function(){
     var url = this.$('#url').val()
-    
+
     if (!this._isValidURL(url)) {
       var feed = this.allFeeds.findWhere({'title': url});
       if (feed) {

@@ -2,16 +2,16 @@
   <div class="card">
 
     <div class="card-image waves-effect waves-block waves-light">
-      <a href="#/feeds/<%= model.get('id') %>">
+      <a href="/#feeds/<%= model.get('id') %>">
         <img class="activator mark-read" src=<%= model.get('image_url') %>>
       </a>
     </div>
-    
+
     <div class="card-content">
-      
+
       <div class="card-title">
         <div class="col s9">
-          <a href="#/feeds/<%= model.get('id') %>" class="row">
+          <a href="/#feeds/<%= model.get('id') %>" class="row">
             <%= model.get('title') %>
           </a>
         </div>

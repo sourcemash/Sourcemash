@@ -1,35 +1,24 @@
-{% from "security/_macros.html" import form_field %}
+<form class="col s12" id="login" action="/login" method="POST" name="login_user_form">
+  <div class="input-field">
+    <input class="validate" id="email" name="email" type="email">
+    <label for="email" class="">Email Address</label>
+    <div class="errors"></div>
+  </div>
+  <div class="input-field">
+    <input class="validate" id="password" name="password" type="password">
+    <label for="password">Password</label>
+    <div class="errors"></div>
+  </div>
 
-{% extends "base.html" %}
-
-{% block layout %}
-<h1>Login</h1>
-<div class="row">
-  <form class="col s12" id="login" action="{{ url_for_security('login') }}" method="POST" name="login_user_form">
-    {{ login_user_form.hidden_tag() }}
-    <div class="row">
-      <div class="input-field col s12">
-        {{ form_field(login_user_form.email, type="email") }}
-      </div>
+  <div class="row">
+    <div class="input-field col s5">
+      <button type="submit" class="btn waves-effect waves-light">Login</button>
     </div>
-    <div class="row">
-      <div class="input-field col s12">
-        {{ form_field(login_user_form.password) }}
-      </div>
+    <div class="input-field col s7">
+      <input class="validate" id="remember" name="remember" type="checkbox">
+      <label for="remember">Remember Me</label>
+      <div class="errors"></div>
     </div>
-    <div class="row">
-      <div class="input-field col s12 m3 l2">
-        {{ form_field(login_user_form.submit) }}
-      </div>
-      <div class="input-field col s12 m9 l10">
-        {{ form_field(login_user_form.remember) }}
-      </div>
-    </div>
-    {{ login_user_form.next }}
-  </form>
-</div>
-
-<script>
-  mixpanel.track_forms("#login", "Logged In");
-</script>
-{% endblock %}
+  </div>
+</form>
+<div class="center-align"><a href="/register">Need an account? Register</a></div>
