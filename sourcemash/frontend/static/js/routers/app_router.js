@@ -18,8 +18,8 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         self._sidenav = new Sourcemash.Views.SidenavView({ user: self._user, feeds: self._feeds, categories: self._categories });
 
         self._user.fetch({success: this._identifyUser});
-        self._sidenav.feeds.fetch();
-        self._sidenav.categories.fetch();
+        self._sidenav.feeds.fetch({wait: true});
+        self._sidenav.categories.fetch({wait: true});
 
         self._sidenav.render();
     },
