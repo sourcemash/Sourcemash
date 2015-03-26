@@ -24,25 +24,24 @@ class getItemCount(fields.Raw):
 class getUnreadCount(fields.Raw):
     def output(self, key, feed):
         total_item_count = Item.query.filter_by(feed_id=feed.id).count() 
-        
-        if not current_user.is_authenticated():
-            return total_item_count 
-        
         read_item_count = UserItem.query.filter_by(user=current_user, feed_id=feed.id, unread=False).count()
-
         return total_item_count - read_item_count
 
 feed_fields = {
     'id': fields.Integer,
     'title': fields.String,
     'url': fields.String,
+    'subscribed': isSubscribed,
     'description': fields.String,
     'image_url': fields.String,
-    'last_updated': fields.DateTime,
-    'item_count': getItemCount,
-    'unread_count': getUnreadCount,
-    'subscribed': isSubscribed
+    'last_updated': fields.DateTime
 }
+
+feed_status_fields = {
+    'item_count': getItemCount,
+    'unread_count': getUnreadCount
+}
+feed_status_fields = dict(feed_fields, **feed_status_fields)
 
 class FeedListAPI(Resource):
 
@@ -54,7 +53,7 @@ class FeedListAPI(Resource):
 
     @login_required
     def get(self):
-        return {'feeds': [marshal(feed, feed_fields) for feed in current_user.subscribed]}
+        return {'feeds': [marshal(feed, feed_status_fields) for feed in current_user.subscribed]}
 
 
     @login_required
@@ -87,7 +86,7 @@ class FeedListAPI(Resource):
             current_user.subscribed.append(feed)
             db.session.commit()
 
-        return marshal(feed, feed_fields), 201
+        return marshal(feed, feed_status_fields), 201
 
 
 class FeedListAllAPI(Resource):

@@ -10,6 +10,8 @@ from sourcemash.forms import VoteForm
 
 class getVote(fields.Raw):
     def output(self, key, item):
+        if not current_user.is_authenticated():
+            return 0      
         try:
             vote = UserItem.query.filter_by(user=current_user, item=item).one().vote
         except:
@@ -32,22 +34,19 @@ class getSavedStatus(fields.Raw):
 item_fields = {
     'id': fields.Integer,
     'title': fields.String,
-    'text': fields.String,
     'link': fields.String,
     'last_updated': fields.DateTime,
     'author': fields.String,
     'category_1': fields.String,
     'category_2': fields.String,
-    'summary': fields.String,
+    'voteSum': fields.Integer,
     'image_url': fields.String,
+    'summary': fields.String,
     'feed': fields.Nested(feed_fields),
     'unread': getUnreadStatus,
     'saved': getSavedStatus,
-    'vote': getVote,
-    'voteSum': fields.Integer,
-    'uri': fields.Url('api.item')
+    'vote': getVote
 }
-
 
 class ItemAPI(Resource):
     def __init__(self):
@@ -115,7 +114,6 @@ class FeedItemListAPI(Resource):
     def get(self, feed_id):
         return {'items': [marshal(item, item_fields) for item in Item.query.filter_by(feed_id=feed_id).all()]}
 
-
 class CategoryItemListAPI(Resource):
 
     @login_required
@@ -143,7 +141,6 @@ class CategoryItemListAllAPI(Resource):
         category = category.title()
         items = Item.query.filter((Item.category_1 == category) | (Item.category_2 == category)).all()
         return {'items': [marshal(item, item_fields) for item in items]}
-
 
 api.add_resource(ItemAPI, '/items/<int:id>', endpoint='item')
 api.add_resource(SavedItemListAPI, '/items/saved', endpoint='saved_items')
