@@ -42,6 +42,7 @@ item_fields = {
     'voteSum': fields.Integer,
     'image_url': fields.String,
     'summary': fields.String,
+    'trending': fields.Integer,
     'feed': fields.Nested(feed_fields),
     'unread': getUnreadStatus,
     'saved': getSavedStatus,
