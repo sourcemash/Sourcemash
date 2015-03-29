@@ -1675,7 +1675,7 @@ $(document).ready(function(){
   var methods = {
     init : function(options) {
       var defaults = {
-        menuWidth: 240,
+        menuWidth: 360,
         edge: 'left',
         closeOnClick: false
       }
@@ -2916,7 +2916,7 @@ $(document).ready(function(){
         }
 
 
-        
+
         updateElements($this, $(window).scrollTop());
         $(window).on('scroll.' + $uniqueId, function () {
           var $scrolled = $(window).scrollTop() + options.offset;
@@ -2924,14 +2924,14 @@ $(document).ready(function(){
           updateElements($this, $scrolled);
         });
 
-      }); 
+      });
 
 
 
     };
 
-  
-  
+
+
 
   });
 }( jQuery ));;(function ($) {
