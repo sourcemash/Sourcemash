@@ -13,6 +13,7 @@ class Item(db.Model):
     category_1 = db.Column(db.String(100))
     category_2 = db.Column(db.String(100))
     voteSum = db.Column(db.Integer, default=0)
+    trending = db.Column(db.Integer, default=0) # total number of votes cast
 
     def __repr__(self):
         return "<Item %r (%r)>" % (self.title, self.link)

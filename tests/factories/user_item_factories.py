@@ -15,12 +15,12 @@ class UserItemFactory(SQLAlchemyModelFactory):
 
 class UserItemUpvoteFactory(UserItemFactory):
     vote = 1
-    item = factory.SubFactory(ItemFactory, voteSum=1)
+    item = factory.SubFactory(ItemFactory, voteSum=1, trending=1)
 
 
 class UserItemDownvoteFactory(UserItemFactory):
     vote = -1
-    item = factory.SubFactory(ItemFactory, voteSum=-1)
+    item = factory.SubFactory(ItemFactory, voteSum=-1, trending=1)
 
 
 class UserItemReadFactory(UserItemFactory):
