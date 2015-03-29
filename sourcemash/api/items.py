@@ -3,6 +3,7 @@ from sourcemash.database import db
 from flask import abort
 from flask.ext.restful import Resource, reqparse, inputs, fields, marshal
 from flask.ext.security import current_user, login_required
+from operator import itemgetter
 
 from feeds import feed_fields
 from sourcemash.models import Item, UserItem
@@ -109,6 +110,22 @@ class SavedItemListAPI(Resource):
         user_items = UserItem.query.filter_by(user=current_user, saved=True).all()
         return {'items': [marshal(user_item.item, item_fields) for user_item in user_items]}
 
+class TrendingItemListAPI(Resource):
+
+    @login_required
+    def get(self):
+
+        trending_items = []
+        for user_item in UserItem.query.filter_by(~vote=0).all():
+
+            trend_count = UserItem.query.filter_by(~vote=0, item=user_item.item).count()
+            trending_items.append((user_item, trend_count))
+
+        sorted(trending_items, key=itemgetter(1))
+        trending_user_items, _ = zip(*trending_items)
+
+        return {'items': [marshal(user_item.item, item_fields) for user_item in trending_user_items]}
+
 class FeedItemListAPI(Resource):
 
     def get(self, feed_id):
@@ -144,6 +161,7 @@ class CategoryItemListAllAPI(Resource):
 
 api.add_resource(ItemAPI, '/items/<int:id>', endpoint='item')
 api.add_resource(SavedItemListAPI, '/items/saved', endpoint='saved_items')
+api.add_resource(TrendingItemListAPI, '/items/trending', endpoint='trending_items')
 api.add_resource(FeedItemListAPI, '/feeds/<int:feed_id>/items', endpoint='feed_items')
 api.add_resource(CategoryItemListAPI, '/categories/<string:category>/items', endpoint='category_items')
 api.add_resource(CategoryItemListAllAPI, '/categories/<string:category>/items/all', endpoint='category_items_all')
