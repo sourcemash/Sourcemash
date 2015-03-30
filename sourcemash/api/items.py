@@ -4,6 +4,7 @@ from flask import abort
 from flask.ext.restful import Resource, reqparse, inputs, fields, marshal
 from flask.ext.security import current_user, login_required
 from operator import itemgetter
+from datetime import datetime, timedelta
 
 from feeds import feed_fields
 from sourcemash.models import Item, UserItem
@@ -114,17 +115,26 @@ class TrendingItemListAPI(Resource):
 
     @login_required
     def get(self):
+        '''
+           19:         distinct_category_1 = Item.query.with_entities(Item.category_1, func.count())   \
+   20                                          .filter(Item.feed_id.in_(user_feed_ids))        \
+   21                                          .group_by(Item.category_1)                      \
+   22                                          .all()
+                                                .sorted ???
+    Get all counts (above), eliminate items that are too old (for loop)
+   '''
+        # curr_user_items = UserItem.query.filter(UserItem.vote != 0,
+        #                         UserItem.item.last_updated > (datetime.utcnow() - datetime.timedelta(days=7)) ).all()
 
-        trending_items = []
-        for user_item in UserItem.query.filter(UserItem.vote != 0).all():
+        # trending_items = []
+        # for user_item in curr_user_items:
 
-            trend_count = UserItem.query.filter(UserItem.vote != 0, UserItem.item == user_item.item).count()
-            trending_items.append((user_item, trend_count))
+        #     trend_count = UserItem.query.filter(UserItem.vote != 0, UserItem.item == user_item.item).count()
+        #     trending_items.append((user_item, trend_count))
 
-        sorted(trending_items, key=itemgetter(1))
-        trending_user_items, _ = zip(*trending_items)
+        trending_user_items, _ = zip(*trending_items) #### WATCH NONE v. []
 
-        return {'items': [marshal(user_item.item, item_fields) for user_item in trending_user_items]}
+        return {'items': [marshal(user_item.item, item_fields) for user_item in trending_user_items'''[:10]''']}
 
 class FeedItemListAPI(Resource):
 
