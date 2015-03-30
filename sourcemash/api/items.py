@@ -116,9 +116,9 @@ class TrendingItemListAPI(Resource):
     def get(self):
 
         trending_items = []
-        for user_item in UserItem.query.filter_by(~vote=0).all():
+        for user_item in UserItem.query.filter(UserItem.vote != 0).all():
 
-            trend_count = UserItem.query.filter_by(~vote=0, item=user_item.item).count()
+            trend_count = UserItem.query.filter(UserItem.vote != 0, UserItem.item == user_item.item).count()
             trending_items.append((user_item, trend_count))
 
         sorted(trending_items, key=itemgetter(1))
