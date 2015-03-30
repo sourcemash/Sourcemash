@@ -52,6 +52,7 @@
     <ul class="navigation-btns collection">
       <a href="/#browse"><li class="collection-item"><i class="mdi-action-view-module"></i>Browse</li></a>
       <a href="/#saved"><li class="collection-item"><i class="mdi-action-bookmark"></i>Saved</li></a>
+      <a href="/#profile"><li class="collection-item"><i class="mdi-social-person"></i>Profile</li></a>
       <a href="/logout"><li class="collection-item"><i class="mdi-action-exit-to-app"></i>Logout</li></a>
     </ul>
   <% } else { %>
