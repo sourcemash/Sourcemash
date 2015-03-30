@@ -19,7 +19,7 @@
               <% }; %>
           </li></a>
         <% }); %>
-        <% if (!feeds.length) { %>
+        <% if (!feeds.where({subscribed: true}).length) { %>
           <a href="/#browse"><li class="row center-align collection-item">
             <i class="mdi-action-view-module"></i>
             Browse Feeds
@@ -27,18 +27,16 @@
         <% }; %>
       </ul>
       <ul id="feeds-list" class="collection col s12">
-        <% feeds.forEach(function(feed) { %>
-          <% if (feed.get('subscribed')) { %>
-            <a href="/#feeds/<%= feed.get('id') %>"><li class="row collection-item">
-            <span class="col s7 truncate"><%= feed.get('title') %></span>
-            <span class="badge col s2"><%=feed.get('item_count')%></span>
-            <% if (feed.get('unread_count') > 0) { %>
-              <span class="new badge col s3"><%=feed.get('unread_count')%></span>
-            <% }; %>
-            </li></a>
+        <% feeds.where({subscribed: true}).forEach(function(feed) { %>
+          <a href="/#feeds/<%= feed.get('id') %>"><li class="row collection-item">
+          <span class="col s7 truncate"><%= feed.get('title') %></span>
+          <span class="badge col s2"><%=feed.get('item_count')%></span>
+          <% if (feed.get('unread_count') > 0) { %>
+            <span class="new badge col s3"><%=feed.get('unread_count')%></span>
           <% }; %>
+          </li></a>
         <% }); %>
-        <% if (!feeds.length) { %>
+        <% if (!feeds.where({subscribed: true}).length) { %>
           <a href="/#browse"><li class="row center-align collection-item">
             <i class="mdi-action-view-module"></i>
             Browse Feeds
