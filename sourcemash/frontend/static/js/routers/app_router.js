@@ -55,12 +55,8 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
     },
 
     showCategory: function(keyword) {
-        var category = this._categories.findWhere({category: keyword})
-
-        if (!category) {
-            category = new Sourcemash.Models.Category({ category: keyword });
-            this._categories.add(category);
-        }
+        var category = new Sourcemash.Models.Category({ category: keyword });
+        category = this._categories.add(category);
 
         var categoryItems = new Sourcemash.Collections.Items([], {category: category});
         var categoryView = new Sourcemash.Views.CategoryView({ model: category, collection: categoryItems });
