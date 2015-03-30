@@ -12,16 +12,18 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         var self = this;
 
         self._user = new Sourcemash.Models.User();
-        self._feeds = new Sourcemash.Collections.Feeds();
+        self._feeds = new Sourcemash.Collections.Feeds([], {allFeeds: true});
         self._categories = new Sourcemash.Collections.Categories();
 
         self._sidenav = new Sourcemash.Views.SidenavView({ user: self._user, feeds: self._feeds, categories: self._categories });
 
         self._user.fetch({success: this._identifyUser});
-        self._sidenav.feeds.fetch({wait: true});
-        self._sidenav.categories.fetch({wait: true});
+        self._sidenav.feeds.reset(self._feeds);
+        self._sidenav.categories.reset(self._categories);
 
         self._sidenav.render();
+        self._feeds.fetch();
+        self._categories.fetch();
     },
 
     showSplash: function() {
@@ -35,21 +37,14 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
     },
 
     browseFeeds: function() {
-        var browseView = new Sourcemash.Views.BrowseView({
-            collection: new Sourcemash.Collections.Feeds([], {allFeeds: true}),
-        });
-
-        browseView.collection.fetch();
+        var browseView = new Sourcemash.Views.BrowseView({collection: this._feeds});
+        browseView.collection.fetch({feeds: this._feeds});
         this._swapView(browseView);
     },
 
     showFeed: function(id) {
-        var feed = this._feeds.findWhere({id: id})
-
-        if (!feed) {
-            feed = new Sourcemash.Models.Feed({ id: id });
-            this._feeds.add(feed);
-        }
+        var feed = new Sourcemash.Models.Feed({ id: id });
+        feed = this._feeds.add(feed);
 
         var feedItems = new Sourcemash.Collections.Items([], {feed: feed});
         var feedView = new Sourcemash.Views.FeedView({ model: feed, collection: feedItems });
@@ -61,6 +56,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
 
     showCategory: function(keyword) {
         var category = this._categories.findWhere({category: keyword})
+
         if (!category) {
             category = new Sourcemash.Models.Category({ category: keyword });
             this._categories.add(category);
