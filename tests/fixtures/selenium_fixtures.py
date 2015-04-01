@@ -75,7 +75,7 @@ def driver(request):
             sauce.jobs.update_job(driver.session_id, passed=False)
     elif request.node.rep_setup.passed:
         if request.node.rep_call.failed:
-            if sauce_access_key:    
+            if sauce_access_key:
                 sauce.jobs.update_job(driver.session_id, passed=False)
             else:
                 request.instance.browser.driver.get_screenshot_as_file("/tmp/" +
@@ -83,7 +83,7 @@ def driver(request):
                         "tests/", "").replace('/', '-') + ".png")
         if request.node.rep_call.passed and sauce_access_key:
             sauce.jobs.update_job(driver.session_id, passed=False)
-    
+
     driver.quit()
 
 # @atexit.register

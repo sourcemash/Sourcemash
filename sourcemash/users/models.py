@@ -22,7 +22,7 @@ class User(db.Model, UserMixin):
                                 secondary=subscriptions,
                                 backref=db.backref('subscribers', lazy='dynamic'),
                                 lazy='dynamic')
-    
+
     roles = db.relationship('Role',
                             secondary=role_users,
                             backref=db.backref('users', lazy='dynamic'),
@@ -30,7 +30,7 @@ class User(db.Model, UserMixin):
 
     items = db.relationship('UserItem', cascade='delete,delete-orphan',
                                         backref='users')
-    
+
     def __repr__(self):
         return "<User %r (%d)>" % (self.email, self.id)
 

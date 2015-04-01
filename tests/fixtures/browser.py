@@ -43,22 +43,22 @@ WebElement.find_elements_by_locator = find_elements_by_locator
 #     return wrapper
 
 
-class Browser(object): 
+class Browser(object):
     """This is a wrapper to the Selenium Webdriver API. It wraps common functions so that
     it can retrieve elements while automatically handling common issues and also provide
     waiting methods to synchronize the interaction of tests."""
-    
+
     def __init__(self, driver, base_url, timeout):
         self.driver = driver
         self.base_url = base_url
         self.timeout = timeout
         self.scope = 'session'
-    
+
     @property
     def main_domain_url(self) :
         """Returns the main URL in the form of http://domain.com"""
         return self.base_url
-    
+
     @main_domain_url.setter
     def main_domain_url(self, url):
         """Sets the main URL. Format should be prefix://FQDN """
@@ -67,12 +67,12 @@ class Browser(object):
     def quit(self):
         """Closes the browser and releases the webdriver resource."""
         self.driver.quit()
-     
+
     def maximize_window(self):
         """Maximize window to screen width and height."""
         #self.execute_script("window.moveTo(0,0);window.resizeTo(screen.width,screen.height);")
         self.driver.maximize_window()
-        
+
     def go_to(self, url):
         """Navigate to a page."""
         self.driver.get(url)
@@ -80,44 +80,44 @@ class Browser(object):
     def go_to_relative_url(self, relative_url):
         """Navigate to a URL using the predefined base URL."""
         self.driver.get(urljoin(self.main_domain_url, relative_url))
-    
-    @property    
+
+    @property
     def title(self):
         """Get title of web page."""
         return self.driver.title
-    
+
     def navigate_back_a_page(self):
         """Navigate a page back as if the user pressed the browser's back button."""
         self.driver.back()
-    
+
     def navigate_forward(self):
         """Navigate forward in the history, as if the user pressed browser's forward button."""
         self.driver.forward()
-     
+
     def refresh(self):
         """Reloads/refreshes the browser page."""
         self.driver.refresh()
-    
+
     def switch_to_frame(self, frame):
         """Switches to a frame or iframe by id (an int like 0,1,2...)
         or WebElement that is a frame or iframe elemnent
         or frame name ex <frame name='inner'> """
         self.driver.switch_to_frame(frame)
-     
+
     def switch_to_main_frame(self):
        """Switches to the main/top/default frame."""
        self.driver.switch_to_default_content()
-    
+
     def return_active_element(self):
         """Returns the active web element. Similar to document.activeElement' in Javascript.
         If there's no active element it returns the BODY element. """
         return self.driver.switch_to_active_element()
-    
+
     def close_window(self):
         """Closes the current browser window, if there is more than one. For a solo window, use quit()."""
         if len(self.driver.window_handles) > 1:
             self.driver.close()
-    
+
     def get_cookie(self, name):
         """Returns a single cookie by name. Returns a single cookie if found, None if not."""
         return self.driver.get_cookie(name)
@@ -129,7 +129,7 @@ class Browser(object):
     def delete_cookie(self, name):
         """Deletes a single cookie that matches the name."""
         self.driver.delete_cookie(name)
-   
+
     def add_cookie(self, cookie_dict):
         """Adds a cookie to the current session.
         Cookie is a dict with these required keys:
@@ -140,17 +140,17 @@ class Browser(object):
     def delete_all_cookies(self):
         """Deletes all cookies in the cookie cache."""
         self.driver.delete_all_cookies()
-    
+
     @property
     def get_page_source(self):
         """Returns a dump of the DOM."""
         return self.driver.page_source
-    
+
     @property
     def get_current_url(self):
         """Returns the current URL listed in the browser."""
         return self.driver.current_url
-    
+
     @property
     def get_current_relative_url(self):
         """Returns current URL listed in the browser without the base URL"""
@@ -161,12 +161,12 @@ class Browser(object):
     def get_window_handle(self):
         """Returns the GUID representing the current window handle of the browser."""
         return self.driver.current_window_handle
-    
+
     @property
     def get_window_handles(self):
         """Returns a list of active window handles."""
         return self.driver.window_handles
-    
+
     def switch_to_new_window(self):
         """Switches to a new window, assumes only two windows exist."""
         main_window = self.driver.current_window_handle
@@ -178,7 +178,7 @@ class Browser(object):
         #main_window = set(self.driver.current_window_handle)
         #handles = set(self.driver.window_handles)
         #self.driver.switch_to_window((handles - mainWindow).pop())
-        
+
     def switch_back_to_main_window(self):
         """Switches back to main window if the other window was just closed."""
         handles = self.driver.window_handles
@@ -197,7 +197,7 @@ class Browser(object):
         WebElements. Note the webdriver API allows for 0 elements to be located.
         Use one of the visibility methods for this case."""
         return self.get_element_or_elements(locator, True, interval, wait_first)
-    
+
     def presence_of_at_least_one_element_located_by(self, driver, locator):
         """Expected Condition: Return at least one element"""
         try:
@@ -215,7 +215,7 @@ class Browser(object):
             return driver.find_element(*locator)
         except StaleElementReferenceException:
             return False
-        
+
     def get_element_or_elements(self, locator, plural, interval, wait_first):
         if not interval:
             interval = 0.5
@@ -255,17 +255,17 @@ class Browser(object):
             return True
         except (StaleElementReferenceException, ElementNotVisibleException):
             return False
-         
+
     def click_element_by(self, locator):
         locator, human_description = locator[0:2], locator[2]
-        """Locates and clicks on a element until it succeeds. This function shouldn't be used, but 
+        """Locates and clicks on a element until it succeeds. This function shouldn't be used, but
         it's a good quick fix until a better wait method is found."""
 
         timeout_in_seconds = self.get_timeout_seconds()
         WebDriverWait(self.driver, timeout_in_seconds).until(
             (lambda d: self._click_element(d, locator)),
              "Could not locate or click element described as '{0}' located at: {1}".format(human_description, locator))
-       
+
     def is_element_visible(self, element): # or locator
         """Determines if a given WebElement or locator is visible."""
         if isinstance(element, tuple):
@@ -275,7 +275,7 @@ class Browser(object):
             except TimeoutException:
                 return False
         return element.is_displayed()
-  
+
     def wait_for_element_to_become_visible(self, element, human_description='',
             timeout=None):
         """Waits until the given element or locator becomes visible.
@@ -315,7 +315,7 @@ class Browser(object):
             return False
         except (StaleElementReferenceException, ElementNotVisibleException, NoSuchElementException):
             return True
-        
+
     def wait_for_visible_element_to_disappear(self, element,
             human_description='', timeout=None):
         """Waits for an element or locator to no longer exist in the DOM."""
@@ -344,7 +344,7 @@ class Browser(object):
         # if not success:
         #     raise Exception("Element is not present or still mutating after 3 seconds.")
         pass
-                         
+
     def element_is_visible(self, ignored, element):
         """ExpectedCondition: Returns True if element is visible otherwise False"""
         try:
@@ -365,19 +365,19 @@ class Browser(object):
     def now(self):
             """Return current time as time since epoch"""
             return time.time()
- 
+
     def get_timeout_seconds(self):
         """Returns the timeout in seconds as defined in the configuration file."""
         return self.timeout
         # CONFIG 'browser.timeout'
-    
+
     def pause(self, seconds):
         """Sleeps for number of seconds specified"""
         try :
             time.sleep(seconds);
         except KeyboardInterrupt:
             raise Exception("Control-C pressed during sleep.")
-    
+
     def does_element_exist(self, locator):
         """Returns True if an element exists in the DOM, False if it does not exist."""
         locator = locator[0:2]
@@ -386,18 +386,18 @@ class Browser(object):
             return True
         except TimeoutException:
             return False
-    
+
     def get_css_property(self, element, css_property):
         """Deprecated"""
         #js = "return document.defaultView.getComputedStyle(arguments[0],null)" + \
         #                ".getPropertyValue('%s')"
         #return self.execute_script(js % (css_property), element)
         return element.value_of_css_property(css_property)
-    
+
     def execute_script(self, script, *args):
         """Executes Javascript code in the browser. Can return an int, bool, string, WebElement, or None"""
         return self.driver.execute_script(script, *args)
-           
+
     def execute_async_script(self, script, *args):
         """Executes Javascript through a callback. Please refer to the Javadoc Selenium documentation."""
         return self.driver.execute_async_script(script, *args)
@@ -478,7 +478,7 @@ class Browser(object):
         """Wait for an event listener to be registered on a web element that uses jQuery."""
         WebDriverWait(self.driver, self.timeout).until(
                 lambda d: self.listener_is_registered_on_element(d, listener_type, element))
- 
+
     def wait_for_alert_to_appear(self):
         """Waits for an alert to appear, returns an Alert object"""
         return WebDriverWait(self.driver, 10).until(alert_is_present())
@@ -486,11 +486,11 @@ class Browser(object):
     def accept_alert_dialog_box(self):
         """Clicks OK/Yes/Accept when a Javascript alert box pops up."""
         self.wait_for_alert_to_appear().accept()
-    
+
     def dismiss_alert_dialog_box(self):
         """Clicks Cancel when a Javascript alert box pops up."""
         self.wait_for_alert_to_appear().dismiss()
-        
+
     @property
     def get_text_from_alert_dialog_box(self):
         """Returns the text in an alert dialog box."""
@@ -588,12 +588,12 @@ class Browser(object):
             timeout = self.timeout
         WebDriverWait(self.driver, timeout).until((lambda d: self._element_is_active(d, attribute, expected_string)),
                                                   "The element did not switch focus to what is expected")
-    
+
     def get_screenshot_as_file(self, file_path):
         """Gets a screenshot from the current browser window and saves it to the path specified."""
         if not self.driver.get_screenshot_as_file(file_path):
             raise Exception("There was an error saving screenshot at: " + file_path)
-    
+
     def set_scope(self, scope):
         """Sets the scope of the browser object to control if the browser session is persistent for the session
          or for the duration of a single test method."""

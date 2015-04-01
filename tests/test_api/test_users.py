@@ -21,24 +21,24 @@ class TestUserListAPI:
         user_data = dict(email='asgman@test.com', password='password',
                          password_confirm='password')
         rv = test_client.post('/api/users', data=user_data)
-        
+
         check_valid_header_type(rv.headers)
         assert rv.status_code == 201
 
         data = json.loads(rv.data)
         assert data['user']['email'] == 'asgman@test.com'
-    
+
     def test_post_new_user_no_confirm(self, test_client):
         user_data = dict(email='asgman@test.com', password='password')
         rv = test_client.post('/api/users', data=user_data)
-        
+
         check_valid_header_type(rv.headers)
         assert rv.status_code == 422
 
     def test_post_new_user_missing_email(self, test_client):
         user_data = dict()
         rv = test_client.post('/api/users', data=user_data)
-        
+
         check_valid_header_type(rv.headers)
         assert rv.status_code == 400
 
