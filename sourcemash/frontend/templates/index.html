@@ -1,6 +1,20 @@
 {% extends "base.html" %}
 
 {% block layout %}
-<p>Hello, World!</p>
 
+  <header>
+    <nav class="top-nav">
+      <div class="container">
+      </div>
+    </nav>
+
+    <div class="container">
+      <a href="#" data-activates="nav-mobile" class="button-collapse top-nav full"><i class="mdi-navigation-menu"></i></a>
+    </div>
+    <div id="nav-mobile" class="side-nav fixed"></div>
+  </header>
+
+  <main>
+    <div id="main" class="container"></div>
+  </main>
 {% endblock %}

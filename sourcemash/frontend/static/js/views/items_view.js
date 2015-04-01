@@ -1,7 +1,7 @@
 Sourcemash.Views.ItemsView = Backbone.View.extend({
     initialize: function(options) {
         if (this.model) {
-            this.listenTo(this.model, 'change', this.render);
+            this.listenTo(this.model, 'change:subscribed', this.render);
         }
 
         this.itemViews = [];
@@ -31,7 +31,7 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
 
     render: function() {
         this.close();
-        
+
         // Render parent view
         this.$el.html(this.template({ model: this.model, items: this.collection.models }));
 

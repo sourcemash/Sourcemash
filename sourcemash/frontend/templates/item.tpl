@@ -1,11 +1,11 @@
 <div class="card">
-  
+
   <div class="card-image waves-effect waves-block waves-light">
     <img class="activator" src=<%=item.get('image_url')%>>
   </div>
-  
+
   <div class="card-content">
-    
+
     <div class="card-title row activator grey-text text-darken-4">
       <div class="col s11"><%= item.get('title') %></div>
       <div class="col s1"><i class="mdi-navigation-more-vert right"></i></div>
@@ -22,7 +22,7 @@
     </div>
 
   </div>
-  
+
   <div class="card-reveal">
     <span class="card-title grey-text text-darken-4">
       <i class="mdi-navigation-close right"></i>

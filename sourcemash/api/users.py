@@ -10,7 +10,7 @@ from sourcemash.models import User
 
 user_fields = {
     'id': fields.Integer,
-    'email': fields.String,
+    'email': fields.String
 }
 
 class UserListAPI(Resource):
@@ -25,7 +25,7 @@ class UserListAPI(Resource):
         return { 'users': [marshal(user, user_fields) for user in User.query.all()] }
 
     def post(self):
-        ''' Create new User ''' 
+        ''' Create new User '''
         args = self.reqparse.parse_args()
         form = RegisterForm(obj=args)
 

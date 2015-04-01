@@ -19,7 +19,7 @@ Backbone.sync = function(method, model, options) {
       return
     };
   }
-  
+
   return OriginalBackboneSync.apply(this, arguments);
 };
 

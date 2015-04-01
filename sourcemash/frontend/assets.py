@@ -1,12 +1,12 @@
 from flask_assets import Environment, Bundle
 
-css_vendor = Bundle("scss/vendor/materialize/materialize.scss", 
+css_vendor = Bundle("scss/vendor/materialize/materialize.scss",
                     filters="pyscss", output="css/vendor.css")
 
 css_sourcemash = Bundle("scss/sourcemash.scss",
                     filters="pyscss", output="css/sourcemash.css")
 
-js_vendor = Bundle("js/vendor/jquery.js",                    
+js_vendor = Bundle("js/vendor/jquery.js",
                     "js/vendor/underscore.js",
                     "js/vendor/backbone.js",
                     "js/vendor/backbone.typeahead.js",
@@ -20,7 +20,7 @@ js_mixpanel = Bundle("js/vendor/mixpanel.js",
 js_default = Bundle("js/default.js",
 					filters="jsmin", output="js/default.min.js")
 
-js_templates = Bundle("../templates/*.tpl", 
+js_templates = Bundle("../templates/*.tpl",
                         filters="jst",
                         output="js/tpl.js")
 
@@ -31,11 +31,11 @@ js_collections = Bundle("js/collections/*.js")
 js_models = Bundle("js/models/*.js")
 
 js_views = Bundle("js/views/profile_view.js",
+                "js/views/splash_view.js",
+                "js/views/sidenav_view.js",
                 "js/views/items_view.js",
                 "js/views/category_view.js",
-                "js/views/categories_view.js",
                 "js/views/feed_view.js",
-                "js/views/feeds_view.js",
                 "js/views/saved_view.js",
                 "js/views/browse_view.js",
                 "js/views/subscribe_switch_view.js",
