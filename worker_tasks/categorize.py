@@ -99,14 +99,13 @@ class Categorizer:
         self._memoize_article_links(keyword_candidates.keys())
 
         # Assign best article for each possible keyword
-        assigned_articles   = self._assign_closest_articles(keyword_candidates.keys())
-
-        if not assigned_articles:
-            return [""]
+        assigned_articles = self._assign_closest_articles(keyword_candidates.keys())
 
         # Build a graph and identify keyword clusters
-        semantic_graph      = self._build_semantic_graph(assigned_articles)
-        clustering          = community.best_partition(semantic_graph)
+        clustering = None
+        if len(assigned_articles) > 1:
+            semantic_graph = self._build_semantic_graph(assigned_articles)
+            clustering = community.best_partition(semantic_graph)
 
         # Use keywords from best clusters
         selected_categories = self._get_best_keywords(clustering, keyword_candidates)
@@ -293,6 +292,7 @@ class Categorizer:
                     max_relatedness_score = article_relatedness_score
                     best_article = article
 
+                # Prefer Wikipedia article titles without parenthesis (e.g. not Home (2015 film))
                 if "(" not in article:
                     if article_relatedness_score > max_relatedness_score_without_parentheses:
                             max_relatedness_score_without_parentheses = article_relatedness_score
@@ -372,17 +372,16 @@ class Categorizer:
         best_keywords = set()
         keyword_counts = Counter(original_keywords)
 
-        for cluster in set(communities.values()):
-            vertex_names = [nodes for nodes in communities.keys() if communities[nodes] == cluster]
+        if communities:
+            for cluster in set(communities.values()):
+                vertex_names = [nodes for nodes in communities.keys() if communities[nodes] == cluster]
 
-            matching_vertices_count = sum(map(lambda x: keyword_counts[x] if x in keyword_counts else 0, vertex_names))
+                matching_vertices_count = sum(map(lambda x: keyword_counts[x] if x in keyword_counts else 0, vertex_names))
 
-            cluster_score = float(matching_vertices_count) / len(vertex_names)
+                cluster_score = float(matching_vertices_count) / len(vertex_names)
 
-            print vertex_names, cluster_score
-
-            if cluster_score > 1:
-                best_keywords.update(vertex_names)
+                if cluster_score > 1:
+                    best_keywords.update(vertex_names)
 
         if len(best_keywords) < 2:
             best_original_keywords = keyword_counts.most_common(2)
