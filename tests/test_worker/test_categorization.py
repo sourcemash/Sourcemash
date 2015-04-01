@@ -9,7 +9,7 @@ class TestCategorize:
         overlapping_categories = filter(lambda x: "Ebola" in x or "West Africa" in x, categories)
         assert len(overlapping_categories) == 2
 
-    def test_categorize_items_too_few_wiki_links(self, categorizer, ebolaItem):
+    def test_categorize_items_too_few_wiki_links(self, categorizer):
         assert set(categorizer.categorize_item("ZenPayroll", "company")) == set(["Zenpayroll", "Company"])
 
     def test_empty_categories(self, categorizer):
