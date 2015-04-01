@@ -1,20 +1,15 @@
 language: python
-cache:
-  directories:
-    - $PWD/wheelhouse
+cache: pip
 sudo: false
 python:
 - '2.7'
 install:
-  - pip wheel -r requirements.txt
   - pip install -r requirements.txt
   - pip install coveralls
 env:
   - APP_CONFIG_FILE=travis
 script: travis_retry python manage.py test
 after_success: coveralls
-addons:
-  sauce_connect: true
 deploy:
   provider: heroku
   api_key:
