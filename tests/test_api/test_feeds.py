@@ -78,7 +78,7 @@ class TestFeedAPI(TestBase):
 
         unsubscribe = test_client.put('api/feeds/%d' % (int(feed.id)+1), data=unsubscribe_data)
         check_valid_header_type(unsubscribe.headers)
-        assert unsubscribe.status_code == 404   
+        assert unsubscribe.status_code == 404
 
 
 class TestFeedListAllAPI:
@@ -90,7 +90,7 @@ class TestFeedListAllAPI:
 
         data = json.loads(r.data)
         assert len(data['feeds']) == 1
-    
+
 
 class TestFeedListAPI(TestBase):
 
@@ -143,7 +143,7 @@ class TestFeedListAPI(TestBase):
     def test_post_subscription_nonRSS_feed_url(self, test_client, user):
         self.login(test_client, user.email, user.password)
 
-        subscription_data = dict(url='http://cnn.com')
+        subscription_data = dict(url='http://google.com')
         r = test_client.post('/api/feeds', data=subscription_data)
 
         check_valid_header_type(r.headers)

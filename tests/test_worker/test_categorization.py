@@ -25,10 +25,6 @@ class TestCategorize:
 
         assert set(categorizer._assign_closest_articles(ngrams)) == set(["OfficeMax (Company)", "Staples (Company)"])
 
-    def test_empty_categories(self, categorizer):
-        categories = categorizer.categorize_item("Of The", "Of The Of The Of The Of The")
-        assert categories == [""]
-
     def test_get_valid_ngrams_apostrophe_s(self, categorizer):
         assert categorizer._get_valid_ngrams("Harry's").keys() == ["Harry"]
 
