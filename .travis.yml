@@ -10,8 +10,6 @@ env:
   - APP_CONFIG_FILE=travis
 script: travis_retry python manage.py test
 after_success: coveralls
-addons:
-  sauce_connect: true
 deploy:
   provider: heroku
   api_key:
