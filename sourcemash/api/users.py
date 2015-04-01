@@ -10,8 +10,7 @@ from sourcemash.models import User
 
 user_fields = {
     'id': fields.Integer,
-    'email': fields.String,
-    'is_authenticated': fields.Boolean
+    'email': fields.String
 }
 
 class UserListAPI(Resource):

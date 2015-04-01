@@ -48,7 +48,7 @@
 </ul>
 
 <ul class="user-auth sidenav-element col s12">
-  <% if (current_user.get('is_authenticated')) { %>
+  <% if (current_user.get('email')) { %>
     <ul class="navigation-btns collection">
       <a href="/#browse"><li class="collection-item"><i class="mdi-action-view-module"></i>Browse</li></a>
       <a href="/#saved"><li class="collection-item"><i class="mdi-action-bookmark"></i>Saved</li></a>
@@ -79,7 +79,7 @@
         </div>
       </div>
     </form>
-    <li class="center-align"><a href="/register">Need an account? Register</a></li>
+    <li class="center-align"><a href="/register">Need an account? <u>Register</u></a></li>
   <% } %>
 </ul>
 
