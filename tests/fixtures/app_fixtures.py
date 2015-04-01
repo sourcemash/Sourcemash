@@ -19,7 +19,7 @@ def app(request):
     ctx.push()
 
     yield app
-    
+
     ctx.pop()
 
 

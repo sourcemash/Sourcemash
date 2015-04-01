@@ -11,7 +11,7 @@ from sourcemash.forms import VoteForm
 class getVote(fields.Raw):
     def output(self, key, item):
         if not current_user.is_authenticated():
-            return 0      
+            return 0
         try:
             vote = UserItem.query.filter_by(user=current_user, item=item).one().vote
         except:
@@ -70,13 +70,13 @@ class ItemAPI(Resource):
             return {"errors": form.errors}, 422
 
         item = Item.query.get_or_404(id)
-        
+
         # Reject if user has already voted
         # Check vote column of user_items table
         try:
             user_item = UserItem.query.filter_by(user=current_user, item=item).one()
         except:
-            user_item = UserItem(user=current_user, item=item, feed_id=item.feed_id, 
+            user_item = UserItem(user=current_user, item=item, feed_id=item.feed_id,
                                  category_1=item.category_1, category_2=item.category_2)
             db.session.add(user_item)
             db.session.commit()
@@ -89,7 +89,7 @@ class ItemAPI(Resource):
             item.voteSum += args.vote - user_item.vote # + new vote - old vote
             user_item.vote = args.vote
             db.session.commit()
-        
+
         # Toggle unread status
         if args.unread != None:
             user_item.unread = args.unread

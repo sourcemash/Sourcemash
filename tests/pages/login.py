@@ -9,7 +9,7 @@ class LoginPage(BasePage):
 
     #locators
     welcome_user = (By.CSS_SELECTOR, ".welcome", "user welcome message")
-    
+
     # Navbar buttons
     register_button = (By.PARTIAL_LINK_TEXT, 'Register', "Register button")
     login_button = (By.PARTIAL_LINK_TEXT, 'Login', "Login button")
