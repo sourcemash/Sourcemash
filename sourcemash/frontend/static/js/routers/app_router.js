@@ -38,7 +38,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
 
     browseFeeds: function() {
         var browseView = new Sourcemash.Views.BrowseView({collection: this._feeds});
-        browseView.collection.fetch({feeds: this._feeds});
+        browseView.collection.fetch();
         this._swapView(browseView);
     },
 
