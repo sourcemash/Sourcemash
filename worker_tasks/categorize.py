@@ -32,7 +32,7 @@ import json
 from bs4 import BeautifulSoup
 
 import networkx as nx
-import community
+import community # python-louvain
 
 logger = logging.getLogger('Sourcemash')
 
