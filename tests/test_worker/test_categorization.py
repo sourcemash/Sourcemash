@@ -1,16 +1,29 @@
 # -*- coding: UTF-8 -*-
 
 import pytest
+import community
 
 class TestCategorize:
 
-    def test_categorize_item(self, categorizer, ebolaItem):
+    def test_categorize_item_through_Wikipedia(self, categorizer, ebolaItem):
         categories = categorizer.categorize_item(ebolaItem.title, ebolaItem.text)
         overlapping_categories = filter(lambda x: "Ebola" in x or "West Africa" in x, categories)
         assert len(overlapping_categories) == 2
 
-    def test_categorize_items_too_few_wiki_links(self, categorizer, ebolaItem):
-        assert set(categorizer.categorize_item("ZenPayroll", "company")) == set(["Zenpayroll", "Company"])
+    def test_categorize_items_too_few_links(self, categorizer):
+        articles = ["ZenPayroll"]
+        original_keywords = {"ZenPayroll": 30, "HR": 5, "SaaS": 10}
+        assert set(categorizer._get_best_keywords(None, original_keywords)) == set(["Zenpayroll", "Saas"])
+
+    def test_assign_best_article_with_only_parentheses_links(self, categorizer):
+        ngrams = ["staples", "officemax"]
+        categorizer._memoized_related_articles["staples"] = ["Staples (Company)", "Staples (office supplies)"]
+        categorizer._memoized_related_articles["officemax"] = ["OfficeMax (Company)"]
+        categorizer._memoized_article_links["Staples (Company)"] = ["company", "supplies", "store"]
+        categorizer._memoized_article_links["OfficeMax (Company)"] = ["company", "supplies", "store"]
+        categorizer._memoized_article_links["Staples (office supplies)"] = ["pencil", "paperweight"]
+
+        assert set(categorizer._assign_closest_articles(ngrams)) == set(["OfficeMax (Company)", "Staples (Company)"])
 
     def test_empty_categories(self, categorizer):
         categories = categorizer.categorize_item("Of The", "Of The Of The Of The Of The")

@@ -31,7 +31,8 @@ import requests
 import json
 from bs4 import BeautifulSoup
 
-import igraph
+import networkx as nx
+import community # python-louvain
 
 logger = logging.getLogger('Sourcemash')
 
@@ -98,11 +99,13 @@ class Categorizer:
         self._memoize_article_links(keyword_candidates.keys())
 
         # Assign best article for each possible keyword
-        assigned_articles   = self._assign_closest_articles(keyword_candidates.keys())
+        assigned_articles = self._assign_closest_articles(keyword_candidates.keys())
 
         # Build a graph and identify keyword clusters
-        semantic_graph      = self._build_semantic_graph(assigned_articles)
-        clustering          = semantic_graph.community_multilevel(weights='weight')
+        clustering = None
+        if len(assigned_articles) > 1:
+            semantic_graph = self._build_semantic_graph(assigned_articles)
+            clustering = community.best_partition(semantic_graph)
 
         # Use keywords from best clusters
         selected_categories = self._get_best_keywords(clustering, keyword_candidates)
@@ -279,15 +282,25 @@ class Categorizer:
             max_relatedness_score = MINIMUM_RELATEDNESS_SCORE
             best_article = None
 
-            for article in self._memoized_related_articles[ambiguous_ngram]:
+            max_relatedness_score_without_parentheses = 0
+            best_article_without_parentheses = None
 
+            for article in self._memoized_related_articles[ambiguous_ngram]:
                 article_relatedness_score = self._get_relatedness_score(self._memoized_article_links[article], context_links)
 
                 if article_relatedness_score > max_relatedness_score:
                     max_relatedness_score = article_relatedness_score
                     best_article = article
 
-            if best_article:
+                # Prefer Wikipedia article titles without parenthesis (e.g. not Home (2015 film))
+                if "(" not in article:
+                    if article_relatedness_score > max_relatedness_score_without_parentheses:
+                            max_relatedness_score_without_parentheses = article_relatedness_score
+                            best_article_without_parentheses = article
+
+            if best_article_without_parentheses:
+                assigned_articles.append(best_article_without_parentheses)
+            elif best_article:
                 assigned_articles.append(best_article)
 
         return assigned_articles
@@ -302,15 +315,12 @@ class Categorizer:
 
         logger.debug("Building semantic graph...")
 
-        edges = []
-        vertex_attrs = {"name": []}
-        edge_attrs = {"weight": []}
+        G = nx.Graph()
+        G.add_nodes_from(articles)
 
-        for i, article_1 in enumerate(articles):
-            vertex_attrs["name"].append(article_1)
-
-            for j, article_2 in enumerate(articles):
-                if i == j:
+        for article_1 in articles:
+            for article_2 in articles:
+                if article_1 == article_2:
                     continue
 
                 if (article_1, article_2) in self._memoized_semantic_relatedness_scores:
@@ -321,10 +331,9 @@ class Categorizer:
                     self._memoized_semantic_relatedness_scores[(article_2, article_1)] = relatedness_score
 
                 if relatedness_score:
-                    edges.append([i, j])
-                    edge_attrs["weight"].append(relatedness_score)
+                    G.add_edge(article_1, article_2, weight=relatedness_score)
 
-        return igraph.Graph(edges=edges, vertex_attrs=vertex_attrs, edge_attrs=edge_attrs)
+        return G
 
 
     def _get_relatedness_score(self, article_1_links, article_2_links):
@@ -363,15 +372,16 @@ class Categorizer:
         best_keywords = set()
         keyword_counts = Counter(original_keywords)
 
-        for cluster in communities.subgraphs():
-            vertex_names = map(lambda x: x['name'], cluster.vs)
+        if communities:
+            for cluster in set(communities.values()):
+                vertex_names = [nodes for nodes in communities.keys() if communities[nodes] == cluster]
 
-            matching_vertices_count = sum(map(lambda x: keyword_counts[x] if x in keyword_counts else 0, vertex_names))
+                matching_vertices_count = sum(map(lambda x: keyword_counts[x] if x in keyword_counts else 0, vertex_names))
 
-            cluster_score = float(matching_vertices_count) / len(cluster.vs)
+                cluster_score = float(matching_vertices_count) / len(vertex_names)
 
-            if cluster_score > 1:
-                best_keywords.update(vertex_names)
+                if cluster_score > 1:
+                    best_keywords.update(vertex_names)
 
         if len(best_keywords) < 2:
             best_original_keywords = keyword_counts.most_common(2)
