@@ -14,7 +14,9 @@ deploy:
   provider: heroku
   api_key:
     secure: DMvNpEN//RAhkq3WzQs8NMAbINmTnoYqEVq4QCESblMmss6hiA90miUDajgOtF/UiDtf9vdsxK1szq6YaH99PWj41S+O7qneL1eCtFH2+kiQufyMDJ4TQ4Nw4Ope0aOb1jDyubuUf61TfWLXSzr1o/HLyCODYJVuWHm247/lJUY=
-  app: sourcemash-staging
+  app:
+    master: sourcemash-staging
+    production: sourcemash-production
   run:
     - "python manage.py assets build"
     - "python manage.py db upgrade"
