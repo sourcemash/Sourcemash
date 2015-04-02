@@ -69,15 +69,18 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
         if (this.model.get('saved')) {
             this.model.save({saved: false},
                 {success: this.savedToast});
-
-            if (this.model.changedAttributes()) {
-            mixpanel.track("Saved", { "Item Title": this.model.get('title'),
-                                        "Feed Title": this.model.feed.get('title') });
-            }
-
         } else {
             this.model.save({saved: true},
                 {success: this.savedToast});
+
+            if (this.model.changedAttributes()) {
+                mixpanel.track("Saved", { "Item Title": this.model.get('title'),
+                                        "Feed Title": this.model.feed.get('title') })
+
+                if (!this.model.feed.get('subscribed')) {
+                    this.showSubscribeModal();
+                }
+            }
         }
 
     },
