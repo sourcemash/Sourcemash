@@ -5,6 +5,7 @@ from flask.ext.restful import Resource, reqparse, inputs, fields, marshal
 from flask.ext.security import current_user, login_required
 from operator import itemgetter
 from datetime import datetime, timedelta
+from sqlalchemy import func, desc
 
 from feeds import feed_fields
 from sourcemash.models import Item, UserItem
@@ -79,7 +80,8 @@ class ItemAPI(Resource):
             user_item = UserItem.query.filter_by(user=current_user, item=item).one()
         except:
             user_item = UserItem(user=current_user, item=item, feed_id=item.feed_id,
-                                 category_1=item.category_1, category_2=item.category_2)
+                                 category_1=item.category_1, category_2=item.category_2,
+                                 last_modified=item.last_updated)
             db.session.add(user_item)
             db.session.commit()
 
@@ -90,6 +92,7 @@ class ItemAPI(Resource):
 
             item.voteSum += args.vote - user_item.vote # + new vote - old vote
             user_item.vote = args.vote
+            user_item.last_modified = datetime.utcnow()
             db.session.commit()
 
         # Toggle unread status
@@ -100,6 +103,7 @@ class ItemAPI(Resource):
         # Toggle saved-for-later status (aka bookmarked)
         if args.saved != None:
             user_item.saved = args.saved
+            user_item.last_modified = datetime.utcnow()
             db.session.commit()
 
         return {'item': marshal(item, item_fields)}
@@ -115,26 +119,20 @@ class TrendingItemListAPI(Resource):
 
     @login_required
     def get(self):
-        '''
-           19:         distinct_category_1 = Item.query.with_entities(Item.category_1, func.count())   \
-   20                                          .filter(Item.feed_id.in_(user_feed_ids))        \
-   21                                          .group_by(Item.category_1)                      \
-   22                                          .all()
-                                                .sorted ???
-    Get all counts (above), eliminate items that are too old (for loop)
-   '''
-        # curr_user_items = UserItem.query.filter(UserItem.vote != 0,
-        #                         UserItem.item.last_updated > (datetime.utcnow() - datetime.timedelta(days=7)) ).all()
+        trending_user_items = UserItem.query.with_entities(UserItem.item_id, func.count())     \
+                                .filter(UserItem.vote != 0)     \
+                                .filter(UserItem.last_modified > (datetime.utcnow() - timedelta(days=10))) \
+                                .group_by(UserItem.item_id)        \
+                                .order_by(desc(func.count(UserItem.item_id)))      \
+                                .all()
 
-        # trending_items = []
-        # for user_item in curr_user_items:
+        trending_user_items = trending_user_items[:10]
 
-        #     trend_count = UserItem.query.filter(UserItem.vote != 0, UserItem.item == user_item.item).count()
-        #     trending_items.append((user_item, trend_count))
+        trending_items = []
+        for item_id, count in trending_user_items:
+             trending_items.append(Item.query.get(item_id))
 
-        trending_user_items, _ = zip(*trending_items) #### WATCH NONE v. []
-
-        return {'items': [marshal(user_item.item, item_fields) for user_item in trending_user_items'''[:10]''']}
+        return {'items': [marshal(item, item_fields) for item in trending_items]}
 
 class FeedItemListAPI(Resource):
 

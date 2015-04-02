@@ -12,6 +12,7 @@ class UserItem(db.Model):
     feed_id = db.Column(db.Integer, db.ForeignKey('feed.id'))
     category_1 = db.Column(db.String(100))
     category_2 = db.Column(db.String(100))
+    last_modified = db.Column(db.DateTime)
 
     def __repr__(self):
         return "<UserItem: %s, %s (vote: %d)>" % (self.user, self.item, self.vote)

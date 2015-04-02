@@ -202,7 +202,7 @@ class TestSavedItemListAPI(TestBase):
 
 class TestTrendingItemListAPI(TestBase):
 
-    def test_get_items_present(self, test_client, user_item_upvote):
+    def test_get_items_present(self, test_client, user_item_upvote, user_item_downvote):
         self.login(test_client, user_item_upvote.user.email, user_item_upvote.user.password)
         r = test_client.get('/api/items/trending')
 
@@ -210,7 +210,7 @@ class TestTrendingItemListAPI(TestBase):
         assert r.status_code == 200
 
         data = json.loads(r.data)
-        assert len(data['items']) == 1
+        assert len(data['items']) == 2
 
     def test_get_items_missing(self, test_client, user):
         self.login(test_client, user.email, user.password)
