@@ -1,13 +1,21 @@
+{% macro fields_errors() %}
+  {% for field in varargs %}
+    {% if field.errors %}
+      {% for error in field.errors %}
+        <div class="alert alert-danger">{{error}}</div>
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+{% endmacro %}
 <form class="col s12" id="login" action="/login" method="POST" name="login_user_form">
   <div class="input-field">
     <input class="validate" id="email" name="email" type="email">
     <label for="email" class="">Email Address</label>
-    <div class="errors"></div>
   </div>
   <div class="input-field">
     <input class="validate" id="password" name="password" type="password">
     <label for="password">Password</label>
-    <div class="errors"></div>
+    {{ fields_errors(login_user_form.email, login_user_form.password, login_user_form.remember) }}
   </div>
 
   <div class="row">
