@@ -3,13 +3,15 @@ from sourcemash.database import db
 from flask import abort
 from flask.ext.restful import Resource, reqparse, inputs, fields, marshal
 from flask.ext.security import current_user, login_required
-from operator import itemgetter
 from datetime import datetime, timedelta
 from sqlalchemy import func, desc
 
 from feeds import feed_fields
 from sourcemash.models import Item, UserItem
 from sourcemash.forms import VoteForm
+
+TRENDING_ITEMS_COUNT = 10
+TRENDING_ITEMS_TIMEDELTA = 14
 
 class getVote(fields.Raw):
     def output(self, key, item):
@@ -78,10 +80,12 @@ class ItemAPI(Resource):
         # Check vote column of user_items table
         try:
             user_item = UserItem.query.filter_by(user=current_user, item=item).one()
+            user_item.last_modified = datetime.utcnow()
+            db.session.commit()
         except:
             user_item = UserItem(user=current_user, item=item, feed_id=item.feed_id,
                                  category_1=item.category_1, category_2=item.category_2,
-                                 last_modified=item.last_updated)
+                                 last_modified=datetime.utcnow())
             db.session.add(user_item)
             db.session.commit()
 
@@ -92,7 +96,6 @@ class ItemAPI(Resource):
 
             item.voteSum += args.vote - user_item.vote # + new vote - old vote
             user_item.vote = args.vote
-            user_item.last_modified = datetime.utcnow()
             db.session.commit()
 
         # Toggle unread status
@@ -103,7 +106,6 @@ class ItemAPI(Resource):
         # Toggle saved-for-later status (aka bookmarked)
         if args.saved != None:
             user_item.saved = args.saved
-            user_item.last_modified = datetime.utcnow()
             db.session.commit()
 
         return {'item': marshal(item, item_fields)}
@@ -119,20 +121,16 @@ class TrendingItemListAPI(Resource):
 
     @login_required
     def get(self):
-        trending_user_items = UserItem.query.with_entities(UserItem.item_id, func.count())     \
-                                .filter(UserItem.vote != 0)     \
-                                .filter(UserItem.last_modified > (datetime.utcnow() - timedelta(days=10))) \
+        trending_items = UserItem.query.with_entities(UserItem.item_id, func.count())     \
+                                .filter(UserItem.vote)     \
+                                .filter(UserItem.last_modified > (datetime.utcnow() - timedelta(days=TRENDING_ITEMS_TIMEDELTA))) \
                                 .group_by(UserItem.item_id)        \
                                 .order_by(desc(func.count(UserItem.item_id)))      \
                                 .all()
 
-        trending_user_items = trending_user_items[:10]
+        trending_items = trending_items[:TRENDING_ITEMS_COUNT]
 
-        trending_items = []
-        for item_id, count in trending_user_items:
-             trending_items.append(Item.query.get(item_id))
-
-        return {'items': [marshal(item, item_fields) for item in trending_items]}
+        return {'items': [marshal(Item.query.get(id), item_fields) for id, count in trending_items]}
 
 
 class FeedItemListAPI(Resource):
