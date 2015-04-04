@@ -212,16 +212,6 @@ class TestTrendingItemListAPI(TestBase):
         data = json.loads(r.data)
         assert len(data['items']) == 1
 
-    def test_get_items_missing(self, test_client, user):
-        self.login(test_client, user.email, user.password)
-        r = test_client.get('/api/items/trending')
-
-        check_valid_header_type(r.headers)
-        assert r.status_code == 200
-
-        data = json.loads(r.data)
-        assert len(data['items']) == 0
-
 
 class TestFeedItemListAPI:
 

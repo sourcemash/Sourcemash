@@ -10,8 +10,8 @@ from feeds import feed_fields
 from sourcemash.models import Item, UserItem
 from sourcemash.forms import VoteForm
 
-TRENDING_ITEMS_COUNT = 10
-TRENDING_ITEMS_TIMEDELTA = 14
+MAX_TRENDING_ITEMS = 10
+TRENDING_ITEMS_TIMEDELTA = 14 # Days (to qualify as trending)
 
 class getVote(fields.Raw):
     def output(self, key, item):
@@ -80,8 +80,6 @@ class ItemAPI(Resource):
         # Check vote column of user_items table
         try:
             user_item = UserItem.query.filter_by(user=current_user, item=item).one()
-            user_item.last_modified = datetime.utcnow()
-            db.session.commit()
         except:
             user_item = UserItem(user=current_user, item=item, feed_id=item.feed_id,
                                  category_1=item.category_1, category_2=item.category_2,
@@ -96,17 +94,17 @@ class ItemAPI(Resource):
 
             item.voteSum += args.vote - user_item.vote # + new vote - old vote
             user_item.vote = args.vote
-            db.session.commit()
 
         # Toggle unread status
         if args.unread != None:
             user_item.unread = args.unread
-            db.session.commit()
 
         # Toggle saved-for-later status (aka bookmarked)
         if args.saved != None:
             user_item.saved = args.saved
-            db.session.commit()
+
+        user_item.last_modified = datetime.utcnow()
+        db.session.commit()
 
         return {'item': marshal(item, item_fields)}
 
@@ -125,10 +123,9 @@ class TrendingItemListAPI(Resource):
                                 .filter(UserItem.vote)     \
                                 .filter(UserItem.last_modified > (datetime.utcnow() - timedelta(days=TRENDING_ITEMS_TIMEDELTA))) \
                                 .group_by(UserItem.item_id)        \
-                                .order_by(desc(func.count(UserItem.item_id)))      \
-                                .all()
+                                .order_by(desc(func.count(UserItem.item_id)))
 
-        trending_items = trending_items[:TRENDING_ITEMS_COUNT]
+        trending_items = trending_items[:MAX_TRENDING_ITEMS]
 
         return {'items': [marshal(Item.query.get(id), item_fields) for id, count in trending_items]}
 
