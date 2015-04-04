@@ -7,8 +7,8 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
     },
 
     events: {
-	  	'click .upvote': 'upvote',
-	  	'click .downvote': 'downvote',
+	  	'click .upvote:not(.active)': 'upvote',
+	  	'click .downvote:not(.active)': 'downvote',
 	  	'click .mark-read': 'markRead',
         'click .saved': 'savedToggle'
 	},
@@ -17,13 +17,11 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
 		this.model.save({vote: 1, voteSum: this._getNewVoteSum(1)},
                         {success: this.voted});
 
-        if (this.model.changedAttributes()) {
-            mixpanel.track("Upvoted", { "Item Title": this.model.get('title'),
-                                        "Feed Title": this.model.feed.get('title') })
+        mixpanel.track("Upvoted", { "Item Title": this.model.get('title'),
+                                    "Feed Title": this.model.feed.get('title') })
 
-            if (!this.model.feed.get('subscribed')) {
-                this.showSubscribeModal({'source':'upvoted'});
-            }
+        if (!this.model.feed.get('subscribed')) {
+            this.showSubscribeModal({'source':'upvoted'});
         }
     },
 
@@ -31,10 +29,8 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
 		this.model.save({vote: -1, voteSum: this._getNewVoteSum(-1)},
                         {success: this.voted});
 
-        if (this.model.changedAttributes()) {
-            mixpanel.track("Downvoted", { "Item Title": this.model.get('title'),
-                                        "Feed Title": this.model.feed.get('title') })
-        }
+        mixpanel.track("Downvoted", { "Item Title": this.model.get('title'),
+                                    "Feed Title": this.model.feed.get('title') })
 	},
 
     voted: function() {
@@ -74,13 +70,11 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
             this.model.save({saved: true},
                 {success: this.savedToast});
 
-            if (this.model.changedAttributes()) {
-                mixpanel.track("Saved", { "Item Title": this.model.get('title'),
-                                        "Feed Title": this.model.feed.get('title') })
+            mixpanel.track("Saved", { "Item Title": this.model.get('title'),
+                                    "Feed Title": this.model.feed.get('title') })
 
-                if (!this.model.feed.get('subscribed')) {
-                    this.showSubscribeModal({'source':'saved'});
-                }
+            if (!this.model.feed.get('subscribed')) {
+                this.showSubscribeModal({'source':'saved'});
             }
         }
 
