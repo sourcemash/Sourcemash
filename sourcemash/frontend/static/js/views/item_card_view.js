@@ -22,7 +22,7 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
                                         "Feed Title": this.model.feed.get('title') })
 
             if (!this.model.feed.get('subscribed')) {
-                this.showSubscribeModal();
+                this.showSubscribeModal({'source':'upvoted'});
             }
         }
     },
@@ -41,9 +41,10 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
         toast("Vote recorded!", 3000);
     },
 
-    showSubscribeModal: function(e) {
+    showSubscribeModal: function(options, e) {
         $('#subscribe-modal #unsubscribed-item-title').html(this.model.get('title'));
         $('#subscribe-modal #unsubscribed-feed-title').html(this.model.feed.get('title'));
+        $('#subscribe-modal #unsubscribed-source-title').html(options['source']);
         $('#subscribe-modal').openModal();
 
         mixpanel.track("Subscribe Modal", { "Item Title": this.model.get('title'),
@@ -78,7 +79,7 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
                                         "Feed Title": this.model.feed.get('title') })
 
                 if (!this.model.feed.get('subscribed')) {
-                    this.showSubscribeModal();
+                    this.showSubscribeModal({'source':'saved'});
                 }
             }
         }
