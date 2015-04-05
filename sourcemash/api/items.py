@@ -3,10 +3,15 @@ from sourcemash.database import db
 from flask import abort
 from flask.ext.restful import Resource, reqparse, inputs, fields, marshal
 from flask.ext.security import current_user, login_required
+from datetime import datetime, timedelta
+from sqlalchemy import func, desc
 
 from feeds import feed_fields
 from sourcemash.models import Item, UserItem
 from sourcemash.forms import VoteForm
+
+MAX_TRENDING_ITEMS = 10
+TRENDING_ITEMS_TIMEDELTA = 14 # Days (to qualify as trending)
 
 class getVote(fields.Raw):
     def output(self, key, item):
@@ -88,17 +93,17 @@ class ItemAPI(Resource):
 
             item.voteSum += args.vote - user_item.vote # + new vote - old vote
             user_item.vote = args.vote
-            db.session.commit()
 
         # Toggle unread status
         if args.unread != None:
             user_item.unread = args.unread
-            db.session.commit()
 
         # Toggle saved-for-later status (aka bookmarked)
         if args.saved != None:
             user_item.saved = args.saved
-            db.session.commit()
+
+        user_item.last_modified = datetime.utcnow()
+        db.session.commit()
 
         return {'item': marshal(item, item_fields)}
 
@@ -108,6 +113,21 @@ class SavedItemListAPI(Resource):
     def get(self):
         user_items = UserItem.query.filter_by(user=current_user, saved=True).all()
         return {'items': [marshal(user_item.item, item_fields) for user_item in user_items]}
+
+class TrendingItemListAPI(Resource):
+
+    @login_required
+    def get(self):
+        trending_items = UserItem.query.with_entities(UserItem.item_id, func.count())     \
+                                .filter(UserItem.vote)     \
+                                .filter(UserItem.last_modified > (datetime.utcnow() - timedelta(days=TRENDING_ITEMS_TIMEDELTA))) \
+                                .group_by(UserItem.item_id)        \
+                                .order_by(desc(func.count(UserItem.item_id)))
+
+        trending_items = trending_items[:MAX_TRENDING_ITEMS]
+
+        return {'items': [marshal(Item.query.get(id), item_fields) for id, count in trending_items]}
+
 
 class FeedItemListAPI(Resource):
 
@@ -144,6 +164,7 @@ class CategoryItemListAllAPI(Resource):
 
 api.add_resource(ItemAPI, '/items/<int:id>', endpoint='item')
 api.add_resource(SavedItemListAPI, '/items/saved', endpoint='saved_items')
+api.add_resource(TrendingItemListAPI, '/items/trending', endpoint='trending_items')
 api.add_resource(FeedItemListAPI, '/feeds/<int:feed_id>/items', endpoint='feed_items')
 api.add_resource(CategoryItemListAPI, '/categories/<string:category>/items', endpoint='category_items')
 api.add_resource(CategoryItemListAllAPI, '/categories/<string:category>/items/all', endpoint='category_items_all')

@@ -3,6 +3,7 @@ from tests.factories import *
 from sourcemash.models import User, UserItem
 from user_factories import UserFactory
 from item_factories import ItemFactory
+from datetime import datetime
 
 
 class UserItemFactory(SQLAlchemyModelFactory):
@@ -11,6 +12,7 @@ class UserItemFactory(SQLAlchemyModelFactory):
 
     user = factory.SubFactory(UserFactory)
     item = factory.SubFactory(ItemFactory)
+    last_modified = datetime.utcnow()
 
 
 class UserItemUpvoteFactory(UserItemFactory):

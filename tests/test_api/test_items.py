@@ -200,6 +200,19 @@ class TestSavedItemListAPI(TestBase):
         data = json.loads(r.data)
         assert len(data['items']) == 1
 
+class TestTrendingItemListAPI(TestBase):
+
+    def test_get_items_only_nonzero_votes(self, test_client, user_item_upvote, user_item):
+        self.login(test_client, user_item_upvote.user.email, user_item_upvote.user.password)
+        r = test_client.get('/api/items/trending')
+
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert len(data['items']) == 1
+
+
 class TestFeedItemListAPI:
 
     def test_get_items(self, test_client, item):
