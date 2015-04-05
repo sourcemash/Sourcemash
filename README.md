@@ -2,7 +2,7 @@ Read Your News Faster.
 
 ## Statuses
 [![Build Status](https://travis-ci.org/sourcemash/Sourcemash.svg)](https://travis-ci.org/sourcemash/Sourcemash)
-[![Coverage Status](https://coveralls.io/repos/sourcemash/Sourcemash/badge.svg)](https://coveralls.io/r/sourcemash/Sourcemash)
+[![Coverage Status](https://coveralls.io/repos/sourcemash/Sourcemash/badge.svg?branch=master)](https://coveralls.io/r/sourcemash/Sourcemash?branch=master)
 [![Codacy Badge](https://www.codacy.com/project/badge/7e1866c374c94c0783a940d0284b6d88)](https://www.codacy.com/public/gersteinalex/Sourcemash)
 
 ## Description
