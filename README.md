@@ -19,8 +19,8 @@ The site was built for the CS98 course at Dartmouth College.
 	
 	Virtual environment (preferred):
 	1. Create a virtual environment: ```virtualenv flask```
-	2. Install requirements: ```flask\bin\pip install -r requirements.txt```
-	3. Activate virtual environment: ```. flask\bin\activate```
+	2. Install requirements: ```flask/bin/pip install -r requirements.txt```
+	3. Activate virtual environment: ```. flask/bin/activate```
 
 	System-wide (not the best option): ```sudo pip install -r requirements.txt```
 
