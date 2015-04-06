@@ -37,7 +37,7 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
         toast("Vote recorded!", 3000);
     },
 
-    showSubscribeModal: function(options, e) {
+    showSubscribeModal: function(options) {
         $('#subscribe-modal #unsubscribed-item-title').html(this.model.get('title'));
         $('#subscribe-modal #unsubscribed-feed-title').html(this.model.feed.get('title'));
         $('#subscribe-modal #unsubscribed-source-title').html(options['source']);
