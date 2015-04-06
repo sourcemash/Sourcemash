@@ -4,10 +4,16 @@ import logging
 DEBUG = True
 SQLALCHEMY_ECHO = True
 
+SECURITY_CONFIRMABLE = True
+
 SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
 
 SECRET_KEY = os.environ['SECRET_KEY']
 
+MAIL_SERVER = 'mail.privateemail.com'
+MAIL_PORT = 465
+MAIL_USE_TLS = False
+MAIL_USE_SSL = True
 MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
 MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
