@@ -18,6 +18,7 @@ SECURITY_PASSWORD_SALT = "abcde1234509876zyxwvu22"
 SECURITY_POST_LOGOUT_VIEW = "/"
 SECURITY_REGISTERABLE = True
 SECURITY_CONFIRMABLE = True
+SECURITY_RECOVERABLE = True
 
 SECURITY_MSG_INVALID_PASSWORD = ("Invalid username/password combination", "error")
 SECURITY_MSG_PASSWORD_NOT_PROVIDED = ("Invalid username/password combination", "error")

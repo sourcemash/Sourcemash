@@ -79,7 +79,8 @@
         </div>
       </div>
     </form>
-    <li class="center-align"><a href="/register">Need an account? <u>Register</u></a></li>
+    <li class="center-align"><a href="/reset"><u>I forgot my password.</u></a></li>
+    <li class="center-align"><a href="/register"><u>I need an account.</u></a></li>
   <% } %>
 </ul>
 
