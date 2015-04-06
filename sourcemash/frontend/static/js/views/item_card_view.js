@@ -7,8 +7,8 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
     },
 
     events: {
-	  	'click .upvote': 'upvote',
-	  	'click .downvote': 'downvote',
+	  	'click .upvote:not(.active)': 'upvote',
+	  	'click .downvote:not(.active)': 'downvote',
 	  	'click .mark-read': 'markRead',
         'click .saved': 'savedToggle'
 	},
@@ -17,13 +17,11 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
 		this.model.save({vote: 1, voteSum: this._getNewVoteSum(1)},
                         {success: this.voted});
 
-        if (this.model.changedAttributes()) {
-            mixpanel.track("Upvoted", { "Item Title": this.model.get('title'),
-                                        "Feed Title": this.model.feed.get('title') })
+        mixpanel.track("Upvoted", { "Item Title": this.model.get('title'),
+                                    "Feed Title": this.model.feed.get('title') })
 
-            if (!this.model.feed.get('subscribed')) {
-                this.showSubscribeModal();
-            }
+        if (!this.model.feed.get('subscribed')) {
+            this.showSubscribeModal({'source':'upvoted'});
         }
     },
 
@@ -31,19 +29,18 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
 		this.model.save({vote: -1, voteSum: this._getNewVoteSum(-1)},
                         {success: this.voted});
 
-        if (this.model.changedAttributes()) {
-            mixpanel.track("Downvoted", { "Item Title": this.model.get('title'),
-                                        "Feed Title": this.model.feed.get('title') })
-        }
+        mixpanel.track("Downvoted", { "Item Title": this.model.get('title'),
+                                    "Feed Title": this.model.feed.get('title') })
 	},
 
     voted: function() {
         toast("Vote recorded!", 3000);
     },
 
-    showSubscribeModal: function(e) {
+    showSubscribeModal: function(options) {
         $('#subscribe-modal #unsubscribed-item-title').html(this.model.get('title'));
         $('#subscribe-modal #unsubscribed-feed-title').html(this.model.feed.get('title'));
+        $('#subscribe-modal #unsubscribed-source-title').html(options['source']);
         $('#subscribe-modal').openModal();
 
         mixpanel.track("Subscribe Modal", { "Item Title": this.model.get('title'),
@@ -69,15 +66,16 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
         if (this.model.get('saved')) {
             this.model.save({saved: false},
                 {success: this.savedToast});
-
-            if (this.model.changedAttributes()) {
-            mixpanel.track("Saved", { "Item Title": this.model.get('title'),
-                                        "Feed Title": this.model.feed.get('title') });
-            }
-
         } else {
             this.model.save({saved: true},
                 {success: this.savedToast});
+
+            mixpanel.track("Saved", { "Item Title": this.model.get('title'),
+                                    "Feed Title": this.model.feed.get('title') })
+
+            if (!this.model.feed.get('subscribed')) {
+                this.showSubscribeModal({'source':'saved'});
+            }
         }
 
     },

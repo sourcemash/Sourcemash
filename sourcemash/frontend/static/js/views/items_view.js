@@ -7,33 +7,15 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
         this.itemViews = [];
     },
 
-    events: {
-        'click .subscribe-close': 'subscribeFromModal',
-    },
-
-    subscribeFromModal: function() {
-        var item = this.collection.findWhere({title: $('#subscribe-modal #unsubscribed-item-title').text()});
-
-        item.feed.save({'subscribed': true}, {success: this.subscribedToggled})
-
-        mixpanel.track("Subscribed", { "Item Title": item.get('title'),
-                                        "Feed Title": item.feed.get('title'),
-                                        "Source": 'modal' })
-    },
-
-    subscribedToggled: function(feed) {
-        if (feed.get('subscribed')) {
-            toast("Subscribed!", 3000);
-        } else {
-            toast("You have unsubscribed...", 3000);
-        }
-    },
-
     render: function() {
         this.close();
 
         // Render parent view
         this.$el.html(this.template({ model: this.model, items: this.collection.models }));
+
+        // Render subscribe modal view
+        this.subscribeModalView = new Sourcemash.Views.SubscribeModalView({ collection: this.collection })
+        this.$("#subscribe-modal").html(this.subscribeModalView.render().el)
 
         // Render subscribe-toggle switch if feed page
         if (this.model) {
@@ -57,6 +39,11 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
             itemView.remove();
             itemView.unbind();
         });
+
+        if (this.subscribeModalView) {
+            this.subscribeModalView.remove();
+            this.subscribeModalView.unbind();
+        };
 
         if (this.subscribeSwitchView) {
             this.subscribeSwitchView.remove();
