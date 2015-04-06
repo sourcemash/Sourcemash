@@ -7,6 +7,18 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
         this.itemViews = [];
     },
 
+    events: {
+        "click .mark-all-read": "markAllAsRead"
+    },
+
+    markAllAsRead: function() {
+        var unread = this.collection.where({unread: true});
+        unread.forEach(function(model) {
+            model.save({unread: false});
+        });
+        this.model.set({unread_count: 0});
+    },
+
     render: function() {
         this.close();
 
