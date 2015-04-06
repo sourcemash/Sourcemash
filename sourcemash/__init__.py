@@ -30,6 +30,10 @@ def create_app(env=None):
 
 	security.init_app(app, user_datastore)
 
+	# Mail
+	from sourcemash.mail import mail
+	mail.init_app(app)
+
 	# Frontend Components (Flask-Assets)
 	from sourcemash.frontend import frontend, assets
 	app.register_blueprint(frontend.bp)
