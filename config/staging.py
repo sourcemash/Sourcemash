@@ -8,8 +8,8 @@ SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
 
 SECRET_KEY = os.environ['SECRET_KEY']
 
-SECURITY_CONFIRMABLE = True
-SECURITY_EMAIL_SENDER = os.environ['SECURITY_EMAIL_SENDER']
+MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
 logger = logging.getLogger('Sourcemash')
 stream_handler = logging.StreamHandler()
