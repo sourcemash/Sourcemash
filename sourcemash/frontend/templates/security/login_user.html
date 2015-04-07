@@ -8,6 +8,7 @@
   {% endfor %}
 {% endmacro %}
 <form class="col s12" id="login" action="/login" method="POST" name="login_user_form">
+  {{ fields_errors(login_user_form.email, login_user_form.password, login_user_form.remember) }}
   <div class="input-field">
     <input class="validate" id="email" name="email" type="email">
     <label for="email" class="">Email Address</label>
@@ -15,7 +16,6 @@
   <div class="input-field">
     <input class="validate" id="password" name="password" type="password">
     <label for="password">Password</label>
-    {{ fields_errors(login_user_form.email, login_user_form.password, login_user_form.remember) }}
   </div>
 
   <div class="row">
