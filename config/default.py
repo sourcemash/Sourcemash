@@ -17,7 +17,6 @@ SECURITY_PASSWORD_HASH = "bcrypt"
 SECURITY_PASSWORD_SALT = "abcde1234509876zyxwvu22"
 SECURITY_POST_LOGOUT_VIEW = "/"
 SECURITY_REGISTERABLE = True
-SECURITY_CONFIRMABLE = True
 SECURITY_RECOVERABLE = True
 
 SECURITY_MSG_INVALID_PASSWORD = ("Invalid username/password combination", "error")
@@ -27,10 +26,6 @@ SECURITY_MSG_USER_DOES_NOT_EXIST = ("Invalid username/password combination", "er
 SECURITY_EMAIL_SENDER = "support@sourcemash.com"
 
 # Email Server
-MAIL_SERVER = 'mail.privateemail.com'
-MAIL_PORT = 465
-MAIL_USE_TLS = False
-MAIL_USE_SSL = True
 ADMINS = ['admin@sourcemash.com', 'support@sourcemash.com']
 
 logging.basicConfig(level=logging.WARNING)
