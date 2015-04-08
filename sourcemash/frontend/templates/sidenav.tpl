@@ -56,26 +56,24 @@
       <a href="/logout"><li class="collection-item"><i class="mdi-action-exit-to-app"></i>Logout</li></a>
     </ul>
   <% } else { %>
-    <form id="login" action="/login" method="POST" name="login_user_form">
+    <form id="login">
       <div class="input-field">
         <input class="validate" id="email" name="email" type="email">
         <label for="email" class="">Email Address</label>
-        <div class="errors"></div>
       </div>
       <div class="input-field">
         <input class="validate" id="password" name="password" type="password">
         <label for="password">Password</label>
-        <div class="errors"></div>
+        <div class="errors" id="login-errors"></div>
       </div>
 
       <div class="row">
         <div class="input-field col s5">
-          <button type="submit" class="btn waves-effect waves-light">Login</button>
+          <button type="submit" id="login-submit" class="btn waves-effect waves-light">Login</button>
         </div>
         <div class="input-field col s7">
           <input class="validate" id="remember" name="remember" type="checkbox">
           <label for="remember">Remember Me</label>
-          <div class="errors"></div>
         </div>
       </div>
     </form>
