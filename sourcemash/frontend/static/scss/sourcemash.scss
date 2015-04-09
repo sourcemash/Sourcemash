@@ -67,6 +67,7 @@ div.side-nav {
     left: 0;
     position: fixed;
     overflow-y: scroll;
+    height: 100%;
 
     @media only screen and (max-width: 992px) {
       left: -105%;
