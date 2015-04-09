@@ -31,7 +31,6 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
         if (errors) {
           errorMsg = errors.email || errors.password || errors.rememeber || {};
           $("#login-errors").html(errorMsg);
-          $('#email').val('');
           $('#password').val('');
         }
         return;
