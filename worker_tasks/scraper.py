@@ -47,6 +47,41 @@ def scrape_and_categorize_articles():
         logger.info("CATEGORIZED [%s]: (%s, %s)" % (item.title, item.category_1, item.category_2))
 
 
+def scrape_articles_only(feed):
+    _store_items(feed)
+
+    for item in feed.items:
+        soup = BeautifulSoup(item.text)
+
+        # Extract first image from item
+        try:
+            img_url = soup.find('img')['src']
+            item.image_url = img_url
+            db.session.commit()
+        except:
+            pass
+
+
+def categorize_articles_only(feed):
+    categorizer = Categorizer()
+
+    # Assign categories
+    for item in feed.item:
+        soup = BeautifulSoup(item.text)
+
+        # Extract text and categorize item
+        text_only = soup.get_text()
+        categories = categorizer.categorize_item(item.title, text_only)
+        if len(categories) >= 1:
+            item.category_1 = categories[0]
+
+        if len(categories) >= 2:
+            item.category_2 = categories[1]
+
+        db.session.commit()
+        logger.info("CATEGORIZED [%s]: (%s, %s)" % (item.title, item.category_1, item.category_2))
+
+
 def _get_full_text(url):
     html = requests.get(url).content
     base_url = '{uri.scheme}://{uri.netloc}/'.format(uri=urlparse(url))
