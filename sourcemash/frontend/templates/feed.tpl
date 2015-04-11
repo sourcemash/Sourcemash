@@ -1,10 +1,9 @@
 <div class="row valign-wrapper">
-    <h2 class="col s8 valign"><%= model.get('title') %></h2>
+    <h2 class="col s9"><%= model.get('title') %></h2>
 
-    <div class="col s2">
-      <button type="submit" class="btn waves-effect waves-light mark-all-read"><i class="mdi-action-done-all"></i></button>
-    </div>
-    <div class="switch subscribe-switch col s2 valign-wrapper"></div>
+    <span title="Mark as Read" class="mark-all-read col s1"><i class="medium mdi-action-done-all"></i></span>
+    <span class="switch subscribe-switch col s2 valign"></span>
+
 </div>
 
 <ul id="items" class="list-group row">

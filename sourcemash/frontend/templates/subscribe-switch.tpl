@@ -1,5 +1,5 @@
-<label class="subscribe-toggle valign">
+<label class="subscribe-toggle">
 	<input type="checkbox" <%= model.get('subscribed') ? 'checked' : '' %>>
 	<span class="lever"></span>
-	<p><%= model.get('subscribed') ? 'Subscribed' : 'Unsubscribed' %></p>
+	<%= model.get('subscribed') ? 'Subscribed' : 'Unsubscribed' %>
  </label>

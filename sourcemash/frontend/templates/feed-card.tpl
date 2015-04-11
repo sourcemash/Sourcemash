@@ -15,7 +15,7 @@
             <%= model.get('title') %>
           </a>
         </div>
-        <div class="switch subscribe-switch col s3 valign-wrapper"></div>
+        <div class="switch subscribe-switch col s3"></div>
       </div>
 
       <div class="card-action valign-wrapper row">
