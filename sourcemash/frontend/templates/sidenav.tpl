@@ -69,7 +69,7 @@
 
       <div class="row">
         <div class="input-field col s5">
-          <button type="submit" id="login-submit" class="btn waves-effect waves-light">Login</button>
+          <button type="submit" class="btn waves-effect waves-light">Login</button>
         </div>
         <div class="input-field col s7">
           <input class="validate" id="remember" name="remember" type="checkbox">
@@ -81,7 +81,3 @@
     <li class="center-align"><a href="/register"><u>I need an account.</u></a></li>
   <% } %>
 </ul>
-
-<script>
-  mixpanel.track_forms("#login", "Logged In");
-</script>

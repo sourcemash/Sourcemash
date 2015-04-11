@@ -10,33 +10,33 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
   },
 
   events: {
-    'click #login-submit': 'loginSubmit',
+    'submit #login': 'loginSubmit',
   },
 
   loginSubmit: function(e){
-    e.preventDefault()
-
+    e.preventDefault();
     var formData = JSON.stringify($("#login")._serializeObject());
+    var posting = $.ajax({
+                      type: "POST",
+                      url: "/login",
+                      data: formData,
+                      success: this.showErrors,
+                      contentType: "application/json"
+                  });
+  },
 
-    $.ajax({
-      type: "POST",
-      url: "/login",
-      data: formData,
-      success: function(data){
-        var user = data.response.user;
-        if (user) {
-          location.reload();
-        }
-        var errors = data.response.errors;
-        if (errors) {
-          var errorMsg = errors.email || errors.password || errors.rememeber || {};
-          $("#login-errors").html(errorMsg);
-          $('#password').val('');
-        }
-        return;
-      },
-      contentType : "application/json"
-    });
+  showErrors: function(data) {
+    var user = data.response.user;
+    if (user) {
+      location.reload();
+      mixpanel.track("Logged In");
+    }
+    var errors = data.response.errors;
+    if (errors) {
+      errorMsg = errors.email || errors.password || errors.rememeber || {};
+      $("#login-errors").html(errorMsg);
+      $('#password').val('');
+    }
   },
 
   render: function() {
