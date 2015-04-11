@@ -16,20 +16,20 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
   loginSubmit: function(e){
     e.preventDefault()
 
-    var formData = JSON.stringify($("#login").serializeObject());
+    var formData = JSON.stringify($("#login")._serializeObject());
 
     $.ajax({
       type: "POST",
       url: "/login",
       data: formData,
-      success: function(response){
-        var user = response.response.user;
+      success: function(data){
+        var user = data.response.user;
         if (user) {
           location.reload();
         }
-        var errors = response.response.errors;
+        var errors = data.response.errors;
         if (errors) {
-          errorMsg = errors.email || errors.password || errors.rememeber || {};
+          var errorMsg = errors.email || errors.password || errors.rememeber || {};
           $("#login-errors").html(errorMsg);
           $('#password').val('');
         }
@@ -51,7 +51,7 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
 });
 
 // Source: http://stackoverflow.com/questions/1184624/convert-form-data-to-js-object-with-jquery
-jQuery.fn.serializeObject = function() {
+jQuery.fn._serializeObject = function() {
   var arrayData, objectData;
   arrayData = this.serializeArray();
   objectData = {};
