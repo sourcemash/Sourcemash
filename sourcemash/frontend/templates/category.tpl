@@ -1,9 +1,7 @@
 <div class="row valign-wrapper">
-    <h2 class="col s10 valign"><%= model.get('category') %></h2>
+    <h2 class="col s11"><%= model.get('category') %></h2>
 
-    <div class="col s2">
-      <button type="submit" class="btn waves-effect waves-light mark-all-read"><i class="mdi-action-done-all"></i></button>
-    </div>
+    <span title="Mark as Read" class="mark-all-read col s1"><i class="medium mdi-action-done-all"></i></span>
 </div>
 
 <ul id="items" class="list-group row">

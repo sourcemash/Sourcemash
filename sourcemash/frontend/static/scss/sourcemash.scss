@@ -164,6 +164,15 @@ a.button-collapse.top-nav {
  * Feed & Category Item Styles
  ******************************
  */
+.mark-all-read {
+  color: color("grey", "lighten-2");
+
+  &:hover {
+    color: color("shades", "black");
+    cursor: pointer;
+  }
+}
+
 .switch {
 	label {
 		padding: 10px;
