@@ -15,7 +15,7 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
 
   loginSubmit: function(e){
     e.preventDefault();
-    var formData = JSON.stringify($("#login")._serializeObject());
+    var formData = JSON.stringify($("#login").serializeObject());
     var posting = $.ajax({
                       type: "POST",
                       url: "/login",
@@ -28,8 +28,8 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
   showErrors: function(data) {
     var user = data.response.user;
     if (user) {
-      location.reload();
       mixpanel.track("Logged In");
+      location.reload();
     }
     var errors = data.response.errors;
     if (errors) {
