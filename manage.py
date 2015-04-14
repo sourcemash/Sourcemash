@@ -52,6 +52,20 @@ def scrape():
         logging.info("Finished scrape. Let's run it back...")
 
 @manager.command
+def worker(kill=False):
+    """Start redis-server and redis queue worker"""
+    """Use -k or --kill to end worker task."""
+    """Run 'redis-cli ping' to see if redis server persists,
+       and use 'redis-cli shutdown' to kill the server."""
+    if not kill:
+        subprocess.call('redis-server &', shell=True)
+        status = subprocess.call('python worker_tasks/queue_worker.py &', shell=True)
+    else:
+        status = subprocess.call('redis-cli shutdown', shell=True)
+    sys.exit(status)
+
+
+@manager.command
 def seed():
     """Add seed data to the database"""
     """Required: Need to delete database & run db upgrade first"""
