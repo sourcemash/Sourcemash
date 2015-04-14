@@ -34,7 +34,7 @@ $(document).ready(function() {
 // jQuery
 //
 // Source: http://stackoverflow.com/questions/1184624/convert-form-data-to-js-object-with-jquery
-jQuery.fn._serializeObject = function() {
+jQuery.fn.serializeObject = function() {
   var arrayData, objectData;
   arrayData = this.serializeArray();
   objectData = {};
