@@ -88,6 +88,13 @@ class FeedListAPI(Resource):
             db.session.add(feed)
             db.session.commit()
 
+            # Scrape feed (but don't fail if redis-server is down)
+            try:
+                q = Queue('default', connection=conn)
+                job = q.enqueue_call(func=scrape_articles_only, args=(feed.id,), at_front=True)
+            except:
+                pass
+
         # Subscribe User
         try:
             subscription = current_user.subscribed.filter(Feed.id==feed.id).one()
@@ -95,10 +102,6 @@ class FeedListAPI(Resource):
         except:
             current_user.subscribed.append(feed)
             db.session.commit()
-
-        # Scrape feed
-        q = Queue('default', connection=conn)
-        job = q.enqueue(scrape_articles_only, feed.id)
 
         return marshal(feed, feed_status_fields), 201
 

@@ -51,7 +51,7 @@ def scrape_articles_only(feed_id):
     feed = Feed.query.get(feed_id)
     _store_items(feed)
 
-    for item in feed.items:
+    for item in Item.query.filter_by(feed_id=feed.id).all():
         soup = BeautifulSoup(item.text)
 
         # Extract first image from item
@@ -61,27 +61,6 @@ def scrape_articles_only(feed_id):
             db.session.commit()
         except:
             pass
-
-
-def categorize_articles_only(feed_id):
-    feed = Feed.query.get(feed_id)
-    categorizer = Categorizer()
-
-    # Assign categories
-    for item in feed.item:
-        soup = BeautifulSoup(item.text)
-
-        # Extract text and categorize item
-        text_only = soup.get_text()
-        categories = categorizer.categorize_item(item.title, text_only)
-        if len(categories) >= 1:
-            item.category_1 = categories[0]
-
-        if len(categories) >= 2:
-            item.category_2 = categories[1]
-
-        db.session.commit()
-        logger.info("CATEGORIZED [%s]: (%s, %s)" % (item.title, item.category_1, item.category_2))
 
 
 def _get_full_text(url):
