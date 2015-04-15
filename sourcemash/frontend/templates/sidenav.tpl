@@ -56,16 +56,15 @@
       <a href="/logout"><li class="collection-item"><i class="mdi-action-exit-to-app"></i>Logout</li></a>
     </ul>
   <% } else { %>
-    <form id="login" action="/login" method="POST" name="login_user_form">
+    <form id="login">
       <div class="input-field">
         <input class="validate" id="email" name="email" type="email">
         <label for="email" class="">Email Address</label>
-        <div class="errors"></div>
       </div>
       <div class="input-field">
         <input class="validate" id="password" name="password" type="password">
         <label for="password">Password</label>
-        <div class="errors"></div>
+        <div class="errors" id="login-errors"></div>
       </div>
 
       <div class="row">
@@ -75,7 +74,6 @@
         <div class="input-field col s7">
           <input class="validate" id="remember" name="remember" type="checkbox">
           <label for="remember">Remember Me</label>
-          <div class="errors"></div>
         </div>
       </div>
     </form>
@@ -83,7 +81,3 @@
     <li class="center-align"><a href="/register"><u>I need an account.</u></a></li>
   <% } %>
 </ul>
-
-<script>
-  mixpanel.track_forms("#login", "Logged In");
-</script>
