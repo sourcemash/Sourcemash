@@ -7,18 +7,23 @@ import subprocess
 from flask.ext.script import Manager, Shell, Server
 from flask.ext.migrate import MigrateCommand
 from flask.ext.assets import ManageAssets
+from rq import Worker, Queue, Connection
+
 
 from sourcemash import create_app
 from sourcemash.database import db
 from sourcemash.models import User, Feed, Item, UserItem
 
-from worker_tasks.scraper import scrape_and_categorize_articles
+from worker import create_worker
+from worker.scraper import scrape_and_categorize_articles
 
 from datetime import datetime
 
 import logging
 
 app = create_app(os.environ.get("APP_CONFIG_FILE") or "development")
+conn = create_worker(os.environ.get("APP_CONFIG_FILE") or "development")
+
 manager = Manager(app)
 
 TEST_CMD = "py.test --cov-report term-missing --cov-config .coveragerc --cov . \
@@ -58,8 +63,15 @@ def worker(kill=False):
     """Run 'redis-cli ping' to see if redis server persists,
        and use 'redis-cli shutdown' to kill the server."""
     if not kill:
-        subprocess.call('redis-server &', shell=True)
-        status = subprocess.call('python worker_tasks/queue_worker.py &', shell=True)
+        status = subprocess.call('redis-server &', shell=True)
+
+        time.sleep(2)
+
+        listen = ['default']
+
+        with Connection(conn):
+            worker = Worker(map(Queue, listen))
+            worker.work()
     else:
         status = subprocess.call('redis-cli shutdown', shell=True)
     sys.exit(status)

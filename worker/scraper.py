@@ -1,7 +1,7 @@
 from sourcemash.database import db
 
 from sourcemash.models import Item, Feed
-from worker_tasks.categorize import Categorizer
+from categorize import Categorizer
 
 from datetime import datetime
 
@@ -47,7 +47,8 @@ def scrape_and_categorize_articles():
         logger.info("CATEGORIZED [%s]: (%s, %s)" % (item.title, item.category_1, item.category_2))
 
 
-def scrape_articles_only(feed):
+def scrape_articles_only(feed_id):
+    feed = Feed.query.get(feed_id)
     _store_items(feed)
 
     for item in feed.items:
@@ -62,7 +63,8 @@ def scrape_articles_only(feed):
             pass
 
 
-def categorize_articles_only(feed):
+def categorize_articles_only(feed_id):
+    feed = Feed.query.get(feed_id)
     categorizer = Categorizer()
 
     # Assign categories

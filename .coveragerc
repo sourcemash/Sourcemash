@@ -8,7 +8,8 @@ omit =
     migrations/*
     sourcemash/frontend/*
     tests/*
-    worker_tasks/scraper.py
+    worker/scraper.py
+    worker/__init__.py
     manage.py
 
 [report]
