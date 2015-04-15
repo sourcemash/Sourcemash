@@ -47,7 +47,7 @@ def scrape_and_categorize_articles():
         logger.info("CATEGORIZED [%s]: (%s, %s)" % (item.title, item.category_1, item.category_2))
 
 
-def scrape_articles_only(feed_id):
+def scrape_feed_articles(feed_id):
     feed = Feed.query.get(feed_id)
     _store_items(feed)
 
