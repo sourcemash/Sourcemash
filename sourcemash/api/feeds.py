@@ -10,6 +10,13 @@ import feedparser
 
 from sourcemash.models import Feed, UserItem, Item
 
+import os
+from rq import Queue
+from worker import create_worker
+from worker.scraper import scrape_articles_only
+
+conn = create_worker(os.environ.get("APP_CONFIG_FILE") or "development")
+
 class isSubscribed(fields.Raw):
     def output(self, key, feed):
         if not current_user.is_authenticated():
@@ -88,6 +95,10 @@ class FeedListAPI(Resource):
         except:
             current_user.subscribed.append(feed)
             db.session.commit()
+
+        # Scrape feed
+        q = Queue('default', connection=conn)
+        job = q.enqueue(scrape_articles_only, feed.id)
 
         return marshal(feed, feed_status_fields), 201
 
