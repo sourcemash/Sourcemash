@@ -30,6 +30,8 @@ TEST_CMD = "py.test --cov-report term-missing --cov-config .coveragerc --cov . \
                     --boxed -n14 -k 'not functional' tests/"
 FUNCTIONAL_TEST_CMD = "./functional_test.sh"
 
+THIRTY_MINUTES = 0.5 * 60 * 60
+
 def _make_context():
     """Return context dict for a shell session so you can access
     app, db, and the User model by default."""
@@ -51,30 +53,23 @@ def test(all=False):
 def scrape():
     """Start an infinte loop to scrape & categorize articles."""
 
+    q = Queue('default', connection=conn)
     while True:
         logging.info("Starting scrape...")
-        scrape_and_categorize_articles()
-        logging.info("Finished scrape. Let's run it back...")
+        job = q.enqueue(scrape_and_categorize_articles)
+        logging.info("Enqueued scrape. Let's run it back in 30 mins...")
+        time.sleep(THIRTY_MINUTES)
 
 @manager.command
 def worker(kill=False):
-    """Start redis-server and redis queue worker"""
-    """Use -k or --kill to end worker task."""
-    """Run 'redis-cli ping' to see if redis server persists,
-       and use 'redis-cli shutdown' to kill the server."""
-    if not kill:
-        status = subprocess.call('redis-server &', shell=True)
+    """Starts redis queue worker."""
+    """Requires redis server to be running.
+       To run:'redis-server &'. To kill:'redis-cli shutdown'"""
+    listen = ['default']
 
-        time.sleep(2)
-
-        listen = ['default']
-
-        with Connection(conn):
-            worker = Worker(map(Queue, listen))
-            worker.work()
-    else:
-        status = subprocess.call('redis-cli shutdown', shell=True)
-    sys.exit(status)
+    with Connection(conn):
+        worker = Worker(map(Queue, listen))
+        worker.work()
 
 
 @manager.command
