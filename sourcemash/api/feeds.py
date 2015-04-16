@@ -15,7 +15,7 @@ from rq import Queue
 from worker import create_worker
 from worker.scraper import scrape_feed_articles
 
-conn = create_worker(os.environ.get("APP_CONFIG_FILE") or "development")
+REDIS_CONNECTION = create_worker()
 
 class isSubscribed(fields.Raw):
     def output(self, key, feed):
@@ -90,7 +90,7 @@ class FeedListAPI(Resource):
 
             # Scrape feed (but don't fail if redis-server is down)
             try:
-                q = Queue('default', connection=conn)
+                q = Queue('default', connection=REDIS_CONNECTION)
                 job = q.enqueue_call(func=scrape_feed_articles, args=(feed.id,), at_front=True)
             except:
                 pass
