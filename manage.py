@@ -56,15 +56,15 @@ def scrape():
     q = Queue('default', connection=conn)
     while True:
         logging.info("Starting scrape...")
-        job = q.enqueue(scrape_and_categorize_articles)
+        job = q.enqueue_call(func=scrape_and_categorize_articles, timeout=1800)
         logging.info("Enqueued scrape. Let's run it back in 30 mins...")
         time.sleep(THIRTY_MINUTES)
 
 @manager.command
 def worker(kill=False):
-    """Starts redis queue worker."""
-    """Requires redis server to be running.
-       To run:'redis-server &'. To kill:'redis-cli shutdown'"""
+    """Starts redis queue worker. Requires redis-server"""
+    """To run (in background): 'redis-server &'
+       To kill: 'redis-cli shutdown' """
     listen = ['default']
 
     with Connection(conn):
