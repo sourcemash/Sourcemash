@@ -7,23 +7,29 @@ import subprocess
 from flask.ext.script import Manager, Shell, Server
 from flask.ext.migrate import MigrateCommand
 from flask.ext.assets import ManageAssets
+from rq import Worker, Queue, Connection
 
 from sourcemash import create_app
 from sourcemash.database import db
 from sourcemash.models import User, Feed, Item, UserItem
 
-from worker_tasks.scraper import scrape_and_categorize_articles
+from worker import create_worker
+from worker.scraper import scrape_and_categorize_articles
 
 from datetime import datetime
 
 import logging
 
 app = create_app(os.environ.get("APP_CONFIG_FILE") or "development")
+conn = create_worker(os.environ.get("APP_CONFIG_FILE") or "development")
+
 manager = Manager(app)
 
 TEST_CMD = "py.test --cov-report term-missing --cov-config .coveragerc --cov . \
                     --boxed -n14 -k 'not functional' tests/"
 FUNCTIONAL_TEST_CMD = "./functional_test.sh"
+
+THIRTY_MINUTES = 30 * 60
 
 def _make_context():
     """Return context dict for a shell session so you can access
@@ -46,10 +52,22 @@ def test(all=False):
 def scrape():
     """Start an infinte loop to scrape & categorize articles."""
 
+    q = Queue('default', connection=conn)
     while True:
-        logging.info("Starting scrape...")
-        scrape_and_categorize_articles()
-        logging.info("Finished scrape. Let's run it back...")
+        job = q.enqueue_call(func=scrape_and_categorize_articles, timeout=1800)
+        time.sleep(THIRTY_MINUTES)
+
+@manager.command
+def worker(kill=False):
+    """Starts redis queue worker. Requires redis-server"""
+    """To run (in background): 'redis-server &'
+       To kill: 'redis-cli shutdown' """
+    listen = ['default']
+
+    with Connection(conn):
+        worker = Worker(map(Queue, listen))
+        worker.work()
+
 
 @manager.command
 def seed():

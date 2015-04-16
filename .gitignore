@@ -65,6 +65,9 @@ flask/
 # Database
 *.db
 
+# Redis dump
+*.rdb
+
 # Assets
 sourcemash/frontend/static/.webassets-cache/
 *.css

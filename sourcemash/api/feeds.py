@@ -10,6 +10,12 @@ import feedparser
 
 from sourcemash.models import Feed, UserItem, Item
 
+from rq import Queue
+from worker import create_worker
+from worker.scraper import scrape_feed_articles
+
+REDIS_CONNECTION = create_worker()
+
 class isSubscribed(fields.Raw):
     def output(self, key, feed):
         if not current_user.is_authenticated():
@@ -80,6 +86,14 @@ class FeedListAPI(Resource):
 
             db.session.add(feed)
             db.session.commit()
+
+            # Scrape feed (but don't fail if redis-server is down)
+            try:
+                q = Queue('default', connection=REDIS_CONNECTION)
+                job = q.enqueue_call(func=scrape_feed_articles, args=(feed,),
+                                     at_front=True, timeout=600)
+            except:
+                pass
 
         # Subscribe User
         try:

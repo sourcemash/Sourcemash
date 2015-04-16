@@ -1,7 +1,7 @@
 from sourcemash.database import db
 
 from sourcemash.models import Item, Feed
-from worker_tasks.categorize import Categorizer
+from categorize import Categorizer
 
 from datetime import datetime
 
@@ -45,6 +45,21 @@ def scrape_and_categorize_articles():
 
         db.session.commit()
         logger.info("CATEGORIZED [%s]: (%s, %s)" % (item.title, item.category_1, item.category_2))
+
+
+def scrape_feed_articles(feed):
+    _store_items(feed)
+
+    for item in Item.query.filter_by(feed_id=feed.id).all():
+        soup = BeautifulSoup(item.text)
+
+        # Extract first image from item
+        try:
+            img_url = soup.find('img')['src']
+            item.image_url = img_url
+            db.session.commit()
+        except:
+            pass
 
 
 def _get_full_text(url):

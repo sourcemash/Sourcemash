@@ -1,5 +1,5 @@
 import pytest
-from worker_tasks.categorize import Categorizer
+from worker.categorize import Categorizer
 
 @pytest.fixture()
 def categorizer(request):
