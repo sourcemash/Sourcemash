@@ -9,7 +9,6 @@ from flask.ext.migrate import MigrateCommand
 from flask.ext.assets import ManageAssets
 from rq import Worker, Queue, Connection
 
-
 from sourcemash import create_app
 from sourcemash.database import db
 from sourcemash.models import User, Feed, Item, UserItem
@@ -30,7 +29,7 @@ TEST_CMD = "py.test --cov-report term-missing --cov-config .coveragerc --cov . \
                     --boxed -n14 -k 'not functional' tests/"
 FUNCTIONAL_TEST_CMD = "./functional_test.sh"
 
-THIRTY_MINUTES = 0.5 * 60 * 60
+THIRTY_MINUTES = 30 * 60
 
 def _make_context():
     """Return context dict for a shell session so you can access
@@ -55,9 +54,7 @@ def scrape():
 
     q = Queue('default', connection=conn)
     while True:
-        logging.info("Starting scrape...")
         job = q.enqueue_call(func=scrape_and_categorize_articles, timeout=1800)
-        logging.info("Enqueued scrape. Let's run it back in 30 mins...")
         time.sleep(THIRTY_MINUTES)
 
 @manager.command
