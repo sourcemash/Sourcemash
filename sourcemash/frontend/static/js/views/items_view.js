@@ -2,7 +2,7 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
     initialize: function(options) {
         if (this.model) {
             this.listenTo(this.model, 'change:subscribed', this.render);
-        }
+        };
 
         this.itemViews = [];
     },
@@ -26,21 +26,21 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
         this.$el.html(this.template({ model: this.model, items: this.collection.models }));
 
         // Render subscribe modal view
-        this.subscribeModalView = new Sourcemash.Views.SubscribeModalView({ collection: this.collection })
-        this.$("#subscribe-modal").html(this.subscribeModalView.render().el)
+        this.subscribeModalView = new Sourcemash.Views.SubscribeModalView({ collection: this.collection });
+        this.$("#subscribe-modal").html(this.subscribeModalView.render().el);
 
         // Render subscribe-toggle switch if feed page
         if (this.model) {
             this.subscribeSwitchView = new Sourcemash.Views.SubscribeSwitchView({ model: this.model });
-            this.$(".subscribe-switch").html(this.subscribeSwitchView.render().el)
-        }
+            this.$(".subscribe-switch").html(this.subscribeSwitchView.render().el);
+        };
 
         // Render item cards
         var itemCards = [];
-        this.collection.models.forEach(_.bind(function(item) {
+        this.collection.models.forEach(function(item) {
             var itemCardView = new Sourcemash.Views.ItemCardView({el: "#item-" + item.get('id'), model: item});
             itemCards.push(itemCardView)
-        }, this))
+        });
 
         this.itemViews = itemCards;
         return this;
