@@ -4547,7 +4547,7 @@ DatePicker.prototype.navigate = function( type, value, options ) {
         targetDate,
         isTargetArray = $.isArray( value ),
         isTargetObject = $.isPlainObject( value ),
-        viewsetObject = this.item.view/*,
+        viewsetObject = this.item.view;/*,
         safety = 100*/
 
 
@@ -4674,7 +4674,7 @@ DatePicker.prototype.validate = function( type, dateObject, options ) {
 
             // Return only integers for enabled weekdays.
             return _.isInteger( value )
-        }).length/*,
+        }).length;/*,
 
         safety = 100*/
 

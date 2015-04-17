@@ -4,7 +4,7 @@ Sourcemash.Models.Feed = Backbone.Model.extend({
     parse: function (response) {
         if (response.feed) {
             return response.feed;
-        }
+        };
         return response;
     }
 });

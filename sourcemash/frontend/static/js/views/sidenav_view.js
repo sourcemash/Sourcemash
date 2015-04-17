@@ -30,7 +30,7 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
     if (user) {
       mixpanel.track("Logged In");
       location.reload();
-    }
+    };
     var errors = data.response.errors;
     if (errors) {
       errorMsg = errors.email || errors.password || errors.rememeber || {};
@@ -40,9 +40,9 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
   },
 
   render: function() {
-    activeTab = $(".tab .active").text().toLowerCase() || "categories"
+    activeTab = $(".tab .active").text().toLowerCase() || "categories";
 
-    var content = this.template({active: activeTab, current_user: this.user, feeds: this.feeds, categories: this.categories})
+    var content = this.template({active: activeTab, current_user: this.user, feeds: this.feeds, categories: this.categories});
     this.$el.html(content);
 
     $('ul.tabs').tabs();
