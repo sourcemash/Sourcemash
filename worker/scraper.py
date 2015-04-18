@@ -15,6 +15,7 @@ import logging
 
 logger = logging.getLogger('Sourcemash')
 
+
 def scrape_and_categorize_articles():
     categorizer = Categorizer()
 

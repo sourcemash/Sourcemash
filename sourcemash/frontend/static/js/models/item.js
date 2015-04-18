@@ -13,6 +13,18 @@ Sourcemash.Models.Item = Backbone.Model.extend({
             options.feeds.add(this.feed);
         };
 
+        this.categories = new Sourcemash.Collections.Categories();
 
+        this.get('categories').forEach(function(category) {
+            var existingCategory = options.categories.findWhere({category: category});
+
+            if (existingCategory) {
+                this.categories.add(existingCategory);
+            } else {
+                var newCategory = new Sourcemash.Models.Category({category: category});
+                this.categories.add(newCategory);
+                options.categories.add(newCategory);
+            };
+        })
     }
 });

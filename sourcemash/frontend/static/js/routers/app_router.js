@@ -51,7 +51,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         var feedView = new Sourcemash.Views.FeedView({ model: feed, collection: feedItems });
 
         feed.fetch();
-        feedView.collection.fetch({feeds: this._feeds, success: function() {feedView.render()}});
+        feedView.collection.fetch({feeds: this._feeds, categories: this._categories, success: function() {feedView.render()}});
         this._swapView(feedView);
     },
 
@@ -62,7 +62,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         var categoryItems = new Sourcemash.Collections.Items([], {category: category});
         var categoryView = new Sourcemash.Views.CategoryView({ model: category, collection: categoryItems });
 
-        categoryView.collection.fetch({feeds: this._feeds, success: function() {categoryView.render()}});
+        categoryView.collection.fetch({feeds: this._feeds, categories: this._categories, success: function() {categoryView.render()}});
         this._swapView(categoryView);
     },
 
@@ -70,7 +70,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         var savedItems = new Sourcemash.Collections.Items([], {saved: true});
         var savedView = new Sourcemash.Views.SavedView({ collection: savedItems });
 
-        savedView.collection.fetch({feeds: this._feeds, success: function() {savedView.render()}});
+        savedView.collection.fetch({feeds: this._feeds, categories: this._categories, success: function() {savedView.render()}});
         this._swapView(savedView);
     },
 
