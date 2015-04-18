@@ -42,7 +42,7 @@ item_fields = {
     'link': fields.String,
     'last_updated': fields.DateTime,
     'author': fields.String,
-    'categories': fields.String,
+    'categories': fields.List(fields.String),
     'voteSum': fields.Integer,
     'image_url': fields.String,
     'summary': fields.String,

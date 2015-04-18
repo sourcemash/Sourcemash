@@ -278,6 +278,7 @@ class TestCategoryItemListAPI(TestBase):
 
         data = json.loads(r.data)
         assert len(data['items']) == 5
+        assert set(data['items'][0]['categories']) == set(["News", "Technology"])
 
 
     def test_get_items_category_missing(self, test_client, userWithPopulatedFeed):
