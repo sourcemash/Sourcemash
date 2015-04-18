@@ -12,5 +12,7 @@ Sourcemash.Models.Item = Backbone.Model.extend({
                                           title: this.get('feed').title });
             options.feeds.add(this.feed);
         };
+
+
     }
 });
