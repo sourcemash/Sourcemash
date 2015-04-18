@@ -29,10 +29,9 @@ from string import punctuation
 
 import requests
 import json
-from bs4 import BeautifulSoup
 
 import networkx as nx
-import community # python-louvain
+import community    # python-louvain
 
 logger = logging.getLogger('Sourcemash')
 
@@ -89,7 +88,6 @@ class Categorizer:
         self._memoized_article_links = defaultdict(list)
         self._memoized_semantic_relatedness_scores = defaultdict(float)
 
-
     def categorize_item(self, title, text):
         # Use ngram word count approach to get possible keywords
         keyword_candidates = self._get_keyword_candidates(title, text)
@@ -112,7 +110,6 @@ class Categorizer:
 
         return selected_categories
 
-
     def _get_keyword_candidates(self, title, text):
         title_ngrams = self._get_valid_ngrams(title)
         text_ngrams = self._get_valid_ngrams(text)
@@ -132,7 +129,6 @@ class Categorizer:
 
         return dict(ngrams.most_common(MAX_CANDIDATE_COUNT))
 
-
     def _get_valid_ngrams(self, string):
         valid_ngrams = Counter()
 
@@ -148,7 +144,6 @@ class Categorizer:
 
         return valid_ngrams
 
-
     def _clean_word(self, word):
         # Strip punctuation
         word = word.strip(punctuation)
@@ -160,7 +155,6 @@ class Categorizer:
         word = word.replace(u"\u2018", "").replace(u"\u2019", "").replace(u"\u201c","").replace(u"\u201d", "")
 
         return word
-
 
     def _memoize_related_articles(self, ngrams):
         """Store all related (disambiguated) Wikipedia articles for each ngram"""
@@ -176,7 +170,6 @@ class Categorizer:
         # gets the page links anyway.
         self._scrape_wiki_links(ngrams)
 
-
     def _memoize_article_links(self, ngrams):
         """Store all links for a Wikipedia article"""
 
@@ -184,7 +177,6 @@ class Categorizer:
 
         article_titles = [title for ngram in ngrams for title in self._memoized_related_articles[ngram]]
         self._scrape_wiki_links(article_titles)
-
 
     def _scrape_wiki_links(self, titles):
         unscraped_titles = filter(lambda x: x not in self._memoized_article_links, titles)
@@ -261,7 +253,6 @@ class Categorizer:
                             if sublink not in self._memoized_related_articles:
                                 self._memoized_related_articles[sublink] = [link_title]
 
-
     def _assign_closest_articles(self, ngrams):
         """Extract Wikipedia articles closest to an ngram"""
 
@@ -305,7 +296,6 @@ class Categorizer:
 
         return assigned_articles
 
-
     def _build_semantic_graph(self, articles):
         """
         Create a category graph where each vertex is a Wikipedia article
@@ -335,7 +325,6 @@ class Categorizer:
 
         return G
 
-
     def _get_relatedness_score(self, article_1_links, article_2_links):
         """Calculate overlap of two Wikipedia articles: 2 * [# of shared links] / [total # of links]"""
 
@@ -358,7 +347,6 @@ class Categorizer:
                 shared_links_count += weight
 
         return 2.0 * shared_links_count / total_links_count
-
 
     def _get_best_keywords(self, communities, original_keywords):
         """
@@ -387,8 +375,7 @@ class Categorizer:
             best_original_keywords = keyword_counts.most_common(2)
             best_keywords.update([keyword[0] for keyword in best_original_keywords])
 
-        return [keyword.title() for keyword in best_keywords] if best_keywords else [""]
-
+        return [keyword.title() for keyword in best_keywords]
 
     def _is_viable_candidate(self, phrase):
 
@@ -420,7 +407,6 @@ class Categorizer:
                 return False
 
         return True
-
 
     def _compile_sublinks(self, data, link_path=None):
         """Flatten normalized and redirect links for quick lookup"""

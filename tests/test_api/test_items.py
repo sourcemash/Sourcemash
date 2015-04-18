@@ -236,7 +236,8 @@ class TestCategoryItemListAllAPI:
         assert len(data['items']) == 0
 
     def test_get_category_items_present(self, test_client, itemsWithCategory):
-        r = test_client.get('/api/categories/' + itemsWithCategory[0].category_1 + '/items/all')
+        category = itemsWithCategory[0].categories[0]
+        r = test_client.get('/api/categories/' + category + '/items/all')
 
         check_valid_header_type(r.headers)
         assert r.status_code == 200
@@ -251,8 +252,10 @@ class TestCategoryItemListAPI(TestBase):
         self.login(test_client, userWithPopulatedFeed.email, userWithPopulatedFeed.password)
 
         feed = userWithPopulatedFeed.subscribed.first()
+        item = feed.items[0]
+        category = item.categories[0]
 
-        r = test_client.get('/api/categories/' + feed.items[0].category_1 + '/items')
+        r = test_client.get('/api/categories/' + category + '/items')
 
         check_valid_header_type(r.headers)
         assert r.status_code == 200
@@ -265,8 +268,10 @@ class TestCategoryItemListAPI(TestBase):
         self.login(test_client, userWithPopulatedFeed.email, userWithPopulatedFeed.password)
 
         feed = userWithPopulatedFeed.subscribed.first()
+        item = feed.items[0]
+        category = item.categories[0].lower()
 
-        r = test_client.get('/api/categories/' + feed.items[0].category_1.lower() + '/items')
+        r = test_client.get('/api/categories/' + category + '/items')
 
         check_valid_header_type(r.headers)
         assert r.status_code == 200
@@ -278,9 +283,7 @@ class TestCategoryItemListAPI(TestBase):
     def test_get_items_category_missing(self, test_client, userWithPopulatedFeed):
         self.login(test_client, userWithPopulatedFeed.email, userWithPopulatedFeed.password)
 
-        outside_item = item_factories.ItemWithCategoryFactory(category_1="nonexistent_category")
-
-        r = test_client.get('/api/categories/' + outside_item.category_1 + '/items')
+        r = test_client.get('/api/categories/nonexistent_category/items')
 
         check_valid_header_type(r.headers)
         assert r.status_code == 200
@@ -294,8 +297,10 @@ class TestCategoryItemListAPI(TestBase):
 
         feed = userWithPopulatedFeed.subscribed.first()
         user_items_length = feed.items.count()
+        item = feed.items[0]
+        category = item.categories[0]
 
-        r = test_client.get('/api/categories/' + feed.items[0].category_1 + '/items')
+        r = test_client.get('/api/categories/' + category + '/items')
 
         check_valid_header_type(r.headers)
         assert r.status_code == 200

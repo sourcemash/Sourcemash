@@ -23,7 +23,7 @@ def scrape_and_categorize_articles():
         _store_items(feed)
 
     # Assign categories and extract first image from articles
-    for item in Item.query.filter_by(category_1=None).all():
+    for item in Item.query.filter_by(categorized=False).all():
         soup = BeautifulSoup(item.text)
 
         # Extract first image from item
@@ -37,14 +37,14 @@ def scrape_and_categorize_articles():
         # Extract text and categorize item
         text_only = soup.get_text()
         categories = categorizer.categorize_item(item.title, text_only)
-        if len(categories) >= 1:
-            item.category_1 = categories[0]
+        for category in categories:
+            item.categories.append(category)
 
-        if len(categories) >= 2:
-            item.category_2 = categories[1]
+        item.categorized = True
 
         db.session.commit()
-        logger.info("CATEGORIZED [%s]: (%s, %s)" % (item.title, item.category_1, item.category_2))
+
+        logger.info("CATEGORIZED [%s]" % (item.title))
 
 
 def scrape_feed_articles(feed):

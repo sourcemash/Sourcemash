@@ -42,8 +42,7 @@ item_fields = {
     'link': fields.String,
     'last_updated': fields.DateTime,
     'author': fields.String,
-    'category_1': fields.String,
-    'category_2': fields.String,
+    'categories': fields.String,
     'voteSum': fields.Integer,
     'image_url': fields.String,
     'summary': fields.String,
@@ -81,8 +80,7 @@ class ItemAPI(Resource):
         try:
             user_item = UserItem.query.filter_by(user=current_user, item=item).one()
         except:
-            user_item = UserItem(user=current_user, item=item, feed_id=item.feed_id,
-                                 category_1=item.category_1, category_2=item.category_2)
+            user_item = UserItem(user=current_user, item=item, feed_id=item.feed_id)
             db.session.add(user_item)
             db.session.commit()
 
@@ -138,16 +136,15 @@ class CategoryItemListAPI(Resource):
 
     @login_required
     def get(self, category):
-        category = category.title()
         user_feed_ids = [feed.id for feed in current_user.subscribed]
 
-        items = Item.query.filter((Item.category_1 == category) | (Item.category_2 == category))    \
-                            .filter(Item.feed_id.in_(user_feed_ids))                                \
-                            .all()
+        items = Item.query.filter(Item.categories.contains(category.title())) \
+                          .filter(Item.feed_id.in_(user_feed_ids)) \
+                          .all()
 
-        unsubscribed_item = Item.query.filter((Item.category_1 == category) | (Item.category_2 == category))     \
-                                        .filter(~Item.feed_id.in_(user_feed_ids))                               \
-                                        .first()
+        unsubscribed_item = Item.query.filter(Item.categories.contains(category))     \
+                                      .filter(~Item.feed_id.in_(user_feed_ids))                               \
+                                      .first()
 
         if unsubscribed_item:
             items.append(unsubscribed_item)
@@ -159,7 +156,7 @@ class CategoryItemListAllAPI(Resource):
 
     def get(self, category):
         category = category.title()
-        items = Item.query.filter((Item.category_1 == category) | (Item.category_2 == category)).all()
+        items = Item.query.filter(Item.categories.contains(category.title())).all()
         return {'items': [marshal(item, item_fields) for item in items]}
 
 api.add_resource(ItemAPI, '/items/<int:id>', endpoint='item')
