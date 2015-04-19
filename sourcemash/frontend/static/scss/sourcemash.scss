@@ -197,6 +197,16 @@ a.button-collapse.top-nav {
             line-height: 32px;
             font-size: 20px;
         }
+        .card-action {
+          .category-list {
+            a:after {
+              content: ", ";
+            }
+            a:last-child:after {
+                content: "";
+            }
+          }
+        }
     }
     &.read {
 	    .card-image {
