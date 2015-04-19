@@ -15,7 +15,7 @@ Sourcemash.Models.Item = Backbone.Model.extend({
 
         this.categories = new Sourcemash.Collections.Categories();
 
-        this.get('categories').forEach(function(category) {
+        _.each(this.get('categories'), function(category) {
             var existingCategory = options.categories.findWhere({category: category});
 
             if (existingCategory) {
@@ -25,6 +25,6 @@ Sourcemash.Models.Item = Backbone.Model.extend({
                 this.categories.add(newCategory);
                 options.categories.add(newCategory);
             };
-        })
+        }, this);
     }
 });

@@ -16,7 +16,7 @@
 
       <div class="card-action valign-wrapper row">
         <% for (var i = 0; i < item.categories.length; i++) { %>
-          <div class="col s4"><a href="/#categories/<%=item.categories[i]%>"><%=item.categories[i]%></a></div>
+          <a href="/#categories/<%=item.categories.at(i).get('category')%>"><%=item.categories.at(i).get('category')%></a>,
         <% } %>
         <div class="col s2">
           <div class="saved">

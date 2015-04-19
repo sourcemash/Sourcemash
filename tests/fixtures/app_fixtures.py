@@ -5,7 +5,7 @@ import pytest
 from sqlalchemy.orm import Session, scoped_session, sessionmaker
 from sourcemash import create_app
 from sourcemash.database import db as _db
-from tests.factories import (feed_factories, item_factories, role_factories, user_factories, user_item_factories, category_factories)
+from tests.factories import (feed_factories, item_factories, role_factories, user_factories, user_item_factories)
 
 
 @pytest.yield_fixture(scope='session')
