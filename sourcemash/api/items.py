@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from sqlalchemy import func, desc
 
 from feeds import feed_fields
-from sourcemash.models import Item, UserItem
+from sourcemash.models import Item, UserItem, Category
 from sourcemash.forms import VoteForm
 
 MAX_TRENDING_ITEMS = 10
@@ -135,14 +135,15 @@ class FeedItemListAPI(Resource):
 class CategoryItemListAPI(Resource):
 
     @login_required
-    def get(self, category):
+    def get(self, category_id):
         user_feed_ids = [feed.id for feed in current_user.subscribed]
+        category = Category.query.get_or_404(category_id)
 
-        items = Item.query.filter(Item.categories.contains(category.title())) \
+        items = Item.query.filter(Item.categories.contains(category.category)) \
                           .filter(Item.feed_id.in_(user_feed_ids)) \
                           .all()
 
-        unsubscribed_item = Item.query.filter(Item.categories.contains(category))     \
+        unsubscribed_item = Item.query.filter(Item.categories.contains(category.category))     \
                                       .filter(~Item.feed_id.in_(user_feed_ids))                               \
                                       .first()
 
@@ -154,14 +155,14 @@ class CategoryItemListAPI(Resource):
 
 class CategoryItemListAllAPI(Resource):
 
-    def get(self, category):
-        category = category.title()
-        items = Item.query.filter(Item.categories.contains(category.title())).all()
+    def get(self, category_id):
+        category = Category.query.get_or_404(category_id)
+        items = Item.query.filter(Item.categories.contains(category.category)).all()
         return {'items': [marshal(item, item_fields) for item in items]}
 
 api.add_resource(ItemAPI, '/items/<int:id>', endpoint='item')
 api.add_resource(SavedItemListAPI, '/items/saved', endpoint='saved_items')
 api.add_resource(TrendingItemListAPI, '/items/trending', endpoint='trending_items')
 api.add_resource(FeedItemListAPI, '/feeds/<int:feed_id>/items', endpoint='feed_items')
-api.add_resource(CategoryItemListAPI, '/categories/<string:category>/items', endpoint='category_items')
-api.add_resource(CategoryItemListAllAPI, '/categories/<string:category>/items/all', endpoint='category_items_all')
+api.add_resource(CategoryItemListAPI, '/categories/<int:category_id>/items', endpoint='category_items')
+api.add_resource(CategoryItemListAllAPI, '/categories/<int:category_id>/items/all', endpoint='category_items_all')

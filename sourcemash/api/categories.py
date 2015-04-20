@@ -18,14 +18,15 @@ class CategoryListAPI(Resource):
         unread_counts = {}
 
         categories = Category.query \
-                             .with_entities(Category.category,
+                             .with_entities(Category.id,
+                                            Category.category,
                                             func.count()) \
                              .join(Category.items) \
                              .filter(Item.feed_id.in_(user_feed_ids)) \
                              .group_by(Category.category) \
                              .all()
 
-        for category, count in categories:
+        for id, category, count in categories:
             total_counts.update({category: count})
 
             read_item_count = UserItem.query \
@@ -47,18 +48,18 @@ class CategoryListAPI(Resource):
                 total_counts.update({category: 1})
                 unread_counts[category] += 1
 
-        return {'categories': [{'category': category, 'count': total_counts[category], 'unread_count': unread_counts[category]} for category in total_counts]}
+        return {'categories': [{'id': id, 'category': category, 'count': total_counts[category], 'unread_count': unread_counts[category]} for id, category, count in categories]}
 
 
 class CategoryListAllAPI(Resource):
 
     def get(self):
-        categories = Category.query.with_entities(Category.category,
+        categories = Category.query.with_entities(Category.id, Category.category,
                                                   func.count())   \
                                .group_by(Category.category) \
                                .all()
 
-        return {'categories': [{'category': category, 'count': count} for category, count in categories]}
+        return {'categories': [{'id': id, 'category': category, 'count': count} for id, category, count in categories]}
 
 
 api.add_resource(CategoryListAPI, '/categories', endpoint='categories')

@@ -4,7 +4,7 @@ Sourcemash.Collections.Items = Backbone.Collection.extend({
         if (this.feed) {
             return '/api/feeds/' + this.feed.get('id') + '/items'
         } else if (this.category) {
-            return '/api/categories/' + this.category.get('category') + '/items'
+            return '/api/categories/' + this.category.get('id') + '/items'
         } else if (this.saved) {
             return '/api/items/saved'
         }

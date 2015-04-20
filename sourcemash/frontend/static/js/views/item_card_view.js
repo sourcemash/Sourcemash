@@ -56,6 +56,9 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
                         {success: _.bind(this.openCard, this)});
 
         this.model.feed.set({unread_count: this.model.feed.get('unread_count') - 1});
+        this.model.categories.each(function (model) {
+            model.set({unread_count: model.get('unread_count') - 1});
+        });
 
         if (this.model.changedAttributes()) {
             mixpanel.people.increment("items read")

@@ -14,7 +14,6 @@ Sourcemash.Models.Item = Backbone.Model.extend({
         };
 
         this.categories = new Sourcemash.Collections.Categories();
-
         _.each(this.get('categories'), function(category) {
             var existingCategory = options.categories.findWhere({category: category});
 

@@ -3,7 +3,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         "": "showSplash",
         "profile": "showProfile",
         "feeds/:id": "showFeed",
-        "categories/:category": "showCategory",
+        "categories/:id": "showCategory",
         "saved": "showSaved",
         "browse": "browseFeeds"
     },
@@ -55,8 +55,8 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         this._swapView(feedView);
     },
 
-    showCategory: function(keyword) {
-        var category = new Sourcemash.Models.Category({ category: keyword });
+    showCategory: function(id) {
+        var category = new Sourcemash.Models.Category({ id: id });
         category = this._categories.add(category);
 
         var categoryItems = new Sourcemash.Collections.Items([], {category: category});

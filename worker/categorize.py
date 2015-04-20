@@ -102,16 +102,12 @@ class Categorizer:
         # Build a graph and identify keyword clusters
         clustering = None
 
-        print assigned_articles
         if len(assigned_articles) > 2:
             semantic_graph = self._build_semantic_graph(assigned_articles)
-            print semantic_graph
             clustering = community.best_partition(semantic_graph)
 
-            # Use keywords from best clusters
-            selected_categories = self._get_best_keywords(clustering, keyword_candidates)
-        else:
-            selected_categories = assigned_articles
+        # Use keywords from best clusters
+        selected_categories = self._get_best_keywords(clustering, keyword_candidates)
 
         return selected_categories
 
