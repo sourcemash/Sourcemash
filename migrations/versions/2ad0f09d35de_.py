@@ -1,13 +1,13 @@
 """empty message
 
-Revision ID: 47428d5169d3
+Revision ID: 2ad0f09d35de
 Revises: 518377732728
-Create Date: 2015-04-18 18:51:59.957365
+Create Date: 2015-04-20 01:16:21.252671
 
 """
 
 # revision identifiers, used by Alembic.
-revision = '47428d5169d3'
+revision = '2ad0f09d35de'
 down_revision = '518377732728'
 
 from alembic import op
@@ -30,6 +30,7 @@ def upgrade():
     sa.ForeignKeyConstraint(['category_id'], ['category.id'], ),
     sa.ForeignKeyConstraint(['item_id'], ['item.id'], )
     )
+
     with op.batch_alter_table(u'item', schema=None) as batch_op:
         batch_op.drop_index(batch_op.f('ix_item_link'))
         batch_op.add_column(sa.Column('categorized', sa.Boolean(), nullable=True))
@@ -56,8 +57,8 @@ def downgrade():
         batch_op.add_column(sa.Column('category_1', sa.VARCHAR(length=100), nullable=True))
         batch_op.add_column(sa.Column('category_2', sa.VARCHAR(length=100), nullable=True))
         batch_op.drop_column('categorized')
-    op.create_index(batch_op.f('ix_item_link'), 'item', ['link'])
 
+    op.create_index(batch_op.f('ix_item_link'), 'item', ['link'])
 
     op.drop_table('categories')
     with op.batch_alter_table('category', schema=None) as batch_op:
