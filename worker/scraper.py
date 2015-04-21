@@ -45,7 +45,7 @@ def scrape_and_categorize_articles():
 
         db.session.commit()
 
-        logger.info("CATEGORIZED [%s]" % (item.title))
+        logger.info("CATEGORIZED [%s]: %s" % (item.title, item.categories))
 
 
 def scrape_feed_articles(feed):
