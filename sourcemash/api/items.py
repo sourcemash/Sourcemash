@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from sqlalchemy import func, desc
 
 from feeds import feed_fields
-from sourcemash.models import Item, UserItem
+from sourcemash.models import Item, UserItem, Category
 from sourcemash.forms import VoteForm
 
 MAX_TRENDING_ITEMS = 10
@@ -42,8 +42,7 @@ item_fields = {
     'link': fields.String,
     'last_updated': fields.DateTime,
     'author': fields.String,
-    'category_1': fields.String,
-    'category_2': fields.String,
+    'categories': fields.List(fields.String),
     'voteSum': fields.Integer,
     'image_url': fields.String,
     'summary': fields.String,
@@ -81,8 +80,7 @@ class ItemAPI(Resource):
         try:
             user_item = UserItem.query.filter_by(user=current_user, item=item).one()
         except:
-            user_item = UserItem(user=current_user, item=item, feed_id=item.feed_id,
-                                 category_1=item.category_1, category_2=item.category_2)
+            user_item = UserItem(user=current_user, item=item, feed_id=item.feed_id)
             db.session.add(user_item)
             db.session.commit()
 
@@ -137,17 +135,17 @@ class FeedItemListAPI(Resource):
 class CategoryItemListAPI(Resource):
 
     @login_required
-    def get(self, category):
-        category = category.title()
+    def get(self, category_id):
         user_feed_ids = [feed.id for feed in current_user.subscribed]
+        category = Category.query.get_or_404(category_id)
 
-        items = Item.query.filter((Item.category_1 == category) | (Item.category_2 == category))    \
-                            .filter(Item.feed_id.in_(user_feed_ids))                                \
-                            .all()
+        items = Item.query.filter(Item.categories.contains(category.category)) \
+                          .filter(Item.feed_id.in_(user_feed_ids)) \
+                          .all()
 
-        unsubscribed_item = Item.query.filter((Item.category_1 == category) | (Item.category_2 == category))     \
-                                        .filter(~Item.feed_id.in_(user_feed_ids))                               \
-                                        .first()
+        unsubscribed_item = Item.query.filter(Item.categories.contains(category.category))     \
+                                      .filter(~Item.feed_id.in_(user_feed_ids))                               \
+                                      .first()
 
         if unsubscribed_item:
             items.append(unsubscribed_item)
@@ -157,14 +155,14 @@ class CategoryItemListAPI(Resource):
 
 class CategoryItemListAllAPI(Resource):
 
-    def get(self, category):
-        category = category.title()
-        items = Item.query.filter((Item.category_1 == category) | (Item.category_2 == category)).all()
+    def get(self, category_id):
+        category = Category.query.get_or_404(category_id)
+        items = Item.query.filter(Item.categories.contains(category.category)).all()
         return {'items': [marshal(item, item_fields) for item in items]}
 
 api.add_resource(ItemAPI, '/items/<int:id>', endpoint='item')
 api.add_resource(SavedItemListAPI, '/items/saved', endpoint='saved_items')
 api.add_resource(TrendingItemListAPI, '/items/trending', endpoint='trending_items')
 api.add_resource(FeedItemListAPI, '/feeds/<int:feed_id>/items', endpoint='feed_items')
-api.add_resource(CategoryItemListAPI, '/categories/<string:category>/items', endpoint='category_items')
-api.add_resource(CategoryItemListAllAPI, '/categories/<string:category>/items/all', endpoint='category_items_all')
+api.add_resource(CategoryItemListAPI, '/categories/<int:category_id>/items', endpoint='category_items')
+api.add_resource(CategoryItemListAllAPI, '/categories/<int:category_id>/items/all', endpoint='category_items_all')

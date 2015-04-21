@@ -11,7 +11,7 @@ from rq import Worker, Queue, Connection
 
 from sourcemash import create_app
 from sourcemash.database import db
-from sourcemash.models import User, Feed, Item, UserItem
+from sourcemash.models import User, Feed, Item, Category, UserItem
 
 from worker import create_worker
 from worker.scraper import scrape_and_categorize_articles
@@ -34,7 +34,7 @@ THIRTY_MINUTES = 30 * 60
 def _make_context():
     """Return context dict for a shell session so you can access
     app, db, and the User model by default."""
-    return {'app': app, 'db': db, 'User': User, 'Item': Item, 'Feed': Feed, 'UserItem': UserItem}
+    return {'app': app, 'db': db, 'User': User, 'Item': Item, 'Category': Category, 'Feed': Feed, 'UserItem': UserItem}
 
 
 @manager.command

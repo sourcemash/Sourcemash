@@ -15,8 +15,7 @@ class TestCategoryListAllAPI:
         assert r.status_code == 200
 
         data = json.loads(r.data)
-        assert set([data['categories'][0]['category'], data['categories'][1]['category']]) == \
-                set([itemWithCategory.category_1, itemWithCategory.category_2])
+        assert set([data['categories'][0]['category'], data['categories'][1]['category']]) == set(itemWithCategory.categories)
 
 
 class TestCategoryListAPI(TestBase):
@@ -55,7 +54,7 @@ class TestCategoryListAPI(TestBase):
         data = json.loads(r.data)
 
         assert set([data['categories'][0]['category'], data['categories'][1]['category']]) == \
-                set([item.category_1, item.category_2])
+                set(item.categories)
 
         assert data['categories'][0]['count'] == 5
 

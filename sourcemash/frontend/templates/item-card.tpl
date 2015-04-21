@@ -15,8 +15,11 @@
       </div>
 
       <div class="card-action valign-wrapper row">
-        <div class="col s4"><a href="/#categories/<%=item.get('category_1')%>"><%=item.get('category_1')%></a></div>
-        <div class="col s4"><a href="/#categories/<%=item.get('category_2')%>"><%=item.get('category_2')%></a></div>
+        <div class="category-list flow-text col s8">
+          <% for (var i = 0; i < item.categories.length; i++) { %>
+            <a href="/#categories/<%=item.categories.at(i).get('id')%>"><%=item.categories.at(i).get('category')%></a>
+          <% } %>
+        </div>
         <div class="col s2">
           <div class="saved">
             <i class="mdi-action-bookmark<%= item.get('saved') ? '' : '-outline' %> small"></i>

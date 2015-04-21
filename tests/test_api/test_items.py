@@ -228,15 +228,13 @@ class TestFeedItemListAPI:
 class TestCategoryItemListAllAPI:
 
     def test_get_category_items_missing_category(self, test_client):
-        r = test_client.get('/api/categories/nonexistent_category/items/all')
+        r = test_client.get('/api/categories/100/items/all')
         check_valid_header_type(r.headers)
-        assert r.status_code == 200
-
-        data = json.loads(r.data)
-        assert len(data['items']) == 0
+        assert r.status_code == 404
 
     def test_get_category_items_present(self, test_client, itemsWithCategory):
-        r = test_client.get('/api/categories/' + itemsWithCategory[0].category_1 + '/items/all')
+        category = itemsWithCategory[0].cats.first()
+        r = test_client.get('/api/categories/%d/items/all' % category.id)
 
         check_valid_header_type(r.headers)
         assert r.status_code == 200
@@ -251,22 +249,9 @@ class TestCategoryItemListAPI(TestBase):
         self.login(test_client, userWithPopulatedFeed.email, userWithPopulatedFeed.password)
 
         feed = userWithPopulatedFeed.subscribed.first()
+        category = feed.items[0].cats.first()
 
-        r = test_client.get('/api/categories/' + feed.items[0].category_1 + '/items')
-
-        check_valid_header_type(r.headers)
-        assert r.status_code == 200
-
-        data = json.loads(r.data)
-        assert len(data['items']) == 5
-
-
-    def test_get_items_case_insensitive_categories(self, test_client, userWithPopulatedFeed):
-        self.login(test_client, userWithPopulatedFeed.email, userWithPopulatedFeed.password)
-
-        feed = userWithPopulatedFeed.subscribed.first()
-
-        r = test_client.get('/api/categories/' + feed.items[0].category_1.lower() + '/items')
+        r = test_client.get('/api/categories/%d/items' % category.id)
 
         check_valid_header_type(r.headers)
         assert r.status_code == 200
@@ -278,15 +263,10 @@ class TestCategoryItemListAPI(TestBase):
     def test_get_items_category_missing(self, test_client, userWithPopulatedFeed):
         self.login(test_client, userWithPopulatedFeed.email, userWithPopulatedFeed.password)
 
-        outside_item = item_factories.ItemWithCategoryFactory(category_1="nonexistent_category")
-
-        r = test_client.get('/api/categories/' + outside_item.category_1 + '/items')
+        r = test_client.get('/api/categories/100/items')
 
         check_valid_header_type(r.headers)
-        assert r.status_code == 200
-
-        data = json.loads(r.data)
-        assert len(data['items']) == 0
+        assert r.status_code == 404
 
 
     def test_get_items_category_with_unsubscribed_item(self, test_client, userWithPopulatedFeed, itemsWithCategory):
@@ -294,8 +274,9 @@ class TestCategoryItemListAPI(TestBase):
 
         feed = userWithPopulatedFeed.subscribed.first()
         user_items_length = feed.items.count()
+        category = feed.items[0].cats.first()
 
-        r = test_client.get('/api/categories/' + feed.items[0].category_1 + '/items')
+        r = test_client.get('/api/categories/%d/items' % category.id)
 
         check_valid_header_type(r.headers)
         assert r.status_code == 200
