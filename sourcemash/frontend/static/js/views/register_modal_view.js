@@ -5,9 +5,10 @@ Sourcemash.Views.RegisterModalView = Backbone.View.extend({
         'submit #register': 'registerFromModal',
     },
 
-    registerFromModal: function() {
+    registerFromModal: function(e) {
         e.preventDefault();
         var formData = JSON.stringify($("#register").serializeObject());
+        $('#register-password').val('');
         var posting = $.ajax({
                           type: "POST",
                           url: "/register",
@@ -15,21 +16,19 @@ Sourcemash.Views.RegisterModalView = Backbone.View.extend({
                           success: this.showErrors,
                           contentType: "application/json"
                       });
-
-        mixpanel.track("Register", {})
     },
 
     showErrors: function(data) {
         var user = data.response.user;
         if (user) {
-          mixpanel.track("Sign Up");
-          toast("Check your email for confirmation!", 3000);
+          mixpanel.track("Register");
+          $("#register-modal").closeModal();
+          toast("Check your email for confirmation!", 5000);
         };
         var errors = data.response.errors;
         if (errors) {
           errorMsg = errors.email || errors.password || errors.rememeber || {};
           $("#register-errors").html(errorMsg);
-          $('#register-password').val('');
         }
     },
 
