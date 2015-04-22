@@ -5,6 +5,8 @@
     <span class="switch subscribe-switch col s2 valign"></span>
 </div>
 
+<div class="loading center-align"></div>
+
 <ul id="items" class="list-group row">
   <% items.forEach(function(item) { %>
       <div id="item-<%= item.get('id') %>" class="item-card"></div>

@@ -10,6 +10,7 @@
         </ul>
       </div>
       <ul id="categories-list" class="collection col s12">
+        <div class="loading center-align"></div>
         <% categories.each(function(category) { %>
           <a href="/#categories/<%= category.get('id') %>"><li class="row collection-item">
               <span class="col s7 truncate"><%= category.get('category') %></span>
@@ -27,6 +28,7 @@
         <% }; %>
       </ul>
       <ul id="feeds-list" class="collection col s12">
+        <div class="loading center-align"></div>
         <% feeds.where({subscribed: true}).forEach(function(feed) { %>
           <a href="/#feeds/<%= feed.get('id') %>"><li class="row collection-item">
           <span class="col s7 truncate"><%= feed.get('title') %></span>

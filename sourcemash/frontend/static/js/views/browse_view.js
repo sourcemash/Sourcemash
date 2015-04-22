@@ -9,7 +9,8 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
     this.typeahead = new ExtendedTypeahead({collection: this.collection, key: 'title'});
     this.listenTo(this.collection, 'sync', this.render);
 
-    this.feedCardViews = []
+    this.feedCardViews = [];
+    this.loading = true;
   },
 
   events: {
@@ -34,6 +35,10 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
     // Render parent view
     this.$el.html(this.template({ models: this.collection.models }));
     $('#typeahead').html(this.typeahead.render().el);
+
+    // Render loading view
+    this.loadingView = new Sourcemash.Views.LoadingView({loading: this.loading});
+    this.$(".loading").html(this.loadingView.render().el);
 
     // Render item cards
     var feedCards = [];
@@ -68,7 +73,12 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
         feedCardView.close();
         feedCardView.remove();
         feedCardView.unbind();
-    })
+    });
+
+    if (this.loadingView) {
+      this.loadingView.remove();
+      this.loadingView.unbind();
+    };
   }
 
 });

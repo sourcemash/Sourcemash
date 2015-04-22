@@ -5,6 +5,7 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
         };
 
         this.itemViews = [];
+        this.loading = true;
     },
 
     events: {
@@ -28,6 +29,10 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
         // Render subscribe modal view
         this.subscribeModalView = new Sourcemash.Views.SubscribeModalView({ collection: this.collection });
         this.$("#subscribe-modal").html(this.subscribeModalView.render().el);
+
+        // Render loading view
+        this.loadingView = new Sourcemash.Views.LoadingView({loading: this.loading});
+        this.$(".loading").html(this.loadingView.render().el);
 
         // Render subscribe-toggle switch if feed page
         if (this.model) {
@@ -60,6 +65,11 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
         if (this.subscribeSwitchView) {
             this.subscribeSwitchView.remove();
             this.subscribeSwitchView.unbind();
+        };
+
+        if (this.loadingView) {
+            this.loadingView.remove();
+            this.loadingView.unbind();
         };
     }
 });

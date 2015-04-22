@@ -8,6 +8,8 @@
     </form>
 </div>
 
+<div class="loading center-align"></div>
+
 <ul class="browse-feeds row">
   <% models.forEach(function(model) { %>
     <div id="feed-card-<%= model.get('id') %>" class="feed-card"></div>
