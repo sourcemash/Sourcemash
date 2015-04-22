@@ -30,7 +30,7 @@ Sourcemash.Views.RegisterModalView = Backbone.View.extend({
         if (errors) {
           errorMsg = errors.email || errors.password || errors.password_confirm || {};
           $("#register-errors").html(errorMsg);
-        }
+        };
     },
 
     render: function() {

@@ -63,6 +63,13 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
                                             "Feed Title": this.model.feed.get('title') });
     },
 
+    showRegisterModal: function(options) {
+        $('#register-modal').openModal();
+
+        mixpanel.track("Register Modal", { "Item Title": this.model.get('title'),
+                                            "Feed Title": this.model.feed.get('title') })
+    },
+
 	_getNewVoteSum: function(vote) {
 		return this.model.get('voteSum') + vote - this.model.get('vote')
 	},
