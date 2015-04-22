@@ -9,8 +9,10 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
     this.typeahead = new ExtendedTypeahead({collection: this.collection, key: 'title'});
     this.listenTo(this.collection, 'sync', this.render);
 
-    this.feedCardViews = [];
     this.loading = true;
+    this.user = options.user;
+
+    this.feedCardViews = []
   },
 
   events: {
@@ -40,10 +42,16 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
     this.loadingView = new Sourcemash.Views.LoadingView({loading: this.loading});
     this.$(".loading").html(this.loadingView.render().el);
 
+    // Render register modal view
+    this.registerModalView = new Sourcemash.Views.RegisterModalView();
+    this.$("#register-modal").html(this.registerModalView.render().el);
+
     // Render item cards
     var feedCards = [];
+    _user = this.user;
     this.collection.models.forEach(function(feed) {
-        var feedCardView = new Sourcemash.Views.FeedCardView({el: "#feed-card-" + feed.get('id'), model: feed});
+        var feedCardView = new Sourcemash.Views.FeedCardView({el: "#feed-card-" + feed.get('id'),
+                                                              model: feed, user: _user});
         feedCards.push(feedCardView)
     });
 
@@ -79,6 +87,12 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
       this.loadingView.remove();
       this.loadingView.unbind();
     };
+
+    if (this.registerModalView) {
+      this.registerModalView.remove();
+      this.registerModalView.unbind();
+    };
+
   }
 
 });

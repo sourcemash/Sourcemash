@@ -1,7 +1,8 @@
 Sourcemash.Views.SubscribeSwitchView = Backbone.View.extend({
     template: JST['subscribe-switch'],
 
-    initialize: function() {
+    initialize: function(options) {
+        this.user = options.user;
         this.listenTo(this.model, 'change', this.render);
     },
 
@@ -10,16 +11,21 @@ Sourcemash.Views.SubscribeSwitchView = Backbone.View.extend({
 	},
 
     subscribeFromSwitch: function() {
-        if (this.model.get('subscribed')) {
-            this.model.save({'subscribed': false}, {success: this.subscribedToggled});
-            
-            mixpanel.track("Unsubscribed", { "Feed Title": this.model.get('title') })
+        if (!this.user.get('id')) {
+            $('#register-modal').openModal();
+            mixpanel.track("Register Modal", {"Source": "Subscribe"});
         } else {
-            this.model.save({'subscribed': true}, {success: this.subscribedToggled});
-            
-            mixpanel.track("Subscribed", { "Feed Title": this.model.get('title'),
-                                            "Source": 'feed card' })
-        }
+            if (this.model.get('subscribed')) {
+                this.model.save({'subscribed': false}, {success: this.subscribedToggled});
+
+                mixpanel.track("Unsubscribed", { "Feed Title": this.model.get('title') })
+            } else {
+                this.model.save({'subscribed': true}, {success: this.subscribedToggled});
+
+                mixpanel.track("Subscribed", { "Feed Title": this.model.get('title'),
+                                                "Source": 'feed card' })
+            };
+        };
     },
 
     subscribedToggled: function(feed) {

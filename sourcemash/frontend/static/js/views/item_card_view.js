@@ -53,14 +53,14 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
         $('#subscribe-modal').openModal();
 
         mixpanel.track("Subscribe Modal", { "Item Title": this.model.get('title'),
-                                            "Feed Title": this.model.feed.get('title') })
+                                            "Feed Title": this.model.feed.get('title') });
     },
 
     showRegisterModal: function(options) {
         $('#register-modal').openModal();
 
         mixpanel.track("Register Modal", { "Item Title": this.model.get('title'),
-                                            "Feed Title": this.model.feed.get('title') })
+                                            "Feed Title": this.model.feed.get('title') });
     },
 
 	_getNewVoteSum: function(vote) {

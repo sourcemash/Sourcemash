@@ -14,11 +14,16 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
     },
 
     markAllAsRead: function() {
-        var unread = this.collection.where({unread: true});
-        unread.forEach(function(model) {
-            model.save({unread: false});
-        });
-        this.model.set({unread_count: 0});
+        if (!this.user.get('id')) {
+            $("#register-modal").openModal();
+            mixpanel.track("Register Modal", {"Source": "MarkAllAsRead"});
+        } else {
+            var unread = this.collection.where({unread: true});
+            unread.forEach(function(model) {
+                model.save({unread: false});
+            });
+            this.model.set({unread_count: 0});
+        };
     },
 
     render: function() {
@@ -41,7 +46,8 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
 
         // Render subscribe-toggle switch if feed page
         if (this.model) {
-            this.subscribeSwitchView = new Sourcemash.Views.SubscribeSwitchView({ model: this.model });
+            this.subscribeSwitchView = new Sourcemash.Views.SubscribeSwitchView({ model: this.model,
+                                                                                  user: this.user });
             this.$(".subscribe-switch").html(this.subscribeSwitchView.render().el);
         };
 
