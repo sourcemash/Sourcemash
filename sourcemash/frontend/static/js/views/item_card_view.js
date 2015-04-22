@@ -2,6 +2,7 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
     template: JST['item-card'],
 
     initialize: function(options) {
+        this.user = options.user;
         this.listenTo(this.model, 'change', this.render);
         this.render();
     },
@@ -14,24 +15,32 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
 	},
 
 	upvote: function() {
-		this.model.save({vote: 1, voteSum: this._getNewVoteSum(1)},
-                        {success: this.voted});
+        if (!this.user.get('id')) {
+            this.showRegisterModal();
+        } else {
+    		this.model.save({vote: 1, voteSum: this._getNewVoteSum(1)},
+                            {success: this.voted});
 
-        mixpanel.track("Upvoted", { "Item Title": this.model.get('title'),
-                                    "Feed Title": this.model.feed.get('title') })
+            mixpanel.track("Upvoted", { "Item Title": this.model.get('title'),
+                                        "Feed Title": this.model.feed.get('title') })
 
-        if (!this.model.feed.get('subscribed')) {
-            this.showSubscribeModal({'source':'upvoted'});
-        }
+            if (!this.model.feed.get('subscribed')) {
+                this.showSubscribeModal({'source':'upvoted'});
+            };
+        };
     },
 
 	downvote: function() {
-		this.model.save({vote: -1, voteSum: this._getNewVoteSum(-1)},
-                        {success: this.voted});
+        if (!this.user.get('id')) {
+            this.showRegisterModal();
+        } else {
+    		this.model.save({vote: -1, voteSum: this._getNewVoteSum(-1)},
+                            {success: this.voted});
 
-        mixpanel.track("Downvoted", { "Item Title": this.model.get('title'),
-                                    "Feed Title": this.model.feed.get('title') })
-	},
+            mixpanel.track("Downvoted", { "Item Title": this.model.get('title'),
+                                        "Feed Title": this.model.feed.get('title') })
+	    };
+    },
 
     voted: function() {
         toast("Vote recorded!", 3000);
@@ -44,6 +53,13 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
         $('#subscribe-modal').openModal();
 
         mixpanel.track("Subscribe Modal", { "Item Title": this.model.get('title'),
+                                            "Feed Title": this.model.feed.get('title') })
+    },
+
+    showRegisterModal: function(options) {
+        $('#register-modal').openModal();
+
+        mixpanel.track("Register Modal", { "Item Title": this.model.get('title'),
                                             "Feed Title": this.model.feed.get('title') })
     },
 
@@ -70,16 +86,20 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
             this.model.save({saved: false},
                 {success: this.savedToast});
         } else {
-            this.model.save({saved: true},
-                {success: this.savedToast});
+            if (!this.user.get('id')) {
+                this.showRegisterModal();
+            } else {
+                this.model.save({saved: true},
+                    {success: this.savedToast});
 
-            mixpanel.track("Saved", { "Item Title": this.model.get('title'),
-                                    "Feed Title": this.model.feed.get('title') })
+                mixpanel.track("Saved", { "Item Title": this.model.get('title'),
+                                        "Feed Title": this.model.feed.get('title') })
 
-            if (!this.model.feed.get('subscribed')) {
-                this.showSubscribeModal({'source':'saved'});
-            }
-        }
+                if (!this.model.feed.get('subscribed')) {
+                    this.showSubscribeModal({'source':'saved'});
+                };
+            };
+        };
 
     },
 

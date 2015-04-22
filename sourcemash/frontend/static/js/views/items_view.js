@@ -4,6 +4,7 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
             this.listenTo(this.model, 'change:subscribed change:title', this.render);
         };
 
+        this.user = options.user;
         this.itemViews = [];
         this.loading = true;
     },
@@ -34,6 +35,10 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
         this.loadingView = new Sourcemash.Views.LoadingView({loading: this.loading});
         this.$(".loading").html(this.loadingView.render().el);
 
+        // Render register modal view
+        this.registerModalView = new Sourcemash.Views.RegisterModalView();
+        this.$("#register-modal").html(this.registerModalView.render().el);
+
         // Render subscribe-toggle switch if feed page
         if (this.model) {
             this.subscribeSwitchView = new Sourcemash.Views.SubscribeSwitchView({ model: this.model });
@@ -42,8 +47,10 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
 
         // Render item cards
         var itemCards = [];
+        _user = this.user;
         this.collection.models.forEach(function(item) {
-            var itemCardView = new Sourcemash.Views.ItemCardView({el: "#item-" + item.get('id'), model: item});
+            var itemCardView = new Sourcemash.Views.ItemCardView({el: "#item-" + item.get('id'), model: item,
+                                                                  user: _user });
             itemCards.push(itemCardView)
         });
 
@@ -60,6 +67,11 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
         if (this.subscribeModalView) {
             this.subscribeModalView.remove();
             this.subscribeModalView.unbind();
+        };
+
+        if (this.registerModalView) {
+            this.registerModalView.remove();
+            this.registerModalView.unbind();
         };
 
         if (this.subscribeSwitchView) {
