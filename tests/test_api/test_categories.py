@@ -8,6 +8,18 @@ from sourcemash.models import Feed
 def check_valid_header_type(headers):
     assert headers['Content-Type'] == 'application/json'
 
+
+class TestCategory:
+    def test_get_category_present(self, test_client, itemWithCategory):
+        category = itemWithCategory.cats.first()
+        r = test_client.get('/api/categories/%d' % (category.id))
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert data['category']['title'] == category.category
+
+
 class TestCategoryListAllAPI:
     def test_get_categories_present(self, test_client, itemWithCategory):
         r = test_client.get('/api/categories/all')
@@ -15,7 +27,7 @@ class TestCategoryListAllAPI:
         assert r.status_code == 200
 
         data = json.loads(r.data)
-        assert set([data['categories'][0]['category'], data['categories'][1]['category']]) == set(itemWithCategory.categories)
+        assert set([data['categories'][0]['title'], data['categories'][1]['title']]) == set(itemWithCategory.categories)
 
 
 class TestCategoryListAPI(TestBase):
@@ -53,7 +65,7 @@ class TestCategoryListAPI(TestBase):
 
         data = json.loads(r.data)
 
-        assert set([data['categories'][0]['category'], data['categories'][1]['category']]) == \
+        assert set([data['categories'][0]['title'], data['categories'][1]['title']]) == \
                 set(item.categories)
 
         assert data['categories'][0]['count'] == 5

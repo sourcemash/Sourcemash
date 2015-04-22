@@ -13,7 +13,7 @@
         <div class="loading center-align"></div>
         <% categories.each(function(category) { %>
           <a href="/#categories/<%= category.get('id') %>"><li class="row collection-item">
-              <span class="col s7 truncate"><%= category.get('category') %></span>
+              <span class="col s7 truncate"><%= category.get('title') %></span>
               <span class="badge col s2"><%=category.get('count')%></span>
               <% if (category.get('unread_count') > 0) { %>
                 <span class="new badge col s3"><%=category.get('unread_count')%></span>

@@ -20,11 +20,11 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
 
         self._user.fetch({success: this._identifyUser});
         self._sidenav.feeds.reset(self._feeds);
-        self._sidenav.categories.reset(self._categories, {success: _.bind(function() {this._loaded(this._sidenav)}, this)});
+        self._sidenav.categories.reset(self._categories);
 
         self._sidenav.render();
         self._feeds.fetch();
-        self._categories.fetch();
+        self._categories.fetch({success: _.bind(function() {this._loaded(this._sidenav)}, this)});
     },
 
     showSplash: function() {
@@ -62,6 +62,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         var categoryItems = new Sourcemash.Collections.Items([], {category: category});
         var categoryView = new Sourcemash.Views.CategoryView({ model: category, collection: categoryItems });
 
+        category.fetch();
         categoryView.collection.fetch({feeds: this._feeds, categories: this._categories, success: _.bind(function() {this._loaded(categoryView)}, this)});
         this._swapView(categoryView);
     },

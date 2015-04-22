@@ -49,7 +49,7 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
     this.$el.html(content);
 
     // Render loading vew
-    this.loadingView = new Sourcemash.Views.LoadingView({});
+    this.loadingView = new Sourcemash.Views.LoadingView({loading: this.loading});
     this.$(".loading").html(this.loadingView.render().el);
 
     $('ul.tabs').tabs();

@@ -1,7 +1,7 @@
 Sourcemash.Views.ItemsView = Backbone.View.extend({
     initialize: function(options) {
         if (this.model) {
-            this.listenTo(this.model, 'change:subscribed', this.render);
+            this.listenTo(this.model, 'change:subscribed change:title', this.render);
         };
 
         this.itemViews = [];
