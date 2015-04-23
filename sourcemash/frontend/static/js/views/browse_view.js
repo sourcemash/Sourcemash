@@ -55,7 +55,7 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
     var url = this.$('#url').val();
 
     if (!this._isValidURL(url)) {
-      var feed = this.allFeeds.findWhere({'title': url});
+      var feed = this.collection.findWhere({'title': url});
       if (feed) {
         url = feed.get('url');
       }
