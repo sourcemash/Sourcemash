@@ -1,11 +1,11 @@
-Sourcemash.Views.RegisterModalView = Backbone.View.extend({
-    template: JST['register-modal'],
+Sourcemash.Views.RegisterView = Backbone.View.extend({
+    template: JST['register'],
 
     events: {
-        'submit #register': 'registerFromModal',
+        'submit #register': 'register',
     },
 
-    registerFromModal: function(e) {
+    register: function(e) {
         e.preventDefault();
         var formData = JSON.stringify($("#register").serializeObject());
         $('#register-password').val('');
@@ -24,7 +24,8 @@ Sourcemash.Views.RegisterModalView = Backbone.View.extend({
         if (user) {
           mixpanel.track("Register", {"User": user});
           $("#register-modal").closeModal();
-          toast("Check your email for confirmation!", 5000);
+          toast("Check your email for confirmation!", 3000);
+          setTimeout(function(){window.location.replace("/")}, 3000);
         };
         var errors = data.response.errors;
         if (errors) {

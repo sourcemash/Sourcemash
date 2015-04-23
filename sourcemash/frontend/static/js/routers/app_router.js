@@ -2,6 +2,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
     routes: {
         "": "showSplash",
         "profile": "showProfile",
+        "register": "showRegister",
         "feeds/:id": "showFeed",
         "categories/:id": "showCategory",
         "saved": "showSaved",
@@ -35,6 +36,15 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
     showProfile: function() {
         var profileView = new Sourcemash.Views.ProfileView({ model: this._user });
         this._swapView(profileView);
+    },
+
+    showRegister: function() {
+        if (!this._user.get('id')) {
+            var registerView = new Sourcemash.Views.RegisterView({ user: this._user });
+            this._swapView(registerView);
+        } else {
+            window.location.replace("/");
+        };
     },
 
     browseFeeds: function() {

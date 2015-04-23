@@ -20,8 +20,13 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
   },
 
   createFeed: function(e){
-  	e.preventDefault();
-    this.collection.create(this.newAttributes(), {success: this.updateCollection});
+    if (!this.user.get('id')) {
+      $("#register-modal").openModal();
+      mixpanel.track("Register Modal", {"Source": "AddFeed"});
+    } else {
+    	e.preventDefault();
+      this.collection.create(this.newAttributes(), {success: this.updateCollection});
+    };
   },
 
   updateCollection: function(newFeed) {
