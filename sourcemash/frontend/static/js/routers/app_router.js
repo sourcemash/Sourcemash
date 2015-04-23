@@ -24,7 +24,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
 
         self._sidenav.render();
         self._feeds.fetch();
-        self._categories.fetch();
+        self._categories.fetch({success: _.bind(function() {this._loaded(this._sidenav)}, this)});
     },
 
     showSplash: function() {
@@ -39,7 +39,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
 
     browseFeeds: function() {
         var browseView = new Sourcemash.Views.BrowseView({collection: this._feeds});
-        browseView.collection.fetch();
+        browseView.collection.fetch({success: _.bind(function() {this._loaded(browseView)}, this)});
         this._swapView(browseView);
     },
 
@@ -51,7 +51,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         var feedView = new Sourcemash.Views.FeedView({ model: feed, collection: feedItems });
 
         feed.fetch();
-        feedView.collection.fetch({feeds: this._feeds, categories: this._categories, success: function() {feedView.render()}});
+        feedView.collection.fetch({feeds: this._feeds, categories: this._categories, success: _.bind(function() {this._loaded(feedView)}, this)});
         this._swapView(feedView);
     },
 
@@ -62,7 +62,8 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         var categoryItems = new Sourcemash.Collections.Items([], {category: category});
         var categoryView = new Sourcemash.Views.CategoryView({ model: category, collection: categoryItems });
 
-        categoryView.collection.fetch({feeds: this._feeds, categories: this._categories, success: function() {categoryView.render()}});
+        category.fetch();
+        categoryView.collection.fetch({feeds: this._feeds, categories: this._categories, success: _.bind(function() {this._loaded(categoryView)}, this)});
         this._swapView(categoryView);
     },
 
@@ -70,8 +71,13 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         var savedItems = new Sourcemash.Collections.Items([], {saved: true});
         var savedView = new Sourcemash.Views.SavedView({ collection: savedItems });
 
-        savedView.collection.fetch({feeds: this._feeds, categories: this._categories, success: function() {savedView.render()}});
+        savedView.collection.fetch({feeds: this._feeds, categories: this._categories, success: _.bind(function() {this._loaded(savedView)}, this)});
         this._swapView(savedView);
+    },
+
+    _loaded: function(view) {
+        view.loading = false;
+        view.render();
     },
 
     _swapView: function(view) {

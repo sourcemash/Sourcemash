@@ -5,6 +5,7 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
     this.user = options.user;
     this.feeds = options.feeds;
     this.categories = options.categories;
+    this.loading = true;
     this.listenTo(this.feeds, 'sync change:subscribed change:unread_count', this.render);
     this.listenTo(this.categories, 'sync change:unread_count', this.render);
   },
@@ -40,12 +41,25 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
   },
 
   render: function() {
+    this.close();
+
     activeTab = $(".tab .active").text().toLowerCase() || "categories";
 
     var content = this.template({active: activeTab, current_user: this.user, feeds: this.feeds, categories: this.categories});
     this.$el.html(content);
 
+    // Render loading vew
+    this.loadingView = new Sourcemash.Views.LoadingView({loading: this.loading});
+    this.$(".loading").html(this.loadingView.render().el);
+
     $('ul.tabs').tabs();
     return this;
   },
+
+  close: function() {
+    if (this.loadingView) {
+        this.loadingView.remove();
+        this.loadingView.unbind();
+    };
+  }
 });

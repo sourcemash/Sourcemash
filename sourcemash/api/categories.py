@@ -7,6 +7,12 @@ from sourcemash.models import Item, Category, UserItem
 from sqlalchemy import func
 from collections import Counter
 
+class CategoryAPI(Resource):
+
+  def get(self, id):
+    category = Category.query.get_or_404(id);
+    return {'category': {'id': category.id, 'title': category.category}}
+
 
 class CategoryListAPI(Resource):
 
@@ -48,7 +54,7 @@ class CategoryListAPI(Resource):
                 total_counts.update({category: 1})
                 unread_counts[category] += 1
 
-        return {'categories': [{'id': id, 'category': category, 'count': total_counts[category], 'unread_count': unread_counts[category]} for id, category, count in categories]}
+        return {'categories': [{'id': id, 'title': category, 'count': total_counts[category], 'unread_count': unread_counts[category]} for id, category, count in categories]}
 
 
 class CategoryListAllAPI(Resource):
@@ -59,8 +65,9 @@ class CategoryListAllAPI(Resource):
                                .group_by(Category.category) \
                                .all()
 
-        return {'categories': [{'id': id, 'category': category, 'count': count} for id, category, count in categories]}
+        return {'categories': [{'id': id, 'title': category, 'count': count} for id, category, count in categories]}
 
 
+api.add_resource(CategoryAPI, '/categories/<int:id>', endpoint='category')
 api.add_resource(CategoryListAPI, '/categories', endpoint='categories')
 api.add_resource(CategoryListAllAPI, '/categories/all', endpoint='categories_all')
