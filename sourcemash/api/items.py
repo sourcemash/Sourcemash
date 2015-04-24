@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 from sqlalchemy import func, desc
 
 from feeds import feed_fields
+from categories import category_fields
 from sourcemash.models import Item, UserItem, Category
 from sourcemash.forms import VoteForm
 
@@ -42,7 +43,7 @@ item_fields = {
     'link': fields.String,
     'last_updated': fields.DateTime,
     'author': fields.String,
-    'categories': fields.List(fields.String),
+    'categories': fields.List(fields.Nested(category_fields), attribute="cats"),
     'voteSum': fields.Integer,
     'image_url': fields.String,
     'summary': fields.String,

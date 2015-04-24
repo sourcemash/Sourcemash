@@ -15,12 +15,12 @@ Sourcemash.Models.Item = Backbone.Model.extend({
 
         this.categories = new Sourcemash.Collections.Categories();
         _.each(this.get('categories'), function(category) {
-            var existingCategory = options.categories.findWhere({category: category});
+            var existingCategory = options.categories.findWhere({id: category.id});
 
             if (existingCategory) {
                 this.categories.add(existingCategory);
             } else {
-                var newCategory = new Sourcemash.Models.Category({category: category});
+                var newCategory = new Sourcemash.Models.Category({id: category.id, name: category.name});
                 this.categories.add(newCategory);
                 options.categories.add(newCategory);
             };
