@@ -29,7 +29,7 @@ Sourcemash.Views.RegisterView = Backbone.View.extend({
         };
         var errors = data.response.errors;
         if (errors) {
-          errorMsg = errors.email || errors.password || errors.password_confirm || {};
+          errorMsg = errors.email || errors.password || {};
           $("#register-errors").html(errorMsg);
         }
     },
