@@ -17,7 +17,7 @@ class TestCategory:
         assert r.status_code == 200
 
         data = json.loads(r.data)
-        assert data['category']['title'] == category.category
+        assert data['category']['name'] == category.category
 
 
 class TestCategoryListAllAPI:
@@ -27,7 +27,7 @@ class TestCategoryListAllAPI:
         assert r.status_code == 200
 
         data = json.loads(r.data)
-        assert set([data['categories'][0]['title'], data['categories'][1]['title']]) == set(itemWithCategory.categories)
+        assert set([data['categories'][0]['name'], data['categories'][1]['name']]) == set(itemWithCategory.categories)
 
 
 class TestCategoryListAPI(TestBase):
@@ -65,10 +65,10 @@ class TestCategoryListAPI(TestBase):
 
         data = json.loads(r.data)
 
-        assert set([data['categories'][0]['title'], data['categories'][1]['title']]) == \
+        assert set([data['categories'][0]['name'], data['categories'][1]['name']]) == \
                 set(item.categories)
 
-        assert data['categories'][0]['count'] == 5
+        assert data['categories'][0]['item_count'] == 5
 
 
     def test_get_user_categories_with_unsubscribed_item(self, test_client, userWithPopulatedFeed, itemsWithCategory):
@@ -83,4 +83,4 @@ class TestCategoryListAPI(TestBase):
 
         data = json.loads(r.data)
 
-        assert data['categories'][0]['count'] == feed.items.count() + 1
+        assert data['categories'][0]['item_count'] == feed.items.count() + 1
