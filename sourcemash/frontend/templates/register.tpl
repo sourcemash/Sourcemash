@@ -10,10 +10,6 @@
     <div class="input-field">
       <input class="validate" id="register-password" type="password" name="password">
       <label for="register-password">Password</label>
-    </div>
-    <div class="input-field">
-      <input class="validate" id="register-password-confirm" type="password" name="password_confirm">
-      <label for="register-password">Confirm Password</label>
       <div class="errors" id="register-errors"></div>
     </div>
     <div class="row">
