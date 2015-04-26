@@ -14,12 +14,12 @@ Sourcemash.Views.RegisterView = Backbone.View.extend({
                           type: "POST",
                           url: "/register",
                           data: formData,
-                          success: this.showErrors,
+                          success: this.registerOrShowErrors,
                           contentType: "application/json"
                       });
     },
 
-    showErrors: function(data) {
+    registerOrShowErrors: function(data) {
         var user = data.response.user;
         if (user) {
           mixpanel.track("Register", {"User": user});

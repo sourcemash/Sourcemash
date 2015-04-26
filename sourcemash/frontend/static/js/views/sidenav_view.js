@@ -21,12 +21,12 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
                       type: "POST",
                       url: "/login",
                       data: formData,
-                      success: this.showErrors,
+                      success: this.loginOrShowErrors,
                       contentType: "application/json"
                   });
   },
 
-  showErrors: function(data) {
+  loginOrShowErrors: function(data) {
     var user = data.response.user;
     if (user) {
       mixpanel.track("Logged In");
