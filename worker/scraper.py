@@ -74,11 +74,16 @@ def _store_items(feed):
 
     fp = feedparser.parse(feed.url)
     for item in fp.entries:
-        item_last_updated = datetime(*item.updated_parsed[:6])
+        try:
+            item_last_updated = datetime(*item.updated_parsed[:6])
+        except:
+            try:
+                item_last_updated = datetime(*item.published_parsed[:6])
+            except:
+                item_last_updated = datetime.utcnow()
 
-        # Stop when older items hit
         if item_last_updated < feed.last_updated:
-            break
+            continue
 
         text = _get_full_text(item.link)
 
@@ -104,7 +109,11 @@ def _store_items(feed):
     if not feed.description:
         feed.description = fp.feed.description
 
-    feed.last_updated = datetime.utcnow()
+    try:
+        feed.last_updated = datetime(feed.updated_parsed[:6])
+    except:
+        feed.last_updated = datetime.utcnow()
+
     db.session.commit()
 
     logger.info("Finished parsing: %s" % feed.title)
