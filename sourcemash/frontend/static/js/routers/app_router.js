@@ -19,6 +19,9 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         self._sidenav = new Sourcemash.Views.SidenavView({ user: self._user, feeds: self._feeds, categories: self._categories });
         $('#nav-mobile').html(self._sidenav.render().$el);
 
+        self._registerModalView = new Sourcemash.Views.RegisterModalView();
+        $("#register-modal").html(self._registerModalView.render().$el);
+
         self._user.fetch({success: this._identifyUser});
         self._sidenav.feeds.reset(self._feeds);
         self._sidenav.categories.reset(self._categories);
@@ -40,8 +43,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
 
     showRegister: function() {
         if (!this._user.get('id')) {
-            var registerView = new Sourcemash.Views.RegisterView({ user: this._user });
-            this._swapView(registerView);
+            $("#register-modal").openModal();
         } else {
             window.location.replace("/");
         };

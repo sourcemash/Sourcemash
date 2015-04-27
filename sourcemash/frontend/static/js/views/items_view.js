@@ -14,16 +14,11 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
     },
 
     markAllAsRead: function() {
-        if (!this.user.get('id')) {
-            $("#register-modal").openModal();
-            mixpanel.track("Register Modal", {"Source": "MarkAllAsRead"});
-        } else {
-            var unread = this.collection.where({unread: true});
-            unread.forEach(function(model) {
-                model.save({unread: false});
-            });
-            this.model.set({unread_count: 0});
-        };
+        var unread = this.collection.where({unread: true});
+        unread.forEach(function(model) {
+            model.save({unread: false});
+        });
+        this.model.set({unread_count: 0});
     },
 
     render: function() {
@@ -39,10 +34,6 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
         // Render loading view
         this.loadingView = new Sourcemash.Views.LoadingView({loading: this.loading});
         this.$(".loading").html(this.loadingView.render().el);
-
-        // Render register modal view
-        this.registerModalView = new Sourcemash.Views.RegisterModalView();
-        this.$("#register-modal").html(this.registerModalView.render().el);
 
         // Render subscribe-toggle switch if feed page
         if (this.model) {
@@ -73,11 +64,6 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
         if (this.subscribeModalView) {
             this.subscribeModalView.remove();
             this.subscribeModalView.unbind();
-        };
-
-        if (this.registerModalView) {
-            this.registerModalView.remove();
-            this.registerModalView.unbind();
         };
 
         if (this.subscribeSwitchView) {

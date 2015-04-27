@@ -21,12 +21,7 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
 
   createFeed: function(e){
     e.preventDefault();
-    if (!this.user.get('id')) {
-      $("#register-modal").openModal();
-      mixpanel.track("Register Modal", {"Source": "AddFeed"});
-    } else {
-      this.collection.create(this.newAttributes(), {success: this.updateCollection});
-    };
+    this.collection.create(this.newAttributes(), {success: this.updateCollection});
   },
 
   updateCollection: function(newFeed) {
@@ -46,10 +41,6 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
     // Render loading view
     this.loadingView = new Sourcemash.Views.LoadingView({loading: this.loading});
     this.$(".loading").html(this.loadingView.render().el);
-
-    // Render register modal view
-    this.registerModalView = new Sourcemash.Views.RegisterModalView();
-    this.$("#register-modal").html(this.registerModalView.render().el);
 
     // Render item cards
     var feedCards = [];
@@ -92,12 +83,6 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
       this.loadingView.remove();
       this.loadingView.unbind();
     };
-
-    if (this.registerModalView) {
-      this.registerModalView.remove();
-      this.registerModalView.unbind();
-    };
-
   }
 
 });

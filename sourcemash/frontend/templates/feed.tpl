@@ -14,4 +14,3 @@
 </ul>
 
 <div id="subscribe-modal" class="modal"></div>
-<div id="register-modal" class="modal"></div>

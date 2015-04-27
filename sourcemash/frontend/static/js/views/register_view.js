@@ -22,7 +22,7 @@ Sourcemash.Views.RegisterView = Backbone.View.extend({
     registerOrShowErrors: function(data) {
         var user = data.response.user;
         if (user) {
-          mixpanel.track("Register", {"User": user});
+          mixpanel.track("Registered");
           $("#register-modal").closeModal();
           toast("Check your email for confirmation!", 2000);
           setTimeout(function(){window.location.replace("/")}, 2000);
@@ -31,7 +31,7 @@ Sourcemash.Views.RegisterView = Backbone.View.extend({
         if (errors) {
           errorMsg = errors.email || errors.password || {};
           $("#register-errors").html(errorMsg);
-        }
+        };
     },
 
     render: function() {

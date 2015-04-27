@@ -15,5 +15,3 @@
     <div id="feed-card-<%= model.get('id') %>" class="feed-card"></div>
   <% }); %>
 </ul>
-
-<div id="register-modal" class="modal"></div>
