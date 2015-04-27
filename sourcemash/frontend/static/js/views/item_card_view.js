@@ -2,6 +2,7 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
     template: JST['item-card'],
 
     initialize: function(options) {
+        _.bindAll(this, "savedToast", "voted");
         this.listenTo(this.model, 'change', this.render);
         this.render();
     },
@@ -16,10 +17,6 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
 	upvote: function() {
        this.model.save({vote: 1, voteSum: this._getNewVoteSum(1)},
                         {success: this.voted});
-
-        if (!this.model.feed.get('subscribed')) {
-            this.showSubscribeModal({'source':'upvoted'});
-        };
     },
 
 	downvote: function() {
@@ -34,6 +31,9 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
             mixpanel.track("Downvoted", { "Item Title": item.get('title'),
                                           "Feed Title": item.feed.get('title') })
         } else if (item.get('vote') == 1) {
+            if (!item.feed.get('subscribed')) {
+                this.showSubscribeModal({'source':'upvoted'});
+            };
             mixpanel.track("Upvoted", { "Item Title": item.get('title'),
                                         "Feed Title": item.feed.get('title') })
         };
@@ -72,10 +72,6 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
             this.model.save({saved: false}, {success: this.savedToast});
         } else {
             this.model.save({saved: true}, {success: this.savedToast});
-
-            if (!this.model.feed.get('subscribed')) {
-                this.showSubscribeModal({'source':'saved'});
-            };
         };
 
     },
@@ -83,6 +79,9 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
     savedToast: function(item) {
         if (item.get('saved')) {
             toast("Saved!", 3000);
+            if (!item.feed.get('subscribed')) {
+                this.showSubscribeModal({'source':'saved'});
+            };
             mixpanel.track("Saved", { "Item Title": item.get('title'),
                                       "Feed Title": item.feed.get('title') })
         } else {
