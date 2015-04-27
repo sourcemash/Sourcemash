@@ -30,7 +30,7 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
     var user = data.response.user;
     if (user) {
       mixpanel.track("Logged In");
-      location.reload();
+      window.location.replace("/");
     };
     var errors = data.response.errors;
     if (errors) {

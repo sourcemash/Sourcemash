@@ -31,11 +31,11 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
         toast("Vote recorded!", 3000);
 
         if (item.get('vote') == -1) {
-            mixpanel.track("Downvoted", { "Item Title": this.model.get('title'),
-                                          "Feed Title": this.model.feed.get('title') })
+            mixpanel.track("Downvoted", { "Item Title": item.get('title'),
+                                          "Feed Title": item.feed.get('title') })
         } else if (item.get('vote') == 1) {
-            mixpanel.track("Upvoted", { "Item Title": this.model.get('title'),
-                                        "Feed Title": this.model.feed.get('title') })
+            mixpanel.track("Upvoted", { "Item Title": item.get('title'),
+                                        "Feed Title": item.feed.get('title') })
         };
     },
 

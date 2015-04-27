@@ -1,6 +1,12 @@
 Sourcemash.Collections.Categories = Backbone.Collection.extend({
 	  model: Sourcemash.Models.Category,
-	  url: '/api/categories',
+    url: function() {
+      return (this.allCategories) ? '/api/categories/all' : '/api/categories';
+    },
+    initialize: function(categories, options) {
+      options = options || {};
+      this.allCategories = options.allCategories;
+    },
 	  parse: function(response) {
 	  	return response.categories;
 	  },

@@ -1,6 +1,6 @@
-from . import api
+from . import api, login_required
 from flask.ext.restful import Resource, marshal, fields
-from flask.ext.security import current_user, login_required
+from flask.ext.security import current_user
 
 from sourcemash.models import Item, Category, UserItem
 
