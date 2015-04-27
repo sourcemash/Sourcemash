@@ -10,7 +10,6 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
     this.listenTo(this.collection, 'sync', this.render);
 
     this.loading = true;
-    this.user = options.user;
 
     this.feedCardViews = []
   },
@@ -44,10 +43,9 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
 
     // Render item cards
     var feedCards = [];
-    _user = this.user;
     this.collection.models.forEach(function(feed) {
         var feedCardView = new Sourcemash.Views.FeedCardView({el: "#feed-card-" + feed.get('id'),
-                                                              model: feed, user: _user});
+                                                              model: feed});
         feedCards.push(feedCardView)
     });
 

@@ -9,7 +9,6 @@ Sourcemash.Views.RegisterView = Backbone.View.extend({
         e.preventDefault();
         var formData = JSON.stringify($("#register").serializeObject());
         $('#register-password').val('');
-        $('#register-password-confirm').val('');
         var posting = $.ajax({
                           type: "POST",
                           url: "/register",
@@ -22,7 +21,7 @@ Sourcemash.Views.RegisterView = Backbone.View.extend({
     registerOrShowErrors: function(data) {
         var user = data.response.user;
         if (user) {
-          mixpanel.track("Registered");
+          mixpanel.track("Created Account");
           $("#register-modal").closeModal();
           toast("Check your email for confirmation!", 2000);
           setTimeout(function(){window.location.replace("/")}, 2000);

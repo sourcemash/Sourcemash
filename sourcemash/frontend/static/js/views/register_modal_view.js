@@ -3,13 +3,13 @@ Sourcemash.Views.RegisterModalView = Backbone.View.extend({
 
     events: {
         'submit #register': 'registerFromModal',
+        'click .register-close': 'activateLoginForm'
     },
 
     registerFromModal: function(e) {
         e.preventDefault();
         var formData = JSON.stringify($("#register").serializeObject());
         $('#register-password').val('');
-        $('#register-password-confirm').val('');
         var posting = $.ajax({
                           type: "POST",
                           url: "/register",
@@ -22,7 +22,7 @@ Sourcemash.Views.RegisterModalView = Backbone.View.extend({
     registerOrShowErrors: function(data) {
         var user = data.response.user;
         if (user) {
-          mixpanel.track("Registered");
+          mixpanel.track("Created Account");
           $("#register-modal").closeModal();
           toast("Check your email for confirmation!", 2000);
           setTimeout(function(){window.location.replace("/")}, 2000);
@@ -32,6 +32,11 @@ Sourcemash.Views.RegisterModalView = Backbone.View.extend({
           errorMsg = errors.email || errors.password || {};
           $("#register-errors").html(errorMsg);
         };
+    },
+
+    activateLoginForm: function() {
+      toast("<-- Login over there!", 3000)
+      $('#login-email').focus();
     },
 
     render: function() {

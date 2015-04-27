@@ -2,7 +2,6 @@ Sourcemash.Views.SubscribeSwitchView = Backbone.View.extend({
     template: JST['subscribe-switch'],
 
     initialize: function(options) {
-        this.user = options.user;
         this.listenTo(this.model, 'change', this.render);
     },
 

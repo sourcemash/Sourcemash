@@ -4,7 +4,6 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
             this.listenTo(this.model, 'change:subscribed change:title', this.render);
         };
 
-        this.user = options.user;
         this.itemViews = [];
         this.loading = true;
     },
@@ -37,17 +36,14 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
 
         // Render subscribe-toggle switch if feed page
         if (this.model) {
-            this.subscribeSwitchView = new Sourcemash.Views.SubscribeSwitchView({ model: this.model,
-                                                                                  user: this.user });
+            this.subscribeSwitchView = new Sourcemash.Views.SubscribeSwitchView({ model: this.model });
             this.$(".subscribe-switch").html(this.subscribeSwitchView.render().el);
         };
 
         // Render item cards
         var itemCards = [];
-        _user = this.user;
         this.collection.models.forEach(function(item) {
-            var itemCardView = new Sourcemash.Views.ItemCardView({el: "#item-" + item.get('id'), model: item,
-                                                                  user: _user });
+            var itemCardView = new Sourcemash.Views.ItemCardView({el: "#item-" + item.get('id'), model: item });
             itemCards.push(itemCardView)
         });
 

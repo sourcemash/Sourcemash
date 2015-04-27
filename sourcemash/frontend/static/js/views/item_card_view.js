@@ -2,7 +2,6 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
     template: JST['item-card'],
 
     initialize: function(options) {
-        this.user = options.user;
         this.listenTo(this.model, 'change', this.render);
         this.render();
     },
