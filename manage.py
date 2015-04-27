@@ -85,7 +85,7 @@ def seed():
     db.session.commit()
 
     engadget = Feed(title='Engadget',
-            url="http://podcasts.engadget.com/rss.xml",
+            url="http://www.engadget.com/rss-full.xml",
             last_updated = datetime.min)
     db.session.add(engadget)
     db.session.commit()
