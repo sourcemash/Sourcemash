@@ -22,5 +22,5 @@
 <p class="divider"><p>
 <div class="modal-footer">
   <a href="#" class="register-close waves-effect waves-green btn-flat modal-action modal-close">I already have an account!</a>
-  <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close">I'll pass...</a>
+  <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close">Cancel</a>
 </div>

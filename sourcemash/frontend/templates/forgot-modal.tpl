@@ -20,5 +20,5 @@
 <p class="divider"><p>
 <div class="modal-footer">
   <a href="#" class="forgot-close waves-effect waves-green btn-flat modal-action modal-close">I remember!</a>
-  <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close">I'll pass...</a>
+  <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close">Cancel</a>
 </div>
