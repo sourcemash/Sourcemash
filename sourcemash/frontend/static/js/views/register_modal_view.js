@@ -14,12 +14,12 @@ Sourcemash.Views.RegisterModalView = Backbone.View.extend({
                           type: "POST",
                           url: "/register",
                           data: formData,
-                          success: this.registerOrShowErrors,
+                          success: this.registerUserOrShowErrors,
                           contentType: "application/json"
                       });
     },
 
-    registerOrShowErrors: function(data) {
+    registerUserOrShowErrors: function(data) {
         var user = data.response.user;
         if (user) {
           mixpanel.track("Created Account");

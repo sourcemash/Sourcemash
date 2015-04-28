@@ -15,8 +15,6 @@ Sourcemash.Views.SubscribeSwitchView = Backbone.View.extend({
 
         } else {
             this.model.save({'subscribed': true}, {success: this.subscribedToggled});
-
-
         };
     },
 
