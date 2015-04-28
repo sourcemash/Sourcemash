@@ -21,6 +21,9 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         self._registerModalView = new Sourcemash.Views.RegisterModalView();
         $("#register-modal").html(self._registerModalView.render().$el);
 
+        self._forgotModalView = new Sourcemash.Views.ForgotModalView();
+        $("#forgot-modal").html(self._forgotModalView.render().$el);
+
         self._user.fetch({success: this._identifyUser});
         self._sidenav.feeds.reset(self._feeds);
         self._sidenav.categories.reset(self._categories);

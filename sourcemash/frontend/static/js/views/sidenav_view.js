@@ -12,7 +12,8 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
 
   events: {
     'submit #login': 'loginSubmit',
-    'click #need-account': 'showRegisterModal'
+    'click #need-account': 'showRegisterModal',
+    'click #forgot-password': 'showForgotPasswordModal'
   },
 
   loginSubmit: function(e){
@@ -43,6 +44,10 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
 
   showRegisterModal: function(){
     $("#register-modal").openModal();
+  },
+
+  showForgotPasswordModal: function(){
+    $("#forgot-modal").openModal();
   },
 
   render: function() {

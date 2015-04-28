@@ -85,7 +85,7 @@
         </div>
       </div>
     </form>
-    <li class="center-align"><a href="/reset"><u>I forgot my password.</u></a></li>
+    <li class="center-align" id="forgot-password"><u>I forgot my password.</u></li>
     <li class="center-align" id="need-account"><u>I need an account.</u></li>
   <% } %>
 </ul>
