@@ -12,9 +12,11 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
 
   events: {
     'submit #login': 'loginSubmit',
+    'click #need-account': 'showRegisterModal'
   },
 
   loginSubmit: function(e){
+    $("#register-modal").openModal();
     e.preventDefault();
     var formData = JSON.stringify($("#login").serializeObject());
     var posting = $.ajax({
@@ -26,7 +28,7 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
                   });
   },
 
-  loginOrShowErrors: function(data) {
+  loginOrShowErrors: function(data){
     var user = data.response.user;
     if (user) {
       mixpanel.track("Logged In");
@@ -38,6 +40,10 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
       $("#login-errors").html(errorMsg);
       $('#password').val('');
     }
+  },
+
+  showRegisterModal: function(){
+    $("#register-modal").openModal();
   },
 
   render: function() {
