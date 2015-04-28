@@ -16,7 +16,6 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
   },
 
   loginSubmit: function(e){
-    $("#register-modal").openModal();
     e.preventDefault();
     var formData = JSON.stringify($("#login").serializeObject());
     var posting = $.ajax({
