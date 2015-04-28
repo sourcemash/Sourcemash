@@ -175,4 +175,4 @@ class TestFeedListAPI(TestBase):
         assert rv.status_code == 401
 
         data = json.loads(rv.data)
-        assert 'Not logged in' in data["errors"]
+        assert 'not logged in' in data["errors"]["user"]

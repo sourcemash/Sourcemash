@@ -11,7 +11,7 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated():
-            return {"errors": "Not logged in."}, 401
+            return {"errors": {"user": "User is not logged in."}}, 401
         return f(*args, **kwargs)
     return decorated_function
 
