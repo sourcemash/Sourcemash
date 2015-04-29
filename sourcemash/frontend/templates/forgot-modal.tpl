@@ -9,16 +9,12 @@
         <label for="forgot-email" class="">Email Address</label>
         <div class="errors" id="forgot-errors"></div>
       </div>
-      <div class="row">
-        <div class="input-field col s12">
-          <button type="submit" class="btn waves-effect waves-light">Recover Password</button>
-        </div>
-      </div>
     </form>
   </div>
 </div>
 <p class="divider"><p>
 <div class="modal-footer">
+  <a href="#" type="submit" class="forgot-submit waves-effect waves-green btn-flat modal-action">Recover Password</a>
   <a href="#" class="forgot-close waves-effect waves-green btn-flat modal-action modal-close">I remember!</a>
   <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close">Cancel</a>
 </div>

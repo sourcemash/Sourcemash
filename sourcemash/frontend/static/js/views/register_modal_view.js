@@ -3,6 +3,7 @@ Sourcemash.Views.RegisterModalView = Backbone.View.extend({
 
     events: {
         'submit #register': 'registerFromModal',
+        'click .register-submit': 'registerFromModal',
         'click .register-close': 'activateLoginForm'
     },
 
@@ -19,7 +20,7 @@ Sourcemash.Views.RegisterModalView = Backbone.View.extend({
                       });
     },
 
-    registerUserOrShowErrors: function(data) {
+    registerUserOrShowErrors: function(data, status, e) {
         var user = data.response.user;
         if (user) {
           mixpanel.track("Created Account");
@@ -35,7 +36,6 @@ Sourcemash.Views.RegisterModalView = Backbone.View.extend({
     },
 
     activateLoginForm: function() {
-      toast("<-- Login over there!", 3000)
       $('#login-email').focus();
     },
 

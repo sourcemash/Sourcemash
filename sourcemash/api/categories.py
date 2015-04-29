@@ -28,7 +28,6 @@ class CategoryAPI(Resource):
 
 class CategoryListAPI(Resource):
 
-    @login_required
     def get(self):
         user_feed_ids = [feed.id for feed in current_user.subscribed]
 

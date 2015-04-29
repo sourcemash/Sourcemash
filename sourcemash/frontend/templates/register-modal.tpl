@@ -12,15 +12,11 @@
       <label for="register-password">Password</label>
       <div class="errors" id="register-errors"></div>
     </div>
-    <div class="row">
-      <div class="input-field col s12">
-        <button type="submit" class="btn waves-effect waves-light">Register</button>
-      </div>
-    </div>
   </form>
 </div>
 <p class="divider"><p>
 <div class="modal-footer">
+  <a href="#" type="submit" class="register-submit waves-effect waves-green btn-flat modal-action">Submit</a>
   <a href="#" class="register-close waves-effect waves-green btn-flat modal-action modal-close">I already have an account!</a>
   <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close">Cancel</a>
 </div>
