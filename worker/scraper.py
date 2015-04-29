@@ -107,7 +107,7 @@ def _store_items(feed):
                         db.session.commit()
                         break
             except:
-                pass # eventually, default image
+                pass
 
     if not feed.description:
         try:
