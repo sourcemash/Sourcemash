@@ -2,8 +2,9 @@ Sourcemash.Views.ForgotModalView = Backbone.View.extend({
     template: JST['forgot-modal'],
 
     events: {
-        'submit #forgot-form': 'recoverFromModal',
         'click .forgot-submit': 'recoverFromModal',
+        'submit #forgot-form': 'recoverFromModal',
+        'keyup #forgot-email': 'processKey',
         'click .forgot-close': 'activateLoginForm'
     },
 
@@ -26,6 +27,12 @@ Sourcemash.Views.ForgotModalView = Backbone.View.extend({
 
     activateLoginForm: function() {
       $('#login-email').focus();
+    },
+
+    processKey: function(e) {
+      if(e.which === 13) { // enter key
+        $('#forgot-form').submit();
+      };
     },
 
     render: function() {

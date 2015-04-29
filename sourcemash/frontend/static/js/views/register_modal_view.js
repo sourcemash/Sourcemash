@@ -2,8 +2,9 @@ Sourcemash.Views.RegisterModalView = Backbone.View.extend({
     template: JST['register-modal'],
 
     events: {
-        'submit #register': 'registerFromModal',
         'click .register-submit': 'registerFromModal',
+        'submit #register': 'registerFromModal',
+        'keyup #register-password': 'processKey',
         'click .register-close': 'activateLoginForm'
     },
 
@@ -37,6 +38,12 @@ Sourcemash.Views.RegisterModalView = Backbone.View.extend({
 
     activateLoginForm: function() {
       $('#login-email').focus();
+    },
+
+    processKey: function(e) {
+      if(e.which === 13) { // enter key
+        $('#register').submit();
+      };
     },
 
     render: function() {

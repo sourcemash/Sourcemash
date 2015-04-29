@@ -5,7 +5,7 @@
   <div class="row">
     <form id="forgot-form">
       <div class="input-field">
-        <input class="validate" type="email" name="email">
+        <input class="validate" id="forgot-email" type="email" name="email">
         <label for="forgot-email" class="">Email Address</label>
         <div class="errors" id="forgot-errors"></div>
       </div>

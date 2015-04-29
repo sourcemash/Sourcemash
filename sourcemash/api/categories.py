@@ -29,6 +29,10 @@ class CategoryAPI(Resource):
 class CategoryListAPI(Resource):
 
     def get(self):
+
+        if not current_user.is_authenticated():
+          return {'categories': []}
+
         user_feed_ids = [feed.id for feed in current_user.subscribed]
 
         categories = Category.query \
