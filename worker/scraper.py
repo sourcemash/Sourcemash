@@ -99,15 +99,21 @@ def _store_items(feed):
             feed.image_url = fp.feed.image.url
             db.session.commit()
         except:
-            img_tags = BeautifulSoup(requests.get(fp.feed.link).content).find_all('img')
-            for image_tag in img_tags:
-                if "logo" in str(image_tag):
-                    feed.image_url = image_tag.get('src') or image_tag.get('href')
-                    db.session.commit()
-                    break
+            try:
+                img_tags = BeautifulSoup(requests.get(fp.feed.link).content).find_all('img')
+                for image_tag in img_tags:
+                    if "logo" in str(image_tag):
+                        feed.image_url = image_tag.get('src') or image_tag.get('href')
+                        db.session.commit()
+                        break
+            except:
+                pass # eventually, default image
 
     if not feed.description:
-        feed.description = fp.feed.description
+        try:
+            feed.description = fp.feed.description
+        except:
+            feed.description = "Recent news from " + feed.title + "."
 
     try:
         feed.last_updated = datetime(feed.updated_parsed[:6])
