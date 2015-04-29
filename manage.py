@@ -17,8 +17,7 @@ from worker import create_worker
 from worker.scraper import scrape_and_categorize_articles
 
 from datetime import datetime
-
-import logging
+import json
 
 app = create_app(os.environ.get("APP_CONFIG_FILE") or "development")
 conn = create_worker(os.environ.get("APP_CONFIG_FILE") or "development")
@@ -28,6 +27,7 @@ manager = Manager(app)
 TEST_CMD = "py.test --cov-report term-missing --cov-config .coveragerc --cov . \
                     --boxed -n14 -k 'not functional' tests/"
 FUNCTIONAL_TEST_CMD = "./functional_test.sh"
+FEED_DATA_FILE = "feeds.json"
 
 THIRTY_MINUTES = 30 * 60
 
@@ -68,6 +68,25 @@ def worker(kill=False):
         worker = Worker(map(Queue, listen))
         worker.work()
 
+@manager.command
+def feed_seed():
+    """Add seed feeds from JSON file"""
+    with open(FEED_DATA_FILE) as data_file:
+        data = json.load(data_file)
+        feeds_by_topic = data["feeds"]
+
+        for topic in feeds_by_topic:
+            for feed_json in topic[topic.keys()[0]]:
+
+                feed = Feed(title=feed_json["title"],
+                            url=feed_json["url"],
+                            last_updated = datetime.min)
+
+                db.session.add(feed)
+                db.session.commit()
+
+    # Scrape articles for feed
+    scrape_and_categorize_articles()
 
 @manager.command
 def seed():

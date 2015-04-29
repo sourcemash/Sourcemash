@@ -1,0 +1,321 @@
+{
+ "feeds": [
+    {
+      "tech": [
+        {
+          "title":"TechCrunch > Startups",
+          "url":"http://feeds.feedburner.com/techcrunch/startups?format=xml"
+        },
+        {
+          "title":"Engadget",
+          "url":"http://www.engadget.com/rss-full.xml"
+        },
+        {
+          "title":"Gizmodo",
+          "url":"http://feeds.gawker.com/gizmodo/full"
+        },
+        {
+          "title":"The Next Web",
+          "url":"http://thenextweb.com/feed/"
+        },
+        {
+          "title": "The Verge",
+          "url": "http://www.theverge.com/rss/full.xml"
+        },
+        {
+          "title": "Lifehacker",
+          "url": "http://feeds.gawker.com/lifehacker/vip"
+        },
+        {
+          "title": "ReadWrite",
+          "url": "http://www.readwriteweb.com/rss.xml"
+        },
+        {
+          "title": "Wired",
+          "url": "http://feeds.wired.com/wired/index"
+        },
+        {
+          "title": "Mashable",
+          "url": "http://feeds.mashable.com/Mashable"
+        },
+        {
+          "title": "Ars Technica",
+          "url": "http://feeds.arstechnica.com/arstechnica/index/"
+        },
+        {
+          "title": "Slashdot",
+          "url": "http://rss.slashdot.org/Slashdot/slashdot"
+        },
+        {
+          "title": "The Official Google Blog",
+          "url": "http://googleblog.blogspot.com/atom.xml"
+        },
+        {
+          "title": "Android Central",
+          "url": "http://www.androidcentral.com/feed"
+        },
+        {
+          "title": "MacRumors",
+          "url": "http://www.macrumors.com/macrumors.xml"
+        },
+        {
+          "title": "Boing Boing",
+          "url": "http://feeds.boingboing.net/boingboing/iBag"
+        },
+        {
+          "title": "ThinkGeek",
+          "url": "http://www.thinkgeek.com/thinkgeek.rss"
+        },
+        {
+          "title": "Forbes: Entrepreneurs",
+          "url": "http://www.forbes.com/entrepreneurs/index.xml"
+        },
+        {
+          "title": "A VC: Venture Capital and Technology",
+          "url": "http://feeds.feedburner.com/AVc"
+        },
+        {
+          "title": "VentureBeat",
+          "url": "http://feeds.feedburner.com/venturebeat"
+        },
+        {
+          "title": "Inc.com",
+          "url": "http://www.inc.com/rss.xml"
+        }
+      ]
+    },
+
+    {
+      "business": [
+        {
+          "title": "Seth Godin",
+          "url": "http://sethgodin.typepad.com/seths_blog/atom.xml"
+        },
+        {
+          "title": "Business Insider",
+          "url": "http://feeds2.feedburner.com/businessinsider"
+        },
+        {
+          "title": "Entrepreneuer: Latest Articles",
+          "url": "http://feeds.feedburner.com/entrepreneur/latest"
+        },
+        {
+          "title": "The Atlantic",
+          "url": "http://feeds.feedburner.com/AtlanticBusinessChannel"
+        },
+        {
+          "title": "Calculated Risk",
+          "url": "http://www.calculatedriskblog.com/feeds/posts/default"
+        },
+        {
+          "title": "Harvard Business Review",
+          "url": "http://feeds.harvardbusiness.org/harvardbusiness/"
+        },
+        {
+          "title": "Fast Company",
+          "url": "http://feeds.feedburner.com/fastcompany/headlines"
+        },
+        {
+          "title": "Reuters: Business News",
+          "url": "http://feeds.reuters.com/reuters/businessNews?format=xml"
+        }
+      ]
+    },
+
+    {
+      "food": [
+        {
+          "title": "Smitten Kitchen",
+          "url": "http://feeds.feedburner.com/smittenkitchen"
+        },
+        {
+          "title": "101 Cookbooks",
+          "url": "http://feeds.101cookbooks.com/101cookbooks"
+        },
+        {
+          "title": "Epicurious",
+          "url": "http://www.epicurious.com/services/rss/feeds/newrecipes.xml"
+        },
+        {
+          "title": "AllRecipes: Daily Recipes",
+          "url": "http://rss.allrecipes.com/2/3.xml"
+        }
+      ]
+    },
+
+    {
+      "news": [
+        {
+          "title": "CNN",
+          "url": "http://rss.cnn.com/rss/cnn_topstories.rss"
+        },
+        {
+          "title": "New York Times: Home Page",
+          "url": "http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml"
+        },
+        {
+          "title": "BBC News",
+          "url": "http://newsrss.bbc.co.uk/rss/newsonline_world_edition/front_page/rss.xml"
+        },
+        {
+          "title": "TIME",
+          "url": "http://rss.time.com/web/time/rss/top/index.xml"
+        },
+        {
+          "title": "The Wire",
+          "url": "http://feeds.feedburner.com/TheAtlanticWire"
+        },
+        {
+          "title": "NPR News",
+          "url": "http://www.npr.org/rss/rss.php"
+        },
+        {
+          "title": "Reuters: Top News",
+          "url": "http://feeds.reuters.com/reuters/topNews"
+        },
+        {
+          "title": "USA Today",
+          "url": "http://rssfeeds.usatoday.com/usatoday-NewsTopStories"
+        },
+        {
+          "title": "Slate",
+          "url": "http://www.slate.com/rss"
+        }
+      ]
+    },
+
+    {
+      "gaming": [
+        {
+          "title": "Polygon",
+          "url": "http://www.polygon.com/rss/index.xml"
+        },
+        {
+          "title": "Kotaku",
+          "url": "http://feeds.gawker.com/kotaku/vip"
+        },
+        {
+          "title": "IGN Video Games",
+          "url": "http://feeds.ign.com/ign/games-all"
+        }
+      ]
+    },
+
+    {
+      "fashion": [
+        {
+          "title": "Cool Hunting",
+          "url": "http://www.coolhunting.com/atom.xml"
+        },
+        {
+          "title": "Fashionista",
+          "url": "http://feeds.feedburner.com/fashionistacom"
+        },
+        {
+          "title": "Fashion Squad",
+          "url": "http://www.fashionsquad.com/feed/"
+        }
+      ]
+    },
+
+    {
+      "photography": [
+        {
+          "title": "500px",
+          "url": "http://feed.500px.com/500px-editors"
+        },
+        {
+          "title": "National Geographic: Photo of the Day",
+          "url": "http://www.nationalgeographic.com/rss/photography/photo-of-the-day"
+        },
+        {
+          "title": "The Big Picture",
+          "url": "http://www.boston.com/bigpicture/index.xml"
+        }
+      ]
+    },
+
+    {
+      "comics": [
+        {
+          "title": "XKCD",
+          "url": "http://xkcd.com/rss.xml"
+        },
+        {
+          "title": "The Oatmeal",
+          "url": "http://theoatmeal.com/feed/rss"
+        },
+        {
+          "title": "Dilbert Daily Strip",
+          "url": "http://feeds.feedburner.com/DilbertDailyStrip"
+        },
+        {
+          "title": "Ph.D. Comics",
+          "url": "http://www.phdcomics.com/gradfeed.php"
+        },
+        {
+          "title": "What If?",
+          "url": "http://what-if.xkcd.com/feed.atom"
+        }
+      ]
+    },
+
+    {
+      "science": [
+        {
+          "title": "National Geographic: News",
+          "url": "http://news.nationalgeographic.com/index.rss"
+        },
+        {
+          "title": "Scientific American: Global",
+          "url": "http://www.sciam.com/xml/sciam.xml"
+        },
+        {
+          "title": "TED Talks",
+          "url": "http://feeds.feedburner.com/tedtalks_video"
+        },
+        {
+          "title": "Science: Current Issue",
+          "url": "http://www.sciencemag.org/rss/current.xml"
+        },
+        {
+          "title": "Futurity.org",
+          "url": "http://www.futurity.org/feed/"
+        },
+        {
+          "title": "Popular Science",
+          "url": "http://www.popsci.com/rss.xml"
+        },
+        {
+          "title": "New York Times: Science",
+          "url": "http://rss.nytimes.com/services/xml/rss/nyt/Science.xml"
+        },
+        {
+          "title": "Io9",
+          "url": "http://feeds.gawker.com/io9/full"
+        }
+      ]
+    },
+
+    {
+      "finance": [
+        {
+          "title": "Get Rich Slowly",
+          "url": "http://www.getrichslowly.org/blog/feed/"
+        },
+        {
+          "title": "Freakonomics",
+          "url": "http://freakonomics.blogs.nytimes.com/feed/"
+        },
+        {
+          "title": "The Economist: The World This Week",
+          "url": "http://www.economist.com/rss/the_world_this_week_rss.xml"
+        },
+        {
+          "title": "Bloomberg",
+          "url": "http://www.newslookup.com/rss/business/bloomberg.rss"
+        }
+      ]
+    }
+  ]
+}
