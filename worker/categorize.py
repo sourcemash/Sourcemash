@@ -395,7 +395,7 @@ class Categorizer:
         words = phrase.split()
 
         # Ignore stop words
-        if words[0].lower() in STOP_WORDS:
+        if len(words) == 0 or words[0].lower() in STOP_WORDS:
             return False
 
         # Ignore non-title trigrams
