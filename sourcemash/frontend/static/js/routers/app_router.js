@@ -13,7 +13,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
 
         self._user = new Sourcemash.Models.User();
         self._feeds = new Sourcemash.Collections.Feeds([], {allFeeds: true});
-        self._categories = new Sourcemash.Collections.Categories([], {allCategories: true});
+        self._categories = new Sourcemash.Collections.Categories([]);
 
         self._sidenav = new Sourcemash.Views.SidenavView({ user: self._user, feeds: self._feeds, categories: self._categories });
         $('#nav-mobile').html(self._sidenav.render().$el);
