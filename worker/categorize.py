@@ -381,6 +381,7 @@ class Categorizer:
     def _is_viable_candidate(self, phrase):
 
         # Ignore 1-character phrases
+        phrase = phrase.strip()
         if len(phrase) < 2:
             return False
 
@@ -395,7 +396,7 @@ class Categorizer:
         words = phrase.split()
 
         # Ignore stop words
-        if len(words) == 0 or words[0].lower() in STOP_WORDS:
+        if words[0].lower() in STOP_WORDS:
             return False
 
         # Ignore non-title trigrams
