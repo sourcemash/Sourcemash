@@ -76,7 +76,7 @@ def feed_seed():
         feeds_by_topic = data["feeds"]
 
         for topic in feeds_by_topic:
-            for feed_json in topic[topic.keys()[0]]:
+            for feed_json in topic.values()[0]:
 
                 feed = Feed(title=feed_json["title"],
                             url=feed_json["url"],
