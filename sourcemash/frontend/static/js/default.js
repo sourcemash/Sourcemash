@@ -18,8 +18,7 @@ $(document).ajaxError(function (e, xhr, options) {
   }
 
   // Show Modal, if Not Authenticated
-  var errorStatus = xhr.status;
-  if (errorStatus == 401) {
+  if (xhr.error().status == 401) {
     $('#register-modal').openModal();
     mixpanel.track("Register Modal", {"URL": options.url, "data": options.data});
   };
