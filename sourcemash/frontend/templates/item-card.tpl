@@ -16,10 +16,8 @@
 
       <div class="card-action valign-wrapper row">
         <div class="category-list flow-text col s8">
-          <% for (var i = 0; i < item.categories.length; i++) { %>
-            <% if (item.categories.at(i).get('item_count') > 1 || !user.get('email')) { %>
-              <a href="/#categories/<%=item.categories.at(i).get('id')%>"><%=item.categories.at(i).get('name')%></a>
-            <% }; %>
+          <% for (var i = 0; i < categories.length; i++) { %>
+            <a href="/#categories/<%=categories[i].get('id')%>"><%=categories[i].get('name')%></a>
           <% } %>
         </div>
         <div class="col s2">

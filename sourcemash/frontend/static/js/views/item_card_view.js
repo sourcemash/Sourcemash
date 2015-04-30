@@ -95,6 +95,15 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
     },
 
     render: function() {
-        this.$el.html(this.template({ item: this.model, user: this.user }));
+        var shownCategories;
+        if (this.user.get('email')) {
+            shownCategories = this.model.categories.filter(function(category) {
+              return category.get("item_count") > 1;
+            });
+        } else {
+            shownCategories = this.model.categories.first(5)
+        }
+
+        this.$el.html(this.template({ item: this.model, categories: shownCategories, user: this.user }));
     }
 });
