@@ -56,7 +56,7 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
     activeTab = $(".tab .active").text().toLowerCase() || "categories";
 
     var content = this.template({active: activeTab, current_user: this.user, feeds: this.feeds,
-                                 categories: this.categories, isLoading: this.loading});
+                                 categories: this.categories});
     this.$el.html(content);
 
     // Render loading vew

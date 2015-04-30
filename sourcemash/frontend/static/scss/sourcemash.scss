@@ -17,8 +17,8 @@
   display: none !important;
 }
 
-.loading {
-  padding: 10px 0;
+.preloader-wrapper:not(.hide) {
+  margin: 10px 0;
 }
 
 /*
