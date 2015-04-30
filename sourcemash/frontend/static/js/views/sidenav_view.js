@@ -12,6 +12,8 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
 
   events: {
     'submit #login': 'loginSubmit',
+    'click #need-account': 'showRegisterModal',
+    'click #forgot-password': 'showForgotPasswordModal'
   },
 
   loginSubmit: function(e){
@@ -21,16 +23,16 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
                       type: "POST",
                       url: "/login",
                       data: formData,
-                      success: this.showErrors,
+                      success: this.loginUserOrShowErrors,
                       contentType: "application/json"
                   });
   },
 
-  showErrors: function(data) {
+  loginUserOrShowErrors: function(data){
     var user = data.response.user;
     if (user) {
       mixpanel.track("Logged In");
-      location.reload();
+      window.location.replace("/");
     };
     var errors = data.response.errors;
     if (errors) {
@@ -40,12 +42,21 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
     }
   },
 
+  showRegisterModal: function(){
+    $("#register-modal").openModal();
+  },
+
+  showForgotPasswordModal: function(){
+    $("#forgot-modal").openModal();
+  },
+
   render: function() {
     this.close();
 
     activeTab = $(".tab .active").text().toLowerCase() || "categories";
 
-    var content = this.template({active: activeTab, current_user: this.user, feeds: this.feeds, categories: this.categories});
+    var content = this.template({active: activeTab, current_user: this.user, feeds: this.feeds,
+                                 categories: this.categories});
     this.$el.html(content);
 
     // Render loading vew

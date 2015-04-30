@@ -17,8 +17,8 @@
   display: none !important;
 }
 
-.loading {
-  padding: 10px 0;
+.preloader-wrapper:not(.hide) {
+  margin: 10px 0;
 }
 
 /*
@@ -187,7 +187,7 @@ a.button-collapse.top-nav {
 	}
 }
 
-.modal-close {
+.modal-action {
 	&:hover {
 		background-color: color("green", "base");
 	}
@@ -271,3 +271,18 @@ a.button-collapse.top-nav {
 		color: color("red", "base");
 	}
 }
+
+/*
+ ******************************
+ * Forms
+ ******************************
+ */
+
+#register {
+  padding: 10px;
+}
+
+#forgot-form {
+  padding: 10px;
+}
+

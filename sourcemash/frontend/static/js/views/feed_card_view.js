@@ -9,7 +9,7 @@ Sourcemash.Views.FeedCardView = Backbone.View.extend({
     render: function() {
         this.$el.html(this.template({ model: this.model }));
         this.subscribeSwitchView = new Sourcemash.Views.SubscribeSwitchView({ model: this.model });
-        this.$(".subscribe-switch").html(this.subscribeSwitchView.render().el)
+        this.$(".subscribe-switch").html(this.subscribeSwitchView.render().el);
     },
 
     close: function() {

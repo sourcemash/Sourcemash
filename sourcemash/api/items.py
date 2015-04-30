@@ -1,8 +1,8 @@
-from . import api
+from . import api, login_required
 from sourcemash.database import db
 from flask import abort
 from flask.ext.restful import Resource, reqparse, inputs, fields, marshal
-from flask.ext.security import current_user, login_required
+from flask.ext.security import current_user
 from datetime import datetime, timedelta
 from sqlalchemy import func, desc
 

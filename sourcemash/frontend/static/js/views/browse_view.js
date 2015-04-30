@@ -9,8 +9,9 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
     this.typeahead = new ExtendedTypeahead({collection: this.collection, key: 'title'});
     this.listenTo(this.collection, 'sync', this.render);
 
-    this.feedCardViews = [];
     this.loading = true;
+
+    this.feedCardViews = []
   },
 
   events: {
@@ -18,7 +19,7 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
   },
 
   createFeed: function(e){
-  	e.preventDefault();
+    e.preventDefault();
     this.collection.create(this.newAttributes(), {success: this.updateCollection});
   },
 
@@ -43,7 +44,8 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
     // Render item cards
     var feedCards = [];
     this.collection.models.forEach(function(feed) {
-        var feedCardView = new Sourcemash.Views.FeedCardView({el: "#feed-card-" + feed.get('id'), model: feed});
+        var feedCardView = new Sourcemash.Views.FeedCardView({el: "#feed-card-" + feed.get('id'),
+                                                              model: feed});
         feedCards.push(feedCardView)
     });
 

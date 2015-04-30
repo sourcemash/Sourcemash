@@ -82,7 +82,3 @@ class TestUserAPI(TestBase):
         check_valid_header_type(delete.headers)
         data = json.loads(delete.data)
         assert data['result'] == True
-
-        # Dummy user should no longer be logged in
-        get = test_client.get('/api/user')
-        assert get.status_code == 302

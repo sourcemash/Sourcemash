@@ -4,6 +4,8 @@ $( document ).ready(function(){
 
 $(document).ajaxError(function (e, xhr, options) {
   var data = xhr.responseJSON || {};
+
+  // Display Errors
   var errors = data.errors || [];
   for (errorField in errors) {
     if (errors.hasOwnProperty(errorField)) {
@@ -14,4 +16,11 @@ $(document).ajaxError(function (e, xhr, options) {
         fieldErrors.text(errors[errorField]);
     }
   }
+
+  // Show Modal, if Not Authenticated
+  if (xhr.error().status == 401) {
+    $('#register-modal').openModal();
+    mixpanel.track("Register Modal", {"URL": options.url, "data": options.data});
+  };
+
 });

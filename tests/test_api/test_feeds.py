@@ -167,3 +167,12 @@ class TestFeedListAPI(TestBase):
         data = json.loads(r.data)
         assert len(data['errors']['url']) == 1
         assert 'Already subscribed' in data['errors']['url'][0]
+
+    def test_post_login_required(self, test_client, feed):
+        subscription_data = dict(url=feed.url)
+        rv = test_client.post('/api/feeds', data=subscription_data)
+        check_valid_header_type(rv.headers)
+        assert rv.status_code == 401
+
+        data = json.loads(rv.data)
+        assert 'not logged in' in data["errors"]["user"]

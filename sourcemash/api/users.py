@@ -1,9 +1,9 @@
-from . import api
+from . import api, login_required
 from sourcemash.database import db
 
 from flask import abort
 from flask.ext.restful import Resource, fields, marshal, reqparse
-from flask.ext.security import login_user, logout_user, RegisterForm, login_required, current_user
+from flask.ext.security import login_user, logout_user, RegisterForm, current_user
 
 from sourcemash.database import user_datastore
 from sourcemash.models import User
@@ -40,7 +40,6 @@ class UserListAPI(Resource):
         return { 'user': marshal(user, user_fields)}, 201
 
 class UserAPI(Resource):
-    method_decorators = [login_required]
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
@@ -50,12 +49,14 @@ class UserAPI(Resource):
     def get(self):
         return { 'user': marshal(current_user, user_fields) }
 
+    @login_required
     def put(self):
         args = self.reqparse.parse_args()
         current_user.email = args.email
         db.session.commit()
         return { 'user': marshal(current_user, user_fields) }
 
+    @login_required
     def delete(self):
         user_datastore.delete_user(current_user)
         db.session.delete(current_user)

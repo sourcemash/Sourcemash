@@ -1,6 +1,6 @@
-from . import api
+from . import api, login_required
 from flask.ext.restful import Resource, marshal, fields
-from flask.ext.security import current_user, login_required
+from flask.ext.security import current_user
 
 from sourcemash.models import Item, Category, UserItem
 
@@ -28,8 +28,11 @@ class CategoryAPI(Resource):
 
 class CategoryListAPI(Resource):
 
-    @login_required
     def get(self):
+
+        if not current_user.is_authenticated():
+          return {'categories': []}
+
         user_feed_ids = [feed.id for feed in current_user.subscribed]
 
         categories = Category.query \

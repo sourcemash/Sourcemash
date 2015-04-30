@@ -25,8 +25,7 @@
               </a>
             <% }; %>
           <% }); %>
-        <% }; %>
-        <% if (feeds.where({subscribed: true}).length == 0) { %>
+        <% } else { %>
           <a href="/#browse"><li class="row center-align collection-item">
             <i class="mdi-action-view-module"></i>
             Browse Feeds
@@ -45,8 +44,7 @@
             <% }; %>
             </li></a>
           <% }); %>
-        <% }; %>
-        <% if (feeds.where({subscribed: true}).length == 0) { %>
+        <% } else { %>
           <a href="/#browse"><li class="row center-align collection-item">
             <i class="mdi-action-view-module"></i>
             Browse Feeds
@@ -69,7 +67,7 @@
     <form id="login">
       <div class="input-field">
         <input class="validate" id="email" name="email" type="email">
-        <label for="email" class="">Email Address</label>
+        <label for="email" id="login-email" class="">Email Address</label>
       </div>
       <div class="input-field">
         <input class="validate" id="password" name="password" type="password">
@@ -87,7 +85,7 @@
         </div>
       </div>
     </form>
-    <li class="center-align"><a href="/reset"><u>I forgot my password.</u></a></li>
-    <li class="center-align"><a href="/register"><u>I need an account.</u></a></li>
+    <li class="center-align" id="forgot-password"><u>I forgot my password.</u></li>
+    <li class="center-align" id="need-account"><u>I need an account.</u></li>
   <% } %>
 </ul>

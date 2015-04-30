@@ -41,6 +41,8 @@ js_views = Bundle("js/views/profile_view.js",
                 "js/views/browse_view.js",
                 "js/views/subscribe_switch_view.js",
                 "js/views/subscribe_modal_view.js",
+                "js/views/register_modal_view.js",
+                "js/views/forgot_modal_view.js",
                 "js/views/feed_card_view.js",
                 "js/views/item_card_view.js")
 
