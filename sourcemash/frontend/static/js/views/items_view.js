@@ -4,6 +4,7 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
             this.listenTo(this.model, 'change:subscribed change:title', this.render);
         };
 
+        this.user = options.user;
         this.itemViews = [];
         this.loading = true;
     },
@@ -42,8 +43,9 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
 
         // Render item cards
         var itemCards = [];
+        user = this.user;
         this.collection.models.forEach(function(item) {
-            var itemCardView = new Sourcemash.Views.ItemCardView({el: "#item-" + item.get('id'), model: item });
+            var itemCardView = new Sourcemash.Views.ItemCardView({el: "#item-" + item.get('id'), model: item, user: user });
             itemCards.push(itemCardView)
         });
 
