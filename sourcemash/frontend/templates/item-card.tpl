@@ -16,9 +16,9 @@
 
       <div class="card-action valign-wrapper row">
         <div class="category-list flow-text col s8">
-          <% for (var i = 0; i < categories.length; i++) { %>
-            <a href="/#categories/<%=categories[i].get('id')%>"><%=categories[i].get('name')%></a>
-          <% } %>
+          <% _.each(categories, function(category) { %>
+            <a href="/#categories/<%=category.get('id')%>"><%=category.get('name')%></a>
+          <% }); %>
         </div>
         <div class="col s2">
           <div class="saved">
