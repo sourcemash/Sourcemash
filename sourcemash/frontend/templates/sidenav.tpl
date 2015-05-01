@@ -1,5 +1,10 @@
 <ul class="sidenav-element col s12">
-  <li class='logo'><a href="/" class="brand-logo">Sourcemash</a></li>
+  <a href="/" class="brand-logo">
+    <li class='logo'>
+      <img src="static/img/solologo.svg" alt="Sourcemash">
+      <img src="static/img/logotext.svg" alt="Sourcemash">
+    </li>
+  </a>
 
   <div class="lists">
     <div class="row">
