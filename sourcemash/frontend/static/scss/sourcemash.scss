@@ -88,7 +88,7 @@ div.side-nav {
         border-bottom: 1px solid #ddd;
 
         img {
-          height: 90px;
+          height: 70px;
           padding: 10px 0;
         }
       }
@@ -105,11 +105,21 @@ div.side-nav {
 }
 
 .lists .collection {
-  height: 300px;
+  max-height: 300px;
   overflow-y: scroll;
 
   .new {
-    @extend .red.lighten-2
+    @extend .red.darken-2
+  }
+}
+
+.tabs {
+  .indicator {
+   @extend .red.darken-2
+  }
+
+  li.tab a {
+    @extend .red-text.text-darken-2
   }
 }
 
@@ -117,8 +127,10 @@ div.side-nav {
   margin: 0;
 }
 
-.user-auth form#login {
-  padding: 10px;
+.user-auth {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 
 a.button-collapse.top-nav.full {
@@ -190,10 +202,10 @@ a.button-collapse.top-nav {
     padding: 10px;
 
     input[type=checkbox]:first-child:checked + .lever {
-      @extend .red.lighten-3;
+      @extend .red.darken-1;
 
       &:after {
-        @extend .red.lighten-1;
+        @extend .red;
       }
     }
   }
@@ -207,6 +219,10 @@ a.button-collapse.top-nav {
 
 .card {
     height: 400px;
+    a {
+      @extend .red-text.text-darken-2;
+    }
+
     .card-content {
         @extend .white;
         z-index: 1;
@@ -218,12 +234,15 @@ a.button-collapse.top-nav {
             font-size: 20px;
         }
         .card-action {
+          @extend .grey-text;
+
           .category-list {
             a {
               @extend .grey-text;
 
               &:hover {
-                @extend .grey-text.text-darken-1
+                @extend .red-text.text-darken-2;
+                font-weight: 400;
               }
 
               &:after {
@@ -262,7 +281,7 @@ a.button-collapse.top-nav {
         cursor: pointer;
     }
     .saved {
-        @extend .red-text.text-lighten-2;
+        @extend .red-text.text-darken-2;
 
         &:hover {
           cursor: pointer;
@@ -307,10 +326,10 @@ a.button-collapse.top-nav {
  ******************************
  */
 
-#register {
+form {
   padding: 10px;
 }
 
-#forgot-form {
-  padding: 10px;
+.btn {
+  @extend .blue.darken-3;
 }
