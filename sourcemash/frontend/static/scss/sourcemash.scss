@@ -153,6 +153,12 @@ a.button-collapse.top-nav {
   }
 }
 
+#forgot-password, #need-account {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 /*
  *******************************
  Typeahead dropdown menu search
