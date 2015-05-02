@@ -28,11 +28,11 @@
  */
 
 .top-nav {
-  background: white;
+  @extend .white;
   box-shadow: None;
 
   a {
-    color: color("red", "lighten-2");
+    @extend .red-text.text-lighten-2;
     font-size: 24px;
   }
 }
@@ -67,10 +67,6 @@ div.side-nav {
   -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 
-  a {
-    color: black;
-  }
-
   &.fixed {
     left: 0;
     position: fixed;
@@ -83,38 +79,58 @@ div.side-nav {
 
     li {
 
-      &:hover {
+      &.collection-item:hover {
         background-color: #ddd;
       }
 
       &.logo {
         text-align: center;
-        background: color("red", "lighten-2");
+        border-bottom: 1px solid #ddd;
 
-        a {
-          color: white;
-          font-size: 24px;
+        img {
+          height: 70px;
+          padding: 10px 0;
         }
       }
     }
   }
 }
 
-.lists .collection a.collection-item:hover {
-  background-color: inherit;
+.side-nav .collection a .collection-item {
+  @extend .black-text;
+
+  &:hover {
+    background-color: inherit;
+  }
 }
 
 .lists .collection {
-  max-height: 400px;
+  max-height: 300px;
   overflow-y: scroll;
+
+  .new {
+    @extend .red.darken-2
+  }
+}
+
+.tabs {
+  .indicator {
+   @extend .red.darken-2
+  }
+
+  li.tab a {
+    @extend .red-text.text-darken-2
+  }
 }
 
 .sidenav-element {
   margin: 0;
 }
 
-.user-auth form#login {
-  padding: 10px;
+.user-auth {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 
 a.button-collapse.top-nav.full {
@@ -137,6 +153,12 @@ a.button-collapse.top-nav {
   }
 }
 
+#forgot-password, #need-account {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 /*
  *******************************
  Typeahead dropdown menu search
@@ -144,7 +166,7 @@ a.button-collapse.top-nav {
  */
 .dropdown-menu {
   position: absolute;
-  background-color: #FFFFFF;
+  @extend .white;
   margin: 0;
   min-width: 100px;
   z-index: 1000;
@@ -173,30 +195,42 @@ a.button-collapse.top-nav {
  ******************************
  */
 .mark-all-read {
-  color: color("grey", "lighten-2");
+  @extend .grey-text.text-lighten-2;
 
   &:hover {
-    color: color("shades", "black");
+    @extend .black-text;
     cursor: pointer;
   }
 }
 
 .switch {
-	label {
-		padding: 10px;
-	}
+  label {
+    padding: 10px;
+
+    input[type=checkbox]:first-child:checked + .lever {
+      @extend .red.darken-1;
+
+      &:after {
+        @extend .red;
+      }
+    }
+  }
 }
 
 .modal-action {
 	&:hover {
-		background-color: color("green", "base");
+		background-color: #ddd;
 	}
 }
 
 .card {
     height: 400px;
+    a {
+      @extend .red-text.text-darken-2;
+    }
+
     .card-content {
-        background-color: white;
+        @extend .white;
         z-index: 1;
         position: absolute;
         bottom: 0;
@@ -206,12 +240,24 @@ a.button-collapse.top-nav {
             font-size: 20px;
         }
         .card-action {
+          @extend .grey-text;
+
           .category-list {
-            a:after {
-              content: ", ";
-            }
-            a:last-child:after {
+            a {
+              @extend .grey-text;
+
+              &:hover {
+                @extend .red-text.text-darken-2;
+                font-weight: 400;
+              }
+
+              &:after {
+                content: ", ";
+              }
+
+              &:last-child:after {
                 content: "";
+              }
             }
           }
         }
@@ -241,7 +287,11 @@ a.button-collapse.top-nav {
         cursor: pointer;
     }
     .saved {
-        color: color("red", "darken-4");
+        @extend .red-text.text-darken-2;
+
+        &:hover {
+          cursor: pointer;
+        }
     }
 }
 
@@ -251,24 +301,28 @@ a.button-collapse.top-nav {
  ******************************
  */
 .vote {
-	color: color("grey", "lighten-2");
+	@extend .grey-text.text-lighten-2;
 	line-height: 10px;
 	i {
 		vertical-align: middle;
 	}
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .upvote {
 	@extend .vote;
 	&:hover, &.active {
-		color: color("green", "base");
+		@extend .green-text.text-lighten-1;
 	}
 }
 
 .downvote {
 	@extend .vote;
 	&:hover, &.active {
-		color: color("red", "base");
+		@extend .red-text.text-lighten-1;
 	}
 }
 
@@ -278,11 +332,10 @@ a.button-collapse.top-nav {
  ******************************
  */
 
-#register {
+form {
   padding: 10px;
 }
 
-#forgot-form {
-  padding: 10px;
+.btn {
+  @extend .blue.darken-3;
 }
-
