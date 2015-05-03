@@ -139,7 +139,7 @@ class Categorizer:
             ngrams = zip(*[words[i:] for i in range(n + 1)])
 
             for ngram in ngrams:
-                ngram = ' '.join(ngram)
+                ngram = ' '.join(ngram).strip()
                 if self._is_viable_candidate(ngram):
                     valid_ngrams.update([ngram])
 
@@ -381,7 +381,6 @@ class Categorizer:
     def _is_viable_candidate(self, phrase):
 
         # Ignore 1-character phrases
-        phrase = phrase.strip()
         if len(phrase) < 2:
             return False
 
