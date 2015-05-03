@@ -91,7 +91,7 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
     },
 
     openCard: function() {
-      this.$('.card-reveal').velocity({translateY: '-100%'}, {duration: 300, queue: false, easing: 'easeInOutQuad'});
+        this.$('.card-reveal').velocity({translateY: '-100%'}, {duration: 300, queue: false, easing: 'easeInOutQuad'});
     },
 
     render: function() {

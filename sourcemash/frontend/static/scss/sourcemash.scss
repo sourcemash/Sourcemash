@@ -225,6 +225,12 @@ a.button-collapse.top-nav {
 
 .card {
     height: 400px;
+    margin-bottom: 0px;
+
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.16), 0 0 10px 0 rgba(0, 0, 0, 0.12);
+    -webkit-box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.16), 0 0 10px 0 rgba(0, 0, 0, 0.12);
+    -moz-box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.16), 0 0 10px 0 rgba(0, 0, 0, 0.12);
+
     a {
       @extend .red-text.text-darken-2;
     }
@@ -232,34 +238,10 @@ a.button-collapse.top-nav {
     .card-content {
         @extend .white;
         z-index: 1;
-        position: absolute;
-        bottom: 0;
         width: 100%;
         .card-title {
             line-height: 32px;
             font-size: 20px;
-        }
-        .card-action {
-          @extend .grey-text;
-
-          .category-list {
-            a {
-              @extend .grey-text;
-
-              &:hover {
-                @extend .red-text.text-darken-2;
-                font-weight: 400;
-              }
-
-              &:after {
-                content: ", ";
-              }
-
-              &:last-child:after {
-                content: "";
-              }
-            }
-          }
         }
     }
     &.read {
@@ -268,17 +250,12 @@ a.button-collapse.top-nav {
       }
     }
     .card-reveal {
-        z-index: 2;
-        overflow-y: scroll;
-        img {
-            width: 100%;
-            height: auto;
-        }
-    }
-    .card-action {
-        padding: 10px;
-        padding-left: 0;
-        margin: 0;
+      z-index: 2;
+      overflow-y: scroll;
+      img {
+          width: 100%;
+          height: auto;
+      }
     }
     #reveal-button {
         font-size: 1.75rem;
@@ -286,13 +263,47 @@ a.button-collapse.top-nav {
     .activator {
         cursor: pointer;
     }
-    .saved {
-        @extend .red-text.text-darken-2;
+}
 
-        &:hover {
-          cursor: pointer;
-        }
+.card-action {
+  @extend .grey-text;
+
+  padding: 10px;
+  padding-left: 0;
+  border: 1px solid rgba(160,160,160,.2);
+  width: 100%;
+
+  &.row {
+    margin: 0 auto;
+    margin-bottom: 10px;
+  }
+
+  .category-list {
+    a {
+      @extend .grey-text;
+
+      &:hover {
+        @extend .red-text.text-darken-2;
+        font-weight: 400;
+      }
+
+      &:after {
+        content: ", ";
+      }
+
+      &:last-child:after {
+        content: "";
+      }
     }
+  }
+
+  .saved {
+    @extend .red-text.text-darken-2;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
 
 /*

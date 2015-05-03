@@ -13,25 +13,6 @@
         </div>
       <div class="col s1"><i class="mdi-navigation-more-vert activator right"></i></div>
       </div>
-
-      <div class="card-action valign-wrapper row">
-        <div class="category-list flow-text col s8">
-          <% _.each(categories, function(category) { %>
-            <a href="/#categories/<%=category.get('id')%>"><%=category.get('name')%></a>
-          <% }); %>
-        </div>
-        <div class="col s2">
-          <div class="saved">
-            <i class="mdi-action-bookmark<%= item.get('saved') ? '' : '-outline' %> small"></i>
-          </div>
-        </div>
-        <div class="col s2 center-align" id="voting-buttons">
-          <div class="vote upvote <%= item.get('vote') == 1 ?  'active' : '' %>"><i class="small mdi-navigation-expand-less"></i></div>
-          <div><%= item.get('voteSum') %></div>
-          <div class="vote downvote <%= item.get('vote') == -1 ?  'active' : '' %> "><i class="small mdi-navigation-expand-more"></i></div>
-        </div>
-      </div>
-
     </div>
 
     <div class="card-reveal">
@@ -41,6 +22,24 @@
       <p class="flow-text"><a href="<%= item.get('link') %>"><%= item.get('title') %></a></p>
       <p class="flow-text"><%= item.get('author') %></p>
       <p class="flow-text summary"><%= item.get('summary')%></p>
+    </div>
+  </div>
+
+  <div class="card-action z-depth-1 valign-wrapper row">
+    <div class="category-list flow-text col s8">
+      <% _.each(categories, function(category) { %>
+        <a href="/#categories/<%=category.get('id')%>"><%=category.get('name')%></a>
+      <% }); %>
+    </div>
+    <div class="col s2">
+      <div class="saved">
+        <i class="mdi-action-bookmark<%= item.get('saved') ? '' : '-outline' %> small"></i>
+      </div>
+    </div>
+    <div class="col s2 center-align" id="voting-buttons">
+      <div class="vote upvote <%= item.get('vote') == 1 ?  'active' : '' %>"><i class="small mdi-navigation-expand-less"></i></div>
+      <div><%= item.get('voteSum') %></div>
+      <div class="vote downvote <%= item.get('vote') == -1 ?  'active' : '' %> "><i class="small mdi-navigation-expand-more"></i></div>
     </div>
   </div>
 </div>
