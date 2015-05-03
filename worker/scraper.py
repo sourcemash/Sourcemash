@@ -30,7 +30,7 @@ def scrape_and_categorize_articles():
         # Extract first image from item
         try:
             img_url = soup.find('img')['src']
-            item.image_url = img_url
+            item.image_url = _get_absolute_url(item.feed.url, img_url)
             db.session.commit()
         except:
             pass
@@ -57,7 +57,7 @@ def scrape_feed_articles(feed):
         # Extract first image from item
         try:
             img_url = soup.find('img')['src']
-            item.image_url = img_url
+            item.image_url = _get_absolute_image_link(item.feed.url, img_url)
             db.session.commit()
         except:
             pass
@@ -68,6 +68,15 @@ def _get_full_text(url):
     base_url = '{uri.scheme}://{uri.netloc}/'.format(uri=urlparse(url))
     return Document(html, url=base_url).summary(html_partial=True)
 
+def _get_absolute_url(feed_url, img_url):
+    if not "http" in img_url:
+        base_url = '{uri.scheme}://{uri.netloc}'.format(uri=urlparse(feed_url))
+
+        print "\n\n\n\n\n\n", base_url + url, "\n\n\n\n\n\n\n--------------"
+        a = raw_input()
+        return base_url + img_url
+
+    return url
 
 def _store_items(feed):
     logger.info("Starting to parse: %s" % feed.title)
@@ -103,7 +112,8 @@ def _store_items(feed):
                 img_tags = BeautifulSoup(requests.get(fp.feed.link).content).find_all('img')
                 for image_tag in img_tags:
                     if "logo" in str(image_tag):
-                        feed.image_url = image_tag.get('src') or image_tag.get('href')
+                        image_url = image_tag.get('src') or image_tag.get('href')
+                        feed.image_url = _get_absolute_url(image_url)
                         db.session.commit()
                         break
             except:
