@@ -19,6 +19,8 @@ Sourcemash.Views.SplashView = Backbone.View.extend({
     },
 
     close: function() {
-      $("#sourcemash-footer").html("");
+        $("#sourcemash-footer").html("");
+        this.footerView.remove();
+        this.footerView.unbind();
     }
 });
