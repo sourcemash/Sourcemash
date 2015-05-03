@@ -21,6 +21,39 @@
   margin: 10px 0;
 }
 
+.page-footer {
+  @extend .red.darken-2;
+}
+
+/*
+ *******************************
+ Splash
+ *******************************
+ */
+#splash-banner {
+  @extend .grey.lighten-5;
+}
+
+#splash-divider {
+  @extend .red.darken-2;
+  height: 50px;
+}
+
+#splash-subtitle {
+  @extend .red-text.text-darken-2;
+}
+
+.promo-icon {
+  @extend .red-text.text-darken-2;
+  font-size: 7rem;
+  display: block;
+  padding-top: 10px;
+}
+
+.promo-caption {
+  font-size: 1.7rem;
+}
+
 /*
  *******************************
  Side Navigation Bar
@@ -28,8 +61,9 @@
  */
 
 .top-nav {
-  @extend .white;
+  @extend .grey.lighten-5;
   box-shadow: None;
+  height: 83.33px;
 
   a {
     @extend .red-text.text-lighten-2;
@@ -88,8 +122,8 @@ div.side-nav {
         border-bottom: 1px solid #ddd;
 
         img {
-          height: 70px;
-          padding: 10px 0;
+          height: 76px;
+          padding: 6px 0;
         }
       }
     }
