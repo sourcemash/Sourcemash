@@ -103,11 +103,9 @@ class Categorizer:
         clustering = None
 
         if len(assigned_articles) > 2:
-            try:
-                semantic_graph = self._build_semantic_graph(assigned_articles)
+            semantic_graph = self._build_semantic_graph(assigned_articles)
+            if semantic_graph.graph:
                 clustering = community.best_partition(semantic_graph)
-            except:
-                clustering = [] # insufficient text to generate graph
 
         # Use keywords from best clusters
         selected_categories = self._get_best_keywords(clustering, keyword_candidates)
