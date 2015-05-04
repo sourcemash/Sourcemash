@@ -41,6 +41,14 @@ class TestCategoryListAPI(TestBase):
         data = json.loads(r.data)
         assert data['categories'] == []
 
+    def test_get_user_categories_unauthenticated(self, test_client):
+        r = test_client.get('/api/categories')
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert data['categories'] == []
+
 
     def test_get_user_categories_missing_items(self, test_client, userWithFeed, itemWithCategory):
         self.login(test_client, userWithFeed.email, userWithFeed.password)
