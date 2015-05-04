@@ -99,7 +99,7 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
         if (this.user.get('email')) {
             shownCategories = this.model.categories.filter(function(category) {
               return category.get("item_count") > 1;
-            }).slice(0, 5);
+            }).slice(0, Sourcemash.Views.ItemCardView.MAX_CATEGORIES_SHOWN);
         } else {
             shownCategories = this.model.categories.first(Sourcemash.Views.ItemCardView.MAX_CATEGORIES_SHOWN);
         }
