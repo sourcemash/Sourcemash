@@ -101,8 +101,10 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
               return category.get("item_count") > 1;
             });
         } else {
-            shownCategories = this.model.categories.first(Sourcemash.Views.ItemCardView.MAX_CATEGORIES_SHOWN)
+            shownCategories = this.model.categories;
         }
+
+        shownCategories = shownCategories.first(Sourcemash.Views.ItemCardView.MAX_CATEGORIES_SHOWN)
 
         this.$el.html(this.template({ item: this.model, categories: shownCategories }));
     }
