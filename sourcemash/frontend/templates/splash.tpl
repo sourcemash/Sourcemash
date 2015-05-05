@@ -29,7 +29,7 @@
       </div>
       <div class="col s8">
         <p class="promo-caption">Choose your sources.</p>
-        <p class="light">Read the sources you want to read. Select from our list of feeds, or add your own! We categorize your news, not someone else's.</p>
+        <p class="light">Read the sources you want to read. <a href="/#browse">Select from our list of feeds</a>, or add your own! We categorize your news, not someone else's.</p>
       </div>
     </div>
 
