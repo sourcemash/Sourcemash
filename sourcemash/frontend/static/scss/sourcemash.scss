@@ -23,6 +23,12 @@
 
 .page-footer {
   @extend .red.darken-2;
+  a {
+    @extend .grey-text.text-lighten-3;
+    &:hover {
+      font-weight: 500;
+    }
+  }
 }
 
 /*
@@ -34,6 +40,10 @@
   @extend .grey.lighten-5;
 }
 
+#splash-logo {
+  width: 85%;
+}
+
 #splash-divider {
   @extend .red.darken-2;
   height: 50px;
@@ -41,6 +51,15 @@
 
 #splash-subtitle {
   @extend .red-text.text-darken-2;
+}
+
+#splash-info {
+  a {
+    @extend .red-text.text-darken-2;
+    &:hover {
+      font-weight: 400;
+    }
+  }
 }
 
 .promo-icon {
