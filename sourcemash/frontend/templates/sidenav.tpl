@@ -2,7 +2,6 @@
   <a href="/" class="brand-logo">
     <li class='logo'>
       <img src="static/img/solologo.svg" alt="Sourcemash">
-      <img src="static/img/logotext.svg" alt="Sourcemash">
     </li>
   </a>
 

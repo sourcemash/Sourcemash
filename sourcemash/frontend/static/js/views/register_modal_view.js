@@ -27,7 +27,7 @@ Sourcemash.Views.RegisterModalView = Backbone.View.extend({
           mixpanel.track("Created Account");
           $("#register-modal").closeModal();
           toast("Check your email for confirmation!", 2000);
-          setTimeout(function(){window.location.replace("/")}, 2000);
+          setTimeout(function(){window.location.replace("/#browse")}, 2000);
         };
         var errors = data.response.errors;
         if (errors) {
