@@ -57,7 +57,7 @@ def scrape_feed_articles(feed):
         # Extract first image from item
         try:
             img_url = soup.find('img')['src']
-            item.image_url = _get_absolute_image_link(item.feed.url, img_url)
+            item.image_url = _get_absolute_image_link(item.link, img_url)
             db.session.commit()
         except:
             pass
