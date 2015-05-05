@@ -34,7 +34,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
     },
 
     showSplash: function() {
-        var splashView = new Sourcemash.Views.SplashView({ user: this._user });
+        var splashView = new Sourcemash.Views.SplashView();
         this._swapView(splashView);
     },
 
