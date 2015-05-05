@@ -36,41 +36,44 @@
  Splash
  *******************************
  */
-#splash-banner {
-  @extend .grey.lighten-5;
-}
 
-#splash-logo {
-  width: 85%;
-}
+#splash {
+  #splash-banner {
+    @extend .grey.lighten-5;
+  }
 
-#splash-divider {
-  @extend .red.darken-2;
-  height: 50px;
-}
+  #splash-logo {
+    width: 85%;
+  }
 
-#splash-subtitle {
-  @extend .red-text.text-darken-2;
-}
+  #splash-divider {
+    @extend .red.darken-2;
+    height: 50px;
+  }
 
-#splash-info {
-  a {
+  #splash-subtitle {
     @extend .red-text.text-darken-2;
-    &:hover {
-      font-weight: 400;
+  }
+
+  #splash-info {
+    a {
+      @extend .red-text.text-darken-2;
+      &:hover {
+        font-weight: 400;
+      }
     }
   }
-}
 
-.promo-icon {
-  @extend .red-text.text-darken-2;
-  font-size: 7rem;
-  display: block;
-  padding-top: 10px;
-}
+  .promo-icon {
+    @extend .red-text.text-darken-2;
+    font-size: 7rem;
+    display: block;
+    padding-top: 10px;
+  }
 
-.promo-caption {
-  font-size: 1.7rem;
+  .promo-caption {
+    font-size: 1.7rem;
+  }
 }
 
 /*
@@ -96,7 +99,7 @@
   }
 }
 
-header, main, footer {
+header, main {
   padding-left: 360px;
 
   @media only screen and (max-width: 992px) {
