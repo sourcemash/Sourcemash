@@ -71,12 +71,14 @@ def _get_full_text(url):
 def _get_absolute_url(base_url, img_url):
     base_url = '{uri.scheme}://{uri.netloc}'.format(uri=urlparse(base_url))
 
-    # If not .com, .org, etc or "http" in image url
-    if not base_url.split('.')[-1] in img_url or not "http" in img_url:
-        return base_url + img_url
+    # If img_url is already an absolute url
+    # (i.e. contains .com or http)
+    if base_url.split('.')[-1] in img_url or "http" in img_url:
+        return img_url
+        
+    return base_url + img_url
 
-    return img_url
-
+    
 def _store_items(feed):
     logger.info("Starting to parse: %s" % feed.title)
 
