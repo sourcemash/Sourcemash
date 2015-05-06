@@ -40,7 +40,7 @@ class CategoryListAPI(Resource):
                                             func.count()) \
                              .join(Category.items) \
                              .filter(Item.feed_id.in_(user_feed_ids)) \
-                             .group_by(Category.category) \
+                             .group_by(Category.id) \
                              .all()
 
         for category, count in categories:
