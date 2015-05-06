@@ -77,6 +77,7 @@ def _store_items(feed):
     logger.info("Starting to parse: %s" % feed.title)
 
     fp = feedparser.parse(feed.url)
+    new_item_count = 0
     for item in fp.entries:
         try:
             item_last_updated = datetime(*item.updated_parsed[:6])
@@ -97,6 +98,11 @@ def _store_items(feed):
 
         db.session.add(new_entry)
         db.session.commit()
+
+        new_item_count += 1
+
+    feed.item_count += new_item_count
+    db.session.commit()
 
     if not feed.image_url:
         try:
