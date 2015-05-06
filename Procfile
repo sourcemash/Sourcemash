@@ -1,1 +1,1 @@
-web: gunicorn sourcemash:create_app\(\)
+web: sh heroku.sh
