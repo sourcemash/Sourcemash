@@ -87,9 +87,12 @@
   box-shadow: None;
   height: 83.33px;
 
-  a {
-    @extend .red-text.text-lighten-2;
-    font-size: 24px;
+  #feedback-survey {
+    padding-top: 20px;
+    .btn {
+      @extend .red.darken-2;
+      font-weight: 400;
+    }
   }
 }
 
