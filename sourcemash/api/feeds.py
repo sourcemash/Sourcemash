@@ -14,7 +14,7 @@ from rq import Queue
 from worker import create_worker
 from worker.scraper import scrape_feed_articles
 
-# REDIS_CONNECTION = create_worker()
+REDIS_CONNECTION = create_worker()
 
 class isSubscribed(fields.Raw):
     def output(self, key, feed):
