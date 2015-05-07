@@ -21,19 +21,10 @@ def scrape_and_categorize_articles():
 
     # Pull down all articles from RSS feeds
     for feed in Feed.query.all():
-        _store_items(feed)
+        scrape_feed_articles(feed)
 
-    # Assign categories and extract first image from articles
     for item in Item.query.filter_by(categorized=False).all():
         soup = BeautifulSoup(item.text)
-
-        # Extract first image from item
-        try:
-            img_url = soup.find('img')['src']
-            item.image_url = _get_absolute_url(item.link, img_url)
-            db.session.commit()
-        except:
-            pass
 
         # Extract text and categorize item
         text_only = soup.get_text()
@@ -52,21 +43,29 @@ def scrape_feed_articles(feed):
     _store_items(feed)
 
     for item in Item.query.filter_by(feed_id=feed.id).all():
-        soup = BeautifulSoup(item.text)
 
         # Extract first image from item
         try:
-            img_url = soup.find('img')['src']
-            item.image_url = _get_absolute_image_link(item.link, img_url)
+            summary_soup = BeautifulSoup(item.summary)
+            img_url = summary_soup.find('img')['src']
+            item.image_url = _get_absolute_url(item.link, img_url)
             db.session.commit()
         except:
-            pass
+            soup = BeautifulSoup(item.text)
+            img_url = soup.find('img')['src']
+            item.image_url = _get_absolute_url(item.link, img_url)
+            db.session.commit()
+
+        if not item.image_url:
+            item.image_url = "http://sourcemash.com/static/img/solologo.svg"
+            db.session.commit()
 
 
 def _get_full_text(url):
     html = requests.get(url).content
     base_url = '{uri.scheme}://{uri.netloc}/'.format(uri=urlparse(url))
     return Document(html, url=base_url).summary(html_partial=True)
+
 
 def _get_absolute_url(base_url, img_url):
     base_url = '{uri.scheme}://{uri.netloc}'.format(uri=urlparse(base_url))
