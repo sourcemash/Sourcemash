@@ -81,6 +81,7 @@ def feed_seed():
                 feed = Feed(title=feed_json["title"],
                             url=feed_json["url"],
                             image_url=feed_json["image_url"],
+                            topic=topic.keys()[0],
                             last_updated = datetime.min)
 
                 db.session.add(feed)
@@ -100,24 +101,28 @@ def seed():
 
     techcrunch = Feed(title='TechCrunch > Startups',
                 url="http://feeds.feedburner.com/techcrunch/startups?format=xml",
+                topic="Tech",
                 last_updated = datetime.min)
     db.session.add(techcrunch)
     db.session.commit()
 
     engadget = Feed(title='Engadget',
             url="http://www.engadget.com/rss-full.xml",
+            topic="Tech",
             last_updated = datetime.min)
     db.session.add(engadget)
     db.session.commit()
 
     gizmodo = Feed(title='Gizmodo',
             url="http://feeds.gawker.com/gizmodo/full",
+            topic="Tech",
             last_updated = datetime.min)
     db.session.add(gizmodo)
     db.session.commit()
 
     tnw = Feed(title='The Next Web',
             url="http://thenextweb.com/feed/",
+            topic="Tech",
             last_updated = datetime.min)
     db.session.add(tnw)
     db.session.commit()

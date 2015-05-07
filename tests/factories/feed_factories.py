@@ -23,3 +23,4 @@ class FeedFactory(SQLAlchemyModelFactory):
 class TechCrunchFeedFactory(FeedFactory):
     title = "TechCrunch"
     url = "http://feeds.feedburner.com/techcrunch/startups?format=xml"
+    topic = "Tech"

@@ -83,4 +83,4 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
     };
   }
 
-});
+}, {FEED_TOPICS: ['Tech', ]});

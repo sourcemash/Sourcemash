@@ -7,6 +7,7 @@ class Feed(db.Model):
     description = db.Column(db.Text)
     image_url = db.Column(db.String(400))
     last_updated = db.Column(db.DateTime)
+    topic = db.Column(db.String(50))
 
     items = db.relationship('Item', backref='feed', lazy='dynamic')
 
