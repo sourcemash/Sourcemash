@@ -33,6 +33,8 @@
           <li><a id="scrollfire-link" href="#Science">Science</a></li>
           <li><a id="scrollfire-link" href="#Finance">Finance</a></li>
           <li><a id="scrollfire-link" href="#Mash">Mash</a></li>
+          <li><div class="divider"></div></li>
+          <li><a id="scrollfire-link" href="#add_feed_form">Back to Top</a></li>
         </ul>
       </div>
     </div>
