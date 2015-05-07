@@ -10,6 +10,7 @@ class FeedFactory(SQLAlchemyModelFactory):
     title = factory.Sequence(lambda n: u'Feed %d' % n)
     url = factory.Sequence(lambda n: u'superfeed%d.com/rss' % n)
     last_updated = datetime.min
+    public = True
 
     @factory.post_generation
     def items(self, create, extracted, **kwargs):

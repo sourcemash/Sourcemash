@@ -86,10 +86,11 @@ def feed_seed():
                 if not Feed.query.filter_by(url=feed_json["url"]).first():
 
                     feed = Feed(title=feed_json["title"],
-                            url=feed_json["url"],
-                            image_url=feed_json["image_url"],
-                            topic=topic_json.keys()[0],
-                            last_updated = datetime.min)
+                                url=feed_json["url"],
+                                image_url=feed_json["image_url"],
+                                topic=topic_json.keys()[0],
+                                last_updated = datetime.min,
+                                public=True)
 
                     db.session.add(feed)
                     db.session.commit()
@@ -107,30 +108,34 @@ def seed():
     db.session.commit()
 
     techcrunch = Feed(title='TechCrunch > Startups',
-                url="http://feeds.feedburner.com/techcrunch/startups?format=xml",
-                topic="Technology",
-                last_updated = datetime.min)
+                      url="http://feeds.feedburner.com/techcrunch/startups?format=xml",
+                      topic="Technology",
+                      last_updated=datetime.min,
+                      public=True)
     db.session.add(techcrunch)
     db.session.commit()
 
     engadget = Feed(title='Engadget',
-            url="http://www.engadget.com/rss-full.xml",
-            topic="Technology",
-            last_updated = datetime.min)
+                    url="http://www.engadget.com/rss-full.xml",
+                    topic="Technology",
+                    last_updated=datetime.min,
+                    public=True)
     db.session.add(engadget)
     db.session.commit()
 
     gizmodo = Feed(title='Gizmodo',
-            url="http://feeds.gawker.com/gizmodo/full",
-            topic="Technology",
-            last_updated = datetime.min)
+                   url="http://feeds.gawker.com/gizmodo/full",
+                   topic="Technology",
+                   last_updated=datetime.min,
+                   public=True)
     db.session.add(gizmodo)
     db.session.commit()
 
     tnw = Feed(title='The Next Web',
-            url="http://thenextweb.com/feed/",
-            topic="Technology",
-            last_updated = datetime.min)
+               url="http://thenextweb.com/feed/",
+               topic="Technology",
+               last_updated=datetime.min,
+               public=True)
     db.session.add(tnw)
     db.session.commit()
 
