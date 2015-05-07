@@ -75,10 +75,10 @@ def _get_absolute_url(base_url, img_url):
     # (i.e. contains .com or http)
     if base_url.split('.')[-1] in img_url or "http" in img_url:
         return img_url
-        
+
     return base_url + img_url
 
-    
+
 def _store_items(feed):
     logger.info("Starting to parse: %s" % feed.title)
 
@@ -119,6 +119,10 @@ def _store_items(feed):
                         break
             except:
                 pass
+
+        if not feed.image_url:
+            feed.image_url = "http://sourcemash.com/static/img/solologo.svg"
+            db.session.commit()
 
     if not feed.description:
         try:

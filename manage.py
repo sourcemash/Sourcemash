@@ -49,13 +49,17 @@ def test(all=False):
 
 
 @manager.command
-def scrape():
+def scrape(noqueue=False):
     """Start an infinte loop to scrape & categorize articles."""
 
-    q = Queue('default', connection=conn)
-    while True:
-        job = q.enqueue_call(func=scrape_and_categorize_articles, timeout=1800)
-        time.sleep(THIRTY_MINUTES)
+    if noqueue:
+        scrape_and_categorize_articles()
+    else:
+        q = Queue('default', connection=conn)
+        while True:
+            job = q.enqueue_call(func=scrape_and_categorize_articles, timeout=1800)
+            time.sleep(THIRTY_MINUTES)
+
 
 @manager.command
 def worker(kill=False):
