@@ -1,4 +1,5 @@
 from . import api, login_required
+import os
 from sourcemash.database import db
 from flask import abort
 from flask.ext.restful import Resource, reqparse, inputs, fields, marshal
@@ -7,6 +8,7 @@ from flask.ext.security import current_user
 from datetime import datetime, date
 
 import feedparser
+import json
 
 from sourcemash.models import Feed, UserItem, Item
 
@@ -16,6 +18,8 @@ from worker.scraper import scrape_feed_articles
 
 REDIS_CONNECTION = create_worker()
 MASH_TOPIC = "Mash"
+BAD_WORDS_FILE = "./json/bad_words.json"
+
 
 class isSubscribed(fields.Raw):
     def output(self, key, feed):
@@ -24,9 +28,11 @@ class isSubscribed(fields.Raw):
 
         return feed in current_user.subscribed
 
+
 class getItemCount(fields.Raw):
     def output(self, key, feed):
         return feed.items.count()
+
 
 class getUnreadCount(fields.Raw):
     def output(self, key, feed):
@@ -54,6 +60,7 @@ feed_status_fields = {
 }
 feed_status_fields = dict(feed_fields, **feed_status_fields)
 
+
 class FeedListAPI(Resource):
 
     def __init__(self):
@@ -75,6 +82,14 @@ class FeedListAPI(Resource):
 
         if rss_feed['bozo'] == 1:
             return {"errors": {"url": ["URL is not a valid feed"]}}, 422
+
+        with open(BAD_WORDS_FILE) as data_file:
+            data = json.load(data_file)
+            badwords = data['badwords']
+            words = rss_feed['feed']['title'] + rss_feed['feed']['description']
+            for word in words.split():
+                if word.lower() in badwords:
+                    return {"errors": {"url": ["Inappropriate feed"]}}, 403
 
         # Get or Create Feed
         try:
@@ -122,11 +137,9 @@ class FeedAPI(Resource):
         self.reqparse.add_argument('subscribed', type = inputs.boolean)
         super(FeedAPI, self).__init__()
 
-
     def get(self, id):
         feed = Feed.query.get_or_404(id)
         return {'feed': marshal(feed, feed_fields)}
-
 
     @login_required
     def put(self, id):

@@ -27,7 +27,7 @@ manager = Manager(app)
 TEST_CMD = "py.test --cov-report term-missing --cov-config .coveragerc --cov . \
                     --boxed -n14 -k 'not functional' tests/"
 FUNCTIONAL_TEST_CMD = "./functional_test.sh"
-FEED_DATA_FILE = "feeds.json"
+FEED_DATA_FILE = "./json/feeds.json"
 
 THIRTY_MINUTES = 30 * 60
 
