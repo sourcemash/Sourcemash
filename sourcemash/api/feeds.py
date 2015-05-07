@@ -99,7 +99,7 @@ class FeedListAPI(Resource):
             feed = Feed(title=rss_feed['feed']['title'],
                         url=rss_feed['url'],
                         description=rss_feed['feed']['description'],
-                        topic=MASH_TOPIC,
+                        public=Falsetopic=MASH_TOPIC,
                         last_updated=datetime.min)
 
             db.session.add(feed)
@@ -127,7 +127,7 @@ class FeedListAPI(Resource):
 class FeedListAllAPI(Resource):
 
     def get(self):
-        return {'feeds': [marshal(feed, feed_status_fields) for feed in Feed.query.all()]}
+        return {'feeds': [marshal(feed, feed_status_fields) for feed in Feed.query.filter(Feed.public==True).all()]}
 
 
 class FeedAPI(Resource):

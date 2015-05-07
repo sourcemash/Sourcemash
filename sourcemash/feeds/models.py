@@ -1,5 +1,6 @@
 from sourcemash.database import db
 
+
 class Feed(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(250))
@@ -8,6 +9,7 @@ class Feed(db.Model):
     image_url = db.Column(db.String(400))
     last_updated = db.Column(db.DateTime)
     topic = db.Column(db.String(50))
+    public = db.Column(db.Boolean, default=False)
 
     items = db.relationship('Item', backref='feed', lazy='dynamic')
 
