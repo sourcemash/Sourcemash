@@ -84,6 +84,10 @@ def feed_seed():
                             topic=topic.keys()[0],
                             last_updated = datetime.min)
 
+                # Don't re-add existing feed
+                if Feed.query.filter_by(url=feed.url).first():
+                    continue
+
                 db.session.add(feed)
                 db.session.commit()
 

@@ -1,5 +1,7 @@
 $( document ).ready(function(){
 	$(".button-collapse").sideNav();
+  $('.scrollspy').scrollSpy();
+  $('.tabs-wrapper .row').pushpin();
 });
 
 $(document).ajaxError(function (e, xhr, options) {
