@@ -10,17 +10,6 @@ Sourcemash.Views.FeedTopicView = Backbone.View.extend({
     this.render();
   },
 
-  events: {
-    'click #mash-add-feeds-msg': 'activateFormAndPreserveURL'
-  },
-
-  activateFormAndPreserveURL: function(e){
-    e.preventDefault();
-    window.location.href = e.target.href;
-    window.location.replace('/#browse');
-    $("#url").focus();
-  },
-
   render: function() {
     // Render parent view
     this.$el.html(this.template({ models: this.collection, topic: this.topic }));

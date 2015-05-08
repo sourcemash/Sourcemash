@@ -6,10 +6,6 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
       template: JST['new-feed-form'],
     });
 
-    $( document ).ready(function(){
-
-    });
-
     this.typeahead = new ExtendedTypeahead({collection: this.collection, key: 'title'});
     this.listenTo(this.collection, 'sync', this.render);
 
@@ -19,8 +15,7 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
   },
 
   events: {
-    'submit #add_feed_form': 'createFeed',
-    'click #scrollfire-link': 'preserveURL'
+    'submit #add_feed_form': 'createFeed'
   },
 
   createFeed: function(e){
@@ -35,12 +30,6 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
 
     mixpanel.track("Subscribed", { "Feed Title": newFeed.get('title'),
                                     "Source": 'browse' });
-  },
-
-  preserveURL: function(e){
-    e.preventDefault();
-    window.location.href = e.target.href;
-    window.location.replace('/#browse');
   },
 
   render: function() {
