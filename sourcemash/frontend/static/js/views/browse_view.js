@@ -6,6 +6,11 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
       template: JST['new-feed-form'],
     });
 
+    $( document ).ready(function(){
+      $('.scrollspy').scrollSpy();
+      $('.tabs-wrapper .row').pushpin();
+    });
+
     this.typeahead = new ExtendedTypeahead({collection: this.collection, key: 'title'});
     this.listenTo(this.collection, 'sync', this.render);
 
