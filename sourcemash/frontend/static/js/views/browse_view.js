@@ -7,8 +7,7 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
     });
 
     $( document ).ready(function(){
-      $('.scrollspy').scrollSpy();
-      $('.tabs-wrapper .row').pushpin();
+
     });
 
     this.typeahead = new ExtendedTypeahead({collection: this.collection, key: 'title'});
@@ -64,6 +63,9 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
       };
     });
     this.feedTopicViews = topicViews;
+
+    this.$('.scrollspy').scrollSpy();
+    this.$('.tabs-wrapper').pushpin({ top: this.$('.tabs-wrapper').offset().top });
 
     return this;
   },

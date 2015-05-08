@@ -19,7 +19,7 @@
     </div>
 
     <div class="col hide-on-small-only m2 l2">
-      <div class="pinned">
+      <div class="tabs-wrapper">
         <h5 class="grey-text text-darken-2">Topics</h5>
         <ul class="section table-of-contents">
           <li><a id="scrollfire-link" href="#Technology">Technology</a></li>
