@@ -65,7 +65,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         var category = new Sourcemash.Models.Category({ id: id });
         category = this._categories.add(category);
 
-        var categoryItems = new Sourcemash.Collections.Items([], {category: category});
+        var categoryItems = new Sourcemash.Collections.Items([], {category: category, allItems: this._user.get('email') ? false : true});
         var categoryView = new Sourcemash.Views.CategoryView({ model: category, collection: categoryItems, user: this._user });
 
         category.fetch();
