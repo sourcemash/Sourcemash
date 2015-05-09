@@ -86,8 +86,8 @@ class FeedListAPI(Resource):
         with open(BAD_WORDS_FILE) as data_file:
             data = json.load(data_file)
             badwords = data['badwords']
-            words = rss_feed['feed']['title'] + rss_feed['feed']['description']
-            for word in words.split():
+            words = rss_feed['feed']['title'].split() + rss_feed['feed']['description'].split()
+            for word in words:
                 if word.lower() in badwords:
                     return {"errors": {"url": ["Inappropriate feed"]}}, 403
 
