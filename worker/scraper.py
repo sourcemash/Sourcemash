@@ -15,6 +15,8 @@ import logging
 
 logger = logging.getLogger('Sourcemash')
 
+SOURCEMASH_LOGO_URL = "http://sourcemash.com/static/img/solologo.svg"
+
 
 def scrape_and_categorize_articles():
     categorizer = Categorizer()
@@ -57,7 +59,7 @@ def scrape_feed_articles(feed):
             db.session.commit()
 
         if not item.image_url:
-            item.image_url = "http://sourcemash.com/static/img/solologo.svg"
+            item.image_url = SOURCEMASH_LOGO_URL
             db.session.commit()
 
 
@@ -120,7 +122,7 @@ def _store_items(feed):
                 pass
 
         if not feed.image_url:
-            feed.image_url = "http://sourcemash.com/static/img/solologo.svg"
+            feed.image_url = SOURCEMASH_LOGO_URL
             db.session.commit()
 
     if not feed.description:
