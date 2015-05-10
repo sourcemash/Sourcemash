@@ -132,7 +132,6 @@ class FeedListAllAPI(Resource):
         feeds = Feed.query.filter(Feed.public).all()
 
         if current_user.is_authenticated():
-            logger.info(current_user.subscribed)
             feeds += current_user.subscribed.filter(Feed.public==False).all()
 
         return {'feeds': [marshal(feed, feed_status_fields) for feed in feeds]}
