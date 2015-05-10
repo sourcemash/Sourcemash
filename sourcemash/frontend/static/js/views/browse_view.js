@@ -45,12 +45,10 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
 
     feeds = this.collection;
     Sourcemash.Views.BrowseView.FEED_TOPICS.forEach(function(topic) {
-      if (feeds.length > 1) {
-        var feedCards = feeds.where({topic: topic});
-        var feedTopicView = new Sourcemash.Views.FeedTopicView({collection: feedCards, topic: topic,
-                                                                el: "#feed-topic-" + topic});
-        this.feedTopicViews.push(feedTopicView);
-      };
+      var feedCards = feeds.where({topic: topic});
+      var feedTopicView = new Sourcemash.Views.FeedTopicView({collection: feedCards, topic: topic,
+                                                              el: "#feed-topic-" + topic});
+      this.feedTopicViews.push(feedTopicView);
     }, this);
 
     this.$('.scrollspy').scrollSpy();

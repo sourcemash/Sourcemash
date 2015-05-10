@@ -78,14 +78,15 @@ def feed_seed():
         for topic_json in feeds_by_topic:
             for feed_json in topic_json.values()[0]:
 
-                feed = Feed(title=feed_json["title"],
+                # Don't re-add existing feed
+                if not Feed.query.filter_by(url=feed_json["url"]).first():
+
+                    feed = Feed(title=feed_json["title"],
                             url=feed_json["url"],
                             image_url=feed_json["image_url"],
                             topic=topic_json.keys()[0],
                             last_updated = datetime.min)
 
-                # Don't re-add existing feed
-                if not Feed.query.filter_by(url=feed.url).first():
                     db.session.add(feed)
                     db.session.commit()
 
