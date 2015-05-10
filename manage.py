@@ -80,6 +80,7 @@ def feed_seed():
 
                 feed = Feed(title=feed_json["title"],
                             url=feed_json["url"],
+                            image_url=feed_json["image_url"],
                             last_updated = datetime.min)
 
                 db.session.add(feed)
