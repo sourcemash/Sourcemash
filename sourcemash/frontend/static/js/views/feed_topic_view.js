@@ -16,14 +16,12 @@ Sourcemash.Views.FeedTopicView = Backbone.View.extend({
     this.$el.html(this.template({ models: this.collection, topic: this.topic }));
 
     // Render feed cards
-    var feedCards = [];
     this.collection.forEach(function(feed) {
         var feedCardView = new Sourcemash.Views.FeedCardView({el: "#feed-card-" + feed.get('id'),
                                                               model: feed});
-        feedCards.push(feedCardView);
-    });
+        this.feedCardViews.push(feedCardView);
+    }, this);
 
-    this.feedCardViews = feedCards;
     return this;
   },
 

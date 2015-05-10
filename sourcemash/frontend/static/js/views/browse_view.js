@@ -44,16 +44,14 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
     this.$(".loading").html(this.loadingView.render().el);
 
     feeds = this.collection;
-    var topicViews = [];
     Sourcemash.Views.BrowseView.FEED_TOPICS.forEach(function(topic) {
       if (feeds.length > 1) {
         var feedCards = feeds.where({topic: topic});
         var feedTopicView = new Sourcemash.Views.FeedTopicView({collection: feedCards, topic: topic,
                                                                 el: "#feed-topic-" + topic});
-        topicViews.push(feedTopicView);
+        this.feedTopicViews.push(feedTopicView);
       };
-    });
-    this.feedTopicViews = topicViews;
+    }, this);
 
     this.$('.scrollspy').scrollSpy();
     this.$('.tabs-wrapper').pushpin({ top: this.$('.tabs-wrapper').offset().top });
