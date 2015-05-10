@@ -108,7 +108,7 @@ class TestFeedListAllAPI(TestBase):
         data = json.loads(r.data)
         assert len(data['feeds']) == 0
 
-    def test_get_feeds_if_user_subscribed(self, db, test_client,
+    def test_get_feeds_if_user_subscribed(self, test_client,
                                           user, private_feed):
         user.subscribed.append(private_feed)
 
