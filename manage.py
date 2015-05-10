@@ -54,6 +54,7 @@ def scrape(noqueue=False):
 
     if noqueue:
         scrape_and_categorize_articles()
+
     else:
         q = Queue('default', connection=conn)
         while True:
@@ -83,13 +84,12 @@ def feed_seed():
             for feed_json in topic_json.values()[0]:
 
                 # Don't re-add existing feed
-                if not Feed.query.filter_by(url=feed_json["url"]).first():
-
+                if not Feed.query.filter(Feed.url == feed_json["url"]).first():
                     feed = Feed(title=feed_json["title"],
-                            url=feed_json["url"],
-                            image_url=feed_json["image_url"],
-                            topic=topic_json.keys()[0],
-                            last_updated = datetime.min)
+                                url=feed_json["url"],
+                                image_url=feed_json["image_url"],
+                                topic=topic_json.keys()[0],
+                                last_updated=datetime.min)
 
                     db.session.add(feed)
                     db.session.commit()
