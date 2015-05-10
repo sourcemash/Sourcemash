@@ -309,6 +309,19 @@ a.button-collapse.top-nav {
 	}
 }
 
+.card .card-image {
+  max-width: 100%;
+  margin: 0 auto;
+
+  img[src*="sourcemash"] {
+    opacity: .4;
+}
+}
+
+.feed-card img {
+  height: 50%;
+}
+
 .card {
     height: 400px;
     margin-bottom: 0px;
