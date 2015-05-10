@@ -17,5 +17,6 @@ Sourcemash.Views.ProfileView = Backbone.View.extend({
 
   deleteUser: function() {
     this.model.destroy();
+    mixpanel.track("Deleted account");
   }
 });

@@ -15,8 +15,10 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
 
     markAllAsRead: function() {
         var unread = this.collection.where({unread: true});
+        mixpanel.track("Marked all as read");
         unread.forEach(function(model) {
             model.save({unread: false});
+            mixpanel.people.increment("items read");
         });
         this.model.set({unread_count: 0});
     },
