@@ -11,11 +11,11 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
 
     this.loading = true;
 
-    this.feedCardViews = []
+    this.feedTopicViews = []
   },
 
   events: {
-    'submit #add_feed_form': 'createFeed',
+    'submit #add_feed_form': 'createFeed'
   },
 
   createFeed: function(e){
@@ -33,23 +33,27 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
   },
 
   render: function() {
+    this.close();
+
     // Render parent view
-    this.$el.html(this.template({ models: this.collection.models }));
+    this.$el.html(this.template({ topics: Sourcemash.Views.BrowseView.FEED_TOPICS }));
     $('#typeahead').html(this.typeahead.render().el);
 
     // Render loading view
     this.loadingView = new Sourcemash.Views.LoadingView({loading: this.loading});
     this.$(".loading").html(this.loadingView.render().el);
 
-    // Render item cards
-    var feedCards = [];
-    this.collection.models.forEach(function(feed) {
-        var feedCardView = new Sourcemash.Views.FeedCardView({el: "#feed-card-" + feed.get('id'),
-                                                              model: feed});
-        feedCards.push(feedCardView)
-    });
+    feeds = this.collection;
+    Sourcemash.Views.BrowseView.FEED_TOPICS.forEach(function(topic) {
+      var feedCards = feeds.where({topic: topic});
+      var feedTopicView = new Sourcemash.Views.FeedTopicView({collection: feedCards, topic: topic,
+                                                              el: "#feed-topic-" + topic});
+      this.feedTopicViews.push(feedTopicView);
+    }, this);
 
-    this.feedCardViews = feedCards;
+    this.$('.scrollspy').scrollSpy();
+    this.$('.tabs-wrapper').pushpin({ top: this.$('.tabs-wrapper').offset().top });
+
     return this;
   },
 
@@ -71,10 +75,10 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
   },
 
   close: function() {
-    _.each(this.feedCardViews, function(feedCardView) {
-        feedCardView.close();
-        feedCardView.remove();
-        feedCardView.unbind();
+    _.each(this.feedTopicViews, function(feedTopicView) {
+        feedTopicView.close();
+        feedTopicView.remove();
+        feedTopicView.unbind();
     });
 
     if (this.loadingView) {
@@ -83,4 +87,4 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
     };
   }
 
-});
+}, {FEED_TOPICS: ['Technology', 'Business', 'Food', 'World', 'Gaming', 'Fashion', 'Photography', 'Comics', 'Science', 'Finance', 'Mash']});

@@ -21,6 +21,14 @@ class TestFeedAPI(TestBase):
         check_valid_header_type(r.headers)
         assert r.status_code == 404
 
+    def test_get_topic_from_real_feed(self, test_client, real_feed):
+        r = test_client.get('/api/feeds/%d' % real_feed.id)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert data['feed']['topic'] == real_feed.topic
+
     def test_put_feed_subscribe(self, test_client, user, feed):
         self.login(test_client, user.email, user.password)
 

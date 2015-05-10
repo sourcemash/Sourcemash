@@ -249,6 +249,33 @@ a.button-collapse.top-nav {
 }
 
 /*
+ *******************************
+ Browse
+ *******************************
+ */
+
+.topic-divider {
+  @extend .red.darken-2;
+  @extend .white-text;
+  font-weight: 300;
+  height: 50px;
+}
+
+.browse-feeds {
+  padding: 10px;
+  a {
+    @extend .red-text.text-darken-2;
+    &:hover {
+      font-weight: 500;
+    }
+  }
+}
+
+.contents-header {
+  padding-top: 10px;
+}
+
+/*
  ******************************
  * Feed & Category Item Styles
  ******************************

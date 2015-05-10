@@ -15,6 +15,7 @@ from worker import create_worker
 from worker.scraper import scrape_feed_articles
 
 REDIS_CONNECTION = create_worker()
+MASH_TOPIC = "Mash"
 
 class isSubscribed(fields.Raw):
     def output(self, key, feed):
@@ -42,6 +43,7 @@ feed_fields = {
     'url': fields.String,
     'subscribed': isSubscribed,
     'description': fields.String,
+    'topic': fields.String,
     'image_url': fields.String,
     'last_updated': fields.DateTime
 }
@@ -82,6 +84,7 @@ class FeedListAPI(Resource):
             feed = Feed(title=rss_feed['feed']['title'],
                         url=rss_feed['url'],
                         description=rss_feed['feed']['description'],
+                        topic=MASH_TOPIC,
                         last_updated=datetime.min)
 
             db.session.add(feed)

@@ -75,16 +75,20 @@ def feed_seed():
         data = json.load(data_file)
         feeds_by_topic = data["feeds"]
 
-        for topic in feeds_by_topic:
-            for feed_json in topic.values()[0]:
+        for topic_json in feeds_by_topic:
+            for feed_json in topic_json.values()[0]:
 
-                feed = Feed(title=feed_json["title"],
+                # Don't re-add existing feed
+                if not Feed.query.filter_by(url=feed_json["url"]).first():
+
+                    feed = Feed(title=feed_json["title"],
                             url=feed_json["url"],
                             image_url=feed_json["image_url"],
+                            topic=topic_json.keys()[0],
                             last_updated = datetime.min)
 
-                db.session.add(feed)
-                db.session.commit()
+                    db.session.add(feed)
+                    db.session.commit()
 
     # Scrape articles for feed
     scrape_and_categorize_articles()
@@ -100,24 +104,28 @@ def seed():
 
     techcrunch = Feed(title='TechCrunch > Startups',
                 url="http://feeds.feedburner.com/techcrunch/startups?format=xml",
+                topic="Technology",
                 last_updated = datetime.min)
     db.session.add(techcrunch)
     db.session.commit()
 
     engadget = Feed(title='Engadget',
             url="http://www.engadget.com/rss-full.xml",
+            topic="Technology",
             last_updated = datetime.min)
     db.session.add(engadget)
     db.session.commit()
 
     gizmodo = Feed(title='Gizmodo',
             url="http://feeds.gawker.com/gizmodo/full",
+            topic="Technology",
             last_updated = datetime.min)
     db.session.add(gizmodo)
     db.session.commit()
 
     tnw = Feed(title='The Next Web',
             url="http://thenextweb.com/feed/",
+            topic="Technology",
             last_updated = datetime.min)
     db.session.add(tnw)
     db.session.commit()

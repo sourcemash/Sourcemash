@@ -11,10 +11,23 @@
 
   <div class="loading center-align"></div>
 
-  <ul class="browse-feeds row">
-    <% models.forEach(function(model) { %>
-      <div id="feed-card-<%= model.get('id') %>" class="feed-card"></div>
-    <% }); %>
+  <ul class="browse-topics row">
+    <div class="col s12 m10 l10">
+      <% topics.forEach(function(topic) { %>
+        <div id="feed-topic-<%= topic %>" class="feed-topic"></div>
+      <% }); %>
+    </div>
+
+    <div class="col hide-on-small-only m2 l2">
+      <div class="tabs-wrapper">
+        <h5 class="contents-header grey-text text-darken-2">Topics</h5>
+        <ul class="section table-of-contents">
+          <% topics.forEach(function(topic) { %>
+            <li><a href="#<%= topic %>"><%= topic %></a></li>
+          <% }); %>
+        </ul>
+      </div>
+    </div>
   </ul>
 
 </div>

@@ -1,7 +1,7 @@
 {
  "feeds": [
     {
-      "tech": [
+      "Technology": [
         {
           "title":"TechCrunch > Startups",
           "url":"http://feeds.feedburner.com/techcrunch/startups?format=xml",
@@ -106,7 +106,7 @@
     },
 
     {
-      "business": [
+      "Business": [
         {
           "title": "Seth Godin",
           "url": "http://sethgodin.typepad.com/seths_blog/atom.xml",
@@ -151,7 +151,7 @@
     },
 
     {
-      "food": [
+      "Food": [
         {
           "title": "Smitten Kitchen",
           "url": "http://feeds.feedburner.com/smittenkitchen",
@@ -176,7 +176,7 @@
     },
 
     {
-      "news": [
+      "World": [
         {
           "title": "CNN",
           "url": "http://rss.cnn.com/rss/cnn_topstories.rss",
@@ -226,7 +226,7 @@
     },
 
     {
-      "gaming": [
+      "Gaming": [
         {
           "title": "Polygon",
           "url": "http://www.polygon.com/rss/index.xml",
@@ -246,7 +246,7 @@
     },
 
     {
-      "fashion": [
+      "Fashion": [
         {
           "title": "Cool Hunting",
           "url": "http://www.coolhunting.com/atom.xml",
@@ -266,7 +266,7 @@
     },
 
     {
-      "photography": [
+      "Photography": [
         {
           "title": "500px",
           "url": "http://feed.500px.com/500px-editors",
@@ -286,7 +286,7 @@
     },
 
     {
-      "comics": [
+      "Comics": [
         {
           "title": "XKCD",
           "url": "http://xkcd.com/rss.xml",
@@ -316,7 +316,7 @@
     },
 
     {
-      "science": [
+      "Science": [
         {
           "title": "National Geographic: News",
           "url": "http://news.nationalgeographic.com/index.rss",
@@ -361,7 +361,7 @@
     },
 
     {
-      "finance": [
+      "Finance": [
         {
           "title": "Get Rich Slowly",
           "url": "http://www.getrichslowly.org/blog/feed/",
