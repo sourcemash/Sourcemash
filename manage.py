@@ -85,11 +85,9 @@ def feed_seed():
                             last_updated = datetime.min)
 
                 # Don't re-add existing feed
-                if Feed.query.filter_by(url=feed.url).first():
-                    continue
-
-                db.session.add(feed)
-                db.session.commit()
+                if not Feed.query.filter_by(url=feed.url).first():
+                    db.session.add(feed)
+                    db.session.commit()
 
     # Scrape articles for feed
     scrape_and_categorize_articles()
