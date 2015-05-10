@@ -84,14 +84,36 @@ class TestFeedAPI(TestBase):
 
         unsubscribe_data = dict(subscribed=False)
 
-        unsubscribe = test_client.put('api/feeds/%d' % (int(feed.id)+1), data=unsubscribe_data)
+        unsubscribe = test_client.put('api/feeds/%d' % (int(feed.id)+1),
+                                      data=unsubscribe_data)
         check_valid_header_type(unsubscribe.headers)
         assert unsubscribe.status_code == 404
 
 
-class TestFeedListAllAPI:
+class TestFeedListAllAPI(TestBase):
 
     def test_get_feeds(self, test_client, feed):
+        r = test_client.get('/api/feeds/all')
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert len(data['feeds']) == 1
+
+    def test_get_feeds_public_only(self, test_client, user, private_feed):
+        r = test_client.get('/api/feeds/all')
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert len(data['feeds']) == 0
+
+    def test_get_feeds_if_user_subscribed(self, db, test_client,
+                                          user, private_feed):
+        user.subscribed.append(private_feed)
+
+        self.login(test_client, user.email, user.password)
+
         r = test_client.get('/api/feeds/all')
         check_valid_header_type(r.headers)
         assert r.status_code == 200

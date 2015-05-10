@@ -1,11 +1,9 @@
 from . import api, login_required
-import os
 from sourcemash.database import db
-from flask import abort
 from flask.ext.restful import Resource, reqparse, inputs, fields, marshal
 from flask.ext.security import current_user
 
-from datetime import datetime, date
+from datetime import datetime
 
 import feedparser
 import json
@@ -15,6 +13,7 @@ from sourcemash.models import Feed, UserItem, Item
 from rq import Queue
 from worker import create_worker
 from worker.scraper import scrape_feed_articles
+import logging
 
 REDIS_CONNECTION = create_worker()
 MASH_TOPIC = "Mash"
@@ -40,7 +39,9 @@ class getUnreadCount(fields.Raw):
             return 0
 
         total_item_count = Item.query.filter_by(feed_id=feed.id).count()
-        read_item_count = UserItem.query.filter_by(user=current_user, feed_id=feed.id, unread=False).count()
+        read_item_count = UserItem.query.filter_by(user=current_user,
+                                                   feed_id=feed.id,
+                                                   unread=False).count()
         return total_item_count - read_item_count
 
 feed_fields = {
@@ -66,12 +67,13 @@ class FeedListAPI(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('url', type=str, required=True,
-                                    help='No url provided')
+                                   help='No url provided')
         super(FeedListAPI, self).__init__()
 
     @login_required
     def get(self):
-        return {'feeds': [marshal(feed, feed_status_fields) for feed in current_user.subscribed]}
+        return {'feeds': [marshal(feed, feed_status_fields)
+                for feed in current_user.subscribed]}
 
 
     @login_required
@@ -86,7 +88,8 @@ class FeedListAPI(Resource):
         with open(BAD_WORDS_FILE) as data_file:
             data = json.load(data_file)
             badwords = data['badwords']
-            words = rss_feed['feed']['title'].split() + rss_feed['feed']['description'].split()
+            words = rss_feed['feed']['title'].split() + \
+                    rss_feed['feed']['description'].split()
             for word in words:
                 if word.lower() in badwords:
                     return {"errors": {"url": ["Inappropriate feed"]}}, 403
@@ -127,7 +130,16 @@ class FeedListAPI(Resource):
 class FeedListAllAPI(Resource):
 
     def get(self):
-        return {'feeds': [marshal(feed, feed_status_fields) for feed in Feed.query.filter(Feed.public==True).all()]}
+        feeds = Feed.query.filter(Feed.public).all()
+
+        if current_user.is_authenticated():
+            logger.info("ANONYMOUS USER")
+            logger.info(current_user.subscribed)
+            feeds += current_user.subscribed.filter(Feed.public==False).all()
+        logger.info("NOT ANONYMOUS USER")
+
+
+        return {'feeds': [marshal(feed, feed_status_fields) for feed in feeds]}
 
 
 class FeedAPI(Resource):
