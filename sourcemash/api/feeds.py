@@ -13,11 +13,10 @@ from sourcemash.models import Feed, UserItem, Item
 from rq import Queue
 from worker import create_worker
 from worker.scraper import scrape_feed_articles
-import logging
 
 REDIS_CONNECTION = create_worker()
 MASH_TOPIC = "Mash"
-BAD_WORDS_FILE = "./json/bad_words.json"
+BAD_WORDS_FILE = "./json/bad_words.json"    # From jared-mess/profanity-filter
 
 
 class isSubscribed(fields.Raw):
@@ -133,11 +132,8 @@ class FeedListAllAPI(Resource):
         feeds = Feed.query.filter(Feed.public).all()
 
         if current_user.is_authenticated():
-            logger.info("ANONYMOUS USER")
             logger.info(current_user.subscribed)
             feeds += current_user.subscribed.filter(Feed.public==False).all()
-        logger.info("NOT ANONYMOUS USER")
-
 
         return {'feeds': [marshal(feed, feed_status_fields) for feed in feeds]}
 
