@@ -45,8 +45,11 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
         var itemCards = [];
         user = this.user;
         this.collection.models.forEach(function(item) {
-            var itemCardView = new Sourcemash.Views.ItemCardView({el: "#item-" + item.get('id'), model: item, user: user });
-            itemCards.push(itemCardView)
+            var itemCardViewTwoCol = new Sourcemash.Views.ItemCardView({el: "#item-" + item.get('id') + "-twocol", model: item, user: user });
+            itemCards.push(itemCardViewTwoCol);
+
+            var itemCardViewOneCol = new Sourcemash.Views.ItemCardView({el: "#item-" + item.get('id') + "-onecol", model: item, user: user });
+            itemCards.push(itemCardViewOneCol);
         });
 
         this.itemViews = itemCards;
