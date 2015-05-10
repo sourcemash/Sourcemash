@@ -33,8 +33,10 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
   },
 
   render: function() {
+    this.close();
+
     // Render parent view
-    this.$el.html(this.template({ models: this.feedTopicViews }));
+    this.$el.html(this.template({ topics: Sourcemash.Views.BrowseView.FEED_TOPICS }));
     $('#typeahead').html(this.typeahead.render().el);
 
     // Render loading view
@@ -45,8 +47,8 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
     var topicViews = [];
     Sourcemash.Views.BrowseView.FEED_TOPICS.forEach(function(topic) {
       if (feeds.length > 1) {
-        var topicCards = feeds.where({topic: topic});
-        var feedTopicView = new Sourcemash.Views.FeedTopicView({collection: topicCards, topic: topic,
+        var feedCards = feeds.where({topic: topic});
+        var feedTopicView = new Sourcemash.Views.FeedTopicView({collection: feedCards, topic: topic,
                                                                 el: "#feed-topic-" + topic});
         topicViews.push(feedTopicView);
       };

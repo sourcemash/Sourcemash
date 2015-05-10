@@ -2,7 +2,6 @@ Sourcemash.Views.FeedTopicView = Backbone.View.extend({
   template: JST['feed-topic'],
 
   initialize: function(options) {
-    this.collection = options.collection;
     this.topic = options.topic;
 
     this.feedCardViews = []
@@ -11,6 +10,8 @@ Sourcemash.Views.FeedTopicView = Backbone.View.extend({
   },
 
   render: function() {
+    this.close();
+
     // Render parent view
     this.$el.html(this.template({ models: this.collection, topic: this.topic }));
 

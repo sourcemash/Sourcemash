@@ -13,8 +13,8 @@
 
   <ul class="browse-topics row">
     <div class="col s12 m10 l10">
-      <% models.forEach(function(model) { %>
-        <div id="feed-topic-<%= model.topic %>" class="feed-topic"></div>
+      <% topics.forEach(function(topic) { %>
+        <div id="feed-topic-<%= topic %>" class="feed-topic"></div>
       <% }); %>
     </div>
 
@@ -22,17 +22,9 @@
       <div class="tabs-wrapper">
         <h5 class="contents-header grey-text text-darken-2">Topics</h5>
         <ul class="section table-of-contents">
-          <li><a href="#Technology">Technology</a></li>
-          <li><a href="#Business">Business</a></li>
-          <li><a href="#Food">Food</a></li>
-          <li><a href="#World">World</a></li>
-          <li><a href="#Gaming">Gaming</a></li>
-          <li><a href="#Fashion">Fashion</a></li>
-          <li><a href="#Photography">Photography</a></li>
-          <li><a href="#Comics">Comics</a></li>
-          <li><a href="#Science">Science</a></li>
-          <li><a href="#Finance">Finance</a></li>
-          <li><a href="#Mash">Mash</a></li>
+          <% topics.forEach(function(topic) { %>
+            <li><a href="#<%= topic %>"><%= topic %></a></li>
+          <% }); %>
         </ul>
       </div>
     </div>

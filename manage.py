@@ -75,13 +75,13 @@ def feed_seed():
         data = json.load(data_file)
         feeds_by_topic = data["feeds"]
 
-        for topic in feeds_by_topic:
-            for feed_json in topic.values()[0]:
+        for topic_json in feeds_by_topic:
+            for feed_json in topic_json.values()[0]:
 
                 feed = Feed(title=feed_json["title"],
                             url=feed_json["url"],
                             image_url=feed_json["image_url"],
-                            topic=topic.keys()[0],
+                            topic=topic_json.keys()[0],
                             last_updated = datetime.min)
 
                 # Don't re-add existing feed
