@@ -24,17 +24,18 @@ conn = create_worker(os.environ.get("APP_CONFIG_FILE") or "development")
 
 manager = Manager(app)
 
-TEST_CMD = "py.test --cov-report term-missing --cov-config .coveragerc --cov . \
-                    --boxed -n14 -k 'not functional' tests/"
-FUNCTIONAL_TEST_CMD = "./functional_test.sh"
+TEST_CMD = "sh ./scripts/test.sh"
+FUNCTIONAL_TEST_CMD = "sh ./scripts/functional_test.sh"
 FEED_DATA_FILE = "./json/feeds.json"
 
 THIRTY_MINUTES = 30 * 60
 
+
 def _make_context():
     """Return context dict for a shell session so you can access
     app, db, and the User model by default."""
-    return {'app': app, 'db': db, 'User': User, 'Item': Item, 'Category': Category, 'Feed': Feed, 'UserItem': UserItem}
+    return {'app': app, 'db': db, 'User': User, 'Item': Item,
+            'Category': Category, 'Feed': Feed, 'UserItem': UserItem}
 
 
 @manager.command
@@ -52,6 +53,7 @@ def test(all=False):
 def scrape(noqueue=False):
     """Start an infinte loop to scrape & categorize articles."""
 
+<<<<<<< HEAD
     if noqueue:
         scrape_and_categorize_articles()
 
@@ -60,6 +62,13 @@ def scrape(noqueue=False):
         while True:
             job = q.enqueue_call(func=scrape_and_categorize_articles, timeout=1800)
             time.sleep(THIRTY_MINUTES)
+
+=======
+    q = Queue('default', connection=conn)
+    while True:
+        q.enqueue_call(func=scrape_and_categorize_articles, timeout=1800)
+        time.sleep(THIRTY_MINUTES)
+>>>>>>> PR fixes.
 
 
 @manager.command
@@ -72,6 +81,7 @@ def worker(kill=False):
     with Connection(conn):
         worker = Worker(map(Queue, listen))
         worker.work()
+
 
 @manager.command
 def feed_seed():
@@ -97,6 +107,7 @@ def feed_seed():
 
     # Scrape articles for feed
     scrape_and_categorize_articles()
+
 
 @manager.command
 def seed():
