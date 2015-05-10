@@ -4,83 +4,103 @@
       "tech": [
         {
           "title":"TechCrunch > Startups",
-          "url":"http://feeds.feedburner.com/techcrunch/startups?format=xml"
+          "url":"http://feeds.feedburner.com/techcrunch/startups?format=xml",
+          "image_url": "http://thedishdaily.com/wp-content/uploads/2014/01/8066355_1343746595745.png"
         },
         {
           "title":"Engadget",
-          "url":"http://www.engadget.com/rss-full.xml"
+          "url":"http://www.engadget.com/rss-full.xml",
+          "image_url": "http://www.disa.im/img/logos/press/engadget1.png"
         },
         {
           "title":"Gizmodo",
-          "url":"http://feeds.gawker.com/gizmodo/full"
+          "url":"http://feeds.gawker.com/gizmodo/full",
+          "image_url": "http://morpholioapps.com/images/logos/logo_gizmodo.png"
         },
         {
           "title":"The Next Web",
-          "url":"http://thenextweb.com/feed/"
+          "url":"http://thenextweb.com/feed/",
+          "image_url":"http://cdn2.tnwcdn.com/wp-content/blogs.dir/1/files/2013/03/TNW_logo_2012.png"
         },
         {
           "title": "The Verge",
-          "url": "http://www.theverge.com/rss/full.xml"
+          "url": "http://www.theverge.com/rss/full.xml",
+          "image_url":"http://i0.wp.com/stuffled.com/wp-content/uploads/2014/09/The-Verge-logo-EPS-vector-image.png?resize=1020%2C680"
         },
         {
           "title": "Lifehacker",
-          "url": "http://feeds.gawker.com/lifehacker/vip"
+          "url": "http://feeds.gawker.com/lifehacker/vip",
+          "image_url":"http://cdn.skilledup.com/wp-content/uploads/2014/10/Whitson-Gordon-from-Lifehacker-Feature_1290x688_MS.jpg"
         },
         {
           "title": "ReadWrite",
-          "url": "http://www.readwriteweb.com/rss.xml"
+          "url": "http://www.readwriteweb.com/rss.xml",
+          "image_url":"http://readwrite.com/site/images/readwrite-logo.svg"
         },
         {
           "title": "Wired",
-          "url": "http://feeds.wired.com/wired/index"
+          "url": "http://feeds.wired.com/wired/index",
+          "image_url":"http://www.studiosmeets.com/app/webroot/files/editor/Image/wired-logo.jpg"
         },
         {
           "title": "Mashable",
-          "url": "http://feeds.mashable.com/Mashable"
+          "url": "http://feeds.mashable.com/Mashable",
+          "image_url": "http://www.sohomarketer.com/wp-content/uploads/2014/01/mashable-logo.jpg"
         },
         {
           "title": "Ars Technica",
-          "url": "http://feeds.arstechnica.com/arstechnica/index/"
+          "url": "http://feeds.arstechnica.com/arstechnica/index/",
+          "image_url":"https://digitalguardian.com/sites/default/files/ars-technica-logo_0.png"
         },
         {
           "title": "Slashdot",
-          "url": "http://rss.slashdot.org/Slashdot/slashdot"
+          "url": "http://rss.slashdot.org/Slashdot/slashdot",
+          "image_url":"http://www.thegraphicorder.com/wordpress/wp-content/uploads/2011/09/slashdot-logo.jpg"
         },
         {
           "title": "The Official Google Blog",
-          "url": "http://googleblog.blogspot.com/atom.xml"
+          "url": "http://googleblog.blogspot.com/atom.xml",
+          "image_url": "http://fineprintnyc.com/images/blog/history-of-logos/google/google-logo.png"
         },
         {
           "title": "Android Central",
-          "url": "http://www.androidcentral.com/feed"
+          "url": "http://www.androidcentral.com/feed",
+          "image_url": "http://www.androidcentral.com/sites/androidcentral.com/files/articleimage/579/2010/10/ac-wallpaper.jpg"
         },
         {
           "title": "MacRumors",
-          "url": "http://www.macrumors.com/macrumors.xml"
+          "url": "http://www.macrumors.com/macrumors.xml",
+          "image_url":"http://www.userlogos.org/files/logos/give/MacRumors.png"
         },
         {
           "title": "Boing Boing",
-          "url": "http://feeds.boingboing.net/boingboing/iBag"
+          "url": "http://feeds.boingboing.net/boingboing/iBag",
+          "image_url": "http://static.pechakucha.org/pechakucha/uploads/blog_attachment/image/51a5a92cdbdd203597000001/large_wide_boingboingLOGO.jpg"
         },
         {
           "title": "ThinkGeek",
-          "url": "http://www.thinkgeek.com/thinkgeek.rss"
+          "url": "http://www.thinkgeek.com/thinkgeek.rss",
+          "image_url": "http://www.couponbox.com/uploads/logos/thinkgeek.jpg"
         },
         {
           "title": "Forbes: Entrepreneurs",
-          "url": "http://www.forbes.com/entrepreneurs/index.xml"
+          "url": "http://www.forbes.com/entrepreneurs/index.xml",
+          "image_url": "http://www.andela.co/modules/core/img/brand/Forbes-logonew.jpg"
         },
         {
           "title": "A VC: Venture Capital and Technology",
-          "url": "http://feeds.feedburner.com/AVc"
+          "url": "http://feeds.feedburner.com/AVc",
+          "image_url": "http://francis-moran.com/wordpress/wp-content/uploads/2012/06/Springtime-for-VC.jpg"
         },
         {
           "title": "VentureBeat",
-          "url": "http://feeds.feedburner.com/venturebeat"
+          "url": "http://feeds.feedburner.com/venturebeat",
+          "image_url": "http://www.userlogos.org/files/logos/MShadows/venture2.png"
         },
         {
           "title": "Inc.com",
-          "url": "http://www.inc.com/rss.xml"
+          "url": "http://www.inc.com/rss.xml",
+          "image_url": "http://logonoid.com/images/inc-logo.png"
         }
       ]
     },
@@ -89,35 +109,43 @@
       "business": [
         {
           "title": "Seth Godin",
-          "url": "http://sethgodin.typepad.com/seths_blog/atom.xml"
+          "url": "http://sethgodin.typepad.com/seths_blog/atom.xml",
+          "image_url": "http://mdsimages.com/wp-content/uploads/2014/10/27-7040-post/sg-main.jpg"
         },
         {
           "title": "Business Insider",
-          "url": "http://feeds2.feedburner.com/businessinsider"
+          "url": "http://feeds2.feedburner.com/businessinsider",
+          "image_url": "http://s3.amazonaws.com/garysguide/79a5e02b7dee47f38a3fd084fc64015eoriginal.png"
         },
         {
           "title": "Entrepreneuer: Latest Articles",
-          "url": "http://feeds.feedburner.com/entrepreneur/latest"
+          "url": "http://feeds.feedburner.com/entrepreneur/latest",
+          "image_url": "http://www.entrepreneur.com/dbimages/static/1413842518-entrepreneur-logo.jpg"
         },
         {
           "title": "The Atlantic",
-          "url": "http://feeds.feedburner.com/AtlanticBusinessChannel"
+          "url": "http://feeds.feedburner.com/AtlanticBusinessChannel",
+          "image_url":"http://www.sbs.com.au/news/sites/sbs.com.au.news/files/styles/full/public/TheAtlanticLogo.%2002_36.jpg"
         },
         {
           "title": "Calculated Risk",
-          "url": "http://www.calculatedriskblog.com/feeds/posts/default"
+          "url": "http://www.calculatedriskblog.com/feeds/posts/default",
+          "image_url": "http://www.lipscomb.edu/uploads/45801.jpg"
         },
         {
           "title": "Harvard Business Review",
-          "url": "http://feeds.harvardbusiness.org/harvardbusiness/"
+          "url": "http://feeds.harvardbusiness.org/harvardbusiness/",
+          "image_url": "http://www.baoinc.com/writable/images/blog-harvard_business_review_logo.jpg"
         },
         {
           "title": "Fast Company",
-          "url": "http://feeds.feedburner.com/fastcompany/headlines"
+          "url": "http://feeds.feedburner.com/fastcompany/headlines",
+          "image_url": "http://static1.squarespace.com/static/535326eee4b053dc26fa756e/t/53a8291ce4b0d3d42b2e4c64/1403529501215/Fast-Company-logo.png"
         },
         {
           "title": "Reuters: Business News",
-          "url": "http://feeds.reuters.com/reuters/businessNews?format=xml"
+          "url": "http://feeds.reuters.com/reuters/businessNews?format=xml",
+          "image_url": "http://site.thomsonreuters.com/business-unit/reuters/reuters-brand/images/png/rtr_ahz_rgb_pos.png"
         }
       ]
     },
@@ -126,19 +154,23 @@
       "food": [
         {
           "title": "Smitten Kitchen",
-          "url": "http://feeds.feedburner.com/smittenkitchen"
+          "url": "http://feeds.feedburner.com/smittenkitchen",
+          "image_url": "http://farm8.staticflickr.com/7277/7120022819_bbeac91ac1.jpg"
         },
         {
           "title": "101 Cookbooks",
-          "url": "http://feeds.101cookbooks.com/101cookbooks"
+          "url": "http://feeds.101cookbooks.com/101cookbooks",
+          "image_url": "http://images.popmatters.com/misc_art/c/curiousomnv-101cookbooks.jpg"
         },
         {
           "title": "Epicurious",
-          "url": "http://www.epicurious.com/services/rss/feeds/newrecipes.xml"
+          "url": "http://www.epicurious.com/services/rss/feeds/newrecipes.xml",
+          "image_url": "http://www.nataliemaclean.com/blog/wp-content/uploads/2011/03/epicurious-logo.png"
         },
         {
           "title": "AllRecipes: Daily Recipes",
-          "url": "http://rss.allrecipes.com/2/3.xml"
+          "url": "http://rss.allrecipes.com/2/3.xml",
+          "image_url": "http://press.allrecipes.com/wp-content/uploads/arlogo_rgb.png"
         }
       ]
     },
@@ -147,39 +179,48 @@
       "news": [
         {
           "title": "CNN",
-          "url": "http://rss.cnn.com/rss/cnn_topstories.rss"
+          "url": "http://rss.cnn.com/rss/cnn_topstories.rss",
+          "image_url": "http://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Cnn.svg/2000px-Cnn.svg.png"
         },
         {
           "title": "New York Times: Home Page",
-          "url": "http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml"
+          "url": "http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml",
+          "image_url": "http://www.goseekadventures.com/wp-content/uploads/2014/06/New-York-Times-Social-Logo.jpg"
         },
         {
           "title": "BBC News",
-          "url": "http://newsrss.bbc.co.uk/rss/newsonline_world_edition/front_page/rss.xml"
+          "url": "http://newsrss.bbc.co.uk/rss/newsonline_world_edition/front_page/rss.xml",
+          "image_url": "http://news.bbcimg.co.uk/media/images/48351000/gif/_48351569_640x360-news.gif"
         },
         {
           "title": "TIME",
-          "url": "http://rss.time.com/web/time/rss/top/index.xml"
+          "url": "http://rss.time.com/web/time/rss/top/index.xml",
+          "image_url": "http://darkheartproductions.com/news_and_press/articles/articles%20images/time_magazine.png"
         },
         {
           "title": "The Wire",
-          "url": "http://feeds.feedburner.com/TheAtlanticWire"
+          "url": "http://feeds.feedburner.com/TheAtlanticWire",
+          "image_url": "http://cdn.thewire.com/static/wire/img/logo-for-social.jpg"
         },
         {
           "title": "NPR News",
-          "url": "http://www.npr.org/rss/rss.php"
+          "url": "http://www.npr.org/rss/rss.php",
+          "image_url": "https://www.wbhm.org/pics/NPR-NEWS.gif"
         },
         {
           "title": "Reuters: Top News",
-          "url": "http://feeds.reuters.com/reuters/topNews"
+          "url": "http://feeds.reuters.com/reuters/topNews",
+          "image_url": "http://site.thomsonreuters.com/business-unit/reuters/reuters-brand/images/png/rtr_ahz_rgb_pos.png"
         },
         {
           "title": "USA Today",
-          "url": "http://rssfeeds.usatoday.com/usatoday-NewsTopStories"
+          "url": "http://rssfeeds.usatoday.com/usatoday-NewsTopStories",
+          "image_url": "http://www.robertegger.org/wp-content/uploads/2013/05/USA_Today_logo.jpg"
         },
         {
           "title": "Slate",
-          "url": "http://www.slate.com/rss"
+          "url": "http://www.slate.com/rss",
+          "image_url": "http://vignette2.wikia.nocookie.net/uncyclopedia/images/1/13/Slate_logo.png/revision/latest?cb=20080108214654"
         }
       ]
     },
@@ -188,15 +229,18 @@
       "gaming": [
         {
           "title": "Polygon",
-          "url": "http://www.polygon.com/rss/index.xml"
+          "url": "http://www.polygon.com/rss/index.xml",
+          "image_url": "http://www.adweek.com/files/imagecache/node-detail/news_article/polygon-logo-hed-2012.jpg"
         },
         {
           "title": "Kotaku",
-          "url": "http://feeds.gawker.com/kotaku/vip"
+          "url": "http://feeds.gawker.com/kotaku/vip",
+          "image_url":"http://www.6aming.com/wp-content/uploads/2014/03/KotakuLogo_683.jpg"
         },
         {
           "title": "IGN Video Games",
-          "url": "http://feeds.ign.com/ign/games-all"
+          "url": "http://feeds.ign.com/ign/games-all",
+          "image_url":"http://venturebeat.com/wp-content/uploads/2013/02/ign-logo.jpg"
         }
       ]
     },
@@ -205,15 +249,18 @@
       "fashion": [
         {
           "title": "Cool Hunting",
-          "url": "http://www.coolhunting.com/atom.xml"
+          "url": "http://www.coolhunting.com/atom.xml",
+          "image_url": "http://www.caeden.com/img/explore/logos/coolhunting_logo.png"
         },
         {
           "title": "Fashionista",
-          "url": "http://feeds.feedburner.com/fashionistacom"
+          "url": "http://feeds.feedburner.com/fashionistacom",
+          "image_url": "http://fashionista.com/site/images/fashionista-logo.svg"
         },
         {
           "title": "Fashion Squad",
-          "url": "http://www.fashionsquad.com/feed/"
+          "url": "http://www.fashionsquad.com/feed/",
+          "image_url": "http://www.notorious-mag.com/wp-content/uploads/2012/02/fashionsquad.jpg"
         }
       ]
     },
@@ -222,15 +269,18 @@
       "photography": [
         {
           "title": "500px",
-          "url": "http://feed.500px.com/500px-editors"
+          "url": "http://feed.500px.com/500px-editors",
+          "image_url": "http://upload.wikimedia.org/wikipedia/commons/8/83/500px_logo.png"
         },
         {
           "title": "National Geographic: Photo of the Day",
-          "url": "http://www.nationalgeographic.com/rss/photography/photo-of-the-day"
+          "url": "http://www.nationalgeographic.com/rss/photography/photo-of-the-day",
+          "image_url": "http://famouslogos.net/images/national-geographic-logo.jpg"
         },
         {
           "title": "The Big Picture",
-          "url": "http://www.boston.com/bigpicture/index.xml"
+          "url": "http://www.boston.com/bigpicture/index.xml",
+          "image_url": "https://lh5.ggpht.com/PsXS7GrmA4dh9_Qn7E6wZWvRuE1m2vsZHbBNdqSQmE-O4l2pGVriKQq7m4KLfyxpKjxy=h900"
         }
       ]
     },
@@ -239,23 +289,28 @@
       "comics": [
         {
           "title": "XKCD",
-          "url": "http://xkcd.com/rss.xml"
+          "url": "http://xkcd.com/rss.xml",
+          "image_url": "http://swiftkey.com/en/wp-content/uploads/2014/09/xkcd-copy.png"
         },
         {
           "title": "The Oatmeal",
-          "url": "http://theoatmeal.com/feed/rss"
+          "url": "http://theoatmeal.com/feed/rss",
+          "image_url": "http://cdn.shopify.com/s/files/1/0032/7882/products/wolverine_art_1024x1024.png?v=1285084249"
         },
         {
           "title": "Dilbert Daily Strip",
-          "url": "http://feeds.feedburner.com/DilbertDailyStrip"
+          "url": "http://feeds.feedburner.com/DilbertDailyStrip",
+          "image_url": "http://www.slidegenius.com/wp-content/uploads/2014/06/project__0010_Dilbert.png"
         },
         {
           "title": "Ph.D. Comics",
-          "url": "http://www.phdcomics.com/gradfeed.php"
+          "url": "http://www.phdcomics.com/gradfeed.php",
+          "image_url": "http://www.userlogos.org/files/logos/inductiveload/PhD%20Comics.png"
         },
         {
           "title": "What If?",
-          "url": "http://what-if.xkcd.com/feed.atom"
+          "url": "http://what-if.xkcd.com/feed.atom",
+          "image_url": "http://synapse.ucsf.edu/sites/default/files/styles/article_image_full_node/public/field/image/whatif-logo.jpg?itok=bj9a90Bt"
         }
       ]
     },
@@ -264,35 +319,43 @@
       "science": [
         {
           "title": "National Geographic: News",
-          "url": "http://news.nationalgeographic.com/index.rss"
+          "url": "http://news.nationalgeographic.com/index.rss",
+          "image_url": "http://famouslogos.net/images/national-geographic-logo.jpg"
         },
         {
           "title": "Scientific American: Global",
-          "url": "http://www.sciam.com/xml/sciam.xml"
+          "url": "http://www.sciam.com/xml/sciam.xml",
+          "image_url": "http://blogs.scientificamerican.com/sa-visual/files/2014/03/sa2007-07-01.jpg"
         },
         {
           "title": "TED Talks",
-          "url": "http://feeds.feedburner.com/tedtalks_video"
+          "url": "http://feeds.feedburner.com/tedtalks_video",
+          "image_url": "http://www.karajohnstad.com/ezine/logo_ted.JPG"
         },
         {
           "title": "Science: Current Issue",
-          "url": "http://www.sciencemag.org/rss/current.xml"
+          "url": "http://www.sciencemag.org/rss/current.xml",
+          "image_url": "http://crd.lbl.gov/assets/Images/News--Publications/News/2013/Breakthrough-of-the-Year/sciencebreakthrough.jpg"
         },
         {
           "title": "Futurity.org",
-          "url": "http://www.futurity.org/feed/"
+          "url": "http://www.futurity.org/feed/",
+          "image_url": "http://blog.ecu.edu/sites/dailyclips/files/2014/11/logo_futurity.jpg"
         },
         {
           "title": "Popular Science",
-          "url": "http://www.popsci.com/rss.xml"
+          "url": "http://www.popsci.com/rss.xml",
+          "image_url": "http://cdn.mos.techradar.com/art/logos/popular_science_logo-970-80.jpg"
         },
         {
           "title": "New York Times: Science",
-          "url": "http://rss.nytimes.com/services/xml/rss/nyt/Science.xml"
+          "url": "http://rss.nytimes.com/services/xml/rss/nyt/Science.xml",
+          "image_url": "http://www.goseekadventures.com/wp-content/uploads/2014/06/New-York-Times-Social-Logo.jpg"
         },
         {
           "title": "Io9",
-          "url": "http://feeds.gawker.com/io9/full"
+          "url": "http://feeds.gawker.com/io9/full",
+          "image_url": "http://www.daisyginsberg.com/img/press/press_io9.jpg"
         }
       ]
     },
@@ -301,19 +364,23 @@
       "finance": [
         {
           "title": "Get Rich Slowly",
-          "url": "http://www.getrichslowly.org/blog/feed/"
+          "url": "http://www.getrichslowly.org/blog/feed/",
+          "image_url": "http://www.getrichslowly.org/blog/img/grs_title.png?v=122"
         },
         {
           "title": "Freakonomics",
-          "url": "http://freakonomics.blogs.nytimes.com/feed/"
+          "url": "http://freakonomics.blogs.nytimes.com/feed/",
+          "image_url": "http://i.kinja-img.com/gawker-media/image/upload/s--WYR4L-mf--/18k2c4bjygau8jpg.jpg"
         },
         {
           "title": "The Economist: The World This Week",
-          "url": "http://www.economist.com/rss/the_world_this_week_rss.xml"
+          "url": "http://www.economist.com/rss/the_world_this_week_rss.xml",
+          "image_url": "http://therealsingapore.com/sites/default/files/field/image/The-Economist-oil-on-linen-42-x-84-inches-2007_0.jpg"
         },
         {
           "title": "Bloomberg",
-          "url": "http://www.newslookup.com/rss/business/bloomberg.rss"
+          "url": "http://www.newslookup.com/rss/business/bloomberg.rss",
+          "image_url": "http://stateofthemarkets.com/wp-content/uploads/2013/05/Bloomberg-Logo-650x400.jpg"
         }
       ]
     }
