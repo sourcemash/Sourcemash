@@ -1,12 +1,12 @@
 from . import api, login_required
 from sourcemash.database import db
-from flask import abort
 from flask.ext.restful import Resource, reqparse, inputs, fields, marshal
 from flask.ext.security import current_user
 
-from datetime import datetime, date
+from datetime import datetime
 
 import feedparser
+import json
 
 from sourcemash.models import Feed, UserItem, Item
 
@@ -16,6 +16,8 @@ from worker.scraper import scrape_feed_articles
 
 REDIS_CONNECTION = create_worker()
 MASH_TOPIC = "Mash"
+BAD_WORDS_FILE = "./json/bad_words.json"    # From jared-mess/profanity-filter
+
 
 class isSubscribed(fields.Raw):
     def output(self, key, feed):
@@ -24,9 +26,11 @@ class isSubscribed(fields.Raw):
 
         return feed in current_user.subscribed
 
+
 class getItemCount(fields.Raw):
     def output(self, key, feed):
         return feed.items.count()
+
 
 class getUnreadCount(fields.Raw):
     def output(self, key, feed):
@@ -34,7 +38,9 @@ class getUnreadCount(fields.Raw):
             return 0
 
         total_item_count = Item.query.filter_by(feed_id=feed.id).count()
-        read_item_count = UserItem.query.filter_by(user=current_user, feed_id=feed.id, unread=False).count()
+        read_item_count = UserItem.query.filter_by(user=current_user,
+                                                   feed_id=feed.id,
+                                                   unread=False).count()
         return total_item_count - read_item_count
 
 feed_fields = {
@@ -54,17 +60,19 @@ feed_status_fields = {
 }
 feed_status_fields = dict(feed_fields, **feed_status_fields)
 
+
 class FeedListAPI(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('url', type=str, required=True,
-                                    help='No url provided')
+                                   help='No url provided')
         super(FeedListAPI, self).__init__()
 
     @login_required
     def get(self):
-        return {'feeds': [marshal(feed, feed_status_fields) for feed in current_user.subscribed]}
+        return {'feeds': [marshal(feed, feed_status_fields)
+                for feed in current_user.subscribed]}
 
 
     @login_required
@@ -76,6 +84,15 @@ class FeedListAPI(Resource):
         if rss_feed['bozo'] == 1:
             return {"errors": {"url": ["URL is not a valid feed"]}}, 422
 
+        with open(BAD_WORDS_FILE) as data_file:
+            data = json.load(data_file)
+            badwords = data['badwords']
+            words = rss_feed['feed']['title'].split() + \
+                    rss_feed['feed']['description'].split()
+            for word in words:
+                if word.lower() in badwords:
+                    return {"errors": {"url": ["Inappropriate feed"]}}, 403
+
         # Get or Create Feed
         try:
             feed = Feed.query.filter(Feed.url==rss_feed['url']).one()
@@ -84,6 +101,7 @@ class FeedListAPI(Resource):
             feed = Feed(title=rss_feed['feed']['title'],
                         url=rss_feed['url'],
                         description=rss_feed['feed']['description'],
+                        public=False,
                         topic=MASH_TOPIC,
                         last_updated=datetime.min)
 
@@ -112,7 +130,12 @@ class FeedListAPI(Resource):
 class FeedListAllAPI(Resource):
 
     def get(self):
-        return {'feeds': [marshal(feed, feed_status_fields) for feed in Feed.query.all()]}
+        feeds = Feed.query.filter(Feed.public).all()
+
+        if current_user.is_authenticated():
+            feeds += current_user.subscribed.filter(Feed.public==False).all()
+
+        return {'feeds': [marshal(feed, feed_status_fields) for feed in feeds]}
 
 
 class FeedAPI(Resource):
@@ -122,11 +145,9 @@ class FeedAPI(Resource):
         self.reqparse.add_argument('subscribed', type = inputs.boolean)
         super(FeedAPI, self).__init__()
 
-
     def get(self, id):
         feed = Feed.query.get_or_404(id)
         return {'feed': marshal(feed, feed_fields)}
-
 
     @login_required
     def put(self, id):

@@ -24,17 +24,18 @@ conn = create_worker(os.environ.get("APP_CONFIG_FILE") or "development")
 
 manager = Manager(app)
 
-TEST_CMD = "py.test --cov-report term-missing --cov-config .coveragerc --cov . \
-                    --boxed -n14 -k 'not functional' tests/"
-FUNCTIONAL_TEST_CMD = "./functional_test.sh"
-FEED_DATA_FILE = "feeds.json"
+TEST_CMD = "sh ./scripts/test.sh"
+FUNCTIONAL_TEST_CMD = "sh ./scripts/functional_test.sh"
+FEED_DATA_FILE = "./json/feeds.json"
 
 THIRTY_MINUTES = 30 * 60
+
 
 def _make_context():
     """Return context dict for a shell session so you can access
     app, db, and the User model by default."""
-    return {'app': app, 'db': db, 'User': User, 'Item': Item, 'Category': Category, 'Feed': Feed, 'UserItem': UserItem}
+    return {'app': app, 'db': db, 'User': User, 'Item': Item,
+            'Category': Category, 'Feed': Feed, 'UserItem': UserItem}
 
 
 @manager.command
@@ -73,6 +74,7 @@ def worker(kill=False):
         worker = Worker(map(Queue, listen))
         worker.work()
 
+
 @manager.command
 def feed_seed():
     """Add seed feeds from JSON file"""
@@ -89,13 +91,15 @@ def feed_seed():
                                 url=feed_json["url"],
                                 image_url=feed_json["image_url"],
                                 topic=topic_json.keys()[0],
-                                last_updated=datetime.min)
+                                last_updated=datetime.min,
+                                public=True)
 
                     db.session.add(feed)
                     db.session.commit()
 
     # Scrape articles for feed
     scrape_and_categorize_articles()
+
 
 @manager.command
 def seed():
@@ -107,30 +111,34 @@ def seed():
     db.session.commit()
 
     techcrunch = Feed(title='TechCrunch > Startups',
-                url="http://feeds.feedburner.com/techcrunch/startups?format=xml",
-                topic="Technology",
-                last_updated = datetime.min)
+                      url="http://feeds.feedburner.com/techcrunch/startups?format=xml",
+                      topic="Technology",
+                      last_updated=datetime.min,
+                      public=True)
     db.session.add(techcrunch)
     db.session.commit()
 
     engadget = Feed(title='Engadget',
-            url="http://www.engadget.com/rss-full.xml",
-            topic="Technology",
-            last_updated = datetime.min)
+                    url="http://www.engadget.com/rss-full.xml",
+                    topic="Technology",
+                    last_updated=datetime.min,
+                    public=True)
     db.session.add(engadget)
     db.session.commit()
 
     gizmodo = Feed(title='Gizmodo',
-            url="http://feeds.gawker.com/gizmodo/full",
-            topic="Technology",
-            last_updated = datetime.min)
+                   url="http://feeds.gawker.com/gizmodo/full",
+                   topic="Technology",
+                   last_updated=datetime.min,
+                   public=True)
     db.session.add(gizmodo)
     db.session.commit()
 
     tnw = Feed(title='The Next Web',
-            url="http://thenextweb.com/feed/",
-            topic="Technology",
-            last_updated = datetime.min)
+               url="http://thenextweb.com/feed/",
+               topic="Technology",
+               last_updated=datetime.min,
+               public=True)
     db.session.add(tnw)
     db.session.commit()
 

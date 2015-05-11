@@ -84,14 +84,36 @@ class TestFeedAPI(TestBase):
 
         unsubscribe_data = dict(subscribed=False)
 
-        unsubscribe = test_client.put('api/feeds/%d' % (int(feed.id)+1), data=unsubscribe_data)
+        unsubscribe = test_client.put('api/feeds/%d' % (int(feed.id)+1),
+                                      data=unsubscribe_data)
         check_valid_header_type(unsubscribe.headers)
         assert unsubscribe.status_code == 404
 
 
-class TestFeedListAllAPI:
+class TestFeedListAllAPI(TestBase):
 
     def test_get_feeds(self, test_client, feed):
+        r = test_client.get('/api/feeds/all')
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert len(data['feeds']) == 1
+
+    def test_get_feeds_public_only(self, test_client, user, private_feed):
+        r = test_client.get('/api/feeds/all')
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert len(data['feeds']) == 0
+
+    def test_get_feeds_if_user_subscribed(self, test_client,
+                                          user, private_feed):
+        user.subscribed.append(private_feed)
+
+        self.login(test_client, user.email, user.password)
+
         r = test_client.get('/api/feeds/all')
         check_valid_header_type(r.headers)
         assert r.status_code == 200
@@ -160,6 +182,19 @@ class TestFeedListAPI(TestBase):
         data = json.loads(r.data)
         assert len(data['errors']['url']) == 1
         assert 'not a valid feed' in data['errors']['url'][0]
+
+    def test_post_inappropriate_feed_details(self, test_client, user):
+        self.login(test_client, user.email, user.password)
+
+        subscription_data = dict(url="http://www.newsnshit.com/feed/")
+        r = test_client.post('/api/feeds', data=subscription_data)
+
+        check_valid_header_type(r.headers)
+        assert r.status_code == 403
+
+        data = json.loads(r.data)
+        assert len(data['errors']['url']) == 1
+        assert "Inappropriate" in data['errors']['url'][0]
 
     def test_post_subscription_already_subscribed_feed(self, test_client, userWithRealFeed):
         self.login(test_client, userWithRealFeed.email, userWithRealFeed.password)
