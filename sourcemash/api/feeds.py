@@ -101,7 +101,12 @@ class FeedListAPI(Resource):
             feed = Feed(title=rss_feed['feed']['title'],
                         url=rss_feed['url'],
                         description=rss_feed['feed']['description'],
+<<<<<<< HEAD
                         public=Falsetopic=MASH_TOPIC,
+=======
+                        public=False,
+                        topic=MASH_TOPIC,
+>>>>>>> f03f2553a1ddbf55c07a24a69961ff76a0180fa3
                         last_updated=datetime.min)
 
             db.session.add(feed)
