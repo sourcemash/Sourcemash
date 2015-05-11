@@ -22,6 +22,7 @@ SECURITY_POST_LOGOUT_VIEW = "/"
 SECURITY_EMAIL_SUBJECT_REGISTER = "Welcome to Sourcemash!"
 SECURITY_REGISTERABLE = True
 SECURITY_RECOVERABLE = True
+SECURITY_LOGIN_WITHOUT_CONFIRMATION = True
 
 SECURITY_MSG_INVALID_PASSWORD = ("Invalid username/password combination", "error")
 SECURITY_MSG_PASSWORD_NOT_PROVIDED = ("Invalid username/password combination", "error")
