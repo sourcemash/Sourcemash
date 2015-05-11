@@ -1,0 +1,26 @@
+<div class="" style="line-height: 19.5px; text-align: center; margin-top: 0px; margin-bottom: 0px;">
+    <a href="http://sourcemash.com"><img src="http://www.sourcemash.com/static/img/logotext.svg" style="height: 50px;"></a>
+</div>
+
+<h3>Welcome {{ user.email }}!</h3>
+
+{% if security.confirmable %}
+<p>Before we get started, please <a href="{{ confirmation_link }}">confirm your email</a>.</p>
+{% endif %}
+
+<p><i>Now, it's time to read your news faster!</i></p>
+
+<p>Add your feeds to <a href="http://sourcemash.com">Sourcemash</a>, and your articles will be categorized automatically so you can find relevant articles and read them faster!</p>
+
+<h4>To get started:</h4>
+
+<ol>
+  <li><b>SOURCE</b>: Subscribe to feeds from the <a href="http://sourcemash.com/#browse">Browse Page</a>.</li>
+  <li><b>MASH</b>: Let the site categorize your articles.</li>
+  <li><b>ENJOY</b>: Refresh the page to explore your categorized articles!</li>
+</ol>
+
+<p>If you have any questions or suggestions, let us know at <a href="mailto:support@sourcemash.com">support@sourcemash.com</a>.</p>
+
+Happy browsing!<br>
+The Sourcemash Team
