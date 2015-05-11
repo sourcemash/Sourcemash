@@ -12,6 +12,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-height: 200px;
 }
 
 .hide {
@@ -353,6 +354,14 @@ a.button-collapse.top-nav {
       img:nth-of-type(1) {
           width: 100%;
           height: auto;
+      }
+    }
+
+    .card-action {
+      .description {
+        max-height: 100px;
+        white-space: normal;
+        overflow-y: scroll;
       }
     }
     #reveal-button {

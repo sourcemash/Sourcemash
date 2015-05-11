@@ -9,17 +9,17 @@
 
     <div class="card-content">
 
-      <div class="card-title">
-        <div class="col s9">
+      <div class="card-title row">
+        <div class="col s8">
           <a href="/#feeds/<%= model.get('id') %>" class="row">
             <%= model.get('title') %>
           </a>
         </div>
-        <div class="switch subscribe-switch col s3"></div>
+        <div class="switch subscribe-switch col s4"></div>
       </div>
 
-      <div class="card-action valign-wrapper row">
-        <p class="flow-text">
+      <div class="card-action valign-wrapper">
+        <p class="flow-text description">
           <%= model.get('description') %>
         </p>
       </div>
