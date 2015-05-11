@@ -54,13 +54,13 @@ def scrape_feed_articles(feed):
             db.session.commit()
         except:
             soup = BeautifulSoup(item.text)
-            img_url = soup.find('img')['src']
-            item.image_url = _get_absolute_url(item.link, img_url)
-            db.session.commit()
-
-        if not item.image_url:
-            item.image_url = SOURCEMASH_LOGO_URL
-            db.session.commit()
+            try:
+                img_url = soup.find('img')['src']
+                item.image_url = _get_absolute_url(item.link, img_url)
+                db.session.commit()
+            except:
+                item.image_url = SOURCEMASH_LOGO_URL
+                db.session.commit()
 
 
 def _get_full_text(url):
