@@ -11,7 +11,7 @@
 
       <div class="card-title row">
         <div class="col s8">
-          <a href="/#feeds/<%= model.get('id') %>" class="row">
+          <a href="/#feeds/<%= model.get('id') %>">
             <%= model.get('title') %>
           </a>
         </div>
