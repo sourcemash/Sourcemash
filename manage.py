@@ -53,7 +53,6 @@ def test(all=False):
 def scrape(noqueue=False):
     """Start an infinte loop to scrape & categorize articles."""
 
-<<<<<<< HEAD
     if noqueue:
         scrape_and_categorize_articles()
     else:
@@ -61,13 +60,6 @@ def scrape(noqueue=False):
         while True:
             job = q.enqueue_call(func=scrape_and_categorize_articles, timeout=1800)
             time.sleep(THIRTY_MINUTES)
-
-=======
-    q = Queue('default', connection=conn)
-    while True:
-        q.enqueue_call(func=scrape_and_categorize_articles, timeout=1800)
-        time.sleep(THIRTY_MINUTES)
->>>>>>> PR fixes.
 
 
 @manager.command
