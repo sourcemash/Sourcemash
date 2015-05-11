@@ -36,17 +36,20 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
     showSplash: function() {
         var splashView = new Sourcemash.Views.SplashView();
         this._swapView(splashView);
+        mixpanel.track("Visited Landing Page");
     },
 
     showProfile: function() {
         var profileView = new Sourcemash.Views.ProfileView({ model: this._user });
         this._swapView(profileView);
+        mixpanel.track("Visited Profile Page");
     },
 
     browseFeeds: function() {
         var browseView = new Sourcemash.Views.BrowseView({ collection: this._feeds });
         browseView.collection.fetch({success: _.bind(function() {this._loaded(browseView)}, this)});
         this._swapView(browseView);
+        mixpanel.track("Visited Browse Page");
     },
 
     showFeed: function(id) {
@@ -59,6 +62,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         feed.fetch();
         feedView.collection.fetch({feeds: this._feeds, categories: this._categories, success: _.bind(function() {this._loaded(feedView)}, this)});
         this._swapView(feedView);
+        mixpanel.track("Visited Feed Page", {"Feed Title": feed.get('title')});
     },
 
     showCategory: function(id) {
@@ -71,6 +75,8 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         category.fetch();
         categoryView.collection.fetch({feeds: this._feeds, categories: this._categories, success: _.bind(function() {this._loaded(categoryView)}, this)});
         this._swapView(categoryView);
+        mixpanel.track("Visited Category Page", {"Category Title": category.get('name')});
+
     },
 
     showSaved: function() {
@@ -79,6 +85,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
 
         savedView.collection.fetch({feeds: this._feeds, categories: this._categories, success: _.bind(function() {this._loaded(savedView)}, this)});
         this._swapView(savedView);
+        mixpanel.track("Visited Saved Page");
     },
 
     _loaded: function(view) {

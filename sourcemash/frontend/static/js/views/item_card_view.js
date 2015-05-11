@@ -30,13 +30,15 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
 
         if (item.get('vote') == -1) {
             mixpanel.track("Downvoted", { "Item Title": item.get('title'),
-                                          "Feed Title": item.feed.get('title') })
+                                          "Feed Title": item.feed.get('title'),
+                                          "Subscribed?": item.feed.get('subscribed') })
         } else if (item.get('vote') == 1) {
             if (!item.feed.get('subscribed')) {
                 this.showSubscribeModal({'source':'upvoted'});
             };
             mixpanel.track("Upvoted", { "Item Title": item.get('title'),
-                                        "Feed Title": item.feed.get('title') })
+                                        "Feed Title": item.feed.get('title'),
+                                        "Subscribed?": item.feed.get('subscribed') })
         };
     },
 
@@ -84,7 +86,8 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
                 this.showSubscribeModal({'source':'saved'});
             };
             mixpanel.track("Saved", { "Item Title": item.get('title'),
-                                      "Feed Title": item.feed.get('title') })
+                                      "Feed Title": item.feed.get('title'),
+                                      "Subscribed?": item.feed.get('subscribed') })
         } else {
             toast("Unsaved...", 3000)
         }

@@ -15,8 +15,10 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
 
     markAllAsRead: function() {
         var unread = this.collection.where({unread: true});
+        mixpanel.track("Marked all as read");
         unread.forEach(function(model) {
             model.save({unread: false});
+            mixpanel.people.increment("items read");
         });
         this.model.set({unread_count: 0});
     },
@@ -45,8 +47,11 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
         var itemCards = [];
         user = this.user;
         this.collection.models.forEach(function(item) {
-            var itemCardView = new Sourcemash.Views.ItemCardView({el: "#item-" + item.get('id'), model: item, user: user });
-            itemCards.push(itemCardView)
+            var itemCardViewTwoCol = new Sourcemash.Views.ItemCardView({el: "#item-" + item.get('id') + "-twocol", model: item, user: user });
+            itemCards.push(itemCardViewTwoCol);
+
+            var itemCardViewOneCol = new Sourcemash.Views.ItemCardView({el: "#item-" + item.get('id') + "-onecol", model: item, user: user });
+            itemCards.push(itemCardViewOneCol);
         });
 
         this.itemViews = itemCards;
