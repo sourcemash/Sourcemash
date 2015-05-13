@@ -1,7 +1,6 @@
 from sourcemash.database import db
 
-from sourcemash.models import Item, Feed
-from categorize import Categorizer
+from sourcemash.models import Item
 
 from datetime import datetime
 
@@ -16,29 +15,6 @@ import logging
 logger = logging.getLogger('Sourcemash')
 
 SOURCEMASH_LOGO_URL = "http://sourcemash.com/static/img/solologo.svg"
-
-
-def scrape_and_categorize_articles():
-    categorizer = Categorizer()
-
-    # Pull down all articles from RSS feeds
-    for feed in Feed.query.all():
-        scrape_feed_articles(feed)
-
-    for item in Item.query.filter_by(categorized=False).all():
-        soup = BeautifulSoup(item.text)
-
-        # Extract text and categorize item
-        text_only = soup.get_text()
-        categories = categorizer.categorize_item(item.title, text_only)
-        for category in categories:
-            item.categories.append(category)
-
-        item.categorized = True
-
-        db.session.commit()
-
-        logger.info("CATEGORIZED [%s]: %s" % (item.title, item.categories))
 
 
 def scrape_feed_articles(feed):
@@ -61,6 +37,23 @@ def scrape_feed_articles(feed):
             except:
                 item.image_url = SOURCEMASH_LOGO_URL
                 db.session.commit()
+
+
+def categorize_feed_articles(feed, categorizer):
+    for item in Item.query.filter_by(categorized=False).all():
+        soup = BeautifulSoup(item.text)
+
+        # Extract text and categorize item
+        text_only = soup.get_text()
+        categories = categorizer.categorize_item(item.title, text_only)
+        for category in categories:
+            item.categories.append(category)
+
+        item.categorized = True
+
+        db.session.commit()
+
+        logger.info("CATEGORIZED [%s]: %s" % (item.title, item.categories))
 
 
 def _get_full_text(url):

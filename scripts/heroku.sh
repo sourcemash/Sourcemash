@@ -1,3 +1,3 @@
 gunicorn sourcemash:create_app\(\) --daemon
 python manage.py worker &
-python manage.py scrape
+python manage.py scrape_loop

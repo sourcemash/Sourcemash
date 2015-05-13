@@ -14,7 +14,8 @@ from sourcemash.database import db
 from sourcemash.models import User, Feed, Item, Category, UserItem
 
 from worker import create_worker
-from worker.scraper import scrape_and_categorize_articles
+from worker.categorize import Categorizer
+from worker.scraper import scrape_feed_articles, categorize_feed_articles
 
 from datetime import datetime
 import json
@@ -23,6 +24,7 @@ app = create_app(os.environ.get("APP_CONFIG_FILE") or "development")
 conn = create_worker(os.environ.get("APP_CONFIG_FILE") or "development")
 
 manager = Manager(app)
+categorizer = Categorizer()
 
 TEST_CMD = "sh ./scripts/test.sh"
 FUNCTIONAL_TEST_CMD = "sh ./scripts/functional_test.sh"
@@ -50,17 +52,25 @@ def test(all=False):
 
 
 @manager.command
-def scrape(noqueue=False):
+def scrape():
+    """Runs one live scrape of all feeds."""
+
+    for feed in Feed.query.all():
+        scrape_feed_articles(feed)
+        categorize_feed_articles(feed, categorizer)
+
+
+@manager.command
+def scrape_loop():
     """Start an infinte loop to scrape & categorize articles."""
 
-    if noqueue:
-        scrape_and_categorize_articles()
+    q = Queue('default', connection=conn)
+    while True:
 
-    else:
-        q = Queue('default', connection=conn)
-        while True:
-            job = q.enqueue_call(func=scrape_and_categorize_articles, timeout=1800)
-            time.sleep(THIRTY_MINUTES)
+        for feed in Feed.query.all():
+            q.enqueue_call(func=categorize_feed_articles,
+                           args=(feed, categorizer,), timeout=1800)
+        time.sleep(THIRTY_MINUTES)
 
 
 @manager.command
