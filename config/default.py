@@ -33,6 +33,13 @@ SECURITY_EMAIL_SENDER = "support@sourcemash.com"
 # Email Server
 ADMINS = ['admin@sourcemash.com', 'support@sourcemash.com']
 
+MAIL_SERVER = 'mail.privateemail.com'
+MAIL_PORT = 465
+MAIL_USE_TLS = False
+MAIL_USE_SSL = True
+MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+
 logging.basicConfig(level=logging.WARNING)
 
 logging.getLogger("requests").setLevel(logging.WARNING)

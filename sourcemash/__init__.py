@@ -33,7 +33,8 @@ def create_app(env=None):
     from sourcemash.mail import mail
     mail.init_app(app)
 
-    from sourcemash.security import user_datastore, security, delay_security_email
+    from sourcemash.security import user_datastore, security
+    from sourcemash.security import delay_security_email
     security.init_app(app, user_datastore)
 
     state = app.extensions['security']
