@@ -375,7 +375,8 @@ class Categorizer:
             best_original_keywords = keyword_counts.most_common(2)
             best_keywords.update([keyword[0] for keyword in best_original_keywords])
 
-        return [keyword.title() for keyword in best_keywords]
+        return [keyword.title() for keyword in best_keywords
+                if not self._is_nested(keyword, best_keywords)]
 
     def _is_viable_candidate(self, phrase):
 
@@ -403,10 +404,17 @@ class Categorizer:
                 return False
 
             titled_words = map(lambda x: x.istitle(), words)
-            if titled_words not in [[True, False, True], [True, True,True]]:
+            if titled_words not in [[True, False, True], [True, True, True]]:
                 return False
 
         return True
+
+    def _is_nested(self, keyword, other_keywords):
+        for other_keyword in other_keywords:
+            if keyword != other_keyword and keyword in other_keyword:
+                return True
+
+        return False
 
     def _compile_sublinks(self, data, link_path=None):
         """Flatten normalized and redirect links for quick lookup"""

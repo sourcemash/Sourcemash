@@ -8,7 +8,7 @@ class TestCategorize:
     def test_categorize_item_through_Wikipedia(self, categorizer, ebolaItem):
         categories = categorizer.categorize_item(ebolaItem.title, ebolaItem.text)
         overlapping_categories = filter(lambda x: "Ebola" in x or "West Africa" in x, categories)
-        assert len(overlapping_categories) == 2
+        assert len(overlapping_categories) > 0
 
     def test_categorize_items_too_few_links(self, categorizer):
         articles = ["ZenPayroll"]
@@ -24,6 +24,11 @@ class TestCategorize:
         categorizer._memoized_article_links["Staples (office supplies)"] = ["pencil", "paperweight"]
 
         assert set(categorizer._assign_closest_articles(ngrams)) == set(["OfficeMax (Company)", "Staples (Company)"])
+
+    def test_best_keywords_ignores_nested(self, categorizer):
+        keywords = categorizer._get_best_keywords(None,
+                                                  ['Google', 'Google Maps'])
+        assert keywords == ['Google Maps']
 
     def test_get_valid_ngrams_apostrophe_s(self, categorizer):
         assert categorizer._get_valid_ngrams("Harry's").keys() == ["Harry"]
