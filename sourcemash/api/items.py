@@ -28,7 +28,7 @@ class getVote(fields.Raw):
 class getUnreadStatus(fields.Raw):
     def output(self, key, item):
         if not current_user.is_authenticated():
-            return False
+            return True
         return UserItem.query.filter_by(user=current_user, item=item, unread=False).count() == 0
 
 class getSavedStatus(fields.Raw):
