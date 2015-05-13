@@ -1,7 +1,7 @@
 from flask import redirect, url_for
 from flask.ext.admin import Admin
 from flask.ext.admin.contrib.sqla import ModelView
-from flask.ext.login import current_user
+from flask.ext.security import current_user
 from sourcemash.database import db
 from sourcemash.models import Feed
 
