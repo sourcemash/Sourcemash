@@ -21,7 +21,7 @@ from datetime import datetime
 import json
 
 app = create_app(os.environ.get("APP_CONFIG_FILE") or "development")
-conn = create_worker(os.environ.get("APP_CONFIG_FILE") or "development")
+conn = create_worker()
 
 manager = Manager(app)
 categorizer = Categorizer()

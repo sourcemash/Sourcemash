@@ -1,13 +1,15 @@
-import os
-import sys
 import pytest
+from rq import SimpleWorker, Queue
+from rq import push_connection, pop_connection
 
-from sqlalchemy.orm import Session, scoped_session, sessionmaker
 from sourcemash import create_app
+from worker import create_worker
 from sourcemash.database import db as _db
-from tests.factories import feed_factories, item_factories, role_factories, \
-                            category_factories, user_factories, user_item_factories, \
-                            user_feed_factories, user_category_factories
+from sourcemash.mail import mail
+from tests.factories import (feed_factories, item_factories, role_factories,
+                             category_factories, user_factories,
+                             user_item_factories, user_feed_factories,
+                             user_category_factories)
 
 
 @pytest.yield_fixture(scope='session')
@@ -74,3 +76,26 @@ def session(db, request):
 def test_client(app, request):
     with app.test_client() as client:
         yield client
+
+
+@pytest.yield_fixture()
+def connection(request):
+    push_connection(create_worker())
+    yield
+    pop_connection()
+
+
+@pytest.yield_fixture()
+def queue(connection, request):
+    yield Queue()
+
+
+@pytest.yield_fixture()
+def worker(queue, request):
+    yield SimpleWorker([queue])
+
+
+@pytest.yield_fixture()
+def outbox(request):
+    with mail.record_messages() as outbox:
+        yield outbox
