@@ -77,7 +77,10 @@ def _store_items(feed):
     logger.info("Starting to parse: %s" % feed.title)
 
     fp = feedparser.parse(feed.url)
+
+    feed.item_count = Feed.query.get(feed.id).items.count()
     new_item_count = 0
+
     for item in fp.entries:
         try:
             item_last_updated = datetime(*item.updated_parsed[:6])

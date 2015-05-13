@@ -27,11 +27,6 @@ class isSubscribed(fields.Raw):
         return feed in current_user.subscribed
 
 
-class getItemCount(fields.Raw):
-    def output(self, key, feed):
-        return feed.items.count()
-
-
 class getUnreadCount(fields.Raw):
     def output(self, key, feed):
         if not current_user.is_authenticated():
@@ -49,11 +44,11 @@ feed_fields = {
     'description': fields.String,
     'topic': fields.String,
     'image_url': fields.String,
+    'item_count': fields.Integer,
     'last_updated': fields.DateTime
 }
 
 feed_status_fields = {
-    'item_count': getItemCount,
     'unread_count': getUnreadCount
 }
 feed_status_fields = dict(feed_fields, **feed_status_fields)
