@@ -410,6 +410,11 @@ class Categorizer:
         return True
 
     def _is_nested(self, keyword, other_keywords):
+        '''
+        Check whether a keyword is already covered by a more specific one.
+        For example, "Google" is nested in "Google Maps." But "Google Maps" is
+        not nested in "Google."
+        '''
         for other_keyword in other_keywords:
             if keyword != other_keyword and keyword in other_keyword:
                 return True
