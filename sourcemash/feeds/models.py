@@ -10,6 +10,7 @@ class Feed(db.Model):
     last_updated = db.Column(db.DateTime)
     topic = db.Column(db.String(50))
     public = db.Column(db.Boolean, default=False)
+    item_count = db.Column(db.Integer, default=0)
 
     items = db.relationship('Item', backref='feed', lazy='dynamic')
 
