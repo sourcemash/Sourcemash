@@ -18,6 +18,7 @@ class TestItemAPI(TestBase):
         data = json.loads(r.data)
         assert data['item']['title'] == item.title
         assert data['item']['vote'] == 0
+        assert data['item']['unread'] == True
 
     def test_get_item_missing(self, test_client):
         r = test_client.get('/api/items/%d' % 10)
