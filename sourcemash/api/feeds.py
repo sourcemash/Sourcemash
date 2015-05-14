@@ -172,9 +172,9 @@ class FeedAPI(Resource):
         # Mark feed as Read
         if args.unread != None:
             try:
-                user_feed = UserFeed.query.filter_by(user=current_user, feed_id=id).one()
+                user_feed = UserFeed.query.filter_by(user=current_user, feed_id=feed.id).one()
             except:
-                user_feed = UserFeed(user=current_user, feed_id=id)
+                user_feed = UserFeed(user=current_user, feed_id=feed.id)
                 db.session.add(user_feed)
                 db.session.commit()
 

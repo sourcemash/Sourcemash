@@ -5,8 +5,8 @@ import pytest
 from sqlalchemy.orm import Session, scoped_session, sessionmaker
 from sourcemash import create_app
 from sourcemash.database import db as _db
-from tests.factories import feed_factories, item_factories, category_factories, \
-                            role_factories, user_factories, user_item_factories, \
+from tests.factories import feed_factories, item_factories, role_factories, \
+                            user_factories, user_item_factories, \
                             user_feed_factories, user_category_factories
 
 
@@ -52,7 +52,6 @@ def session(db, request):
     feed_factories.TechCrunchFeedFactory._meta.sqlalchemy_session = session
     user_factories.UserFactory._meta.sqlalchemy_session = session
     item_factories.ItemFactory._meta.sqlalchemy_session = session
-    category_factories.CategoryFactory._meta.sqlalchemy_session = session
     user_item_factories.UserItemFactory._meta.sqlalchemy_session = session
     user_item_factories.UserItemUpvoteFactory._meta.sqlalchemy_session = session
     user_item_factories.UserItemDownvoteFactory._meta.sqlalchemy_session = session
