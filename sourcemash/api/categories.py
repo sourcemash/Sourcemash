@@ -9,9 +9,6 @@ from sqlalchemy import func
 
 class isUnread(fields.Raw):
     def output(self, key, category):
-        if not current_user.is_authenticated():
-            return True
-
         try:
             unread = UserCategory.query.filter_by(user=current_user, category_id=category.id).one().unread
         except:
@@ -83,11 +80,6 @@ class CategoryListAPI(Resource):
         for category, count in categories:
 
             category.item_count = count
-
-            try:
-                category.unread = UserCategory.query.filter_by(user=current_user, category_id=category.id).one().unread
-            except:
-                category.unread = True
 
             unsubscribed_item = Item.query.filter(Item.cats.contains(category)) \
                                           .filter(~Item.feed_id.in_(user_feed_ids)) \
