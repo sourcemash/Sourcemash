@@ -2,7 +2,7 @@ from . import api, login_required
 from flask.ext.restful import Resource, marshal, fields
 from flask.ext.security import current_user
 
-from sourcemash.models import Item, Category, UserItem
+from sourcemash.models import Item, Category, UserItem, UserCategory
 
 from sqlalchemy import func
 

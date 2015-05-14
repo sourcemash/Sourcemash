@@ -8,7 +8,7 @@ from datetime import datetime
 import feedparser
 import json
 
-from sourcemash.models import Feed, UserItem, Item
+from sourcemash.models import Feed, Item, UserItem, UserFeed
 
 from rq import Queue
 from worker import create_worker
@@ -27,14 +27,17 @@ class isSubscribed(fields.Raw):
         return feed in current_user.subscribed
 
 
-class getUnreadCount(fields.Raw):
+class isUnread(fields.Raw):
     def output(self, key, feed):
         if not current_user.is_authenticated():
-            return 0
+            return True
 
-        total_item_count = feed.item_count
-        read_item_count = UserItem.query.filter_by(user=current_user, feed_id=feed.id, unread=False).count()
-        return total_item_count - read_item_count
+        try:
+            unread = UserFeed.query.filter_by(user=current_user, feed_id=feed.id).one().unread
+        except:
+            unread = True
+
+        return unread
 
 feed_fields = {
     'id': fields.Integer,
@@ -49,7 +52,7 @@ feed_fields = {
 }
 
 feed_status_fields = {
-    'unread_count': getUnreadCount
+    'unread': isUnread
 }
 feed_status_fields = dict(feed_fields, **feed_status_fields)
 
@@ -136,6 +139,7 @@ class FeedAPI(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('subscribed', type = inputs.boolean)
+        self.reqparse.add_argument('unread', type = inputs.boolean)
         super(FeedAPI, self).__init__()
 
     def get(self, id):
@@ -165,7 +169,20 @@ class FeedAPI(Resource):
                 except:
                     return {"errors": {"subscribed": ["You are already unsubscribed."]}}, 409
 
-        return {'feed': marshal(feed, feed_fields)}
+        # Mark feed as Read
+        if args.unread != None:
+            try:
+                user_feed = UserFeed.query.filter_by(user=current_user, feed_id=id).one()
+            except:
+                user_feed = UserFeed(user=current_user, feed_id=id)
+                db.session.add(user_feed)
+                db.session.commit()
+
+            # Toggle unread status
+            user_feed.unread = args.unread
+            db.session.commit()
+
+        return {'feed': marshal(feed, feed_status_fields)}
 
 api.add_resource(FeedListAPI, '/feeds', endpoint='feeds')
 api.add_resource(FeedListAllAPI, '/feeds/all', endpoint='feeds_all')
