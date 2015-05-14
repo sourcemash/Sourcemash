@@ -8,6 +8,8 @@ from sourcemash.models import Item, Category, UserItem, UserCategory
 from sqlalchemy import func
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
+MIN_ITEM_COUNT = 1
+
 class isUnread(fields.Raw):
     def output(self, key, category):
         try:
@@ -26,11 +28,6 @@ category_status_fields = {
   'unread': isUnread
 }
 category_status_fields = dict(category_fields, **category_status_fields)
-
-category_status_count_fields = {
-  'item_count': fields.Integer,
-}
-category_status_count_fields = dict(category_status_fields, **category_status_count_fields)
 
 class CategoryAPI(Resource):
 
@@ -83,15 +80,12 @@ class CategoryListAPI(Resource):
 
         for category, count in categories:
 
-            category.item_count = count
-
-            unsubscribed_item = Item.query.filter(Item.cats.contains(category)) \
+            if count > MIN_ITEM_COUNT:
+                unsubscribed_item = Item.query.filter(Item.cats.contains(category)) \
                                           .filter(~Item.feed_id.in_(user_feed_ids)) \
                                           .first()
-            if unsubscribed_item:
-                category.item_count += 1
 
-        return {'categories': [marshal(category, category_status_count_fields) for category, count in categories]}
+        return {'categories': [marshal(category, category_status_fields) for category, count in categories if count > MIN_ITEM_COUNT]}
 
 
 class CategoryListAllAPI(Resource):

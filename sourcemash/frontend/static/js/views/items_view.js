@@ -15,19 +15,21 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
     },
 
     markAllAsRead: function() {
-        this.stopListening(this.collection, 'change:unread');
-        this.model.save({unread: false});
-
         var unread = this.collection.where({unread: true});
-        mixpanel.track("Marked all as read");
-        unread.forEach(function(model) {
-            model.save({unread: false});
-            mixpanel.people.increment("items read");
-        });
+        if (unread.length > 0) {
+            this.stopListening(this.collection, 'change:unread');
+            this.model.save({unread: false});
+
+            mixpanel.track("Marked all as read");
+            unread.forEach(function(model) {
+                model.save({unread: false});
+                mixpanel.people.increment("items read");
+            });
+        };
     },
 
     updateReadStatus: function() {
-        if (this.collection.where({unread: true}).length == 0) {
+        if (this.collection.length > 0 && this.collection.where({unread: true}).length == 0) {
             this.model.save({unread: false});
         };
     },
@@ -65,9 +67,7 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
         });
 
         this.itemViews = itemCards;
-        if (this.itemViews.length > 0) {
-            this.updateReadStatus();
-        };
+        this.updateReadStatus();
         return this;
     },
 
