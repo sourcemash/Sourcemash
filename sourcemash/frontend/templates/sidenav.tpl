@@ -65,7 +65,7 @@
       <a href="/#browse"><li class="collection-item"><i class="mdi-action-view-module"></i>Browse</li></a>
       <a href="/#saved"><li class="collection-item"><i class="mdi-action-bookmark"></i>Saved</li></a>
       <a href="/#profile"><li class="collection-item"><i class="mdi-social-person"></i>Profile</li></a>
-      <% if (current_user.get('email')) { %>
+      <% if (current_user.get('email') === "admin@sourcemash.com") { %>
         <a href="/admin"><li class="collection-item"><i class="mdi-action-account-child"></i>Admin</li></a>
       <% }; %>
       <a href="/logout"><li class="collection-item"><i class="mdi-action-exit-to-app"></i>Logout</li></a>
