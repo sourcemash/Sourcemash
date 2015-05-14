@@ -5,7 +5,7 @@
   <ul class="browse-feeds">
     <div class="col s12">
       <% if (models.length == 0) { %>
-        <p>Feeds you add will be added to the Mash category!
+        <p>Feeds you add will be added to the "Custom" category!
       <% } else { %>
         <% models.forEach(function(model) { %>
           <div id="feed-card-<%= model.get('id') %>" class="feed-card"></div>
