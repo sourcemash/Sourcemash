@@ -58,7 +58,7 @@ class CategoryAPI(Resource):
             user_category.unread = args.unread
             db.session.commit()
 
-        return {'category': marshal(category, category_status_fields)}
+        return {'category': marshal(category, category_fields)}
 
 class CategoryListAPI(Resource):
 

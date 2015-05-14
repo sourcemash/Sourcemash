@@ -3,6 +3,7 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
         if (this.model) {
             this.listenTo(this.model, 'change:subscribed change:title', this.render);
         };
+        this.listenTo(this.collection, 'change:unread', this.updateReadStatus);
 
         this.user = options.user;
         this.itemViews = [];
@@ -14,13 +15,21 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
     },
 
     markAllAsRead: function() {
+        this.stopListening(this.collection, 'change:unread');
+        this.model.save({unread: false});
+
         var unread = this.collection.where({unread: true});
         mixpanel.track("Marked all as read");
         unread.forEach(function(model) {
             model.save({unread: false});
             mixpanel.people.increment("items read");
         });
-        this.model.set({unread_count: 0});
+    },
+
+    updateReadStatus: function() {
+        if (this.collection.where({unread: true}).length == 0) {
+            this.model.save({unread: false});
+        };
     },
 
     render: function() {
@@ -56,6 +65,9 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
         });
 
         this.itemViews = itemCards;
+        if (this.itemViews.length > 0) {
+            this.updateReadStatus();
+        };
         return this;
     },
 

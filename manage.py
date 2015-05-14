@@ -11,7 +11,7 @@ from rq import Worker, Queue, Connection
 
 from sourcemash import create_app
 from sourcemash.database import db
-from sourcemash.models import User, Feed, Item, Category, UserItem
+from sourcemash.models import User, Feed, Item, Category, UserItem, UserFeed, UserCategory
 
 from worker import create_worker
 from worker.categorize import Categorizer
@@ -37,7 +37,8 @@ def _make_context():
     """Return context dict for a shell session so you can access
     app, db, and the User model by default."""
     return {'app': app, 'db': db, 'User': User, 'Item': Item,
-            'Category': Category, 'Feed': Feed, 'UserItem': UserItem}
+            'Category': Category, 'Feed': Feed, 'UserItem': UserItem,
+            'UserFeed': UserFeed, 'UserCategory': UserCategory}
 
 
 @manager.command
