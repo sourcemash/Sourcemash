@@ -82,7 +82,7 @@ class FeedListAPI(Resource):
         rss_feed = feedparser.parse(args.url)
 
         if rss_feed['bozo'] == 1:
-            return {"errors": {"url": ["URL is not a valid feed"]}}, 422
+            return {"errors": {"url": ["URL is not a valid RSS feed"]}}, 422
 
         with open(BAD_WORDS_FILE) as data_file:
             data = json.load(data_file)

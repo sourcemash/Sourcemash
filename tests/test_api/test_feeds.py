@@ -168,7 +168,7 @@ class TestFeedListAPI(TestBase):
 
         data = json.loads(r.data)
         assert len(data['errors']['url']) == 1
-        assert 'not a valid feed' in data['errors']['url'][0]
+        assert 'not a valid RSS feed' in data['errors']['url'][0]
 
     def test_post_subscription_nonRSS_feed_url(self, test_client, user):
         self.login(test_client, user.email, user.password)
@@ -181,7 +181,7 @@ class TestFeedListAPI(TestBase):
 
         data = json.loads(r.data)
         assert len(data['errors']['url']) == 1
-        assert 'not a valid feed' in data['errors']['url'][0]
+        assert 'not a valid RSS feed' in data['errors']['url'][0]
 
     def test_post_inappropriate_feed_details(self, test_client, user):
         self.login(test_client, user.email, user.password)
