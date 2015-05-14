@@ -22,11 +22,14 @@ category_fields = {
 }
 
 category_status_fields = {
-  'item_count': fields.Integer,
   'unread': isUnread
 }
 category_status_fields = dict(category_fields, **category_status_fields)
 
+category_status_count_fields = {
+  'item_count': fields.Integer,
+}
+category_status_count_fields = dict(category_status_fields, **category_status_count_fields)
 
 class CategoryAPI(Resource):
 
@@ -58,7 +61,7 @@ class CategoryAPI(Resource):
             user_category.unread = args.unread
             db.session.commit()
 
-        return {'category': marshal(category, category_fields)}
+        return {'category': marshal(category, category_status_fields)}
 
 class CategoryListAPI(Resource):
 
@@ -87,7 +90,7 @@ class CategoryListAPI(Resource):
             if unsubscribed_item:
                 category.item_count += 1
 
-        return {'categories': [marshal(category, category_status_fields) for category, count in categories]}
+        return {'categories': [marshal(category, category_status_count_fields) for category, count in categories]}
 
 
 class CategoryListAllAPI(Resource):
