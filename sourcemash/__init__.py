@@ -39,4 +39,8 @@ def create_app(env=None):
 	app.register_blueprint(frontend.bp)
 	assets.init_app(app)
 
+	# Admin Panel
+	from sourcemash.admin import admin
+	admin.init_app(app)
+
 	return app
