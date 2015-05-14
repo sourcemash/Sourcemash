@@ -4,7 +4,7 @@ Sourcemash.Collections.Categories = Backbone.Collection.extend({
 	  parse: function(response) {
 	  	return response.categories;
 	  },
-	  comparator: function(item) {
-	  	return [!item.get('unread'), item.get('name')]
+	  comparator: function(category) {
+	  	return [!category.get('unread'), category.get('name')]
 	  }
 });
