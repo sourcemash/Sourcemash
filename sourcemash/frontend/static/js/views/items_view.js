@@ -28,6 +28,7 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
 
         // Render parent view
         this.$el.html(this.template({ model: this.model, items: this.collection.models }));
+        this.$('.tooltipped').tooltip({delay: 50});
 
         // Render subscribe modal view
         this.subscribeModalView = new Sourcemash.Views.SubscribeModalView({ collection: this.collection });
