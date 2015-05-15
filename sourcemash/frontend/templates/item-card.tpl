@@ -18,7 +18,7 @@
     <span class="card-title grey-text text-darken-4">
       <i class="mdi-navigation-close right"></i>
     </span>
-    <p class="flow-text"><a href="<%= item.get('link') %>" target="_blank"><%= item.get('title') %></a></p>
+    <p class="flow-text"><a href="<%= item.get('link') %>"><%= item.get('title') %></a></p>
     <p class="flow-text"><%= item.get('author') %></p>
     <p class="flow-text summary"><%= item.get('summary')%></p>
   </div>
