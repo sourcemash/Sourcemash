@@ -2,7 +2,7 @@
   <div class="row valign-wrapper">
       <h2 class="col s8 m9"><%= model.get('title') %></h2>
 
-      <span title="Mark as Read" class="mark-all-read col s2 m1"><i class="medium mdi-action-done-all tooltipped" data-position="bottom" data-tooltip="Mark All as Read"></i></span>
+      <span class="mark-all-read col s2 m1"><i class="medium mdi-action-done-all tooltipped" data-position="bottom" data-tooltip="Mark All as Read"></i></span>
       <span class="switch subscribe-switch col s2 valign"></span>
   </div>
 
