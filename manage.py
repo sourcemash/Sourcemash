@@ -68,6 +68,10 @@ def scrape_loop():
     while True:
 
         for feed in Feed.query.all():
+            q.enqueue_call(func=scrape_feed_articles,
+                           args=(feed,), timeout=1800)
+
+        for feed in Feed.query.all():
             q.enqueue_call(func=categorize_feed_articles,
                            args=(feed, categorizer,), timeout=1800)
         time.sleep(THIRTY_MINUTES)
@@ -108,7 +112,8 @@ def feed_seed():
                     db.session.commit()
 
     # Scrape articles for feed
-    scrape_and_categorize_articles()
+    scrape_feed_articles(feed)
+    categorize_feed_articles(feed, categorizer)
 
 
 @manager.command
@@ -160,7 +165,8 @@ def seed():
         db.session.commit()
 
     # Scrape articles for feed
-    scrape_and_categorize_articles()
+    scrape_feed_articles(feed)
+    categorize_feed_articles(feed, categorizer)
 
 manager.add_command('server', Server())
 manager.add_command('shell', Shell(make_context=_make_context))
