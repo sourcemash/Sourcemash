@@ -52,6 +52,7 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
 
             var itemCardViewOneCol = new Sourcemash.Views.ItemCardView({el: "#item-" + item.get('id') + "-onecol", model: item, user: user });
             itemCards.push(itemCardViewOneCol);
+            $(".card-reveal a").attr("target","_blank");
         });
 
         this.itemViews = itemCards;
