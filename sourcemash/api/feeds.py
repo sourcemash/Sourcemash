@@ -15,7 +15,7 @@ from worker import create_worker
 from worker.scraper import scrape_feed_articles
 
 REDIS_CONNECTION = create_worker()
-MASH_TOPIC = "Mash"
+MASH_TOPIC = "Custom"
 BAD_WORDS_FILE = "./json/bad_words.json"    # From jared-mess/profanity-filter
 
 

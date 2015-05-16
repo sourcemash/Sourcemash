@@ -87,4 +87,4 @@ Sourcemash.Views.BrowseView = Backbone.View.extend({
     };
   }
 
-}, {FEED_TOPICS: ['Technology', 'Business', 'Food', 'World', 'Gaming', 'Fashion', 'Photography', 'Comics', 'Science', 'Finance', 'Mash']});
+}, {FEED_TOPICS: ['Custom', 'Technology', 'Business', 'Food', 'World', 'Gaming', 'Fashion', 'Photography', 'Comics', 'Science', 'Finance']});
