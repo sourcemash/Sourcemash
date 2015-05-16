@@ -70,6 +70,7 @@
       <% }; %>
       <a href="/logout"><li class="collection-item"><i class="mdi-action-exit-to-app"></i>Logout</li></a>
     </ul>
+    <p class="valign-wrapper"><a href="/#profile" class="red-text text-darken-2"><%= current_user.get('email') %></a></p>
   <% } else { %>
     <form id="login">
       <div class="input-field">
