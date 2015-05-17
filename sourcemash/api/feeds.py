@@ -48,14 +48,9 @@ feed_fields = {
     'description': fields.String,
     'topic': fields.String,
     'image_url': fields.String,
-    'last_updated': fields.DateTime
-}
-
-feed_status_fields = {
+    'last_updated': fields.DateTime,
     'unread': isUnread
 }
-feed_status_fields = dict(feed_fields, **feed_status_fields)
-
 
 class FeedListAPI(Resource):
 
@@ -67,7 +62,7 @@ class FeedListAPI(Resource):
 
     @login_required
     def get(self):
-        return {'feeds': [marshal(feed, feed_status_fields)
+        return {'feeds': [marshal(feed, feed_fields)
                 for feed in current_user.subscribed]}
 
 
@@ -120,7 +115,7 @@ class FeedListAPI(Resource):
             current_user.subscribed.append(feed)
             db.session.commit()
 
-        return marshal(feed, feed_status_fields), 201
+        return marshal(feed, feed_fields), 201
 
 
 class FeedListAllAPI(Resource):
@@ -131,7 +126,7 @@ class FeedListAllAPI(Resource):
         if current_user.is_authenticated():
             feeds += current_user.subscribed.filter(Feed.public==False).all()
 
-        return {'feeds': [marshal(feed, feed_status_fields) for feed in feeds]}
+        return {'feeds': [marshal(feed, feed_fields) for feed in feeds]}
 
 
 class FeedAPI(Resource):
@@ -182,7 +177,7 @@ class FeedAPI(Resource):
             user_feed.unread = args.unread
             db.session.commit()
 
-        return {'feed': marshal(feed, feed_status_fields)}
+        return {'feed': marshal(feed, feed_fieldsg)}
 
 api.add_resource(FeedListAPI, '/feeds', endpoint='feeds')
 api.add_resource(FeedListAllAPI, '/feeds/all', endpoint='feeds_all')
