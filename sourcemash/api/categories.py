@@ -78,13 +78,6 @@ class CategoryListAPI(Resource):
                              .group_by(Category.id) \
                              .all()
 
-        for category, count in categories:
-
-            if count > MIN_ITEM_COUNT:
-                unsubscribed_item = Item.query.filter(Item.cats.contains(category)) \
-                                          .filter(~Item.feed_id.in_(user_feed_ids)) \
-                                          .first()
-
         return {'categories': [marshal(category, category_status_fields) for category, count in categories if count > MIN_ITEM_COUNT]}
 
 
