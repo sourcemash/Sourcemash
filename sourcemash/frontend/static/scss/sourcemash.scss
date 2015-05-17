@@ -366,6 +366,10 @@ a.button-collapse.top-nav {
     .activator {
         cursor: pointer;
     }
+    img[width*="1px"] {
+      display: none;
+    }
+
 }
 
 .item-card {
