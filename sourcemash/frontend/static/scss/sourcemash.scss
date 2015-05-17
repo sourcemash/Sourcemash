@@ -186,7 +186,7 @@ div.side-nav {
 
 .new-items-badge {
   i {
-    color: #D32F2F;
+    @extend .red-text.text-darken-2
   }
 }
 
