@@ -83,7 +83,7 @@ def worker(kill=False):
     """Starts redis queue worker. Requires redis-server"""
     """To run (in background): 'redis-server &'
        To kill: 'redis-cli shutdown' """
-    listen = ['default']
+    listen = ['scrape', 'email']
 
     with Connection(conn):
         worker = Worker(map(Queue, listen))

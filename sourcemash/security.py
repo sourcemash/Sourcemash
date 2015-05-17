@@ -11,6 +11,6 @@ REDIS_CONNECTION = create_worker()
 
 
 def delay_security_email(msg):
-    q = Queue('default', connection=REDIS_CONNECTION)
+    q = Queue('email', connection=REDIS_CONNECTION)
     q.enqueue_call(func=send_security_email, args=(msg,),
                    at_front=True, timeout=600)

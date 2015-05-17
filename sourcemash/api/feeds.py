@@ -101,7 +101,7 @@ class FeedListAPI(Resource):
 
             # Scrape feed (but don't fail if redis-server is down)
             try:
-                q = Queue('default', connection=REDIS_CONNECTION)
+                q = Queue('scrape', connection=REDIS_CONNECTION)
                 job = q.enqueue_call(func=scrape_feed_articles, args=(feed,),
                                      at_front=True, timeout=600)
             except:

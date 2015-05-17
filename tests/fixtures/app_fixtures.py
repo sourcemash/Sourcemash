@@ -86,13 +86,10 @@ def connection(request):
 
 
 @pytest.yield_fixture()
-def queue(connection, request):
-    yield Queue()
-
-
-@pytest.yield_fixture()
-def worker(queue, request):
-    yield SimpleWorker([queue])
+def worker(connection, request):
+    email = Queue('email')
+    scrape = Queue('scrape')
+    yield SimpleWorker([email, scrape])
 
 
 @pytest.yield_fixture()
