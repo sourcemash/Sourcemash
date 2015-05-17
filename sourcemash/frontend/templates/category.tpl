@@ -2,7 +2,7 @@
   <div class="row valign-wrapper">
       <h2 class="col s11"><%= model.get('name') %></h2>
 
-      <span title="Mark as Read" class="mark-all-read col s1"><i class="medium mdi-action-done-all"></i></span>
+      <span class="mark-all-read col s1"><i class="medium mdi-action-done-all tooltipped" data-position="bottom" data-tooltip="Mark All as Read"></i></span>
   </div>
 
   <div class="loading center-align"></div>
