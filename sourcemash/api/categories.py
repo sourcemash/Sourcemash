@@ -12,6 +12,9 @@ MIN_ITEM_COUNT = 1
 
 class isUnread(fields.Raw):
     def output(self, key, category):
+        if not current_user.is_authenticated():
+            return True
+
         try:
             unread = UserCategory.query.filter_by(user=current_user, category_id=category.id).one().unread
         except NoResultFound:
