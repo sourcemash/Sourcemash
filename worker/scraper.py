@@ -21,11 +21,6 @@ SOURCEMASH_LOGO_URL = "http://sourcemash.com/static/img/solologo.svg"
 def scrape_feed_articles(feed):
     _store_items(feed)
 
-    # Mark feed as unread for all users
-    for user_feed in UserFeed.query.filter_by(feed_id=feed.id).all():
-        user_feed.unread = True
-        db.session.commit()
-
     for item in Item.query.filter_by(feed_id=feed.id).all():
 
         # Extract first image from item
@@ -121,6 +116,12 @@ def _store_items(feed):
 
     feed.item_count += new_item_count
     db.session.commit()
+
+    # Mark feed as unread for all users
+    if new_item_count > 0:
+        for user_feed in UserFeed.query.filter_by(feed_id=feed.id).all():
+            user_feed.unread = True
+            db.session.commit()
 
     if not feed.image_url:
         try:
