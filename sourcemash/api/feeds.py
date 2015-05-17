@@ -48,7 +48,6 @@ feed_fields = {
     'description': fields.String,
     'topic': fields.String,
     'image_url': fields.String,
-    'item_count': fields.Integer,
     'last_updated': fields.DateTime
 }
 
