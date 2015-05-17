@@ -28,11 +28,14 @@ The site was built for the CS98 course at Dartmouth College.
 
 ## Run Locally
 1. Start up a local server: ```python manage.py server```
-2. Start up the scraper: ```python manage.py scrape```
+2. In another terminal session, (optional)
+	1. Start up a redis server: ```redis-server &```
+	2. Start up an instance of the worker: ```python manage.py worker &```
+3. Start up the scraper: ```python manage.py scrape [--noqueue]```
 
 ## Tests
-* To run the basic unittests, run ```python manage.py tests```.
-* To include the functional tests, run ```python manage.py tests --all``` or ```python manage.py tests -a```.
+* To run the basic unittests, run ```python manage.py test```.
+* To include the functional tests, run ```python manage.py test --all``` or ```python manage.py test -a```.
 
 ## License
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or (at your option) any later version.
