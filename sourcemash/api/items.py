@@ -5,6 +5,7 @@ from flask.ext.restful import Resource, reqparse, inputs, fields, marshal
 from flask.ext.security import current_user
 from datetime import datetime, timedelta
 from sqlalchemy import func, desc
+from sqlalchemy.orm.exc import NoResultFound
 
 from feeds import feed_fields
 from categories import category_fields
@@ -20,7 +21,7 @@ class getVote(fields.Raw):
             return 0
         try:
             vote = UserItem.query.filter_by(user=current_user, item=item).one().vote
-        except:
+        except NoResultFound:
             vote = 0
 
         return vote
@@ -80,7 +81,7 @@ class ItemAPI(Resource):
         # Check vote column of user_items table
         try:
             user_item = UserItem.query.filter_by(user=current_user, item=item).one()
-        except:
+        except NoResultFound:
             user_item = UserItem(user=current_user, item=item, feed_id=item.feed_id)
             db.session.add(user_item)
             db.session.commit()

@@ -17,17 +17,14 @@
         <% if (current_user.get('email')) { %>
           <div class="loading center-align"></div>
           <% categories.each(function(category) { %>
-            <% if (category.get('item_count') > 1) { %>
-              <a href="/#categories/<%= category.get('id') %>">
-                <li class="row collection-item">
-                  <span class="col s7 truncate"><%= category.get('name') %></span>
-                  <span class="badge col s2"><%=category.get('item_count')%></span>
-                  <% if (category.get('unread_count') > 0) { %>
-                    <span class="new badge col s3"><%=category.get('unread_count')%></span>
-                  <% }; %>
-                </li>
-              </a>
-            <% }; %>
+            <a href="/#categories/<%= category.get('id') %>">
+              <li class="row collection-item">
+                <span class="col s10 truncate"><%= category.get('name') %></span>
+                <% if (category.get('unread')) { %>
+                  <div class="col s2 new-items-badge"><i class="mdi-image-brightness-1"></i></div>
+                <% }; %>
+              </li>
+            </a>
           <% }); %>
         <% } else { %>
           <a href="/#browse"><li class="row center-align collection-item">
@@ -41,10 +38,9 @@
           <div class="loading center-align"></div>
           <% feeds.where({subscribed: true}).forEach(function(feed) { %>
             <a href="/#feeds/<%= feed.get('id') %>"><li class="row collection-item">
-            <span class="col s7 truncate"><%= feed.get('title') %></span>
-            <span class="badge col s2"><%=feed.get('item_count')%></span>
-            <% if (feed.get('unread_count') > 0) { %>
-              <span class="new badge col s3"><%=feed.get('unread_count')%></span>
+            <span class="col s10 truncate"><%= feed.get('title') %></span>
+            <% if (feed.get('unread')) { %>
+                <div class="col s2 new-items-badge"><i class="mdi-image-brightness-1"></i></div>
             <% }; %>
             </li></a>
           <% }); %>

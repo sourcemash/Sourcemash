@@ -8,7 +8,8 @@ from datetime import datetime
 import feedparser
 import json
 
-from sourcemash.models import Feed, UserItem, Item
+from sourcemash.models import Feed, Item, UserItem, UserFeed
+from sqlalchemy.orm.exc import NoResultFound
 
 from rq import Queue
 from worker import create_worker
@@ -27,21 +28,17 @@ class isSubscribed(fields.Raw):
         return feed in current_user.subscribed
 
 
-class getItemCount(fields.Raw):
-    def output(self, key, feed):
-        return feed.items.count()
-
-
-class getUnreadCount(fields.Raw):
+class isUnread(fields.Raw):
     def output(self, key, feed):
         if not current_user.is_authenticated():
-            return 0
+            return True
 
-        total_item_count = Item.query.filter_by(feed_id=feed.id).count()
-        read_item_count = UserItem.query.filter_by(user=current_user,
-                                                   feed_id=feed.id,
-                                                   unread=False).count()
-        return total_item_count - read_item_count
+        try:
+            unread = UserFeed.query.filter_by(user=current_user, feed_id=feed.id).one().unread
+        except NoResultFound:
+            unread = True
+
+        return unread
 
 feed_fields = {
     'id': fields.Integer,
@@ -51,15 +48,9 @@ feed_fields = {
     'description': fields.String,
     'topic': fields.String,
     'image_url': fields.String,
-    'last_updated': fields.DateTime
+    'last_updated': fields.DateTime,
+    'unread': isUnread
 }
-
-feed_status_fields = {
-    'item_count': getItemCount,
-    'unread_count': getUnreadCount
-}
-feed_status_fields = dict(feed_fields, **feed_status_fields)
-
 
 class FeedListAPI(Resource):
 
@@ -71,7 +62,7 @@ class FeedListAPI(Resource):
 
     @login_required
     def get(self):
-        return {'feeds': [marshal(feed, feed_status_fields)
+        return {'feeds': [marshal(feed, feed_fields)
                 for feed in current_user.subscribed]}
 
 
@@ -96,7 +87,7 @@ class FeedListAPI(Resource):
         # Get or Create Feed
         try:
             feed = Feed.query.filter(Feed.url==rss_feed['url']).one()
-        except:
+        except NoResultFound:
 
             feed = Feed(title=rss_feed['feed']['title'],
                         url=rss_feed['url'],
@@ -120,11 +111,11 @@ class FeedListAPI(Resource):
         try:
             subscription = current_user.subscribed.filter(Feed.id==feed.id).one()
             return {"errors": {"url": ["Already subscribed"]}}, 409
-        except:
+        except NoResultFound:
             current_user.subscribed.append(feed)
             db.session.commit()
 
-        return marshal(feed, feed_status_fields), 201
+        return marshal(feed, feed_fields), 201
 
 
 class FeedListAllAPI(Resource):
@@ -135,7 +126,7 @@ class FeedListAllAPI(Resource):
         if current_user.is_authenticated():
             feeds += current_user.subscribed.filter(Feed.public==False).all()
 
-        return {'feeds': [marshal(feed, feed_status_fields) for feed in feeds]}
+        return {'feeds': [marshal(feed, feed_fields) for feed in feeds]}
 
 
 class FeedAPI(Resource):
@@ -143,6 +134,7 @@ class FeedAPI(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('subscribed', type = inputs.boolean)
+        self.reqparse.add_argument('unread', type = inputs.boolean)
         super(FeedAPI, self).__init__()
 
     def get(self, id):
@@ -161,7 +153,7 @@ class FeedAPI(Resource):
                 try:
                     subscription = current_user.subscribed.filter(Feed.id==feed.id).one()
                     return {"errors": {"subscribed": ["Already subscribed."]}}, 409
-                except:
+                except NoResultFound:
                     current_user.subscribed.append(feed)
                     db.session.commit()
             else:
@@ -169,8 +161,21 @@ class FeedAPI(Resource):
                     subscription = current_user.subscribed.filter(Feed.id==feed.id).one()
                     current_user.subscribed.remove(subscription)
                     db.session.commit()
-                except:
+                except NoResultFound:
                     return {"errors": {"subscribed": ["You are already unsubscribed."]}}, 409
+
+        # Mark feed as Read
+        if args.unread != None:
+            try:
+                user_feed = UserFeed.query.filter_by(user=current_user, feed_id=feed.id).one()
+            except NoResultFound:
+                user_feed = UserFeed(user=current_user, feed_id=feed.id)
+                db.session.add(user_feed)
+                db.session.commit()
+
+            # Toggle unread status
+            user_feed.unread = args.unread
+            db.session.commit()
 
         return {'feed': marshal(feed, feed_fields)}
 

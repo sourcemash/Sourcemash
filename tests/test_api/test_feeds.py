@@ -89,6 +89,28 @@ class TestFeedAPI(TestBase):
         check_valid_header_type(unsubscribe.headers)
         assert unsubscribe.status_code == 404
 
+    def test_put_new_feed_mark_read(self, test_client, user, feed):
+        self.login(test_client, user.email, user.password)
+
+        mark_read = dict(unread=False)
+        r = test_client.put('/api/feeds/%d' % feed.id, data=mark_read)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert data['feed']['unread'] == False
+
+    def test_put_existing_feed_mark_read(self, test_client, user_feed):
+        self.login(test_client, user_feed.user.email, user_feed.user.password)
+
+        mark_read = dict(unread=False)
+        r = test_client.put('/api/feeds/%d' % user_feed.feed.id, data=mark_read)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
+        data = json.loads(r.data)
+        assert data['feed']['unread'] == False
+
 
 class TestFeedListAllAPI(TestBase):
 

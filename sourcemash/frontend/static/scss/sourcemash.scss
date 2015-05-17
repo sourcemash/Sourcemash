@@ -184,6 +184,12 @@ div.side-nav {
   margin: 0;
 }
 
+.new-items-badge {
+  i {
+    @extend .red-text.text-darken-2
+  }
+}
+
 .user-auth {
   position: absolute;
   bottom: 0;

@@ -1,9 +1,10 @@
 from sourcemash.database import db
 
-from sourcemash.models import Item
+from sourcemash.models import Item, Feed, Category, UserFeed, UserCategory
 
 from datetime import datetime
 
+from sqlalchemy.orm.exc import NoResultFound
 from readability.readability import Document
 import requests
 from urlparse import urlparse
@@ -49,6 +50,14 @@ def categorize_feed_articles(feed, categorizer):
         for category in categories:
             item.categories.append(category)
 
+            # Mark category as unread for all users
+            try:
+                category_model = Category.query.filter_by(category=category).one()
+                UserCategory.query.filter_by(category=category_model).update({"unread": True})
+                db.session.commit()
+            except NoResultFound:
+                pass
+
         item.categorized = True
 
         db.session.commit()
@@ -77,6 +86,10 @@ def _store_items(feed):
     logger.info("Starting to parse: %s" % feed.title)
 
     fp = feedparser.parse(feed.url)
+
+    feed.item_count = Feed.query.get(feed.id).items.count()
+    new_item_count = 0
+
     for item in fp.entries:
         try:
             item_last_updated = datetime(*item.updated_parsed[:6])
@@ -96,6 +109,16 @@ def _store_items(feed):
                             summary=getattr(item, 'summary', None), feed_id=feed.id)
 
         db.session.add(new_entry)
+        db.session.commit()
+
+        new_item_count += 1
+
+    feed.item_count += new_item_count
+    db.session.commit()
+
+    # Mark feed as unread for all users
+    if new_item_count > 0:
+        UserFeed.query.filter_by(feed_id=feed.id).update({"unread": True})
         db.session.commit()
 
     if not feed.image_url:

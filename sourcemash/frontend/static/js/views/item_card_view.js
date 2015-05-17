@@ -60,11 +60,6 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
 		this.model.save({unread: false},
                         {success: _.bind(this.openCard, this)});
 
-        this.model.feed.set({unread_count: this.model.feed.get('unread_count') - 1});
-        this.model.categories.each(function (model) {
-            model.set({unread_count: model.get('unread_count') - 1});
-        });
-
         if (this.model.changedAttributes()) {
             mixpanel.people.increment("items read")
         }
@@ -98,14 +93,7 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
     },
 
     render: function() {
-        var shownCategories;
-        if (this.user.get('email')) {
-            shownCategories = this.model.categories.filter(function(category) {
-              return category.get("item_count") > 1;
-            }).slice(0, Sourcemash.Views.ItemCardView.MAX_CATEGORIES_SHOWN);
-        } else {
-            shownCategories = this.model.categories.first(Sourcemash.Views.ItemCardView.MAX_CATEGORIES_SHOWN);
-        }
+        var shownCategories = this.model.categories.first(Sourcemash.Views.ItemCardView.MAX_CATEGORIES_SHOWN);
 
         this.$el.html(this.template({ item: this.model, categories: shownCategories }));
         this.$(".card-reveal a").attr("target","_blank");

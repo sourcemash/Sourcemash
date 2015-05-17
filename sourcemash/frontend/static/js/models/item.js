@@ -22,7 +22,6 @@ Sourcemash.Models.Item = Backbone.Model.extend({
             } else {
                 var newCategory = new Sourcemash.Models.Category({id: category.id, name: category.name});
                 this.categories.add(newCategory);
-                options.categories.add(newCategory);
             };
         }, this);
     }
