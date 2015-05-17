@@ -58,7 +58,8 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
 
 	markRead: function() {
 		this.model.save({unread: false},
-                        {success: _.bind(this.openCard, this)});
+                        {success: _.bind(this.openCard, this),
+                         error: _.bind(this.openCard, this)});
 
         this.model.feed.set({unread_count: this.model.feed.get('unread_count') - 1});
         this.model.categories.each(function (model) {
