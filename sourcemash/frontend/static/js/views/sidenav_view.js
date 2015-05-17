@@ -59,6 +59,7 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
     var content = this.template({active: activeTab, current_user: this.user, feeds: this.feeds,
                                  categories: this.categories});
     this.$el.html(content);
+    this.$('.tooltipped').tooltip({delay: 50});
 
     // Render loading view
     this.loadingView = new Sourcemash.Views.LoadingView({loading: this.loading});

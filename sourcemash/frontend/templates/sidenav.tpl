@@ -21,7 +21,7 @@
               <li class="row collection-item">
                 <span class="col s10 truncate"><%= category.get('name') %></span>
                 <% if (category.get('unread')) { %>
-                  <div class="col s2 new-items-badge"><i class="mdi-image-brightness-1"></i></div>
+                  <div class="col s2 new-items-badge"><i class="mdi-image-brightness-1 tooltipped" data-position="right" data-tooltip="Unread Category!"></i></div>
                 <% }; %>
               </li>
             </a>
@@ -40,7 +40,7 @@
             <a href="/#feeds/<%= feed.get('id') %>"><li class="row collection-item">
             <span class="col s10 truncate"><%= feed.get('title') %></span>
             <% if (feed.get('unread')) { %>
-                <div class="col s2 new-items-badge"><i class="mdi-image-brightness-1"></i></div>
+                <div class="col s2 new-items-badge"><i class="mdi-image-brightness-1 tooltipped" data-position="right" data-tooltip="Unread Feed!"></i></div>
             <% }; %>
             </li></a>
           <% }); %>
