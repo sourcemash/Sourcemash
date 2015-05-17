@@ -3,7 +3,7 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
         if (this.model) {
             this.listenTo(this.model, 'change:subscribed change:title', this.render);
         };
-        this.listenTo(this.collection, 'change:unread', this.updateReadStatus);
+        this.listenTo(this.collection, 'sync change:unread', this.updateReadStatus);
 
         this.user = options.user;
         this.itemViews = [];
@@ -69,7 +69,6 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
         });
 
         this.itemViews = itemCards;
-        this.updateReadStatus();
         return this;
     },
 
