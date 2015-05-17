@@ -177,7 +177,7 @@ class FeedAPI(Resource):
             user_feed.unread = args.unread
             db.session.commit()
 
-        return {'feed': marshal(feed, feed_fieldsg)}
+        return {'feed': marshal(feed, feed_fields)}
 
 api.add_resource(FeedListAPI, '/feeds', endpoint='feeds')
 api.add_resource(FeedListAllAPI, '/feeds/all', endpoint='feeds_all')
