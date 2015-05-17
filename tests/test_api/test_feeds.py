@@ -186,7 +186,7 @@ class TestFeedListAPI(TestBase):
     def test_post_inappropriate_feed_details(self, test_client, user):
         self.login(test_client, user.email, user.password)
 
-        subscription_data = dict(url="http://www.newsnshit.com/feed/")
+        subscription_data = dict(url="http://shithnsays.tumblr.com/rss")
         r = test_client.post('/api/feeds', data=subscription_data)
 
         check_valid_header_type(r.headers)
