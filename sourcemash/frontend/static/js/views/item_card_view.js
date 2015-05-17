@@ -93,14 +93,7 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
     },
 
     render: function() {
-        var shownCategories;
-        if (this.user.get('email')) {
-            shownCategories = this.model.categories.filter(function(category) {
-              return category.get("item_count") > 1;
-            }).slice(0, Sourcemash.Views.ItemCardView.MAX_CATEGORIES_SHOWN);
-        } else {
-            shownCategories = this.model.categories.first(Sourcemash.Views.ItemCardView.MAX_CATEGORIES_SHOWN);
-        }
+        var shownCategories = this.model.categories.first(Sourcemash.Views.ItemCardView.MAX_CATEGORIES_SHOWN);
 
         this.$el.html(this.template({ item: this.model, categories: shownCategories }));
         this.$(".card-reveal a").attr("target","_blank");

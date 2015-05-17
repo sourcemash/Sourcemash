@@ -71,8 +71,7 @@ class CategoryListAPI(Resource):
         user_feed_ids = [feed.id for feed in current_user.subscribed]
 
         categories = Category.query \
-                             .with_entities(Category,
-                                            func.count()) \
+                             .with_entities(Category, func.count()) \
                              .join(Category.items) \
                              .filter(Item.feed_id.in_(user_feed_ids)) \
                              .group_by(Category.id) \
