@@ -49,12 +49,12 @@ def scrape_feed_articles(feed):
         # Extract first image from item
         try:
             summary_soup = BeautifulSoup(item.summary)
-            img_url = summary_soup.find('img')['src']
+            img_url = summary_soup.find('img', width_=lambda x: x != 1)['src']
             item.image_url = _get_absolute_url(item.link, img_url)
             db.session.commit()
         except:
-            soup = BeautifulSoup(item.text)
             try:
+                soup = BeautifulSoup(item.text)
                 img_url = soup.find('img')['src']
                 item.image_url = _get_absolute_url(item.link, img_url)
                 db.session.commit()
