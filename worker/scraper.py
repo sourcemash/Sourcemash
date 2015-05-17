@@ -53,9 +53,8 @@ def categorize_feed_articles(feed, categorizer):
             # Mark category as unread for all users
             try:
                 category_model = Category.query.filter_by(category=category).one()
-                for user_category in UserCategory.query.filter_by(category=category_model).all():
-                    user_category.unread = True
-                    db.session.commit()
+                UserCategory.query.filter_by(category=category_model).update({"unread": True})
+                db.session.commit()
             except NoResultFound:
                 pass
 
@@ -119,9 +118,8 @@ def _store_items(feed):
 
     # Mark feed as unread for all users
     if new_item_count > 0:
-        for user_feed in UserFeed.query.filter_by(feed_id=feed.id).all():
-            user_feed.unread = True
-            db.session.commit()
+        UserFeed.query.filter_by(feed_id=feed.id).update({"unread": True})
+        db.session.commit()
 
     if not feed.image_url:
         try:

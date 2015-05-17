@@ -19,9 +19,9 @@
           <% categories.each(function(category) { %>
             <a href="/#categories/<%= category.get('id') %>">
               <li class="row collection-item">
-                <span class="col s9 truncate"><%= category.get('name') %></span>
+                <span class="col s10 truncate"><%= category.get('name') %></span>
                 <% if (category.get('unread')) { %>
-                  <span class="new badge col s3"></span>
+                  <div class="col s2 new-items-badge"><i class="mdi-image-brightness-1"></i></div>
                 <% }; %>
               </li>
             </a>
@@ -38,9 +38,9 @@
           <div class="loading center-align"></div>
           <% feeds.where({subscribed: true}).forEach(function(feed) { %>
             <a href="/#feeds/<%= feed.get('id') %>"><li class="row collection-item">
-            <span class="col s9 truncate"><%= feed.get('title') %></span>
+            <span class="col s10 truncate"><%= feed.get('title') %></span>
             <% if (feed.get('unread')) { %>
-              <span class="new badge col s3"></span>
+                <div class="col s2 new-items-badge"><i class="mdi-image-brightness-1"></i></div>
             <% }; %>
             </li></a>
           <% }); %>
