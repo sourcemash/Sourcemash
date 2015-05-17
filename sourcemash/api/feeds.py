@@ -9,7 +9,7 @@ import feedparser
 import json
 
 from sourcemash.models import Feed, Item, UserItem, UserFeed
-from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
+from sqlalchemy.orm.exc import NoResultFound
 
 from rq import Queue
 from worker import create_worker
@@ -35,7 +35,7 @@ class isUnread(fields.Raw):
 
         try:
             unread = UserFeed.query.filter_by(user=current_user, feed_id=feed.id).one().unread
-        except (MultipleResultsFound, NoResultFound):
+        except NoResultFound:
             unread = True
 
         return unread
@@ -93,7 +93,7 @@ class FeedListAPI(Resource):
         # Get or Create Feed
         try:
             feed = Feed.query.filter(Feed.url==rss_feed['url']).one()
-        except (MultipleResultsFound, NoResultFound):
+        except NoResultFound:
 
             feed = Feed(title=rss_feed['feed']['title'],
                         url=rss_feed['url'],
@@ -117,7 +117,7 @@ class FeedListAPI(Resource):
         try:
             subscription = current_user.subscribed.filter(Feed.id==feed.id).one()
             return {"errors": {"url": ["Already subscribed"]}}, 409
-        except (MultipleResultsFound, NoResultFound):
+        except NoResultFound:
             current_user.subscribed.append(feed)
             db.session.commit()
 
@@ -159,7 +159,7 @@ class FeedAPI(Resource):
                 try:
                     subscription = current_user.subscribed.filter(Feed.id==feed.id).one()
                     return {"errors": {"subscribed": ["Already subscribed."]}}, 409
-                except (MultipleResultsFound, NoResultFound):
+                except NoResultFound:
                     current_user.subscribed.append(feed)
                     db.session.commit()
             else:
@@ -167,14 +167,14 @@ class FeedAPI(Resource):
                     subscription = current_user.subscribed.filter(Feed.id==feed.id).one()
                     current_user.subscribed.remove(subscription)
                     db.session.commit()
-                except (MultipleResultsFound, NoResultFound):
+                except NoResultFound:
                     return {"errors": {"subscribed": ["You are already unsubscribed."]}}, 409
 
         # Mark feed as Read
         if args.unread != None:
             try:
                 user_feed = UserFeed.query.filter_by(user=current_user, feed_id=feed.id).one()
-            except (MultipleResultsFound, NoResultFound):
+            except NoResultFound:
                 user_feed = UserFeed(user=current_user, feed_id=feed.id)
                 db.session.add(user_feed)
                 db.session.commit()

@@ -6,7 +6,7 @@ from flask.ext.security import current_user
 from sourcemash.models import Item, Category, UserItem, UserCategory
 
 from sqlalchemy import func
-from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
+from sqlalchemy.orm.exc import NoResultFound
 
 MIN_ITEM_COUNT = 1
 
@@ -14,7 +14,7 @@ class isUnread(fields.Raw):
     def output(self, key, category):
         try:
             unread = UserCategory.query.filter_by(user=current_user, category_id=category.id).one().unread
-        except (MultipleResultsFound, NoResultFound):
+        except NoResultFound:
             unread = True
 
         return unread
@@ -50,7 +50,7 @@ class CategoryAPI(Resource):
         if args.unread != None:
             try:
                 user_category = UserCategory.query.filter_by(user=current_user, category_id=category.id).one()
-            except (MultipleResultsFound, NoResultFound):
+            except NoResultFound:
                 user_category = UserCategory(user=current_user, category_id=category.id)
                 db.session.add(user_category)
                 db.session.commit()
