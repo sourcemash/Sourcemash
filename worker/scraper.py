@@ -1,9 +1,10 @@
 from sourcemash.database import db
 
-from sourcemash.models import Item
+from sourcemash.models import Item, Feed, Category, UserFeed, UserCategory
 
 from datetime import datetime
 
+from sqlalchemy.orm.exc import NoResultFound
 from readability.readability import Document
 import requests
 from urlparse import urlparse
@@ -19,6 +20,11 @@ SOURCEMASH_LOGO_URL = "http://sourcemash.com/static/img/solologo.svg"
 
 def scrape_feed_articles(feed):
     _store_items(feed)
+
+    # Mark feed as unread for all users
+    for user_feed in UserFeed.query.filter_by(feed_id=feed.id).all():
+        user_feed.unread = True
+        db.session.commit()
 
     for item in Item.query.filter_by(feed_id=feed.id).all():
 
@@ -48,6 +54,15 @@ def categorize_feed_articles(feed, categorizer):
         categories = categorizer.categorize_item(item.title, text_only)
         for category in categories:
             item.categories.append(category)
+
+            # Mark category as unread for all users
+            try:
+                category_model = Category.query.filter_by(category=category).one()
+                for user_category in UserCategory.query.filter_by(category=category_model).all():
+                    user_category.unread = True
+                    db.session.commit()
+            except NoResultFound:
+                pass
 
         item.categorized = True
 
