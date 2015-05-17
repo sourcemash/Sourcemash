@@ -23,5 +23,4 @@ class FeedView(ModelView):
     column_display_pk = True
     form_columns = ['title', 'topic', 'public', 'image_url']
 
-
-admin.add_view(FeedView(Feed, db.session))
+admin.add_view(FeedView(Feed, db.session, endpoint='feed'))
