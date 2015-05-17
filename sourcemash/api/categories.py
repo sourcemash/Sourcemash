@@ -22,12 +22,8 @@ class isUnread(fields.Raw):
 category_fields = {
   'id': fields.Integer,
   'name': fields.String(attribute='category'),
-}
-
-category_status_fields = {
   'unread': isUnread
 }
-category_status_fields = dict(category_fields, **category_status_fields)
 
 class CategoryAPI(Resource):
 
@@ -59,7 +55,7 @@ class CategoryAPI(Resource):
             user_category.unread = args.unread
             db.session.commit()
 
-        return {'category': marshal(category, category_status_fields)}
+        return {'category': marshal(category, category_fields)}
 
 class CategoryListAPI(Resource):
 
@@ -77,7 +73,7 @@ class CategoryListAPI(Resource):
                              .group_by(Category.id) \
                              .all()
 
-        return {'categories': [marshal(category, category_status_fields) for category, count in categories if count > MIN_ITEM_COUNT]}
+        return {'categories': [marshal(category, category_fields) for category, count in categories if count > MIN_ITEM_COUNT]}
 
 
 class CategoryListAllAPI(Resource):
