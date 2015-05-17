@@ -6,4 +6,4 @@ class CategoryFactory(SQLAlchemyModelFactory):
     FACTORY_FOR = Category
     FACTORY_SESSION = db.session
 
-    category = factory.Sequence(lambda n: u'category%d' % n)
+    category = factory.Sequence(lambda n: u'Category %d' % n)
