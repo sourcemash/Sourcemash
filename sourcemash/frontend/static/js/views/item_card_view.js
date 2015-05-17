@@ -108,5 +108,6 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
         }
 
         this.$el.html(this.template({ item: this.model, categories: shownCategories }));
+        this.$(".card-reveal a").attr("target","_blank");
     }
 }, {MAX_CATEGORIES_SHOWN: 5});
