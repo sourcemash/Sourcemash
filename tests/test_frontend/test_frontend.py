@@ -1,5 +1,6 @@
 import pytest
 
+
 class TestHomePage:
 
     def test_home_page(self, test_client):

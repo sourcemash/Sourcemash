@@ -5,16 +5,10 @@ DEBUG = False
 SQLALCHEMY_ECHO = False
 
 SECURITY_CONFIRMABLE = True
+SECURITY_SEND_REGISTER_EMAIL = True
 
 SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
 SECRET_KEY = os.environ['SECRET_KEY']
-
-MAIL_SERVER = 'mail.privateemail.com'
-MAIL_PORT = 465
-MAIL_USE_TLS = False
-MAIL_USE_SSL = True
-MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
 logger = logging.getLogger('Sourcemash')
 stream_handler = logging.StreamHandler()

@@ -23,6 +23,7 @@ SECURITY_EMAIL_SUBJECT_REGISTER = "Welcome to Sourcemash!"
 SECURITY_REGISTERABLE = True
 SECURITY_RECOVERABLE = True
 SECURITY_LOGIN_WITHOUT_CONFIRMATION = True
+SECURITY_SEND_REGISTER_EMAIL = False
 
 SECURITY_MSG_INVALID_PASSWORD = ("Invalid username/password combination", "error")
 SECURITY_MSG_PASSWORD_NOT_PROVIDED = ("Invalid username/password combination", "error")
@@ -32,6 +33,13 @@ SECURITY_EMAIL_SENDER = "support@sourcemash.com"
 
 # Email Server
 ADMINS = ['admin@sourcemash.com', 'support@sourcemash.com']
+
+MAIL_SERVER = 'mail.privateemail.com'
+MAIL_PORT = 465
+MAIL_USE_TLS = False
+MAIL_USE_SSL = True
+MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
 logging.basicConfig(level=logging.WARNING)
 

@@ -21,7 +21,7 @@ from datetime import datetime
 import json
 
 app = create_app(os.environ.get("APP_CONFIG_FILE") or "development")
-conn = create_worker(os.environ.get("APP_CONFIG_FILE") or "development")
+conn = create_worker()
 
 manager = Manager(app)
 categorizer = Categorizer()
@@ -83,7 +83,7 @@ def worker(kill=False):
     """Starts redis queue worker. Requires redis-server"""
     """To run (in background): 'redis-server &'
        To kill: 'redis-cli shutdown' """
-    listen = ['default']
+    listen = ['scrape', 'email']
 
     with Connection(conn):
         worker = Worker(map(Queue, listen))

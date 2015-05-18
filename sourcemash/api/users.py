@@ -5,7 +5,7 @@ from flask import abort
 from flask.ext.restful import Resource, fields, marshal, reqparse
 from flask.ext.security import login_user, logout_user, RegisterForm, current_user
 
-from sourcemash.database import user_datastore
+from sourcemash.security import user_datastore
 from sourcemash.models import User
 
 user_fields = {
