@@ -14,7 +14,8 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
   events: {
     'submit #login': 'loginSubmit',
     'click #need-account': 'showRegisterModal',
-    'click #forgot-password': 'showForgotPasswordModal'
+    'click #forgot-password': 'showForgotPasswordModal',
+    'click .mark-all-read': 'markAllItemsRead'
   },
 
   loginSubmit: function(e){
@@ -50,6 +51,14 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
 
   showForgotPasswordModal: function(){
     $("#forgot-modal").openModal();
+  },
+
+  markAllItemsRead: function() {
+    // Mark all items, categories, and feeds as read
+    toast("Marking all items as read...please be patient!", 5000);
+    this.feeds.each(function(feed) {
+      feed.save({read_all: true}, {success: function(feed) {toast("Successfully marked '" + feed.get('title') + "' as read!", 3000);}});
+    });
   },
 
   render: function() {

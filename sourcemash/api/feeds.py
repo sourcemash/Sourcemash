@@ -8,7 +8,7 @@ from datetime import datetime
 import feedparser
 import json
 
-from sourcemash.models import Feed, Item, UserItem, UserFeed
+from sourcemash.models import Feed, Item, UserItem, UserFeed, UserCategory
 from sqlalchemy.orm.exc import NoResultFound
 
 from rq import Queue
@@ -135,6 +135,7 @@ class FeedAPI(Resource):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('subscribed', type = inputs.boolean)
         self.reqparse.add_argument('unread', type = inputs.boolean)
+        self.reqparse.add_argument('read_all', type = inputs.boolean)
         super(FeedAPI, self).__init__()
 
     def get(self, id):
@@ -166,16 +167,58 @@ class FeedAPI(Resource):
 
         # Mark feed as Read
         if args.unread != None:
-            try:
-                user_feed = UserFeed.query.filter_by(user=current_user, feed_id=feed.id).one()
-            except NoResultFound:
-                user_feed = UserFeed(user=current_user, feed_id=feed.id)
-                db.session.add(user_feed)
-                db.session.commit()
+            if args.unread == False:
+                try:
+                    user_feed = UserFeed.query.filter_by(user=current_user, feed_id=feed.id).one()
+                except NoResultFound:
+                    user_feed = UserFeed(user=current_user, feed_id=feed.id)
+                    db.session.add(user_feed)
+                    db.session.commit()
 
-            # Toggle unread status
-            user_feed.unread = args.unread
-            db.session.commit()
+                # Toggle unread status
+                user_feed.unread = False
+
+        if args.read_all != None:
+            if args.read_all:
+                # Mark feed as read
+                try:
+                    user_feed = UserFeed.query.filter_by(user=current_user,
+                                                         feed_id=feed.id) \
+                                              .one()
+                except NoResultFound:
+                    user_feed = UserFeed(user=current_user, feed_id=feed.id)
+                    db.session.add(user_feed)
+                    db.session.commit()
+
+                # Toggle unread status
+                user_feed.unread = False
+
+                # Mark all items and categories as read
+                for item in Item.query.filter_by(feed_id=feed.id).all():
+                    # Items
+                    try:
+                        user_item = UserItem.query.filter_by(user=current_user,
+                                                             item=item).one()
+                    except NoResultFound:
+                        user_item = UserItem(user=current_user,
+                                             item=item,
+                                             feed_id=feed.id)
+                        db.session.add(user_item)
+
+                    user_item.unread = False
+                    db.session.commit()
+
+                    # Categories
+                    for category in item.cats:
+                        try:
+                            user_category = UserCategory.query.filter_by(user=current_user, category_id=category.id).one()
+                        except NoResultFound:
+                            user_category = UserCategory(user=current_user,
+                                                         category_id=category.id)
+                            db.session.add(user_category)
+
+                        user_category.unread = False
+                        db.session.commit()
 
         return {'feed': marshal(feed, feed_fields)}
 

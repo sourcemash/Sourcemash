@@ -53,7 +53,14 @@
       </ul>
     </div>
   </div>
-</ul>
+  <% if (current_user.get('email')) { %>
+    <ul id="item-actions" class="collection col s12">
+      <a class="mark-all-read"><li class="row collection-item">
+        <i class="mdi-action-done-all"></i> Mark All As Read
+      </li></a>
+    </ul>
+  <% } %>
+</div>
 
 <ul class="user-auth sidenav-element col s12">
   <% if (current_user.get('email')) { %>
