@@ -55,7 +55,7 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
 
   markAllItemsRead: function() {
     this.feeds.each(function(feed) {
-      // Save unread on feed to trigger PUT request
+      feed.save({unread: false});
     });
   },
 

@@ -166,16 +166,30 @@ class FeedAPI(Resource):
 
         # Mark feed as Read
         if args.unread != None:
-            try:
-                user_feed = UserFeed.query.filter_by(user=current_user, feed_id=feed.id).one()
-            except NoResultFound:
-                user_feed = UserFeed(user=current_user, feed_id=feed.id)
-                db.session.add(user_feed)
-                db.session.commit()
+            if args.unread == False:
+                try:
+                    user_feed = UserFeed.query.filter_by(user=current_user, feed_id=feed.id).one()
+                except NoResultFound:
+                    user_feed = UserFeed(user=current_user, feed_id=feed.id)
+                    db.session.add(user_feed)
+                    db.session.commit()
 
-            # Toggle unread status
-            user_feed.unread = args.unread
-            db.session.commit()
+                # Toggle unread status
+                user_feed.unread = args.unread
+
+                # Mark all items as read
+                for item in Item.query.filter_by(feed_id=feed.id).all():
+                    try:
+                        user_item = UserItem.query.filter_by(user=current_user,
+                                                             item=item).one()
+                    except:
+                        user_item = UserItem(user=current_user,
+                                             item=item,
+                                             feed_id=feed.id)
+                        db.session.add(user_item)
+
+                    user_item.unread = False
+                    db.session.commit()
 
         return {'feed': marshal(feed, feed_fields)}
 
