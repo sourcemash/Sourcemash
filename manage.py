@@ -100,8 +100,10 @@ def feed_seed():
         for topic_json in feeds_by_topic:
             for feed_json in topic_json.values()[0]:
 
+                feed = Feed.query.filter(Feed.url == feed_json["url"]).first()
+
                 # Don't re-add existing feed
-                if not Feed.query.filter(Feed.url == feed_json["url"]).first():
+                if not feed:
                     feed = Feed(title=feed_json["title"],
                                 url=feed_json["url"],
                                 image_url=feed_json["image_url"],
@@ -112,9 +114,9 @@ def feed_seed():
                     db.session.add(feed)
                     db.session.commit()
 
-    # Scrape articles for feed
-    scrape_feed_articles(feed)
-    categorize_feed_articles(feed, categorizer)
+                # Scrape articles for feed
+                scrape_feed_articles(feed)
+                categorize_feed_articles(feed, categorizer)
 
 
 @manager.command

@@ -29,8 +29,10 @@ Sourcemash.Views.ItemsView = Backbone.View.extend({
     },
 
     updateReadStatus: function() {
-        if (this.model.get('unread') && this.collection.where({unread: true}).length == 0) {
-            this.model.save({unread: false});
+        if (this.user.get('email')) {
+            if (this.model.get('unread') && this.collection.where({unread: true}).length == 0) {
+                this.model.save({unread: false});
+            };
         };
     },
 
