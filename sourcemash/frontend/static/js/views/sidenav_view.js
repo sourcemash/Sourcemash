@@ -55,8 +55,9 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
 
   markAllItemsRead: function() {
     // Mark all items, categories, and feeds as read
+    toast("Marking all items as read...", 3000);
     this.feeds.each(function(feed) {
-      feed.save({read_all: true});
+      feed.save({read_all: true}, {success: function() {toast("Successfully marked all items as read!", 3000);}});
     });
   },
 
