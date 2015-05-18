@@ -32,6 +32,27 @@
   }
 }
 
+.help-fixed-action-btn {
+  position: fixed;
+  margin-bottom: 0;
+  z-index: 998;
+  bottom: 24px;
+  right: 20px;
+  .btn-floating {
+    @extend .red.darken-2;
+    font-size: 1.75rem;
+  }
+}
+
+#help-menu .modal-content {
+  a {
+    @extend .red-text.text-darken-2;
+    &:hover {
+      font-weight: 400;
+    }
+  }
+}
+
 /*
  *******************************
  Splash
@@ -65,16 +86,17 @@
     }
   }
 
-  .promo-icon {
-    @extend .red-text.text-darken-2;
-    font-size: 7rem;
-    display: block;
-    padding-top: 10px;
-  }
+}
 
-  .promo-caption {
-    font-size: 1.7rem;
-  }
+.promo-icon {
+  @extend .red-text.text-darken-2;
+  font-size: 7rem;
+  display: block;
+  padding-top: 10px;
+}
+
+.promo-caption {
+  font-size: 1.7rem;
 }
 
 /*

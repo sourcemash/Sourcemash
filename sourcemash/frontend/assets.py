@@ -30,7 +30,8 @@ js_collections = Bundle("js/collections/*.js")
 
 js_models = Bundle("js/models/*.js")
 
-js_views = Bundle("js/views/profile_view.js",
+js_views = Bundle("js/views/help_view.js",
+                "js/views/profile_view.js",
                 "js/views/footer_view.js",
                 "js/views/splash_view.js",
                 "js/views/not_found_view.js",
