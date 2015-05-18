@@ -6,7 +6,8 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
     this.feeds = options.feeds;
     this.categories = options.categories;
     this.loading = true;
-    this.listenTo(this.feeds, 'sync change:subscribed change:unread', this.render);
+    this.listenTo(this.feeds, 'sync change:unread', this.render);
+    this.listenTo(this.feeds, 'change:subscribed', function(){ this.categories.fetch(); });
     this.listenTo(this.categories, 'sync change:unread', this.render);
   },
 
