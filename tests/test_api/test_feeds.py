@@ -112,12 +112,12 @@ class TestFeedAPI(TestBase):
         data = json.loads(r.data)
         assert data['feed']['unread'] == False
 
-    def test_put_feed_with_items_mark_read(self, test_client,
-                                           user, feedWithItems):
+    def test_put_feed_with_items_read_all(self, test_client,
+                                          user, feedWithItems):
         self.login(test_client, user.email, user.password)
 
-        mark_read = dict(unread=False)
-        r = test_client.put('/api/feeds/%d' % feedWithItems.id, data=mark_read)
+        read_all = dict(read_all=True)
+        r = test_client.put('/api/feeds/%d' % feedWithItems.id, data=read_all)
         check_valid_header_type(r.headers)
         assert r.status_code == 200
 
@@ -125,6 +125,13 @@ class TestFeedAPI(TestBase):
         assert data['feed']['unread'] == False
 
         items = test_client.get('/api/feeds/%d/items' % feedWithItems.id)
+        data = json.loads(items.data)
+        for item in data['items']:
+            assert item['unread'] == False
+
+        category = data['items'][0]['categories'][0]
+
+        items = test_client.get('/api/categories/%d/items' % category['id'])
         data = json.loads(items.data)
         for item in data['items']:
             assert item['unread'] == False

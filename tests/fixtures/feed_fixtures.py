@@ -1,5 +1,5 @@
 import pytest
-from tests.factories import feed_factories, item_factories
+from tests.factories import feed_factories
 
 
 @pytest.fixture()
@@ -18,5 +18,5 @@ def real_feed(request):
 
 
 @pytest.fixture()
-def feedWithItems(request):
-    return feed_factories.FeedFactory(items=[item_factories.ItemFactory() for i in range(5)])
+def feedWithItems(request, itemsWithCategory):
+    return feed_factories.FeedFactory(items=itemsWithCategory)
