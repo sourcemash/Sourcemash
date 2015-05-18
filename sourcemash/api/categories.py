@@ -8,7 +8,8 @@ from sourcemash.models import Item, Category, UserItem, UserCategory
 from sqlalchemy import func
 from sqlalchemy.orm.exc import NoResultFound
 
-MIN_ITEM_COUNT = 1
+MIN_CATEGORY_LIMIT = 2       # Every category needs at least # entries
+MIN_FEED_CATEGORY_RATIO = 5  # Category threshold increases by 1, every # feeds
 
 class isUnread(fields.Raw):
     def output(self, key, category):
@@ -76,7 +77,9 @@ class CategoryListAPI(Resource):
                              .group_by(Category.id) \
                              .all()
 
-        return {'categories': [marshal(category, category_fields) for category, count in categories if count > MIN_ITEM_COUNT]}
+        min_count = current_user.subscribed.count() / MIN_FEED_CATEGORY_RATIO + MIN_CATEGORY_LIMIT
+
+        return {'categories': [marshal(category, category_fields) for category, count in categories if count >= min_count]}
 
 
 class CategoryListAllAPI(Resource):
