@@ -80,12 +80,13 @@ class TestUserAPI(TestBase):
     def test_put_user_unsubscribed_status(self, test_client, user):
         self.login(test_client, user.email, user.password)
 
-        user_data_new = dict(show_unsubscribed_content=False)
-        put = test_client.put('/api/user', data=user_data_new)
+        user_no_unsubscribed_content = dict(show_unsubscribed_content=False)
+        put = test_client.put('/api/user', data=user_no_unsubscribed_content)
         check_valid_header_type(put.headers)
+        assert put.status_code == 200
+
         data = json.loads(put.data)
         assert data['user']['show_unsubscribed_content'] == False
-        assert put.status_code == 200
 
     def test_delete_user(self, test_client, user):
         self.login(test_client, user.email, user.password)
