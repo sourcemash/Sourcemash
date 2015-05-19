@@ -210,6 +210,12 @@ a.button-collapse.top-nav {
   z-index: 2;
 }
 
+.navigation-btns {
+  i {
+    padding-right: 6px;
+  }
+}
+
 .nav-wrapper {
   @media only screen and (max-width: 992px) {
     text-align: center;
