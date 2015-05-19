@@ -11,6 +11,7 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
     this.listenTo(this.feeds, 'sync change:unread', this.render);
     this.listenTo(this.feeds, 'change:subscribed',
       function(){
+        // Don't tell the user to refresh categories until fetch is complete
         if (!this.loading) {
           this.feedsChanged = true;
           this.render();
