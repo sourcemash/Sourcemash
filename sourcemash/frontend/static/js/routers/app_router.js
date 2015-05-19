@@ -5,7 +5,8 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         "feeds/:id": "showFeed",
         "categories/:id": "showCategory",
         "saved": "showSaved",
-        "browse": "browseFeeds"
+        "browse": "browseFeeds",
+        "*path": "showNotFound"
     },
 
     initialize: function(options){
@@ -86,6 +87,11 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         savedView.collection.fetch({feeds: this._feeds, categories: this._categories, success: _.bind(function() {this._loaded(savedView)}, this)});
         this._swapView(savedView);
         mixpanel.track("Visited Saved Page");
+    },
+
+    showNotFound: function() {
+        var notFoundView = new Sourcemash.Views.NotFoundView();
+        this._swapView(notFoundView);
     },
 
     _loaded: function(view) {
