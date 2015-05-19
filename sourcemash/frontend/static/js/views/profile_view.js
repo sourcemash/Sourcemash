@@ -7,7 +7,7 @@ Sourcemash.Views.ProfileView = Backbone.View.extend({
 
   events: {
     "click #delete-user": 'deleteUser',
-    "click #toggle-unsubscribed-content": 'toggleShowUnsubscribedContent',
+    "click #toggle-unsubscribed-content": 'toggleShowUnsubscribedContent'
   },
 
   render: function() {
@@ -32,10 +32,10 @@ Sourcemash.Views.ProfileView = Backbone.View.extend({
   showContentToggled: function(user) {
     if (user.get('show_unsubscribed_content')) {
       toast("Unsubscribed content will be shown!", 3000);
-      // mixpanel.track("Unsubscribed Content On", { "user": user })
+      mixpanel.track("Unsubscribed Content - On")
     } else {
       toast("Unsubscribed content will no longer be shown.", 3000);
-      // mixpanel.track("Unsubscribed Content Off", { "user": user })
+      mixpanel.track("Unsubscribed Content - Off")
     }
   }
 
