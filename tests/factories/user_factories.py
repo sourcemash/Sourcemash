@@ -12,6 +12,7 @@ class UserFactory(SQLAlchemyModelFactory):
     email = factory.Sequence(lambda n: u'user%d@test.com' % n)
     password = 'password'
     active = True
+    show_unsubscribed_content = True
     confirmed_at = datetime.utcnow()
 
     @factory.post_generation
