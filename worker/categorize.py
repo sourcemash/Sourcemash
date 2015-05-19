@@ -200,7 +200,10 @@ class Categorizer:
                     url += "&plcontinue=" + data['continue']['plcontinue']
 
                 resp = requests.get(url)
-                data = json.loads(resp.text)
+                try:
+                    data = resp.json()
+                except ValueError:
+                    continue
 
                 sublinks = self._compile_sublinks(data['query'], sublinks)
 
