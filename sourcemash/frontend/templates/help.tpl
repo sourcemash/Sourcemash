@@ -54,11 +54,14 @@
 
     </div>
   </div>
+
   <p class="divider"><p>
+
   <div class="modal-footer">
     <div id="show-register-modal" class="waves-effect waves-green btn-flat modal-action">Sign Up!</div>
     <a href="mailto:support@sourcemash.com?subject=Suggestions for Sourcemash" class="waves-effect waves-green btn-flat modal-action">Give us Feedback</a>
     <div class="waves-effect waves-green btn-flat modal-action modal-close">Close</div>
   </div>
+
 </div>
 
