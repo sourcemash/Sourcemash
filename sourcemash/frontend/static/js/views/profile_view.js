@@ -7,7 +7,7 @@ Sourcemash.Views.ProfileView = Backbone.View.extend({
 
   events: {
     "click #delete-user": 'deleteUser',
-    "click #toggle-unsubscribed-content": 'toggleShowUnsubscribedContent'
+    "click #toggle-suggested-content": 'toggleShowSuggestedContent'
   },
 
   render: function() {
@@ -21,21 +21,18 @@ Sourcemash.Views.ProfileView = Backbone.View.extend({
     mixpanel.track("Deleted account");
   },
 
-  toggleShowUnsubscribedContent: function() {
-      if (this.model.get('show_unsubscribed_content')) {
-          this.model.save({'show_unsubscribed_content': false}, {success: this.showContentToggled});
-      } else {
-          this.model.save({'show_unsubscribed_content': true}, {success: this.showContentToggled});
-      };
+  toggleShowSuggestedContent: function() {
+    this.model.save({'show_suggested_content': !this.model.get('show_suggested_content')},
+                    {success: this.showContentToggled});
   },
 
   showContentToggled: function(user) {
-    if (user.get('show_unsubscribed_content')) {
-      toast("Unsubscribed content will be shown!", 3000);
-      mixpanel.track("Unsubscribed Content - On")
+    if (user.get('show_suggested_content')) {
+      toast("Suggested content will be shown!", 3000);
+      mixpanel.track("Enabled Suggested Content")
     } else {
-      toast("Unsubscribed content will no longer be shown.", 3000);
-      mixpanel.track("Unsubscribed Content - Off")
+      toast("Suggested content will no longer be shown.", 3000);
+      mixpanel.track("Disabled Suggested Content")
     }
   }
 

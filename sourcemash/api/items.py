@@ -145,7 +145,7 @@ class CategoryItemListAPI(Resource):
                           .filter(Item.feed_id.in_(user_feed_ids)) \
                           .all()
 
-        if current_user.show_unsubscribed_content:
+        if current_user.show_suggested_content:
             unsubscribed_item = Item.query.filter(Item.categories.contains(category.category))     \
                                           .filter(~Item.feed_id.in_(user_feed_ids))                               \
                                           .first()

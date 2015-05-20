@@ -286,18 +286,10 @@ class TestCategoryItemListAPI(TestBase):
         assert len(data['items']) == user_items_length + 1
         assert len(filter(lambda item: item['feed']['subscribed'] == False, data['items'])) == 1
 
-    def test_get_items_category_ignore_unsubscribed_item(self, test_client, userWithPopulatedFeed, itemsWithCategory):
-        self.login(test_client, userWithPopulatedFeed.email, userWithPopulatedFeed.password)
+    def test_get_items_category_ignore_unsubscribed_item(self, test_client, userWithPopulatedFeedAndNoSuggestedContent, itemsWithCategory):
+        self.login(test_client, userWithPopulatedFeedAndNoSuggestedContent.email, userWithPopulatedFeedAndNoSuggestedContent.password)
 
-        user_no_unsubscribed_content = dict(show_unsubscribed_content=False)
-        put = test_client.put('/api/user', data=user_no_unsubscribed_content)
-        check_valid_header_type(put.headers)
-        assert put.status_code == 200
-
-        data = json.loads(put.data)
-        assert data['user']['show_unsubscribed_content'] == False
-
-        feed = userWithPopulatedFeed.subscribed.first()
+        feed = userWithPopulatedFeedAndNoSuggestedContent.subscribed.first()
         user_items_length = feed.items.count()
         category = feed.items[0].cats.first()
 

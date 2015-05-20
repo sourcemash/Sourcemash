@@ -104,8 +104,8 @@ class FeedListAPI(Resource):
                 q = Queue('scrape', connection=REDIS_CONNECTION)
                 job = q.enqueue_call(func=scrape_feed_articles, args=(feed,),
                                      at_front=True, timeout=600)
-            except:     # pragma: no cover
-                pass        # pragma: no cover
+            except:
+                pass
 
         # Subscribe User
         try:

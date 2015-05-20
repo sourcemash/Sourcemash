@@ -6,21 +6,20 @@
   <ul class="collection">
     <li class="collection-item">
       <h5>
-        <span class="left-align">Current email:</span>
+        <span class="left-align">Email:</span>
         <span class="right light"><%= model.get('email') %></span>
       </h5>
     </li>
     <li class="collection-item">
       <h5>
-        <span class="left-align">Show unsubscribed content:</span>
+        <span class="left-align">Suggested content:</span>
         <span class="right">
-          <input type="checkbox" id="toggle-unsubscribed-content" <%= model.get('show_unsubscribed_content') ? 'checked' : '' %>>
-          <label class="light black-text" for="toggle-unsubscribed-content" style="font-size: 1.5rem;"><%= model.get('show_unsubscribed_content') ? 'Content Shown' : 'Content Hidden' %></label>
+          <input type="checkbox" id="toggle-suggested-content" <%= model.get('show_suggested_content') ? 'checked' : '' %>>
+          <label class="light black-text" for="toggle-suggested-content" style="font-size: 1.5rem;"><%= model.get('show_suggested_content') ? 'Enabled' : 'Disabled' %></label>
         </span>
       </h5>
-      <div class="container valign-wrapper">
-        <p class="divider">
-        <p class="flow-text light"><i class="mdi-action-help" style="padding-right: 5px;"></i>Determines whether the items in a given category come exclusively from feeds that you are subscribed to ("Content Hidden") or whether categories are selected at random to contain an extra item from a feed that you are not subscribed to ("Content Shown"). The goal of this feature is to help Sourcemash introduce you to new content that you may not have seen otherwise!></p>
+      <div class="container">
+        <p class="flow-text light"><i class="mdi-action-help" style="padding-right: 8px;"></i>Allow Sourcemash to display unsubscribed content you might enjoy.</p>
       </div>
     </li>
   </ul>

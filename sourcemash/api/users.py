@@ -11,7 +11,7 @@ from sourcemash.models import User
 user_fields = {
     'id': fields.Integer,
     'email': fields.String,
-    'show_unsubscribed_content': fields.Boolean
+    'show_suggested_content': fields.Boolean
 }
 
 class UserListAPI(Resource):
@@ -45,7 +45,7 @@ class UserAPI(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('email', type = str)
-        self.reqparse.add_argument('show_unsubscribed_content', type = inputs.boolean)
+        self.reqparse.add_argument('show_suggested_content', type = inputs.boolean)
         super(UserAPI, self).__init__()
 
     def get(self):
@@ -60,8 +60,8 @@ class UserAPI(Resource):
             current_user.email = args.email
 
         # Toggle unsubscribed content status
-        if args.show_unsubscribed_content != None:
-            current_user.show_unsubscribed_content = args.show_unsubscribed_content
+        if args.show_suggested_content != None:
+            current_user.show_suggested_content = args.show_suggested_content
 
         db.session.commit()
 
