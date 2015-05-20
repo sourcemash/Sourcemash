@@ -25,7 +25,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         self._forgotModalView = new Sourcemash.Views.ForgotModalView();
         $("#forgot-modal").html(self._forgotModalView.render().$el);
 
-        self._helpMenuView = new Sourcemash.Views.HelpView({ user: self._user });
+        self._helpMenuView = new Sourcemash.Views.HelpView();
         $("#help-menu").html(self._helpMenuView.render().$el);
 
         self._user.fetch({success: this._identifyUser});

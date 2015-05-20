@@ -24,15 +24,15 @@
           </div>
         </div>
         <div class="col s8">
-          <p class="promo-caption">Step 1: Source selection</p>
-          <p class="light">Choose the sources you want to read. Select from our list of feeds on the <a href="/#browse">Browse page</a>, or add your own using the form at the top of the page! Once you subscribe to a feed by toggling the "Subscribe" switch, it will appear in the "Feeds" tab in the left navigation menu and in the "Custom" section of the <a href="/#browse">Browse page.</a></p>
+          <p class="promo-caption">Step 1: Choose your Sources</p>
+          <p class="light">Either<a href="/#browse"> browse</a> our list of feeds, or add your own using the form at the top of the <a href="/#browse">Browse Page</a>. When you see a feed you like, click the switch to subscribe!</p>
         </div>
       </div>
 
       <div class="row">
         <div class="col s8">
-          <p class="promo-caption">Step 2: Categorization</p>
-          <p class="light">Our algorithm with automatically analyze each article in the feeds you subscribe to and assign the categories that best match. Check out the "Categories" tab in the navigation menu to the left and click on a Category to start reading. No work required!</p>
+          <p class="promo-caption">Step 2: Let us Categorize your Articles</p>
+          <p class="light">Once you're subscribed to a feed, click the refresh button under the "Categories" tab in the left navigation menu to see what categories we've auto-generated for your articles. No work required!</p>
         </div>
         <div class="col s4">
           <div class="center promo">
@@ -48,36 +48,8 @@
           </div>
         </div>
         <div class="col s8">
-            <p class="promo-caption">Step 3: Reading!</p>
-            <p class="light">Customize your news reading experience to make Sourcemash work for you. Click on the "Categories" or "Feeds" tab in the navigation menu to the left, and select a category or feed to start reading!</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col s8">
-            <p class="promo-caption">Step 4: Customization</p>
-            <p class="light"><a href="#" id="show-register-modal">Make an account</a> or <a href="#" id="focus-login">log in</a>, and click on your email address in the <a href="#" id="go-to-profile">bottom of the left navigation menu</a> to access your personal settings. Decide whether you want to see unsubscribed content or update your account to fit your reading style!</p>
-        </div>
-        <div class="col s4">
-          <div class="center promo">
-            <a href="/#profile" id="go-to-profile">
-              <i class="mdi-action-settings promo-icon"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col s4">
-          <div class="center promo">
-            <a href="mailto:support@sourcemash.com">
-              <i class="mdi-image-edit promo-icon"></i>
-            </a>
-          </div>
-        </div>
-        <div class="col s8">
-            <p class="promo-caption">Step 5: Feedback</p>
-            <p class="light">We are also always open to feedback via <a href="mailto:support@sourcemash.com">email</a> or <a href="/survey" target="_blank">survey</a>, and will gladly <a href="mailto:support@sourcemash.com">answer any questions</a> that you may have.</p>
+            <p class="promo-caption">Step 3: Breeze Through Your Feeds</p>
+            <p class="light">Instead of reading articles by feed, you can now start reading by category! So...what are you waiting for? It's time to read!</p>
         </div>
       </div>
 
@@ -85,6 +57,8 @@
   </div>
   <p class="divider"><p>
   <div class="modal-footer">
+    <div id="show-register-modal" class="waves-effect waves-green btn-flat modal-action">Sign Up!</div>
+    <a href="mailto:support@sourcemash.com?subject=Suggestions for Sourcemash" class="waves-effect waves-green btn-flat modal-action">Give us Feedback</a>
     <div class="waves-effect waves-green btn-flat modal-action modal-close">Close</div>
   </div>
 </div>
