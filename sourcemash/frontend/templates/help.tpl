@@ -7,8 +7,7 @@
     <div class="container">
       <div class="row">
 
-        <h2 class="col s12 light center header flow-text">Confused?</h2>
-        <h4 class="col s12 light center header flow-text">Let's get you back on track!</h4>
+        <h2 class="col s12 light center header flow-text">Getting Started</h2>
         <p class="col s12 divider"><p>
 
         <h5 class="col s12 light center header flow-text">Sourcemash categorizes your articles to help you get through your feeds faster.</h5>
