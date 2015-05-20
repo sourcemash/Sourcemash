@@ -18,7 +18,7 @@ def userWithPopulatedFeed(request):
     return user_factories.UserFactory(subscribed=[feed])
 
 @pytest.fixture()
-def userWithPopulatedFeedAndNoSuggestedContent(request):
+def userWithoutSuggestedContent(request):
     feed = feed_factories.FeedFactory(items=[item_factories.ItemFactory(categories=["News", "Technology"]) for i in range(5)])
     return user_factories.UserFactory(subscribed=[feed], show_suggested_content=False)
 
