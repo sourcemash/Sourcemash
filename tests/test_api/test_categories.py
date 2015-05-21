@@ -1,12 +1,34 @@
 import pytest
+from time import sleep
 import json
 
 from . import TestBase
 
-from sourcemash.models import Feed
 
 def check_valid_header_type(headers):
     assert headers['Content-Type'] == 'application/json'
+
+
+class TestCategorizer(TestBase):
+    def test_get_url_categories(self, test_client, worker):
+        data = {'url':
+                "http://www.cnn.com/2014/03/27/world/ebola-virus-explainer/"}
+        r = test_client.get('/api/categorizer', query_string=data)
+        data = json.loads(r.data)
+        job_id = data['job_id']
+        assert job_id
+
+        data = {'job_id': job_id}
+        r = test_client.get('/api/categorizer/results', query_string=data)
+        resp = json.loads(r.data)
+        assert resp['ready'] == False
+
+        worker.work(burst=True)
+
+        r = test_client.get('/api/categorizer/results', query_string=data)
+        resp = json.loads(r.data)
+
+        assert resp['categories'].index("Ebola Virus Epidemic In West Africa") > -1
 
 
 class TestCategory(TestBase):
@@ -19,7 +41,8 @@ class TestCategory(TestBase):
         data = json.loads(r.data)
         assert data['category']['name'] == category.category
 
-    def test_put_new_category_mark_read(self, test_client, user, itemWithCategory):
+    def test_put_new_category_mark_read(self, test_client, user,
+                                        itemWithCategory):
         category = itemWithCategory.cats.first()
         self.login(test_client, user.email, user.password)
 

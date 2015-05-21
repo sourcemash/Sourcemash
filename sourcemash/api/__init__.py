@@ -19,3 +19,4 @@ import feeds
 import items
 import users
 import categories
+import categorizer
