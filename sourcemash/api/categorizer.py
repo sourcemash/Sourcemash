@@ -1,6 +1,7 @@
 from . import api
 from flask.ext.restful import Resource, reqparse, marshal, fields
 
+from urlparse import urlparse
 from rq import Queue
 from rq.job import Job
 from worker import create_worker
@@ -27,14 +28,23 @@ class CategorizerAPI(Resource):
     def get(self):
         args = self.reqparse.parse_args()
 
+        parsed_url = urlparse(args.url)
+        if not parsed_url.scheme:
+            parsed_url = parsed_url._replace(**{"scheme": "http"})
+
+        if ".com" not in parsed_url.netloc \
+            and ".org" not in parsed_url.netloc \
+                and ".io" not in parsed_url.netloc:
+                return {'errors': {'url': ['URL is invalid']}}, 422
+
         # Scrape feed (but don't fail if redis-server is down)
         try:
             q = Queue('categorize', connection=REDIS_CONNECTION)
             job = q.enqueue_call(func=categorize_article_by_url,
-                                 args=(args.url, categorizer,),
+                                 args=(parsed_url.geturl(), categorizer,),
                                  timeout=600)
         except:
-            return {'errors': {'url': 'Worker not running!'}}
+            return {'errors': {'url': 'Worker not running!'}}, 422
 
         return {'job_id': job.id}
 
@@ -52,9 +62,6 @@ class CategorizerResultsAPI(Resource):
         if job.is_finished:
             return {'ready': True,
                     'categories': job.result}, 200
-        elif job.is_failed:
-            return {'ready': True,
-                    'categories': []}, 200
         else:
             return {'ready': False}, 202
 

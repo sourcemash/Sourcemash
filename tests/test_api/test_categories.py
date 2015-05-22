@@ -14,6 +14,9 @@ class TestCategorizer(TestBase):
         data = {'url':
                 "http://www.cnn.com/2014/03/27/world/ebola-virus-explainer/"}
         r = test_client.get('/api/categorizer', query_string=data)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 200
+
         data = json.loads(r.data)
         job_id = data['job_id']
         assert job_id
@@ -28,7 +31,16 @@ class TestCategorizer(TestBase):
         r = test_client.get('/api/categorizer/results', query_string=data)
         resp = json.loads(r.data)
 
-        assert resp['categories'].index("Ebola Virus Epidemic In West Africa") > -1
+        assert {'name': "Ebola Virus Epidemic In West Africa"} in resp['categories']
+
+    def test_get_url_categories_invalid_url(self, test_client, worker):
+        data = {'url':
+                "notaurl"}
+        r = test_client.get('/api/categorizer', query_string=data)
+        check_valid_header_type(r.headers)
+        assert r.status_code == 422
+        data = json.loads(r.data)
+        assert "invalid" in data['errors']['url'][0]
 
 
 class TestCategory(TestBase):

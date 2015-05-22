@@ -65,8 +65,7 @@ def scrape():
 def scrape_loop():
     """Start an infinte loop to scrape & categorize articles."""
 
-    q = Queue('default', connection=conn)
-
+    q = Queue('scrape', connection=conn)
     while True:
 
         for feed in Feed.query.all():

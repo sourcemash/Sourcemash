@@ -44,36 +44,36 @@
       <div class="row">
         <div class="col s4">
           <div class="center promo">
-            <i class="mdi-editor-insert-comment promo-icon"></i>
+            <i class="mdi-action-shopping-basket promo-icon"></i>
           </div>
         </div>
         <div class="col s8">
-          <p class="promo-caption">Choose your sources.</p>
-          <p class="light">Read the sources you want to read. Select from <a href="/#browse">our list of feeds</a>, or add your own! We categorize your news, not someone else's.</p>
+          <p class="promo-caption">1. Bag-O-Words</p>
+          <p class="light">First, we extract the most common phrases from the full text of the page. This is a simple tally for each occurence. Then the counts are weighted depending on our set of heuristics (i.e. Does the phrase appear in the title? Is it more than one word?).</p>
         </div>
       </div>
 
       <div class="row">
         <div class="col s8">
-          <p class="promo-caption">Categorize the news.</p>
-          <p class="light">Our algorithm analyzes each article to find the categories that best match. We've done most of the heavy lifting, so you can find articles in the topic you're looking for faster.</p>
+          <p class="promo-caption">2. Normalize the Data</p>
+          <p class="light">Second, we use the Wikipedia API to assign articles to each phrase from Step 1. If a phrase has more than one meaning, we use its disambiguation page on Wikipedia to find the best choice. We score the relatedness of each possible article to determine which fits best.</p>
         </div>
+        <div class="col s4">
+          <div class="center promo">
+            <i class="mdi-action-spellcheck promo-icon"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
         <div class="col s4">
           <div class="center promo">
             <i class="mdi-image-grain promo-icon"></i>
           </div>
         </div>
-      </div>
-
-      <div class="row">
-        <div class="col s4">
-          <div class="center promo">
-            <i class="mdi-content-sort promo-icon"></i>
-          </div>
-        </div>
         <div class="col s8">
-            <p class="promo-caption">Read by topic, browse by feed.</p>
-            <p class="light">Customize your news reading experience to make Sourcemash work for you. We are also always <a href="mailto:support@sourcemash.com">open to feedback</a> and can <a href="mailto:support@sourcemash.com">answer any questions</a> that you may have.</p>
+            <p class="promo-caption">3. Cluster the Categories</p>
+            <p class="light">Last, we use the relatedness metric from Step 2 to create a graph of the Wikipedia articles where the relatedness metric serves as the edge weights. This generates a group of communities. We find the densest cluster and use all of its keywords to categorize the article.</p>
         </div>
       </div>
 

@@ -66,8 +66,9 @@ def categorize_feed_articles(feed, categorizer):
 
 
 def categorize_article_by_url(url, categorizer):
-    full_page = BeautifulSoup(requests.get(url).text)
-    full_text = BeautifulSoup(_get_full_text(url))
+    html = requests.get(url).text
+    full_page = BeautifulSoup(html)
+    full_text = BeautifulSoup(Document(html).summary())
     title = full_page.title.string if full_page.title else ""
     categories = categorizer.categorize_item(title, full_text.get_text())
     return [{'name': cat} for cat in categories]
