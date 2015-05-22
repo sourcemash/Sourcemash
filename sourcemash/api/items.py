@@ -145,12 +145,13 @@ class CategoryItemListAPI(Resource):
                           .filter(Item.feed_id.in_(user_feed_ids)) \
                           .all()
 
-        unsubscribed_item = Item.query.filter(Item.categories.contains(category.category))     \
-                                      .filter(~Item.feed_id.in_(user_feed_ids))                               \
-                                      .first()
+        if current_user.show_suggested_content:
+            unsubscribed_item = Item.query.filter(Item.categories.contains(category.category))     \
+                                          .filter(~Item.feed_id.in_(user_feed_ids))                               \
+                                          .first()
 
-        if unsubscribed_item:
-            items.append(unsubscribed_item)
+            if unsubscribed_item:
+                items.append(unsubscribed_item)
 
         return {'items': [marshal(item, item_fields) for item in items]}
 

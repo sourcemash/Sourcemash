@@ -18,6 +18,8 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(255))
     active = db.Column(db.Boolean)
     confirmed_at = db.Column(db.DateTime)
+    show_suggested_content = db.Column(db.Boolean, default=True)
+
     subscribed = db.relationship('Feed',
                                 secondary=subscriptions,
                                 backref=db.backref('subscribers', lazy='dynamic'),

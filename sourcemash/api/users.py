@@ -2,7 +2,7 @@ from . import api, login_required
 from sourcemash.database import db
 
 from flask import abort
-from flask.ext.restful import Resource, fields, marshal, reqparse
+from flask.ext.restful import Resource, fields, marshal, reqparse, inputs
 from flask.ext.security import login_user, logout_user, RegisterForm, current_user
 
 from sourcemash.security import user_datastore
@@ -10,7 +10,8 @@ from sourcemash.models import User
 
 user_fields = {
     'id': fields.Integer,
-    'email': fields.String
+    'email': fields.String,
+    'show_suggested_content': fields.Boolean
 }
 
 class UserListAPI(Resource):
@@ -43,7 +44,8 @@ class UserAPI(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('email', type = str, required = True)
+        self.reqparse.add_argument('email', type = str)
+        self.reqparse.add_argument('show_suggested_content', type = inputs.boolean)
         super(UserAPI, self).__init__()
 
     def get(self):
@@ -52,8 +54,17 @@ class UserAPI(Resource):
     @login_required
     def put(self):
         args = self.reqparse.parse_args()
-        current_user.email = args.email
+
+        # Edit user email
+        if args.email != None:
+            current_user.email = args.email
+
+        # Toggle unsubscribed content status
+        if args.show_suggested_content != None:
+            current_user.show_suggested_content = args.show_suggested_content
+
         db.session.commit()
+
         return { 'user': marshal(current_user, user_fields) }
 
     @login_required
