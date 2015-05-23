@@ -6,29 +6,40 @@
       </div>
       <div class="row center">
         <form id="category_link_form">
-          <div class="input-field col s8">
-            <input id="url" type="text" class="validate">
-            <label for="url">Article Link</label>
+          <div class="input-field col offset-s2 s8">
+            <input placeholder="e.g. http://www.cnn.com/2014/03/27/world/ebola-virus-explainer/" id="url" type="text" class="validate">
             <div class="url-errors"></div>
           </div>
-          <div class="input-field col s3">
+          <div class="input-field col offset-s4 s4">
             <button type="submit" class="btn waves-effect waves-light" name='submit'>Categorize!</button>
           </div>
         </form>
       </div>
       <br>
       <% if (url) { %>
-        <h5>Categories for '<%= url %>'</h5>
+
+        <% if (categories.length == 0) { %>
+          <h5 class="light">Categories for <a href="<%= url %>" class="categorizer-url" target="_blank">your link</a> are being generated...</h5>
+        <% } else { %>
+          <h5 class="light">Categories for <a href="<%= url %>" class="categorizer-url" target="_blank">your link</a>:</h5>
+        <% } %>
+
         <div class="loading center-align"></div>
-        <ol>
-        <% categories.each(function(category){ %>
-          <% if (category.get('id')) { %>
-            <a href="/#categories/<%= category.get('id') %>"><li><%= category.get('name') %></li></a>
-          <% } else { %>
-            <li><%= category.get('name') %></li>
-          <% } %>
-        <% }); %>
-        </ol>
+
+        <div class="row">
+          <% categories.each(function(category){ %>
+            <div class="col s12 m6">
+              <div class="card-panel categorizer-card">
+                <% if (category.get('id')) { %>
+                  <a class="white-text" href="/#categories/<%= category.get('id') %>"><%= category.get('name') %></a>
+                <% } else { %>
+                  <span class="white-text"><%= category.get('name') %></span>
+                <% } %>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+
       <% } %>
     </div>
     <div id="splash-divider"></div>

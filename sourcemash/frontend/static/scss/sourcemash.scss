@@ -458,6 +458,17 @@ a.button-collapse.top-nav {
   }
 }
 
+.categorizer-card {
+  @extend .red.darken-2;
+}
+
+.categorizer-url {
+  @extend .red-text.text-darken-2;
+  &:hover {
+    font-weight: 400;
+  }
+}
+
 
 /*
  ******************************

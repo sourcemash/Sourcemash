@@ -14,11 +14,16 @@ Sourcemash.Views.CategorizerView = Backbone.View.extend({
   },
 
   categorizeLink: function(e) {
-    e.preventDefault();
-    this.url = $("#url").val();
-    this.loading = true;
-    this.collection.reset();
-    this.collection.startPolling(this.url);
+    if (!this.loading) { // Prevent multiple simultaneous requests
+      e.preventDefault();
+      this.url = $("#url").val();
+      if (this.url.length == 0) { // Default: Categorize placeholder url
+        this.url = "http://www.cnn.com/2014/03/27/world/ebola-virus-explainer/";
+      };
+      this.loading = true;
+      this.collection.reset();
+      this.collection.startPolling(this.url);
+    };
   },
 
   render: function() {
