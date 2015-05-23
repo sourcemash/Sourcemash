@@ -54,7 +54,7 @@
         </div>
         <div class="col s8">
             <p class="promo-caption">Read by topic, browse by feed.</p>
-            <p class="light">Customize your news reading experience to make Sourcemash work for you. We are also always <a href="mailto:support@sourcemash.com?subject=Suggestions for Sourcemash">open to feedback</a> and can <a href="mailto:support@sourcemash.com?subject=Suggestions for Sourcemash">answer any questions</a> that you may have.</p>
+            <p class="light">Customize your news reading experience to make Sourcemash work for you. We are also always <a href="mailto:support@sourcemash.com">open to feedback</a> and can <a href="mailto:support@sourcemash.com">answer any questions</a> that you may have.</p>
         </div>
       </div>
 
