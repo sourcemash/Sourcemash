@@ -193,7 +193,7 @@ class Categorizer:
             titles_length = sum(len(s) for s in unscraped_titles[current_title_index:current_title_index + title_grouping_size])
 
             if MAX_URL_LENGTH - len(WIKIPEDIA_LINKS) \
-               - titles_length - title_grouping_size > 0:
+               - titles_length - title_grouping_size < 0:
                 title_grouping_size = MIN_ARTICLES_PER_WIKI_CALL
 
             grouped_titles = unscraped_titles[current_title_index:current_title_index + title_grouping_size]
