@@ -13,12 +13,6 @@ REDIS_CONNECTION = create_worker()
 categorizer = Categorizer()
 
 
-category_fields = {
-  'id': fields.Integer,
-  'name': fields.String(attribute='category')
-}
-
-
 class CategorizerAPI(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
