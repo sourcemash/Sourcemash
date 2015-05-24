@@ -40,6 +40,9 @@ MAX_CANDIDATE_COUNT = 20
 MINIMUM_RELATEDNESS_SCORE = 0.1
 WIKIPEDIA_LINKS = "http://en.wikipedia.org/w/api.php?action=query&prop=pageprops|links&continue=&pllimit=500&redirects&format=json&titles=%s"
 WIKIPEDIA_ARTICLE = "http://en.wikipedia.org/wiki/%s"
+MAX_URL_LENGTH = 2083
+DEFAULT_ARTICLES_PER_WIKI_CALL = 5
+MIN_ARTICLES_PER_WIKI_CALL = 3
 
 STOP_WORDS = [ "a", "about", "above", "across", "after", "afterwards", \
     "again", "against", "all", "almost", "alone", "along", "already", \
@@ -181,10 +184,22 @@ class Categorizer:
     def _scrape_wiki_links(self, titles):
         unscraped_titles = filter(lambda x: x not in self._memoized_article_links, titles)
 
-        for i in xrange(0, len(unscraped_titles), 5):
+        current_title_index = 0
 
-            grouped_titles = unscraped_titles[i:i + 5]
+        while current_title_index < len(unscraped_titles):
+
+            title_grouping_size = DEFAULT_ARTICLES_PER_WIKI_CALL
+
+            titles_length = sum(len(s) for s in unscraped_titles[current_title_index:current_title_index + title_grouping_size])
+
+            if MAX_URL_LENGTH - len(WIKIPEDIA_LINKS) \
+               - titles_length - title_grouping_size < 0:
+                title_grouping_size = MIN_ARTICLES_PER_WIKI_CALL
+
+            grouped_titles = unscraped_titles[current_title_index:current_title_index + title_grouping_size]
             grouped_titles_string = "|".join(grouped_titles)
+
+            current_title_index += title_grouping_size
 
             data = {}
             sublinks = []
@@ -200,7 +215,10 @@ class Categorizer:
                     url += "&plcontinue=" + data['continue']['plcontinue']
 
                 resp = requests.get(url)
-                data = json.loads(resp.text)
+                try:
+                    data = resp.json()
+                except ValueError:
+                    break
 
                 sublinks = self._compile_sublinks(data['query'], sublinks)
 

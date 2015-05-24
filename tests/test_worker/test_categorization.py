@@ -15,6 +15,10 @@ class TestCategorize:
         original_keywords = {"ZenPayroll": 30, "HR": 5, "SaaS": 10}
         assert set(categorizer._get_best_keywords(None, original_keywords)) == set(["Zenpayroll", "Saas"])
 
+    def test_categorize_wiki_does_not_return_json(self, categorizer):
+        string = "abcdefghijklmnop" * 1000
+        assert categorizer._scrape_wiki_links([string]) == None
+
     def test_assign_best_article_with_only_parentheses_links(self, categorizer):
         ngrams = ["staples", "officemax"]
         categorizer._memoized_related_articles["staples"] = ["Staples (Company)", "Staples (office supplies)"]
