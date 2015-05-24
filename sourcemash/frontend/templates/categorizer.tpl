@@ -3,6 +3,7 @@
     <div class="container">
       <div class="row center">
       <h4 class="header col s12 light center">Categorize any link!</h4>
+      <p class="light center">Enter the URL of any web article in the input field below.</p>
       </div>
       <div class="row center">
         <form id="category_link_form">
@@ -27,17 +28,19 @@
         <div class="loading center-align"></div>
 
         <div class="row">
-          <% categories.each(function(category){ %>
-            <div class="col s12 m6">
-              <div class="card-panel categorizer-card">
-                <% if (category.get('id')) { %>
-                  <a class="white-text" href="/#categories/<%= category.get('id') %>"><%= category.get('name') %></a>
-                <% } else { %>
-                  <span class="white-text"><%= category.get('name') %></span>
-                <% } %>
+          <div class="container">
+            <% categories.each(function(category){ %>
+              <div class="col s6">
+                <div class="card-panel categorizer-card center">
+                  <% if (category.get('id')) { %>
+                    <a class="white-text" href="/#categories/<%= category.get('id') %>"><%= category.get('name') %></a>
+                  <% } else { %>
+                    <span class="white-text"><%= category.get('name') %></span>
+                  <% } %>
+                </div>
               </div>
-            </div>
-          <% }); %>
+            <% }); %>
+          </div>
         </div>
 
       <% } %>
