@@ -202,6 +202,15 @@ div.side-nav {
   }
 }
 
+#refresh-categories {
+  a {
+    @extend .red-text.text-darken-2;
+    &:hover {
+      font-weight: 400;
+    }
+  }
+}
+
 .sidenav-element {
   margin: 0;
 }

@@ -16,6 +16,11 @@
       <ul id="categories-list" class="collection col s12">
         <% if (current_user.get('email')) { %>
           <div class="loading center-align"></div>
+          <% if (refreshNeeded) { %>
+            <li class="collection-item valign-wrapper" id="refresh-categories">
+              <p class="light">Click here to <a href="#">refresh</a> your Categories!</p>
+            </li>
+          <% }; %>
           <% categories.each(function(category) { %>
             <a href="/#categories/<%= category.get('id') %>">
               <li class="row collection-item">

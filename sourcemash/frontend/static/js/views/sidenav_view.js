@@ -6,8 +6,17 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
     this.feeds = options.feeds;
     this.categories = options.categories;
     this.loading = true;
+    this.feedsChanged = false;
+
     this.listenTo(this.feeds, 'sync change:unread', this.render);
-    this.listenTo(this.feeds, 'change:subscribed', function(){ this.categories.fetch(); });
+    this.listenTo(this.feeds, 'change:subscribed',
+      function(){
+        // Don't tell the user to refresh categories until fetch is complete
+        if (!this.loading) {
+          this.feedsChanged = true;
+          this.render();
+        };
+    });
     this.listenTo(this.categories, 'sync change:unread', this.render);
   },
 
@@ -15,7 +24,8 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
     'submit #login': 'loginSubmit',
     'click #need-account': 'showRegisterModal',
     'click #forgot-password': 'showForgotPasswordModal',
-    'click .mark-all-read': 'markAllItemsRead'
+    'click .mark-all-read': 'markAllItemsRead',
+    'click #refresh-categories': 'refreshPage'
   },
 
   loginSubmit: function(e){
@@ -61,13 +71,18 @@ Sourcemash.Views.SidenavView = Backbone.View.extend({
     });
   },
 
+  refreshPage: function(e){
+    e.preventDefault();
+    window.location.reload(true);
+  },
+
   render: function() {
     this.close();
 
     activeTab = $(".tab .active").text().toLowerCase() || "categories";
 
     var content = this.template({active: activeTab, current_user: this.user, feeds: this.feeds,
-                                 categories: this.categories});
+                                 categories: this.categories, refreshNeeded: this.feedsChanged });
     this.$el.html(content);
     this.$('.tooltipped').tooltip({delay: 50});
 
