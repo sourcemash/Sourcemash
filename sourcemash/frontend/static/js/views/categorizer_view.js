@@ -14,8 +14,8 @@ Sourcemash.Views.CategorizerView = Backbone.View.extend({
   },
 
   categorizeLink: function(e) {
+    e.preventDefault();
     if (!this.loading) { // Prevent multiple simultaneous requests
-      e.preventDefault();
       this.url = $("#url").val();
       if (this.url.length == 0) { // Default: Categorize placeholder url
         this.url = "http://www.cnn.com/2014/03/27/world/ebola-virus-explainer/";

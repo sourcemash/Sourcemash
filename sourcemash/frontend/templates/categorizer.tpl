@@ -12,7 +12,7 @@
             <div class="url-errors"></div>
           </div>
           <div class="input-field col offset-s4 s4">
-            <button type="submit" class="btn waves-effect waves-light" name='submit'>Categorize!</button>
+            <button type="submit" class="btn waves-effect waves-light <%= loading ? 'disabled' : '' %>" name='submit'>Categorize!</button>
           </div>
         </form>
       </div>
