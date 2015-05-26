@@ -32,15 +32,6 @@ class TestCategorizer(TestBase):
 
         assert {'name': "Ebola Virus Epidemic In West Africa"} in resp['categories']
 
-    def test_get_url_categories_invalid_url(self, test_client, worker):
-        data = {'url':
-                "notaurl"}
-        r = test_client.get('/api/categorizer', query_string=data)
-        check_valid_header_type(r.headers)
-        assert r.status_code == 422
-        data = json.loads(r.data)
-        assert "invalid" in data['errors']['url'][0]
-
 
 class TestCategory(TestBase):
     def test_get_category_present(self, test_client, itemWithCategory):
