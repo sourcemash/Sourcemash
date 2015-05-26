@@ -185,11 +185,13 @@ class TestFeedListAPI(TestBase):
 
         assert data['feeds'][0]['title'] == user_feed.title
 
-    def test_post_subscription_validURL_new_feed(self, test_client, user):
+    def test_post_subscription_validURL_new_feed(self, test_client,
+                                                 worker, user):
         self.login(test_client, user.email, user.password)
 
         subscription_data = dict(url='http://online.wsj.com/xml/rss/3_7085.xml')
         r = test_client.post('/api/feeds', data=subscription_data)
+        worker.work(burst=True)
 
         check_valid_header_type(r.headers)
         assert r.status_code == 201

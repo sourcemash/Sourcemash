@@ -14,6 +14,6 @@ def survey():
     return redirect('http://goo.gl/forms/wmnCAcbrLp')
 
 
-@bp.app_errorhandler(404)
-def page_not_found(e):
-    return redirect('/#404')
+@bp.route('/<path:dummy>')
+def fallback(dummy):
+    return redirect('/#' + dummy)

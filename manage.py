@@ -65,8 +65,7 @@ def scrape():
 def scrape_loop():
     """Start an infinte loop to scrape & categorize articles."""
 
-    q = Queue('default', connection=conn)
-
+    q = Queue('scrape', connection=conn)
     while True:
 
         for feed in Feed.query.all():
@@ -95,7 +94,7 @@ def worker(kill=False):
     """Starts redis queue worker. Requires redis-server"""
     """To run (in background): 'redis-server &'
        To kill: 'redis-cli shutdown' """
-    listen = ['scrape', 'email']
+    listen = ['scrape', 'email', 'categorize']
 
     with Connection(conn):
         worker = Worker(map(Queue, listen))

@@ -6,6 +6,7 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
         "categories/:id": "showCategory",
         "saved": "showSaved",
         "browse": "browseFeeds",
+        "categorizer": "showCategorizer",
         "*path": "showNotFound"
     },
 
@@ -95,6 +96,11 @@ Sourcemash.Routers.AppRouter = Backbone.Router.extend({
     showNotFound: function() {
         var notFoundView = new Sourcemash.Views.NotFoundView();
         this._swapView(notFoundView);
+    },
+
+    showCategorizer: function() {
+        var categorizerView = new Sourcemash.Views.CategorizerView();
+        this._swapView(categorizerView);
     },
 
     _loaded: function(view) {

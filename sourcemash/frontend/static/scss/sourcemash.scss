@@ -86,7 +86,23 @@
     }
   }
 
+  #splash-demo {
+    border-top: 1px gray solid;
+    margin: 0 auto;
+    width: 76%;
+    .header {
+      @extend .red-text.text-darken-2;
+    }
+  }
+
+  .promo-icon {
+    @extend .red-text.text-darken-2;
+    font-size: 7rem;
+    display: block;
+    padding-top: 10px;
+  }
 }
+
 
 .promo-icon {
   @extend .red-text.text-darken-2;
@@ -458,6 +474,18 @@ a.button-collapse.top-nav {
   }
 }
 
+.categorizer-card {
+  @extend .red.darken-2;
+  opacity: 0.85;
+}
+
+.categorizer-url {
+  @extend .red-text.text-darken-2;
+  &:hover {
+    font-weight: 400;
+  }
+}
+
 
 /*
  ******************************
@@ -498,8 +526,4 @@ a.button-collapse.top-nav {
 
 form {
   padding: 10px;
-}
-
-.btn {
-  @extend .blue.darken-3;
 }

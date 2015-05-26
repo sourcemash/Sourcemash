@@ -3,7 +3,7 @@ from sourcemash.database import db
 from flask.ext.restful import Resource, marshal, fields, reqparse, inputs
 from flask.ext.security import current_user
 
-from sourcemash.models import Item, Category, UserItem, UserCategory
+from sourcemash.models import Item, Category, UserCategory
 
 from sqlalchemy import func
 from sqlalchemy.orm.exc import NoResultFound
@@ -11,13 +11,16 @@ from sqlalchemy.orm.exc import NoResultFound
 MIN_CATEGORY_LIMIT = 2       # Every category needs at least # entries
 MIN_FEED_CATEGORY_RATIO = 5  # Category threshold increases by 1, every # feeds
 
+
 class isUnread(fields.Raw):
     def output(self, key, category):
         if not current_user.is_authenticated():
             return True
 
         try:
-            unread = UserCategory.query.filter_by(user=current_user, category_id=category.id).one().unread
+            unread = UserCategory.query.filter_by(user=current_user,
+                                                  category_id=category.id) \
+                                       .one().unread
         except NoResultFound:
             unread = True
 
@@ -29,12 +32,13 @@ category_fields = {
   'unread': isUnread
 }
 
+
 class CategoryAPI(Resource):
 
     def __init__(self):
-      self.reqparse = reqparse.RequestParser()
-      self.reqparse.add_argument('unread', type = inputs.boolean)
-      super(CategoryAPI, self).__init__()
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('unread', type=inputs.boolean)
+        super(CategoryAPI, self).__init__()
 
     def get(self, id):
         category = Category.query.get_or_404(id)

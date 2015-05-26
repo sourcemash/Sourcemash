@@ -89,7 +89,8 @@ def connection(request):
 def worker(connection, request):
     email = Queue('email')
     scrape = Queue('scrape')
-    yield SimpleWorker([email, scrape])
+    categorize = Queue('categorize')
+    yield SimpleWorker([email, scrape, categorize])
 
 
 @pytest.yield_fixture()
