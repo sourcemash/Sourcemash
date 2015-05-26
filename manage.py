@@ -31,7 +31,6 @@ FUNCTIONAL_TEST_CMD = "sh ./scripts/functional_test.sh"
 FEED_DATA_FILE = "./json/feeds.json"
 
 THIRTY_MINUTES = 30 * 60
-THIRTY_DAYS = 30 * 60 * 60 * 24
 
 
 def _make_context():
@@ -67,7 +66,6 @@ def scrape_loop():
     """Start an infinte loop to scrape & categorize articles."""
 
     q = Queue('default', connection=conn)
-    clean_db_index = 0
 
     while True:
 
@@ -79,28 +77,23 @@ def scrape_loop():
             q.enqueue_call(func=categorize_feed_articles,
                            args=(feed, categorizer,), timeout=1800)
 
+        too_old = datetime.today() - timedelta(days=30)
+
+        for item in Item.query.filter(Item.last_updated <= too_old).all():
+            skip_item = False
+
+            # Don't delete items recently updated by a user
+            user_items = UserItem.query.filter_by(item=item).all()
+            for user_item in user_items:
+                if user_item.last_modified > too_old:
+                    skip_item = True
+                    break
+
+            if not skip_item:
+                db.session.delete(item)
+                db.session.commit()
+
         time.sleep(THIRTY_MINUTES)
-        clean_db_index += 1
-
-        if clean_db_index > THIRTY_DAYS / THIRTY_MINUTES:
-
-            too_old = datetime.today() - timedelta(days=30)
-
-            for item in Item.query.filter(Item.last_updated <= too_old).all():
-                skip_item = False
-
-                # Don't delete items recently updated by a user
-                user_items = UserItem.query.filter_by(item=item).all()
-                for user_item in user_items:
-                    if user_item.last_modified > too_old:
-                        skip_item = True
-                        break
-
-                if not skip_item:
-                    db.session.delete(item)
-                    db.session.commit()
-
-            clean_db_index = 0
 
 @manager.command
 def worker(kill=False):
