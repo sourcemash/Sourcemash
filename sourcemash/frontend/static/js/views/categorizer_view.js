@@ -28,6 +28,7 @@ Sourcemash.Views.CategorizerView = Backbone.View.extend({
 
   render: function() {
       this.$el.html(this.template({loading: this.loading, categories: this.collection, url: this.url}));
+      this.$el.scrollTop(0);
 
       // Render loading view
       this.loadingView = new Sourcemash.Views.LoadingView({loading: this.loading});
