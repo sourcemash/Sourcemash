@@ -17,7 +17,7 @@ from worker import create_worker
 from worker.categorize import Categorizer
 from worker.scraper import scrape_feed_articles, categorize_feed_articles
 
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 
 app = create_app(os.environ.get("APP_CONFIG_FILE") or "development")
@@ -31,6 +31,7 @@ FUNCTIONAL_TEST_CMD = "sh ./scripts/functional_test.sh"
 FEED_DATA_FILE = "./json/feeds.json"
 
 THIRTY_MINUTES = 30 * 60
+THIRTY_DAYS = 30 * 60 * 60 * 24
 
 
 def _make_context():
@@ -66,6 +67,8 @@ def scrape_loop():
     """Start an infinte loop to scrape & categorize articles."""
 
     q = Queue('default', connection=conn)
+    clean_db_index = 0
+
     while True:
 
         for feed in Feed.query.all():
@@ -75,8 +78,17 @@ def scrape_loop():
         for feed in Feed.query.all():
             q.enqueue_call(func=categorize_feed_articles,
                            args=(feed, categorizer,), timeout=1800)
-        time.sleep(THIRTY_MINUTES)
 
+        time.sleep(THIRTY_MINUTES)
+        clean_db_index += 1
+
+        if clean_db_index > THIRTY_DAYS / THIRTY_MINUTES:
+            too_old = datetime.today() - timedelta(days=30)
+            for item in Item.query.filter(Item.last_updated <= too_old).all():
+                db.session.delete(item)
+                db.session.commit()
+
+            clean_db_index = 0
 
 @manager.command
 def worker(kill=False):
