@@ -83,13 +83,8 @@ def scrape_loop():
             skip_item = False
 
             # Don't delete items recently updated by a user
-            user_items = UserItem.query.filter_by(item=item).all()
-            for user_item in user_items:
-                if user_item.last_modified > too_old:
-                    skip_item = True
-                    break
-
-            if not skip_item:
+            recent_user_item = UserItem.query.filter(UserItem.item==item, UserItem.last_modified > too_old).first()
+            if not recent_user_item:
                 db.session.delete(item)
                 db.session.commit()
 
