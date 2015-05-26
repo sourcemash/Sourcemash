@@ -17,7 +17,7 @@ from worker import create_worker
 from worker.categorize import Categorizer
 from worker.scraper import scrape_feed_articles, categorize_feed_articles
 
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 
 app = create_app(os.environ.get("APP_CONFIG_FILE") or "development")
@@ -66,6 +66,7 @@ def scrape_loop():
     """Start an infinte loop to scrape & categorize articles."""
 
     q = Queue('default', connection=conn)
+
     while True:
 
         for feed in Feed.query.all():
@@ -75,8 +76,19 @@ def scrape_loop():
         for feed in Feed.query.all():
             q.enqueue_call(func=categorize_feed_articles,
                            args=(feed, categorizer,), timeout=1800)
-        time.sleep(THIRTY_MINUTES)
 
+        too_old = datetime.today() - timedelta(days=30)
+
+        for item in Item.query.filter(Item.last_updated <= too_old).all():
+
+            # Don't delete items recently updated by a user
+            recent_user_item = UserItem.query.filter(UserItem.item==item,
+                                        UserItem.last_modified > too_old).first()
+            if not recent_user_item:
+                db.session.delete(item)
+                db.session.commit()
+
+        time.sleep(THIRTY_MINUTES)
 
 @manager.command
 def worker(kill=False):
