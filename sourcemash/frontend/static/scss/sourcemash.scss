@@ -90,6 +90,9 @@
     border-top: 1px gray solid;
     margin: 0 auto;
     width: 76%;
+    .header {
+      @extend .red-text.text-darken-2;
+    }
   }
 
   .promo-icon {

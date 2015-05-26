@@ -8,7 +8,7 @@
       <h4 class="header col s12 light center">Read Your News. Faster.</h4>
       </div>
       <div class="row center">
-        <div class="btn btn-large waves-effect waves-light" id="need-account">Sign Up!</div>
+        <div class="btn btn-large waves-effect waves-light" id="need-account">Sign Up</div>
       </div>
       <br>
     </div>
@@ -57,14 +57,10 @@
       </div>
     </div>
   </div>
-  <div class="section no-pad-bot" id="splash-demo">
-    <div class="container">
-      <div class="row center">
-        <h4 class="header col s12 light center">Categorization Engine</h4>
-        <p>Check out our categorization demo to learn how the categorizer works and to see it in action!</p>
-        <a href="/#categorizer"><button type="submit" class="btn waves-effect waves-light">Categorize any URL!</button></a>
-      </div>
-    </div>
+  <div class="section no-pad-bot center" id="splash-demo">
+    <h4 class="header col s12 light">Categorization Engine</h4>
+    <p class="section light">Check out our categorization demo to learn how the categorizer works and to see it in action!</p>
+    <a href="/#categorizer"><button type="submit" class="btn waves-effect waves-light">Categorize any URL</button></a>
   </div>
   <div id="sourcemash-footer"></div>
 </div>

@@ -2,7 +2,7 @@
   <div class="section no-pad-bot" id="splash-banner">
     <div class="container">
       <div class="row center">
-      <h4 class="header col s12 light center">Categorize any link!</h4>
+      <h4 class="header col s12 light center">Categorize any link.</h4>
       <p class="light center">Enter the URL of any web article in the input field below.</p>
       </div>
       <div class="row center">
@@ -12,7 +12,7 @@
             <div class="url-errors"></div>
           </div>
           <div class="input-field col offset-s4 s4">
-            <button type="submit" class="btn waves-effect waves-light <%= loading ? 'disabled' : '' %>" name='submit'>Categorize!</button>
+            <button type="submit" class="btn waves-effect waves-light <%= loading ? 'disabled' : '' %>" name='submit'>Categorize</button>
           </div>
         </form>
       </div>
