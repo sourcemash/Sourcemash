@@ -8,7 +8,7 @@
       <div class="row center">
         <form id="category_link_form">
           <div class="input-field col offset-s2 s8">
-            <input placeholder="e.g. http://www.cnn.com/2014/03/27/world/ebola-virus-explainer/" id="url" type="text" class="validate">
+            <input placeholder="e.g. http://www.cnn.com/2014/03/27/world/ebola-virus-explainer/" id="url" type="url" class="validate">
             <div class="url-errors"></div>
           </div>
           <div class="input-field col offset-s4 s4">

@@ -26,11 +26,6 @@ class CategorizerAPI(Resource):
         if not parsed_url.scheme:
             parsed_url = parsed_url._replace(**{"scheme": "http"})
 
-        if ".com" not in parsed_url.netloc \
-            and ".org" not in parsed_url.netloc \
-                and ".io" not in parsed_url.netloc:
-                return {'errors': {'url': ['URL is invalid']}}, 422
-
         # Scrape feed (but don't fail if redis-server is down)
         try:
             q = Queue('categorize', connection=REDIS_CONNECTION)
