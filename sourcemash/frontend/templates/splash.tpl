@@ -17,9 +17,7 @@
   <div class="section no-pad-bot" id="splash-info">
     <div class="container">
       <div class="row">
-
         <h3 class="col s12 light center header flow-text" id="splash-subtitle">Sourcemash categorizes your articles to help you get through your feeds faster.</h3>
-
       </div>
 
       <div class="row">
@@ -57,7 +55,15 @@
             <p class="light">Customize your news reading experience to make Sourcemash work for you. We are also always <a href="mailto:support@sourcemash.com">open to feedback</a> and can <a href="mailto:support@sourcemash.com">answer any questions</a> that you may have.</p>
         </div>
       </div>
-
+    </div>
+  </div>
+  <div class="section no-pad-bot" id="splash-demo">
+    <div class="container">
+      <div class="row center">
+        <h4 class="header col s12 light center">Categorization Engine</h4>
+        <p>Check out our categorization demo to learn how the categorizer works and see it in action!</p>
+        <a href="/#categorizer"><button type="submit" class="btn waves-effect waves-light">Categorize any URL!</button></a>
+      </div>
     </div>
   </div>
   <div id="sourcemash-footer"></div>

@@ -86,7 +86,20 @@
     }
   }
 
+  #splash-demo {
+    border-top: 1px gray solid;
+    margin: 0 auto;
+    width: 76%;
+  }
+
+  .promo-icon {
+    @extend .red-text.text-darken-2;
+    font-size: 7rem;
+    display: block;
+    padding-top: 10px;
+  }
 }
+
 
 .promo-icon {
   @extend .red-text.text-darken-2;
