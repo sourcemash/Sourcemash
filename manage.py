@@ -83,10 +83,22 @@ def scrape_loop():
         clean_db_index += 1
 
         if clean_db_index > THIRTY_DAYS / THIRTY_MINUTES:
+
             too_old = datetime.today() - timedelta(days=30)
+
             for item in Item.query.filter(Item.last_updated <= too_old).all():
-                db.session.delete(item)
-                db.session.commit()
+                skip_item = False
+
+                # Don't delete items recently updated by a user
+                user_items = UserItem.query.filter_by(item=item).all()
+                for user_item in user_items:
+                    if user_item.last_modified > too_old:
+                        skip_item = True
+                        break
+
+                if not skip_item:
+                    db.session.delete(item)
+                    db.session.commit()
 
             clean_db_index = 0
 
