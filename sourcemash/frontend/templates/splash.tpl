@@ -61,7 +61,7 @@
     <div class="container">
       <div class="row center">
         <h4 class="header col s12 light center">Categorization Engine</h4>
-        <p>Check out our categorization demo to learn how the categorizer works and see it in action!</p>
+        <p>Check out our categorization demo to learn how the categorizer works and to see it in action!</p>
         <a href="/#categorizer"><button type="submit" class="btn waves-effect waves-light">Categorize any URL!</button></a>
       </div>
     </div>
