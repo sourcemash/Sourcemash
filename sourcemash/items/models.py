@@ -18,11 +18,11 @@ def _find_or_create_category(cat):
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(250))
-    link = db.Column(db.String(400), index=True)
+    link = db.Column(db.String(2083), index=True)
     last_updated = db.Column(db.DateTime)
     author = db.Column(db.String(120))
     summary = db.Column(db.Text)
-    image_url = db.Column(db.String(400))
+    image_url = db.Column(db.String(2083))
     text = db.Column(db.Text)
     feed_id = db.Column(db.Integer, db.ForeignKey('feed.id'))
     voteSum = db.Column(db.Integer, default=0)
