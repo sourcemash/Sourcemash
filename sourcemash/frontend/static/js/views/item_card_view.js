@@ -57,13 +57,15 @@ Sourcemash.Views.ItemCardView = Backbone.View.extend({
 	},
 
 	markRead: function() {
-		this.model.save({unread: false},
-                        {success: _.bind(this.openCard, this),
-                         error: _.bind(this.openCard, this)});
+		if (this.user.get('email')) {
+            this.model.save({unread: false},
+                            {success: _.bind(this.openCard, this),
+                             error: _.bind(this.openCard, this)});
 
-        if (this.model.changedAttributes()) {
-            mixpanel.people.increment("items read")
-        }
+            if (this.model.changedAttributes()) {
+                mixpanel.people.increment("items read")
+            };
+        };
 	},
 
     savedToggle: function() {
