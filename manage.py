@@ -153,9 +153,9 @@ def feed_seed():
                     db.session.add(feed)
                     db.session.commit()
 
-                # Scrape articles for feed
-                scrape_feed_articles(feed)
-                categorize_feed_articles(feed, categorizer)
+        for feed in Feed.query.all():
+            scrape_feed_articles(feed)
+            categorize_feed_articles(feed, categorizer)
 
 
 @manager.command
