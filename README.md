@@ -30,7 +30,7 @@ The site was built for the CS98 course at Dartmouth College.
 1. Start up a local server: ```python manage.py server```
 2. In another terminal session, (optional)
 	1. Start up a redis server: ```redis-server &```
-	2. Start up an instance of the worker: ```python manage.py worker &```
+	2. Start up the background workers: ```python manage.py scrape_worker &; python manage.py user_tasks_worker &```
 3. Start up the scraper: ```python manage.py scrape [--noqueue]```
 
 ## Tests

@@ -94,11 +94,35 @@ def scrape_loop():
         time.sleep(THIRTY_MINUTES)
 
 @manager.command
-def worker(kill=False):
+def scrape_worker(kill=False):
     """Starts redis queue worker. Requires redis-server"""
     """To run (in background): 'redis-server &'
        To kill: 'redis-cli shutdown' """
     listen = ['scrape', 'email', 'categorize']
+
+    with Connection(conn):
+        worker = Worker(map(Queue, listen))
+        worker.work()
+
+
+@manager.command
+def scrape_worker(kill=False):
+    """Starts redis queue worker. Requires redis-server"""
+    """To run (in background): 'redis-server &'
+       To kill: 'redis-cli shutdown' """
+    listen = ['scrape']
+
+    with Connection(conn):
+        worker = Worker(map(Queue, listen))
+        worker.work()
+
+
+@manager.command
+def user_tasks_worker(kill=False):
+    """Starts redis queue worker. Requires redis-server"""
+    """To run (in background): 'redis-server &'
+       To kill: 'redis-cli shutdown' """
+    listen = ['email', 'categorize']
 
     with Connection(conn):
         worker = Worker(map(Queue, listen))
