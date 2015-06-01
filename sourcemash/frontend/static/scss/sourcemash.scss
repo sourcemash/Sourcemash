@@ -142,16 +142,21 @@
 }
 
 header, main {
-  padding-left: 360px;
-
-  @media only screen and (max-width: 992px) {
-    padding-left: 0;
+  @media only screen and (min-width: 992px) {
+    padding-left: 300px;
   }
 }
 
 div.side-nav {
   position: fixed;
-  width: 360px;
+  @media only screen and (max-width: 992px) {
+    width: 300px !important;
+  }
+
+  @media only screen and (max-width: 320px) {
+    width: 250px !important;
+  }
+
   top: 0;
   left: -105%;
   height: 100%;
