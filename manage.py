@@ -84,6 +84,10 @@ def scrape_loop():
             recent_user_item = UserItem.query.filter(UserItem.item==item,
                                         UserItem.last_modified > too_old).first()
             if not recent_user_item:
+                for user_item in UserItem.query.filter(UserItem.item==item).all():
+                    db.session.delete(user_item)
+                    db.session.commit()
+
                 db.session.delete(item)
                 db.session.commit()
 
