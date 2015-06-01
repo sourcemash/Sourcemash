@@ -48,6 +48,9 @@ def categorize_feed_articles(feed, categorizer):
         text_only = soup.get_text()
         categories = categorizer.categorize_item(item.title, text_only)
         for category in categories:
+            if category in item.categories:
+                continue
+
             item.categories.append(category)
 
             # Mark category as unread for all users

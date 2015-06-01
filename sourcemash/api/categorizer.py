@@ -22,15 +22,11 @@ class CategorizerAPI(Resource):
     def get(self):
         args = self.reqparse.parse_args()
 
-        parsed_url = urlparse(args.url)
-        if not parsed_url.scheme:
-            parsed_url = parsed_url._replace(**{"scheme": "http"})
-
         # Scrape feed (but don't fail if redis-server is down)
         try:
             q = Queue('categorize', connection=REDIS_CONNECTION)
             job = q.enqueue_call(func=categorize_article_by_url,
-                                 args=(parsed_url.geturl(), categorizer,),
+                                 args=(args.url, categorizer,),
                                  timeout=600)
         except:
             return {'errors': {'url': 'Worker not running!'}}, 422
