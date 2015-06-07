@@ -154,7 +154,9 @@ class FeedItemListAPI(Resource):
     def get(self, feed_id):
         return {'items': [marshal(item, item_fields)
                 for item in Item.query.filter_by(feed_id=feed_id)
-                                      .limit(MAX_ARTICLES).all()]}
+                                      .order_by(Item.last_updated)
+                                      .limit(MAX_ARTICLES)
+                                      .all()]}
 
 
 class CategoryItemListAPI(Resource):
