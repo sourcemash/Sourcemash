@@ -70,11 +70,11 @@ def scrape_loop():
 
         for feed in Feed.query.all():
             q.enqueue_call(func=scrape_feed_articles,
-                           args=(feed,), timeout=1800)
+                           args=(feed.id,), timeout=1800)
 
         for feed in Feed.query.all():
             q.enqueue_call(func=categorize_feed_articles,
-                           args=(feed, categorizer,), timeout=1800)
+                           args=(feed.id, categorizer,), timeout=1800)
 
         too_old = datetime.today() - timedelta(days=30)
 
