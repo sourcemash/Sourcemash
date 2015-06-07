@@ -116,14 +116,15 @@ def _store_items(feed):
 
         text = _get_full_text(item.link)
 
-        new_entry = Item(title=item.title, text=text, link=item.link,
+        if not Item.query.filter_by(title=unicode(item.title)).first():
+            new_entry = Item(title=item.title, text=text, link=item.link,
                             last_updated=item_last_updated, author=getattr(item, 'author', None),
                             summary=getattr(item, 'summary', None), feed_id=feed.id)
 
-        db.session.add(new_entry)
-        db.session.commit()
+            db.session.add(new_entry)
+            db.session.commit()
 
-        new_item_count += 1
+            new_item_count += 1
 
     feed.item_count += new_item_count
     db.session.commit()
