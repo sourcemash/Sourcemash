@@ -18,7 +18,9 @@ logger = logging.getLogger('Sourcemash')
 SOURCEMASH_LOGO_URL = "http://sourcemash.com/static/img/solologo.svg"
 
 
-def scrape_feed_articles(feed):
+def scrape_feed_articles(feed_id):
+    feed = Feed.query.get(feed_id)
+
     _store_items(feed)
 
     for item in Item.query.filter_by(feed_id=feed.id).all():
@@ -40,8 +42,8 @@ def scrape_feed_articles(feed):
                 db.session.commit()
 
 
-def categorize_feed_articles(feed, categorizer):
-    for item in Item.query.filter_by(categorized=False).all():
+def categorize_feed_articles(feed_id, categorizer):
+    for item in Item.query.filter_by(categorized=False, feed_id=feed_id).all():
         soup = BeautifulSoup(item.text)
 
         # Extract text and categorize item
