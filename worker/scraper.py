@@ -116,7 +116,7 @@ def _store_items(feed):
 
         text = _get_full_text(item.link)
 
-        if not Item.query.filter_by(title=unicode(item.title)).first():
+        if not Item.query.filter_by(title=unicode(item.title), feed_id=feed.id).first():
             new_entry = Item(title=item.title, text=text, link=item.link,
                             last_updated=item_last_updated, author=getattr(item, 'author', None),
                             summary=getattr(item, 'summary', None), feed_id=feed.id)
