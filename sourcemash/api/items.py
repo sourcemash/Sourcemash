@@ -1,6 +1,5 @@
 from . import api, login_required
 from sourcemash.database import db
-from flask import abort
 from flask.ext.restful import Resource, reqparse, inputs, fields, marshal
 from flask.ext.security import current_user
 from datetime import datetime, timedelta
@@ -13,30 +12,39 @@ from sourcemash.models import Item, UserItem, Category
 from sourcemash.forms import VoteForm
 
 MAX_TRENDING_ITEMS = 10
-TRENDING_ITEMS_TIMEDELTA = 14 # Days (to qualify as trending)
+TRENDING_ITEMS_TIMEDELTA = 14   # Days (to qualify as trending)
+MAX_ARTICLES = 20
+
 
 class getVote(fields.Raw):
     def output(self, key, item):
         if not current_user.is_authenticated():
             return 0
         try:
-            vote = UserItem.query.filter_by(user=current_user, item=item).one().vote
+            vote = UserItem.query.filter_by(user=current_user,
+                                            item=item).one().vote
         except NoResultFound:
             vote = 0
 
         return vote
 
+
 class getUnreadStatus(fields.Raw):
     def output(self, key, item):
         if not current_user.is_authenticated():
             return True
-        return UserItem.query.filter_by(user=current_user, item=item, unread=False).count() == 0
+        return UserItem.query.filter_by(user=current_user,
+                                        item=item,
+                                        unread=False).count() == 0
+
 
 class getSavedStatus(fields.Raw):
     def output(self, key, item):
         if not current_user.is_authenticated():
             return False
-        return UserItem.query.filter_by(user=current_user, item=item, saved=True).count() > 0
+        return UserItem.query.filter_by(user=current_user,
+                                        item=item,
+                                        saved=True).count() > 0
 
 item_fields = {
     'id': fields.Integer,
@@ -44,7 +52,8 @@ item_fields = {
     'link': fields.String,
     'last_updated': fields.DateTime,
     'author': fields.String,
-    'categories': fields.List(fields.Nested(category_fields), attribute="cats"),
+    'categories': fields.List(fields.Nested(category_fields),
+                              attribute="cats"),
     'voteSum': fields.Integer,
     'image_url': fields.String,
     'summary': fields.String,
@@ -54,12 +63,13 @@ item_fields = {
     'vote': getVote
 }
 
+
 class ItemAPI(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('vote', type = int, default=0)
-        self.reqparse.add_argument('unread', type = inputs.boolean)
-        self.reqparse.add_argument('saved', type = inputs.boolean)
+        self.reqparse.add_argument('vote', type=int, default=0)
+        self.reqparse.add_argument('unread', type=inputs.boolean)
+        self.reqparse.add_argument('saved', type=inputs.boolean)
         super(ItemAPI, self).__init__()
 
     def get(self, id):
@@ -80,26 +90,30 @@ class ItemAPI(Resource):
         # Reject if user has already voted
         # Check vote column of user_items table
         try:
-            user_item = UserItem.query.filter_by(user=current_user, item=item).one()
+            user_item = UserItem.query.filter_by(user=current_user,
+                                                 item=item).one()
         except NoResultFound:
-            user_item = UserItem(user=current_user, item=item, feed_id=item.feed_id)
+            user_item = UserItem(user=current_user,
+                                 item=item,
+                                 feed_id=item.feed_id)
             db.session.add(user_item)
             db.session.commit()
 
         # Cast vote (if vote isn't zero or revote)
         if args.vote:
             if user_item.vote == args.vote:
-                return {'errors': {'vote': ["You have already voted on this item."]}}, 422
+                return {'errors': {'vote':
+                        ["You have already voted on this item."]}}, 422
 
-            item.voteSum += args.vote - user_item.vote # + new vote - old vote
+            item.voteSum += args.vote - user_item.vote  # + new vote - old vote
             user_item.vote = args.vote
 
         # Toggle unread status
-        if args.unread != None:
+        if args.unread is not None:
             user_item.unread = args.unread
 
         # Toggle saved-for-later status (aka bookmarked)
-        if args.saved != None:
+        if args.saved is not None:
             user_item.saved = args.saved
 
         user_item.last_modified = datetime.utcnow()
@@ -107,18 +121,23 @@ class ItemAPI(Resource):
 
         return {'item': marshal(item, item_fields)}
 
+
 class SavedItemListAPI(Resource):
 
     @login_required
     def get(self):
-        user_items = UserItem.query.filter_by(user=current_user, saved=True).all()
-        return {'items': [marshal(user_item.item, item_fields) for user_item in user_items]}
+        user_items = UserItem.query.filter_by(user=current_user,
+                                              saved=True).all()
+        return {'items': [marshal(user_item.item, item_fields)
+                for user_item in user_items]}
+
 
 class TrendingItemListAPI(Resource):
 
     @login_required
     def get(self):
-        trending_items = UserItem.query.with_entities(UserItem.item_id, func.count())     \
+        trending_items = UserItem.query.with_entities(UserItem.item_id,
+                                                      func.count())     \
                                 .filter(UserItem.vote)     \
                                 .filter(UserItem.last_modified > (datetime.utcnow() - timedelta(days=TRENDING_ITEMS_TIMEDELTA))) \
                                 .group_by(UserItem.item_id)        \
@@ -126,13 +145,19 @@ class TrendingItemListAPI(Resource):
 
         trending_items = trending_items[:MAX_TRENDING_ITEMS]
 
-        return {'items': [marshal(Item.query.get(id), item_fields) for id, count in trending_items]}
+        return {'items': [marshal(Item.query.get(id), item_fields)
+                for id, count in trending_items]}
 
 
 class FeedItemListAPI(Resource):
 
     def get(self, feed_id):
-        return {'items': [marshal(item, item_fields) for item in Item.query.filter_by(feed_id=feed_id).all()]}
+        return {'items': [marshal(item, item_fields)
+                for item in Item.query.filter_by(feed_id=feed_id)
+                                      .order_by(Item.last_updated)
+                                      .limit(MAX_ARTICLES)
+                                      .all()]}
+
 
 class CategoryItemListAPI(Resource):
 
