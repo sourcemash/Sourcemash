@@ -57,8 +57,8 @@ def scrape():
     """Runs one live scrape of all feeds."""
 
     for feed in Feed.query.all():
-        scrape_feed_articles(feed)
-        categorize_feed_articles(feed, categorizer)
+        scrape_feed_articles(feed.id)
+        categorize_feed_articles(feed.id, categorizer)
 
 
 @manager.command
@@ -70,11 +70,11 @@ def scrape_loop():
 
         for feed in Feed.query.all():
             q.enqueue_call(func=scrape_feed_articles,
-                           args=(feed,), timeout=1800)
+                           args=(feed.id,), timeout=1800)
 
         for feed in Feed.query.all():
             q.enqueue_call(func=categorize_feed_articles,
-                           args=(feed, categorizer,), timeout=1800)
+                           args=(feed.id, categorizer,), timeout=1800)
 
         too_old = datetime.today() - timedelta(days=30)
 
@@ -154,8 +154,8 @@ def feed_seed():
                     db.session.commit()
 
         for feed in Feed.query.all():
-            scrape_feed_articles(feed)
-            categorize_feed_articles(feed, categorizer)
+            scrape_feed_articles(feed.id)
+            categorize_feed_articles(feed.id, categorizer)
 
 
 @manager.command
@@ -207,8 +207,8 @@ def seed():
         db.session.commit()
 
     # Scrape articles for feed
-    scrape_feed_articles(feed)
-    categorize_feed_articles(feed, categorizer)
+    scrape_feed_articles(feed.id)
+    categorize_feed_articles(feed.id, categorizer)
 
 manager.add_command('server', Server())
 manager.add_command('shell', Shell(make_context=_make_context))
