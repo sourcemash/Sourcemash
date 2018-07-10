@@ -8,7 +8,7 @@ Read Your News Faster.
 ## Description
 Web-based RSS feed aggregator designed to shorten the time it takes to read articles by combining related articles into digestible chunks. It is similar to cir.ca, but it allows users to input their own sources and summarization is handled algorithmically.
 
-http://sourcemash.com
+Formerly hosted at http://sourcemash.com
 
 The site was built for the CS98 course at Dartmouth College.
 
